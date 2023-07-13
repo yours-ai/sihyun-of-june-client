@@ -19,11 +19,25 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      builder: (context, state) => const HomeScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          child: const HomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return child; // 페이지 트랜지션 비활성화
+          },
+        );
+      },
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => const LoginScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          child: const LoginScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return child; // 페이지 트랜지션 비활성화
+          },
+        );
+      },
     ),
   ],
 );
@@ -37,6 +51,7 @@ class ProjectJuneApp extends StatelessWidget {
       theme: const CupertinoThemeData(
         brightness: Brightness.light,
         primaryColor: CupertinoColors.black,
+        scaffoldBackgroundColor: Color(0xFFFCFCFC),
       ),
       title: 'Project June',
       routerConfig: _router,
