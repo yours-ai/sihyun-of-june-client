@@ -1,32 +1,45 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:project_june_client/screens/HomeScreen.dart';
+import 'package:project_june_client/screens/LoginScreen.dart';
+import 'package:project_june_client/screens/SplashScreen.dart';
+
+final helloWorldProvider = Provider((_) => 'Hello world');
 
 void main() {
-  runApp(const ProjectJuneApp());
+  runApp(const ProviderScope(child: ProjectJuneApp()));
 }
+
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
+    ),
+  ],
+);
 
 class ProjectJuneApp extends StatelessWidget {
   const ProjectJuneApp({super.key});
 
   @override
   Widget build(context) {
-    return MaterialApp(
-      title: 'Project June',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return CupertinoApp.router(
+      theme: const CupertinoThemeData(
+        brightness: Brightness.light,
+        primaryColor: CupertinoColors.black,
       ),
-      home: const Home(),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-  @override
-  Widget build(context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Hello")),
-      body: ElevatedButton(child: Text("Click me"), onPressed: () {}),
+      title: 'Project June',
+      routerConfig: _router,
     );
   }
 }
