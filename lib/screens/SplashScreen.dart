@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:project_june_client/screens/LoginScreen.dart';
 
 class SplashScreen extends HookWidget {
   const SplashScreen({super.key});
@@ -9,7 +10,13 @@ class SplashScreen extends HookWidget {
   Widget build(context) {
     useEffect(() {
       Future.delayed(const Duration(seconds: 1), () {
-        context.go('/login');
+        Navigator.push(
+          context,
+          PageTransition(
+            type: PageTransitionType.fade,
+            child: const LoginScreen(),
+          ),
+        );
       });
     }, []);
 
