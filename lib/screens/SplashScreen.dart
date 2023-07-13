@@ -7,20 +7,16 @@ class SplashScreen extends StatelessWidget {
   Widget build(context) {
     return CupertinoPageScaffold(
       child: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Splash Screen'),
-          CupertinoButton.filled(
-            onPressed: () {},
-            child: Text('Login'),
-          ),
-          CupertinoButton.filled(
-            onPressed: () {},
-            child: Text('Home'),
-          ),
-        ],
-      )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'images/logo.png',
+              width: 300,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
