@@ -22,16 +22,12 @@ class LoginScreen extends HookWidget {
     final index = useState(0);
     final visible = useState(true);
     useEffect(() {
-      final timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-        visible.value = false;
-        Timer(const Duration(seconds: 1), () {
-          if (index.value == exampleText.length - 1) {
-            index.value = 0;
-          } else {
-            index.value++;
-          }
-          visible.value = true;
-        });
+      final timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+        if (index.value == exampleText.length - 1) {
+          index.value = 0;
+        } else {
+          index.value++;
+        }
       });
       return () => timer.cancel();
     }, []);

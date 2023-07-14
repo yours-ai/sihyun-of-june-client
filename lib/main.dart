@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:project_june_client/screens/SplashScreen.dart';
+import 'package:project_june_client/screens/splash_screen.dart';
 
 final helloWorldProvider = Provider((_) => 'Hello world');
 

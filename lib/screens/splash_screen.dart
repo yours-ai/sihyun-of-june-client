@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:project_june_client/screens/LoginScreen.dart';
+import 'package:project_june_client/screens/login_screen.dart';
 
 class SplashScreen extends HookWidget {
   const SplashScreen({super.key});
