@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:project_june_client/screens/splash_screen.dart';
 
@@ -13,12 +13,7 @@ class ProjectJuneApp extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return const CupertinoApp(
-      theme: CupertinoThemeData(
-        brightness: Brightness.light,
-        primaryColor: Color(0xFF036039),
-        scaffoldBackgroundColor: Color(0xFFFCFCFC),
-      ),
+    return const MaterialApp(
       title: 'Project June',
       home: SplashScreen(),
     );

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 const exampleText = <(String, String)>[
@@ -31,13 +31,13 @@ class LoginScreen extends HookWidget {
       });
       return () => timer.cancel();
     }, []);
-    return CupertinoPageScaffold(
-      child: Container(
+    return Scaffold(
+      body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
             colorFilter: ColorFilter.mode(
-              CupertinoColors.black.withOpacity(0.5),
+              Colors.black.withOpacity(0.5),
               BlendMode.darken,
             ),
             image: AssetImage("images/login/background.png"),
@@ -56,7 +56,7 @@ class LoginScreen extends HookWidget {
                   child: Text(
                     '유월의 시현이 🪴',
                     style: TextStyle(
-                      color: CupertinoColors.white,
+                      color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
                     ),
@@ -77,7 +77,7 @@ class LoginScreen extends HookWidget {
                       Text(
                         '매일 한 통 씩 찾아오는 설렘.',
                         style: TextStyle(
-                          color: CupertinoColors.white,
+                          color: Colors.white,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),
@@ -93,7 +93,7 @@ class LoginScreen extends HookWidget {
                                 exampleText[index.value].$1,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: CupertinoColors.white,
+                                  color: Colors.white,
                                   fontSize: 24,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -103,7 +103,7 @@ class LoginScreen extends HookWidget {
                                 exampleText[index.value].$2,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  color: CupertinoColors.white,
+                                  color: Colors.white,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -125,7 +125,7 @@ class LoginScreen extends HookWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      CupertinoButton.filled(
+                      FilledButton(
                         child: const Text(
                           '시작하기',
                           style: TextStyle(
