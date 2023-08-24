@@ -14,7 +14,7 @@ class ProjectJuneApp extends StatelessWidget {
   @override
   Widget build(context) {
     return const MaterialApp(
-      title: 'Project June',
+      title: '유월의 시현이',
       home: SplashScreen(),
     );
   }
