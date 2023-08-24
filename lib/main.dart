@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:project_june_client/screens/splash_screen.dart';
+import 'package:project_june_client/screens/home_screen.dart';
 
 final helloWorldProvider = Provider((_) => 'Hello world');
 
@@ -15,7 +15,7 @@ class ProjectJuneApp extends StatelessWidget {
   Widget build(context) {
     return const MaterialApp(
       title: '유월의 시현이',
-      home: SplashScreen(),
+      home: HomeScreen(),
     );
   }
 }
