@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 
 class LandingScreen extends HookWidget {
   const LandingScreen({super.key});
@@ -11,27 +10,20 @@ class LandingScreen extends HookWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 100),
-          Text('기다려본 적 있나요?\n하루 한 통의 설렘을.'),
-          Icon(
-            PhosphorIcons.heart,
-            size: 45,
+          SizedBox(height: 150),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Text(
+              '기다려본 적 있나요?\n하루 한 통의 설렘을.',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
           ),
-          Icon(
-            PhosphorIcons.heart_thin,
-            size: 45,
-          ),
-          Icon(
-            PhosphorIcons.heart_light,
-            size: 45,
-          ),
-          Icon(
-            PhosphorIcons.heart_bold,
-            size: 45,
-          ),
-          Icon(
-            PhosphorIcons.heart_fill,
-            size: 45,
+          SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Image.asset(
+              "assets/images/landing/landing1.png",
+            ),
           ),
         ],
       ),

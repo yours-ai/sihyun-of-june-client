@@ -21,6 +21,12 @@ class ProjectJuneApp extends StatelessWidget {
         brightness: Brightness.light,
         primaryColor: const Color(0xff1A1A1A),
         scaffoldBackgroundColor: const Color(0xfff6f6f6),
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
