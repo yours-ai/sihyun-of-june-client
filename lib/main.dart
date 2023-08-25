@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:project_june_client/screens/home_screen.dart';
+import 'package:project_june_client/screens/landing_screen.dart';
 
 final helloWorldProvider = Provider((_) => 'Hello world');
 
@@ -13,9 +13,15 @@ class ProjectJuneApp extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: '유월의 시현이',
-      home: HomeScreen(),
+      home: LandingScreen(),
+      theme: ThemeData(
+        fontFamily: 'MaruBuri',
+        brightness: Brightness.light,
+        primaryColor: const Color(0xff1A1A1A),
+        scaffoldBackgroundColor: const Color(0xfff6f6f6),
+      ),
     );
   }
 }
