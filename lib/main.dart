@@ -18,9 +18,19 @@ class ProjectJuneApp extends StatelessWidget {
       home: LandingScreen(),
       theme: ThemeData(
         fontFamily: 'MaruBuri',
-        brightness: Brightness.light,
-        primaryColor: const Color(0xff1A1A1A),
-        scaffoldBackgroundColor: const Color(0xfff6f6f6),
+        colorScheme: const ColorScheme(
+          brightness: Brightness.light,
+          primary: Color(0xff1a1a1a),
+          onPrimary: Color(0xffffffff),
+          secondary: Color.fromRGBO(68, 68, 68, 0.9),
+          onSecondary: Color(0xffffffff),
+          error: Color.fromRGBO(254, 49, 64, 1),
+          onError: Color(0xffffffff),
+          background: Color(0xfff6f6f6),
+          onBackground: Color(0xff1a1a1a),
+          surface: Color(0xfff6f6f6),
+          onSurface: Color(0xff1a1a1a),
+        ),
         textTheme: const TextTheme(
           titleLarge: TextStyle(
             fontSize: 30,
