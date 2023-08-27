@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../widgets/common/proj_elevated_button.dart';
-
 class LandingScreen extends HookWidget {
   const LandingScreen({super.key});
 
@@ -41,7 +39,12 @@ class LandingScreen extends HookWidget {
                   bottom: 40.0,
                   top: 30.0,
                 ),
-                child: ProjFilledButton(),
+                child: FilledButton(
+                  onPressed: () {},
+                  child: Text(
+                    '다음',
+                  ),
+                ),
               ),
             ),
           ],

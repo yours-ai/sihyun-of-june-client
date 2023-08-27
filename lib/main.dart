@@ -37,6 +37,17 @@ class ProjectJuneApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            splashFactory: NoSplash.splashFactory,
+            padding: EdgeInsets.symmetric(
+              vertical: 17.0,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
       ),
     );
   }
