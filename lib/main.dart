@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:project_june_client/screens/landing_screen.dart';
 
+import 'constants.dart';
+
 final helloWorldProvider = Provider((_) => 'Hello world');
 
 void main() {
@@ -18,9 +20,36 @@ class ProjectJuneApp extends StatelessWidget {
       home: LandingScreen(),
       theme: ThemeData(
         fontFamily: 'MaruBuri',
-        brightness: Brightness.light,
-        primaryColor: const Color(0xff1A1A1A),
-        scaffoldBackgroundColor: const Color(0xfff6f6f6),
+        colorScheme: ColorScheme(
+          brightness: Brightness.light,
+          primary: ColorConstants.primary,
+          onPrimary: ColorConstants.white,
+          secondary: ColorConstants.secondary,
+          onSecondary: ColorConstants.white,
+          error: ColorConstants.alert,
+          onError: ColorConstants.white,
+          background: ColorConstants.background,
+          onBackground: ColorConstants.primary,
+          surface: ColorConstants.background,
+          onSurface: ColorConstants.primary,
+        ),
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        filledButtonTheme: FilledButtonThemeData(
+          style: FilledButton.styleFrom(
+            splashFactory: NoSplash.splashFactory,
+            padding: EdgeInsets.symmetric(
+              vertical: 17.0,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
       ),
     );
   }
