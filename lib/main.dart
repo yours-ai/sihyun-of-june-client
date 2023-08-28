@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:project_june_client/screens/home_screen.dart';
 import 'package:project_june_client/screens/landing_screen.dart';
+import 'package:project_june_client/screens/mail_list_screen.dart';
 
 import 'constants.dart';
 
@@ -17,7 +19,7 @@ class ProjectJuneApp extends StatelessWidget {
   Widget build(context) {
     return MaterialApp(
       title: '유월의 시현이',
-      home: LandingScreen(),
+      home: MailListScreen(),
       theme: ThemeData(
         fontFamily: 'MaruBuri',
         colorScheme: ColorScheme(
