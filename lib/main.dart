@@ -36,6 +36,9 @@ class ProjectJuneApp extends StatelessWidget {
           surface: ColorConstants.background,
           onSurface: ColorConstants.primary,
         ),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        splashFactory: NoSplash.splashFactory,
         textTheme: const TextTheme(
           titleLarge: TextStyle(
             fontSize: 30,
@@ -52,6 +55,9 @@ class ProjectJuneApp extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
           ),
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          elevation: 0,
         ),
       ),
     );

@@ -17,7 +17,7 @@ class StartingScreen extends HookWidget {
       if (!context.mounted) return;
       FlutterNativeSplash.remove();
       if (isLandingViewed) {
-        context.go('/login');
+        context.go('/mails');
       } else {
         context.go('/landing');
       }
