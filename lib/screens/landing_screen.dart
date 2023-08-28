@@ -1,39 +1,118 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/widgets/common/title_layout.dart';
 
-class LandingScreen extends HookWidget {
-  const LandingScreen({super.key});
+class LandingTabData {
+  final String title;
+  final String src;
+
+  const LandingTabData({required this.title, required this.src});
+}
+
+const List<LandingTabData> tabList = [
+  LandingTabData(
+      title: '기다려본 적 있나요?\n하루 한 통의 설렘을.',
+      src: 'assets/images/landing/landing1.png'),
+  LandingTabData(
+      title: '사람보다 더 따뜻한\n당신의 "시현이"에게,',
+      src: 'assets/images/landing/landing2.png'),
+  LandingTabData(
+      title: '지금 바로 첫 편지를\n받아보세요.', src: 'assets/images/landing/landing3.png'),
+];
+
+class LandingScreen extends StatefulWidget {
+  const LandingScreen({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _LandingScreen();
+  }
+}
+
+class _LandingScreen extends State<LandingScreen> {
+  int _tab = 0;
+  final CarouselController _controller = CarouselController();
+
+  void _updateTab(int index) {
+    setState(() {
+      _tab = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 100),
-          Text('기다려본 적 있나요?\n하루 한 통의 설렘을.'),
-          Icon(
-            PhosphorIcons.heart,
-            size: 45,
+      body: SafeArea(
+        child: TitleLayout(
+          titleText: tabList[_tab].title,
+          body: Builder(builder: (context) {
+            final double height = MediaQuery.of(context).size.height;
+            return CarouselSlider(
+              options: CarouselOptions(
+                viewportFraction: 1,
+                height: height,
+                enableInfiniteScroll: false,
+                onPageChanged: (index, reason) {
+                  _updateTab(index);
+                },
+              ),
+              carouselController: _controller,
+              items: tabList.map((tabData) {
+                return Container(
+                  width: double.infinity,
+                  child: Image.asset(
+                    tabData.src,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.topCenter,
+                  ),
+                );
+              }).toList(),
+            );
+          }),
+          actions: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: tabList.asMap().entries.map((entry) {
+                  return GestureDetector(
+                    onTap: () => _controller.animateToPage(entry.key),
+                    child: Container(
+                      width: 10.0,
+                      height: 10.0,
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 20.0,
+                        horizontal: 4.0,
+                      ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _tab == entry.key
+                            ? ColorConstants.secondary
+                            : ColorConstants.veryLight,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              _tab == tabList.length - 1
+                  ? FilledButton(
+                      onPressed: () {},
+                      child: const Text(
+                        '시작하기',
+                      ),
+                    )
+                  : FilledButton(
+                      onPressed: () {
+                        _controller.nextPage();
+                      },
+                      child: const Text(
+                        '다음',
+                      ),
+                    )
+            ],
           ),
-          Icon(
-            PhosphorIcons.heart_thin,
-            size: 45,
-          ),
-          Icon(
-            PhosphorIcons.heart_light,
-            size: 45,
-          ),
-          Icon(
-            PhosphorIcons.heart_bold,
-            size: 45,
-          ),
-          Icon(
-            PhosphorIcons.heart_fill,
-            size: 45,
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -15,6 +15,7 @@ dependencies:
   page_transition: ^2.0.9
   flutter_native_splash: ^2.3.2
   flutter_phosphor_icons: ^0.0.1+6
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -26,6 +27,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - assets/images/
+    - assets/images/landing/
   fonts:
     - family: MaruBuri
       fonts:
