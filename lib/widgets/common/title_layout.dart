@@ -5,6 +5,7 @@ class TitleLayout extends StatelessWidget {
   final TextStyle? titleStyle;
   final Widget body;
   final Widget? actions;
+  final bool showProfile;
 
   const TitleLayout({
     Key? key,
@@ -12,6 +13,7 @@ class TitleLayout extends StatelessWidget {
     this.titleStyle,
     required this.body,
     this.actions,
+    required this.showProfile,
   }) : super(key: key);
 
   @override
@@ -20,12 +22,29 @@ class TitleLayout extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 50),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            titleText,
-            style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Text(
+                titleText,
+                style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            if (showProfile)
+            Padding(
+              padding: const EdgeInsets.only(right: 40.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Image.asset(
+                  'assets/images/ryusihyun_profile.png',
+                  height: 35,
+                ),
+              ),
+            ) else
+              const SizedBox( width:0, height:0),
+          ],
         ),
         const SizedBox(height: 30),
         Expanded(

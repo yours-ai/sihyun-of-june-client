@@ -42,6 +42,23 @@ class MailWidget extends StatelessWidget{
               ),
             ),
           ),
+          isRead == 'true'
+              ? const SizedBox(
+                  height: 0,
+                  width: 0,
+                )
+              : Positioned(
+                  top: 5,
+                  left: 39,
+                  child: Container(
+                    height: 10,
+                    width: 10,
+                    decoration: BoxDecoration(
+                      color: Color(0xffFE3140),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                ),
         ],
       ),
     );

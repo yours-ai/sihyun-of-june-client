@@ -9,6 +9,7 @@ class AllScreen extends StatelessWidget {
   Widget build(context) {
     return SafeArea(
         child: TitleLayout(
+          showProfile: false,
           titleText: '전체',
           body: Container(),
         )

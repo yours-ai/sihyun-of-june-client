@@ -8,6 +8,7 @@ class NotificationListScreen extends StatelessWidget {
   Widget build(context) {
     return SafeArea(
         child: TitleLayout(
+          showProfile: false,
           titleText: '알림',
           body: Container(),
         )

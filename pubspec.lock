@@ -367,7 +367,7 @@ packages:
       sha256: "52b2937f5b9552987f35419f1deef22474d7fc609aea2f4c5b6c11b4449a287c"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.6"
+    version: "2.3.9"
   shared_preferences:
     dependency: "direct main"
     description:
