@@ -63,7 +63,7 @@ class _LandingScreen extends State<LandingScreen> {
                   width: double.infinity,
                   child: Image.asset(
                     tabData.src,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fitWidth,
                     alignment: Alignment.topCenter,
                   ),
                 );
