@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-class ColorConstants {
+abstract final class ColorConstants {
   static Color primary = const Color(0xff1a1a1a);
   static Color background = const Color(0xfff6f6f6);
   static Color secondary = const Color.fromRGBO(68, 68, 68, 0.9);
@@ -11,4 +11,10 @@ class ColorConstants {
 
   static Color white = const Color(0xfffcfcfc);
   static Color black = const Color(0xff1a1a1a);
+}
+
+abstract final class TabRoutePaths {
+  static String mailList = '/mails';
+  static String notificationList = '/notifications';
+  static String all = '/all';
 }

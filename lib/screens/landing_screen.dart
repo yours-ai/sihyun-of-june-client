@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LandingTabData {
   final String title;
@@ -59,11 +61,11 @@ class _LandingScreen extends State<LandingScreen> {
               ),
               carouselController: _controller,
               items: tabList.map((tabData) {
-                return Container(
+                return SizedBox(
                   width: double.infinity,
                   child: Image.asset(
                     tabData.src,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fitWidth,
                     alignment: Alignment.topCenter,
                   ),
                 );
@@ -97,7 +99,12 @@ class _LandingScreen extends State<LandingScreen> {
               ),
               _tab == tabList.length - 1
                   ? FilledButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final instance = await SharedPreferences.getInstance();
+                        instance.setBool('isLandingViewed', true);
+                        if (!context.mounted) return;
+                        context.go('/login');
+                      },
                       child: const Text(
                         '시작하기',
                       ),

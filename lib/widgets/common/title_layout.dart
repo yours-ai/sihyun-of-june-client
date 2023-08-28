@@ -4,14 +4,14 @@ class TitleLayout extends StatelessWidget {
   final String titleText;
   final TextStyle? titleStyle;
   final Widget body;
-  final Widget actions;
+  final Widget? actions;
 
   const TitleLayout({
     Key? key,
     required this.titleText,
     this.titleStyle,
     required this.body,
-    required this.actions,
+    this.actions,
   }) : super(key: key);
 
   @override
@@ -31,17 +31,18 @@ class TitleLayout extends StatelessWidget {
         Expanded(
           child: body,
         ),
-        Container(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 20.0,
-              right: 20.0,
-              bottom: 20.0,
+        if (actions != null)
+          Container(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 20.0,
+                right: 20.0,
+                bottom: 20.0,
+              ),
+              child: actions,
             ),
-            child: actions,
           ),
-        ),
       ],
     );
   }
