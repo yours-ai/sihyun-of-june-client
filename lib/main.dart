@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:project_june_client/screens/landing_screen.dart';
 
 import 'constants.dart';
+import 'router.dart';
 
 final helloWorldProvider = Provider((_) => 'Hello world');
 
 void main() {
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const ProviderScope(child: ProjectJuneApp()));
 }
 
@@ -15,9 +18,9 @@ class ProjectJuneApp extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: '유월의 시현이',
-      home: LandingScreen(),
+      routerConfig: router,
       theme: ThemeData(
         fontFamily: 'MaruBuri',
         colorScheme: ColorScheme(
@@ -42,7 +45,7 @@ class ProjectJuneApp extends StatelessWidget {
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
             splashFactory: NoSplash.splashFactory,
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               vertical: 17.0,
             ),
             shape: RoundedRectangleBorder(
