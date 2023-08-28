@@ -102,6 +102,7 @@ class _LandingScreen extends State<LandingScreen> {
                       onPressed: () async {
                         final instance = await SharedPreferences.getInstance();
                         instance.setBool('isLandingViewed', true);
+                        if (!context.mounted) return;
                         context.go('/login');
                       },
                       child: const Text(
