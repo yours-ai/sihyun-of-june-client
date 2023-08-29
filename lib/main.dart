@@ -1,15 +1,26 @@
+import 'package:cached_query_flutter/cached_query_flutter.dart';
+import 'package:cached_storage/cached_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'constants.dart';
+import 'environments.dart';
 import 'router.dart';
 
 final helloWorldProvider = Provider((_) => 'Hello world');
 
-void main() {
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  CachedQuery.instance.configFlutter(
+    config: QueryConfigFlutter(
+      refetchOnConnection: true,
+      refetchOnResume: true,
+    ),
+    storage: await CachedStorage.ensureInitialized(),
+  );
+  assertBuildTimeEnvironments();
   runApp(const ProviderScope(child: ProjectJuneApp()));
 }
 
