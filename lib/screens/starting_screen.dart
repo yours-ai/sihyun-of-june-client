@@ -12,15 +12,16 @@ class StartingScreen extends HookWidget {
   Widget build(context) {
     useAsyncEffect(() async {
       final prefs = await SharedPreferences.getInstance();
-      final isLandingViewed =
-          prefs.getBool('isLandingViewed') ?? false; // TODO: 로그인 체크로 변경
+      // final isLandingViewed =
+      //     prefs.getBool('isLandingViewed') ?? false; // TODO: 로그인 체크로 변경
       if (!context.mounted) return;
       FlutterNativeSplash.remove();
-      if (isLandingViewed) {
-        context.go('/login');
-      } else {
-        context.go('/landing');
-      }
+      context.go('/landing');
+      // if (isLandingViewed) {
+      //   context.go('/login');
+      // } else {
+      //   context.go('/landing');
+      // }
       return null;
     }, []);
     return Container();
