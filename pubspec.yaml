@@ -17,12 +17,18 @@ dependencies:
   flutter_phosphor_icons: ^0.0.1+6
   carousel_slider: ^4.2.1
   shared_preferences: ^2.2.0
+  cached_query_flutter: ^1.0.0
+  cached_storage: ^1.0.0
+  dio: ^5.3.2
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
+  build_runner: ^2.4.6
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true
