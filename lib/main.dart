@@ -34,6 +34,7 @@ class ProjectJuneApp extends StatelessWidget {
       routerConfig: router,
       theme: ThemeData(
         fontFamily: 'MaruBuri',
+        scaffoldBackgroundColor: ColorConstants.background,
         colorScheme: ColorScheme(
           brightness: Brightness.light,
           primary: ColorConstants.primary,
@@ -67,7 +68,15 @@ class ProjectJuneApp extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        textButtonTheme: TextButtonThemeData(
+          style: FilledButton.styleFrom(
+            splashFactory: NoSplash.splashFactory,
+            padding: const EdgeInsets.symmetric(
+              vertical: 17.0,
+            ),
+          ),
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           elevation: 0,
         ),
       ),
