@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/screens/all_screen.dart';
 import 'package:project_june_client/screens/mail_list_screen.dart';
+import 'package:project_june_client/screens/mail_view_screen.dart';
 import 'package:project_june_client/screens/notification_list_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
 
@@ -27,6 +28,10 @@ final router = GoRouter(
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: '/mail/view',
+      builder: (context, state) => const MailViewScreen(),
     ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,

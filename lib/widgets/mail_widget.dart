@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/widgets/modal_widget.dart';
 
-class MailWidget extends StatelessWidget{
+class MailWidget extends StatelessWidget {
   final String isRead, date;
 
   MailWidget({super.key, required this.isRead, required this.date});
@@ -11,7 +12,9 @@ class MailWidget extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Stack(
+      child: TextButton(
+        onPressed: () => context.go('/mail/view'),
+        child: Stack(
         alignment: Alignment.center,
         children: [
           const SizedBox(
@@ -34,7 +37,8 @@ class MailWidget extends StatelessWidget{
             child: Text(
               date,
               style: TextStyle(
-                fontWeight: isRead == 'true' ? FontWeight.normal : FontWeight.bold,
+                fontWeight:
+                isRead == 'true' ? FontWeight.normal : FontWeight.bold,
                 color: isRead == 'true'
                     ? ColorConstants.neutral
                     : ColorConstants.primary,
@@ -44,23 +48,23 @@ class MailWidget extends StatelessWidget{
           ),
           isRead == 'true'
               ? const SizedBox(
-                  height: 0,
-                  width: 0,
-                )
+            height: 0,
+            width: 0,
+          )
               : Positioned(
-                  top: 5,
-                  left: 39,
-                  child: Container(
-                    height: 10,
-                    width: 10,
-                    decoration: BoxDecoration(
-                      color: Color(0xffFE3140),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                  ),
-                ),
+            top: 5,
+            left: 39,
+            child: Container(
+              height: 10,
+              width: 10,
+              decoration: BoxDecoration(
+                color: Color(0xffFE3140),
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+          ),
         ],
       ),
-    );
+    ),);
   }
 }
