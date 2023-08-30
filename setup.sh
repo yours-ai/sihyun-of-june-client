@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # init flutter icons
-if [[ -n "$IS_DEV" ]]; then
-    dart run flutter_launcher_icons -f flutter_launch_icon_dev.yaml
-else
+if [[ -n "$IS_LIVE" ]]; then
     dart run flutter_launcher_icons -f flutter_launch_icon_live.yaml
+else
+    dart run flutter_launcher_icons -f flutter_launch_icon_dev.yaml
 fi
 
 # init flutter splashs

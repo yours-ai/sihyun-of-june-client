@@ -1,7 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 
-import '../actions/characters/queries.dart';
+import '../actions/character/queries.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
