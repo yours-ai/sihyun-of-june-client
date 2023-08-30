@@ -79,7 +79,10 @@ class _LandingScreen extends State<LandingScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: tabList.asMap().entries.map((entry) {
                   return GestureDetector(
-                    onTap: () => _controller.animateToPage(entry.key),
+                    onTap: () => _controller.animateToPage(
+                      entry.key,
+                      curve: Curves.easeInOut,
+                    ),
                     child: Container(
                       width: 10.0,
                       height: 10.0,
@@ -111,7 +114,7 @@ class _LandingScreen extends State<LandingScreen> {
                     )
                   : FilledButton(
                       onPressed: () {
-                        _controller.nextPage();
+                        _controller.nextPage(curve: Curves.easeInOut);
                       },
                       child: const Text(
                         '다음',
