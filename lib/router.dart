@@ -4,6 +4,7 @@ import 'package:project_june_client/screens/all_screen.dart';
 import 'package:project_june_client/screens/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail_view_screen.dart';
 import 'package:project_june_client/screens/notification_list_screen.dart';
+import 'package:project_june_client/screens/profile_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
 
 import 'constants.dart';
@@ -32,6 +33,10 @@ final router = GoRouter(
     GoRoute(
       path: '/mail/view',
       builder: (context, state) => const MailViewScreen(),
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
     ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,

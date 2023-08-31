@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
 
 class MailViewScreen extends StatelessWidget {
@@ -8,25 +9,24 @@ class MailViewScreen extends StatelessWidget {
   @override
   Widget build(context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ColorConstants.background,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () => context.go(TabRoutePaths.mailList),
+          icon: Container(
+            padding: const EdgeInsets.only(left: 23),
+            child: Icon(
+              PhosphorIcons.arrow_left,
+              color: ColorConstants.black,
+              size: 32,
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 23.0, top: 40.0),
-              child: Container(
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    PhosphorIcons.arrow_left,
-                    size: 32,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50.0),
               child: Column(
@@ -205,22 +205,16 @@ class MailViewScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
-                    child: Stack(children: [
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      FilledButton(
-
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text(
-                          '답장하기',
-                          style: TextStyle(
-                            fontFamily: 'MaruBuri',
-                            fontSize: 14,
-                          ),
+                    child: FilledButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        '답장하기',
+                        style: TextStyle(
+                          fontFamily: 'MaruBuri',
+                          fontSize: 14,
                         ),
                       ),
-                    ]),
+                    ),
                   ),
                 ],
               ),

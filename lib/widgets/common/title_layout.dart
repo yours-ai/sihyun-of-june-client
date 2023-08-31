@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class TitleLayout extends StatelessWidget {
   final String titleText;
@@ -26,7 +27,7 @@ class TitleLayout extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 28),
               child: Text(
                 titleText,
                 style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
@@ -35,11 +36,14 @@ class TitleLayout extends StatelessWidget {
             if (showProfile)
             Padding(
               padding: const EdgeInsets.only(right: 40.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(14),
-                child: Image.asset(
-                  'assets/images/ryusihyun_profile.png',
-                  height: 35,
+              child: TextButton(
+                onPressed: () => {context.push('/profile')},
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: Image.asset(
+                    'assets/images/ryusihyun_profile.png',
+                    height: 35,
+                  ),
                 ),
               ),
             ) else

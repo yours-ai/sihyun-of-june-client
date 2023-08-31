@@ -16,13 +16,14 @@ class MailListScreen extends HookWidget {
     final _mailNum = useState(9);
     final _agreeLetter = useState(false);
 
-    if(_agreeLetter==false){
+    if(_agreeLetter.value==false){
       useAsyncEffect(() async {
         final result = await showModalBottomSheet<void>(
           context: context,
           useRootNavigator: true,
           builder: (BuildContext context) {
             return ModalWidget(
+              moreDescription: false,
               description: '편지를 받으려면,\n알림 동의가 필요해요',
               button1: '취소',
               button2: '동의하기',
