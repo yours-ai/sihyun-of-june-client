@@ -1,8 +1,5 @@
-import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:project_june_client/constants.dart';
-
-import '../actions/character/queries.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -38,7 +35,6 @@ class LoginScreen extends StatelessWidget {
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          //apple material icon
                           Icon(Icons.apple),
                           SizedBox(width: 8),
                           Text('Apple로 계속하기')

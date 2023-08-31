@@ -21,6 +21,8 @@ dependencies:
   cached_storage: ^1.0.0
   dio: ^5.3.2
   json_annotation: ^4.8.1
+  kakao_flutter_sdk_user: ^1.4.1
+  kakao_flutter_sdk_share: ^1.4.1
 
 dev_dependencies:
   flutter_test:
