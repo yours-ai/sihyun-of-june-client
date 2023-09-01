@@ -1,4 +1,8 @@
+import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -42,26 +46,42 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    FilledButton(
-                      style: FilledButton.styleFrom(
-                        backgroundColor: const Color(0xFFFFE500),
-                        foregroundColor: ColorConstants.primary,
+                    MutationBuilder(
+                      mutation: getLoginAsKakaoMutation(
+                        onSuccess: (res, arg) {
+                          context.go('/mails');
+                        },
+                        onError: (arg, error, callback) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                '카카오 로그인 중 에러가 발생했어요.',
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      onPressed: () {
-                        print('kakao login clicked');
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          //apple material icon
-                          Image.asset(
-                            'assets/images/kakao_icon.png',
-                            height: 15,
+                      builder: (context, state, mutate) {
+                        return FilledButton(
+                          style: FilledButton.styleFrom(
+                            backgroundColor: const Color(0xFFFFE500),
+                            foregroundColor: ColorConstants.primary,
                           ),
-                          const SizedBox(width: 8),
-                          const Text('카카오로 계속하기')
-                        ],
-                      ),
+                          onPressed: () => mutate(null),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              //apple material icon
+                              Image.asset(
+                                'assets/images/kakao_icon.png',
+                                height: 15,
+                              ),
+                              const SizedBox(width: 8),
+                              const Text('카카오로 계속하기')
+                            ],
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 10),
                     TextButton(

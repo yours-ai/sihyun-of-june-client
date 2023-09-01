@@ -2,11 +2,14 @@ class BuildTimeEnvironments {
   static String apiBaseUrl = const String.fromEnvironment('API_BASE_URL');
   static String kakaoNativeAppKey =
       const String.fromEnvironment('KAKAO_NATIVE_APP_KEY');
+  static String kakaoJavascriptKey =
+      const String.fromEnvironment('KAKAO_JAVASCRIPT_KEY');
 }
 
 final REQUIRED_VARIABLES = {
   'API_BASE_URL': BuildTimeEnvironments.apiBaseUrl,
   'KAKAO_NATIVE_APP_KEY': BuildTimeEnvironments.kakaoNativeAppKey,
+  'KAKAO_JAVASCRIPT_KEY': BuildTimeEnvironments.kakaoJavascriptKey,
 };
 
 void _assertBuildTimeEnvironments(Map<String, String> variables) {

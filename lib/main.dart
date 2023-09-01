@@ -2,17 +2,15 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:project_june_client/actions/client.dart';
 
 import 'constants.dart';
 import 'environments.dart';
 import 'router.dart';
 
-final helloWorldProvider = Provider((_) => 'Hello world');
-
 void main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   CachedQuery.instance.configFlutter(
     config: QueryConfigFlutter(
       refetchOnConnection: true,
@@ -21,11 +19,28 @@ void main() async {
     storage: await CachedStorage.ensureInitialized(),
   );
   assertBuildTimeEnvironments();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  KakaoSdk.init(
+    nativeAppKey: BuildTimeEnvironments.kakaoNativeAppKey,
+    javaScriptAppKey: BuildTimeEnvironments.kakaoJavascriptKey,
+  );
   runApp(const ProviderScope(child: ProjectJuneApp()));
 }
 
-class ProjectJuneApp extends StatelessWidget {
+class ProjectJuneApp extends StatefulWidget {
   const ProjectJuneApp({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _ProjectJuneApp();
+}
+
+class _ProjectJuneApp extends State<ProjectJuneApp> {
+  @override
+  void initState() {
+    super.initState();
+    initServerErrorSnackbar(context);
+  }
 
   @override
   Widget build(context) {

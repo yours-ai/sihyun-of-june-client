@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StartingScreen extends StatefulWidget {
@@ -12,17 +13,14 @@ class StartingScreen extends StatefulWidget {
 
 class _StartingScreen extends State<StartingScreen> {
   _checkAuthAndLand() async {
-    final prefs = await SharedPreferences.getInstance();
-    // final isLandingViewed =
-    //     prefs.getBool('isLandingViewed') ?? false; // TODO: 로그인 체크로 변경
-    if (!context.mounted) return;
+    final isLogined = await loadServerToken();
     FlutterNativeSplash.remove();
-    context.go('/landing');
-    // if (isLandingViewed) {
-    //   context.go('/login');
-    // } else {
-    //   context.go('/landing');
-    // }
+    if (!context.mounted)
+    if (isLogined) {
+      context.go('/mails');
+    } else {
+      context.go('/landing');
+    }
   }
 
   @override
