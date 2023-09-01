@@ -15,7 +15,7 @@ class _StartingScreen extends State<StartingScreen> {
   _checkAuthAndLand() async {
     final isLogined = await loadServerToken();
     FlutterNativeSplash.remove();
-    if (!context.mounted)
+    if (!context.mounted) return;
     if (isLogined) {
       context.go('/mails');
     } else {

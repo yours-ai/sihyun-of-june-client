@@ -91,8 +91,10 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
             ),
           ),
         ),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
           elevation: 0,
+          unselectedItemColor: ColorConstants.primary,
+          backgroundColor: ColorConstants.background,
         ),
       ),
     );

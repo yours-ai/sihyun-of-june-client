@@ -31,7 +31,7 @@ class NavbarLayout extends StatelessWidget {
         items: [
           BottomNavigationBarItem(
             icon: const Icon(
-              PhosphorIcons.envelope_simple,
+              PhosphorIcons.envelope_simple_light,
               size: 32,
             ),
             activeIcon: Icon(
@@ -42,7 +42,7 @@ class NavbarLayout extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: const Icon(
-              PhosphorIcons.bell,
+              PhosphorIcons.bell_light,
               size: 32,
             ),
             activeIcon: Icon(
@@ -52,7 +52,7 @@ class NavbarLayout extends StatelessWidget {
             label: '알림',
           ),
           BottomNavigationBarItem(
-            icon: const Icon(PhosphorIcons.list, size: 32),
+            icon: const Icon(PhosphorIcons.list_light, size: 32),
             activeIcon: Icon(
               PhosphorIcons.list_bold,
               size: 32,
