@@ -13,7 +13,7 @@ class MailWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: TextButton(
-        onPressed: () => context.go('/mail/view'),
+        onPressed: () => context.push('/mails/view'),
         child: Stack(
         alignment: Alignment.center,
         children: [

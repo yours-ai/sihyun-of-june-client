@@ -16,18 +16,41 @@ class MailListScreen extends HookWidget {
     final _mailNum = useState(9);
     final _agreeLetter = useState(false);
 
-    if(_agreeLetter.value==false){
+    if (_agreeLetter.value == false) {
       useAsyncEffect(() async {
         final result = await showModalBottomSheet<void>(
           context: context,
           useRootNavigator: true,
           builder: (BuildContext context) {
             return ModalWidget(
-              moreDescription: false,
-              description: '편지를 받으려면,\n알림 동의가 필요해요',
-              button1: '취소',
-              button2: '동의하기',
-              action: () => context.go('/landing'),
+                title: '편지를 받으려면,\n알림 동의가 필요해요',
+
+                choiceColumn: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  FilledButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                      MaterialStateProperty.all(ColorConstants.background),
+                    ),
+                    onPressed: () {
+                      context.pop();
+                    },
+                    child: Text(
+                      '취소',
+                      style: TextStyle(
+                          fontSize: 14.0, color: ColorConstants.secondary),
+                    ),
+                  ),
+                  FilledButton(
+                    onPressed: () => context.go('/landing'),
+                    child: Text(
+                      '동의하기',
+                      style: const TextStyle(
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ),
+                ]),
             );
           },
         );
@@ -35,7 +58,19 @@ class MailListScreen extends HookWidget {
     }
     return SafeArea(
       child: TitleLayout(
-        showProfile: true,
+        showProfile: Padding(
+          padding: const EdgeInsets.only(right: 28.0),
+          child: TextButton(
+            onPressed: () => context.push('/mails/profile'),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14),
+              child: Image.asset(
+                'assets/images/ryusihyun_profile.png',
+                height: 35,
+              ),
+            ),
+          ),
+        ),
         titleText: '받은 편지함',
         body: ListView(children: [
           if (_mailNum.value != 0)

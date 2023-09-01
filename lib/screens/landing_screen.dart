@@ -47,7 +47,6 @@ class _LandingScreen extends State<LandingScreen> {
     return Scaffold(
       body: SafeArea(
         child: TitleLayout(
-          showProfile: false,
           titleText: tabList[_tab].title,
           body: Builder(builder: (context) {
             final double height = MediaQuery.of(context).size.height;

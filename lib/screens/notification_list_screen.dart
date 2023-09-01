@@ -12,7 +12,6 @@ class NotificationListScreen extends HookWidget {
   Widget build(context) {
     return SafeArea(
       child: TitleLayout(
-        showProfile: false,
         titleText: '알림',
         body: Column(
           children: [

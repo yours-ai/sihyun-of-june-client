@@ -6,7 +6,7 @@ class TitleLayout extends StatelessWidget {
   final TextStyle? titleStyle;
   final Widget body;
   final Widget? actions;
-  final bool showProfile;
+  final Widget showProfile;
 
   const TitleLayout({
     Key? key,
@@ -14,7 +14,7 @@ class TitleLayout extends StatelessWidget {
     this.titleStyle,
     required this.body,
     this.actions,
-    required this.showProfile,
+    this.showProfile = const SizedBox( width:0, height:0),
   }) : super(key: key);
 
   @override
@@ -33,21 +33,7 @@ class TitleLayout extends StatelessWidget {
                 style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
               ),
             ),
-            if (showProfile)
-            Padding(
-              padding: const EdgeInsets.only(right: 40.0),
-              child: TextButton(
-                onPressed: () => {context.push('/profile')},
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
-                  child: Image.asset(
-                    'assets/images/ryusihyun_profile.png',
-                    height: 35,
-                  ),
-                ),
-              ),
-            ) else
-              const SizedBox( width:0, height:0),
+            showProfile,
           ],
         ),
         const SizedBox(height: 30),

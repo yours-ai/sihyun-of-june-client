@@ -30,14 +30,7 @@ final router = GoRouter(
       path: '/login',
       builder: (context, state) => const LoginScreen(),
     ),
-    GoRoute(
-      path: '/mail/view',
-      builder: (context, state) => const MailViewScreen(),
-    ),
-    GoRoute(
-      path: '/profile',
-      builder: (context, state) => const ProfileScreen(),
-    ),
+
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
       builder: (context, state, child) {
@@ -48,9 +41,18 @@ final router = GoRouter(
       },
       routes: [
         GoRoute(
-          path: TabRoutePaths.mailList,
-          builder: (context, state) => const MailListScreen(),
-        ),
+            path: TabRoutePaths.mailList,
+            builder: (context, state) => const MailListScreen(),
+            routes: [
+              GoRoute(
+                path: 'view',
+                builder: (context, state) => const MailViewScreen(),
+              ),
+              GoRoute(
+                path: 'profile',
+                builder: (context, state) => const ProfileScreen(),
+              ),
+            ]),
         GoRoute(
           path: TabRoutePaths.notificationList,
           builder: (context, state) => const NotificationListScreen(),

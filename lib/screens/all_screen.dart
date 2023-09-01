@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/notification_widget.dart';
 
 import '../constants.dart';
@@ -14,20 +15,76 @@ class AllScreen extends HookWidget {
 
   @override
   Widget build(context) {
-    final agreeLetter = useState(false);
+    final agreeShare = useState(false);
 
-    if(agreeLetter.value==false){
+    if (agreeShare.value == false) {
       useAsyncEffect(() async {
         final result = await showModalBottomSheet<void>(
           context: context,
           useRootNavigator: true,
           builder: (BuildContext context) {
             return ModalWidget(
-              moreDescription: true,
-              description: '친구에게 서비스를 소개하고,\n무료 코인을 받아보세요!',
-              button1: '됐어요',
-              button2: '친구에게 소개하고 50코인 받기',
-              action: () => context.go('/landing'),
+              description: Column(
+                children: [
+                  const SizedBox(
+                    height: 26,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(top: 0.0),
+                    height: 20,
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: [
+                          Text(
+                            '친구가 링크로 가입하면 50',
+                            style: TextStyle(
+                                fontSize: 14, color: ColorConstants.neutral),
+                          ),
+                          Icon(PhosphorIcons.coin_vertical,
+                              size: 14, color: ColorConstants.neutral),
+                          Text(
+                            '을 받아요.',
+                            style: TextStyle(
+                                fontSize: 14, color: ColorConstants.neutral),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              title: '친구에게 서비스를 소개하고,\n무료 코인을 받아보세요!',
+              choiceColumn: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    FilledButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            ColorConstants.background),
+                      ),
+                      onPressed: () {
+                        context.pop();
+                      },
+                      child: Text(
+                        '됐어요',
+                        style: TextStyle(
+                            fontSize: 14.0, color: ColorConstants.secondary),
+                      ),
+                    ),
+                    FilledButton(
+                      onPressed: () {
+                        // context.go('/landing');
+                        agreeShare.value = true;
+                      },
+                      child: const Text(
+                        '친구에게 소개하고 50코인 받기',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                        ),
+                      ),
+                    ),
+                  ]),
             );
           },
         );
@@ -36,7 +93,6 @@ class AllScreen extends HookWidget {
 
     return SafeArea(
         child: TitleLayout(
-      showProfile: false,
       titleText: '전체',
       body: Column(
         children: [
@@ -51,8 +107,7 @@ class AllScreen extends HookWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    height: 83,
-                    padding: EdgeInsets.only(left: 28),
+                    padding: const EdgeInsets.only(left: 28, top: 30, bottom: 30),
                     alignment: Alignment.centerLeft,
                     child: Text(
                       '내 코인',
@@ -92,141 +147,11 @@ class AllScreen extends HookWidget {
               onPressed: () {},
             ),
           ),
-          Container(
-            color: ColorConstants.background,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                splashFactory: NoSplash.splashFactory,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 83,
-                    padding: EdgeInsets.only(left: 28),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '친구 초대하고, 50코인 받기',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.black,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ],
-              ),
-              onPressed: () {},
-            ),
-          ),
-          Container(
-            color: ColorConstants.background,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                splashFactory: NoSplash.splashFactory,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 83,
-                    padding: EdgeInsets.only(left: 28),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '공지',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.black,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ],
-              ),
-              onPressed: () {},
-            ),
-          ),
-          Container(
-            color: ColorConstants.background,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                splashFactory: NoSplash.splashFactory,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 83,
-                    padding: EdgeInsets.only(left: 28),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '자주 묻는 질문',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.black,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ],
-              ),
-              onPressed: () {},
-            ),
-          ),
-          Container(
-            color: ColorConstants.background,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                splashFactory: NoSplash.splashFactory,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 83,
-                    padding: EdgeInsets.only(left: 28),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '문의하기',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.black,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ],
-              ),
-              onPressed: () {},
-            ),
-          ),
-          Container(
-            color: ColorConstants.background,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                splashFactory: NoSplash.splashFactory,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 83,
-                    padding: EdgeInsets.only(left: 28),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '약관 및 정책 이해하기',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.black,
-                          fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                ],
-              ),
-              onPressed: () {},
-            ),
-          ),
+           MenuWidget(title: '친구 초대하고, 50코인 받기'),
+           MenuWidget(title: '공지'),
+           MenuWidget(title: '자주 묻는 질문'),
+           MenuWidget(title: '문의하기'),
+           MenuWidget(title: '약관 및 정책 이해하기'),
         ],
       ),
     ));

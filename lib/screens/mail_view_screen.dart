@@ -13,7 +13,7 @@ class MailViewScreen extends StatelessWidget {
         backgroundColor: ColorConstants.background,
         elevation: 0,
         leading: IconButton(
-          onPressed: () => context.go(TabRoutePaths.mailList),
+          onPressed: () => context.pop(),
           icon: Container(
             padding: const EdgeInsets.only(left: 23),
             child: Icon(
@@ -51,25 +51,28 @@ class MailViewScreen extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                RichText(
-                                  text: TextSpan(
-                                    text: 'From.',
-                                    style: TextStyle(
-                                        fontFamily: 'MaruBuri',
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.normal,
-                                        color: ColorConstants.primary),
-                                    children: [
-                                      TextSpan(
-                                        text: ' 류시현',
-                                        style: TextStyle(
-                                            fontFamily: 'MaruBuri',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold,
-                                            color: ColorConstants.primary),
-                                      ),
-                                    ],
-                                  ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'From.',
+                                      style: TextStyle(
+                                          fontFamily: 'MaruBuri',
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.normal,
+                                          color: ColorConstants.primary),
+                                    ),
+                                    const SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      '류시현',
+                                      style: TextStyle(
+                                          fontFamily: 'MaruBuri',
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          color: ColorConstants.primary),
+                                    ),
+                                  ],
                                 ),
                                 Text(
                                   '2023.09.01',
@@ -83,25 +86,28 @@ class MailViewScreen extends StatelessWidget {
                             const SizedBox(
                               height: 2,
                             ),
-                            RichText(
-                              text: TextSpan(
-                                text: 'To.',
-                                style: TextStyle(
-                                    fontFamily: 'MaruBuri',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal,
-                                    color: ColorConstants.primary),
-                                children: [
-                                  TextSpan(
-                                    text: ' 박서윤',
-                                    style: TextStyle(
-                                        fontFamily: 'MaruBuri',
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                        color: ColorConstants.primary),
-                                  ),
-                                ],
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  'To.',
+                                  style: TextStyle(
+                                      fontFamily: 'MaruBuri',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.normal,
+                                      color: ColorConstants.primary),
+                                ),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                  '박서윤',
+                                  style: TextStyle(
+                                      fontFamily: 'MaruBuri',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: ColorConstants.primary),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -129,25 +135,28 @@ class MailViewScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          RichText(
-                            text: TextSpan(
-                              text: 'From.',
-                              style: TextStyle(
-                                  fontFamily: 'MaruBuri',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.normal,
-                                  color: ColorConstants.primary),
-                              children: [
-                                TextSpan(
-                                  text: ' 박서윤',
-                                  style: TextStyle(
-                                      fontFamily: 'MaruBuri',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: ColorConstants.primary),
-                                ),
-                              ],
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                'From.',
+                                style: TextStyle(
+                                    fontFamily: 'MaruBuri',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.normal,
+                                    color: ColorConstants.primary),
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                '박서윤',
+                                style: TextStyle(
+                                    fontFamily: 'MaruBuri',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: ColorConstants.primary),
+                              ),
+                            ],
                           ),
                           Text(
                             '2023.09.01',
@@ -161,25 +170,28 @@ class MailViewScreen extends StatelessWidget {
                       const SizedBox(
                         height: 2,
                       ),
-                      RichText(
-                        text: TextSpan(
-                          text: 'To.',
-                          style: TextStyle(
-                              fontFamily: 'MaruBuri',
-                              fontSize: 12,
-                              fontWeight: FontWeight.normal,
-                              color: ColorConstants.primary),
-                          children: [
-                            TextSpan(
-                              text: ' 류시현',
-                              style: TextStyle(
-                                  fontFamily: 'MaruBuri',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorConstants.primary),
-                            ),
-                          ],
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            'To.',
+                            style: TextStyle(
+                                fontFamily: 'MaruBuri',
+                                fontSize: 12,
+                                fontWeight: FontWeight.normal,
+                                color: ColorConstants.primary),
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            '류시현',
+                            style: TextStyle(
+                                fontFamily: 'MaruBuri',
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: ColorConstants.primary),
+                          ),
+                        ],
                       ),
                     ],
                   ),
