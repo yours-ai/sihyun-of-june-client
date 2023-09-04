@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/widgets/modal_widget.dart';
 
-class MenuWidget extends HookWidget {
+class MenuWidget extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
 

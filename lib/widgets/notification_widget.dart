@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/widgets/modal_widget.dart';
 
-class NotificationWidget extends HookWidget {
+class NotificationWidget extends StatefulWidget {
   final String title;
   final int time;
+
   NotificationWidget(
       {super.key,
       required this.time,
       required this.title});
 
   @override
+  State<NotificationWidget> createState() => _NotificationWidgetState();
+}
+
+class _NotificationWidgetState extends State<NotificationWidget> {
+  bool _isRead = false;
+
+  @override
   Widget build(BuildContext context) {
-    final isRead = useState(false);
     return Container(
-      color: isRead.value == false
+      color: _isRead == false
           ? Color.fromRGBO(236, 236, 236, 0.4)
           : ColorConstants.background,
       child: TextButton(
@@ -33,12 +37,12 @@ class NotificationWidget extends HookWidget {
               padding: EdgeInsets.only(left: 22),
               alignment: Alignment.centerLeft,
               child: Text(
-                title,
+                widget.title,
                 style: TextStyle(
                     fontSize: 15,
                     color: ColorConstants.secondary,
                     fontWeight:
-                        isRead.value == false ? FontWeight.bold : FontWeight.normal),
+                        _isRead == false ? FontWeight.bold : FontWeight.normal),
               ),
             ),
             Container(
@@ -50,7 +54,7 @@ class NotificationWidget extends HookWidget {
                     '11시간 전',
                     style: TextStyle(
                         color: ColorConstants.neutral,
-                        fontWeight: isRead.value == false
+                        fontWeight: _isRead == false
                             ? FontWeight.bold
                             : FontWeight.normal),
                   ),
@@ -65,7 +69,9 @@ class NotificationWidget extends HookWidget {
           ],
         ),
         onPressed: () {
-          isRead.value = !isRead.value;
+          setState(() {
+            _isRead = !_isRead;
+          });
         },
       ),
     );

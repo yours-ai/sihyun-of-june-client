@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/notification_widget.dart';
 
-class NotificationListScreen extends HookWidget {
+class NotificationListScreen extends StatelessWidget {
   const NotificationListScreen({super.key});
 
   @override
