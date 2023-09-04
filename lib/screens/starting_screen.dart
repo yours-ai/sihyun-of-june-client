@@ -17,7 +17,7 @@ class _StartingScreen extends State<StartingScreen> {
     FlutterNativeSplash.remove();
     if (!context.mounted) return;
     if (isLogined) {
-      context.go('/mails');
+      context.go('/select');
     } else {
       context.go('/landing');
     }

@@ -68,7 +68,7 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
         splashFactory: NoSplash.splashFactory,
         textTheme: const TextTheme(
           titleLarge: TextStyle(
-            fontSize: 30,
+            fontSize: 28,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -88,6 +88,20 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(
               vertical: 17.0,
+            ),
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            splashFactory: NoSplash.splashFactory,
+            side: BorderSide(
+              color: ColorConstants.neutral,
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 17.0,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
         ),

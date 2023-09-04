@@ -98,7 +98,7 @@ class _AllScreenState extends State<AllScreen> {
     return SafeArea(
       child: TitleLayout(
         titleText: '전체',
-        body: Column(
+        body: ListView(
           children: [
             Container(
               color: ColorConstants.background,
