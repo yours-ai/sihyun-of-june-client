@@ -47,6 +47,7 @@ class ProjectJuneApp extends StatelessWidget {
           surface: ColorConstants.background,
           onSurface: ColorConstants.primary,
         ),
+        scaffoldBackgroundColor: ColorConstants.background,
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         splashFactory: NoSplash.splashFactory,
@@ -68,6 +69,7 @@ class ProjectJuneApp extends StatelessWidget {
           ),
         ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: ColorConstants.background,
           elevation: 0,
         ),
       ),

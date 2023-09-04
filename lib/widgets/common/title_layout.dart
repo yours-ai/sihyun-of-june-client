@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class TitleLayout extends StatelessWidget {
   final String titleText;
   final TextStyle? titleStyle;
   final Widget body;
   final Widget? actions;
+  final Widget showProfile;
 
   const TitleLayout({
     Key? key,
@@ -12,6 +14,7 @@ class TitleLayout extends StatelessWidget {
     this.titleStyle,
     required this.body,
     this.actions,
+    this.showProfile = const SizedBox( width:0, height:0),
   }) : super(key: key);
 
   @override
@@ -20,12 +23,18 @@ class TitleLayout extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 50),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            titleText,
-            style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: Text(
+                titleText,
+                style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
+            showProfile,
+          ],
         ),
         const SizedBox(height: 30),
         Expanded(
