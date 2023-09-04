@@ -1,32 +1,115 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:project_june_client/actions/auth/actions.dart';
-import 'package:project_june_client/actions/mails/queries.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
+import 'package:project_june_client/contrib/flutter_hooks.dart';
+import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
+import 'package:project_june_client/widgets/modal_widget.dart';
 
-class MailListScreen extends StatelessWidget {
+import '../constants.dart';
+
+class MailListScreen extends HookWidget {
   const MailListScreen({super.key});
 
   @override
   Widget build(context) {
+    final _mailNum = useState(9);
+    final _agreeLetter = useState(false);
 
+    if (_agreeLetter.value == false) {
+      useAsyncEffect(() async {
+        final result = await showModalBottomSheet<void>(
+          context: context,
+          useRootNavigator: true,
+          builder: (BuildContext context) {
+            return ModalWidget(
+                title: '편지를 받으려면,\n알림 동의가 필요해요',
+
+                choiceColumn: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                  FilledButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                      MaterialStateProperty.all(ColorConstants.background),
+                    ),
+                    onPressed: () {
+                      context.pop();
+                    },
+                    child: Text(
+                      '취소',
+                      style: TextStyle(
+                          fontSize: 14.0, color: ColorConstants.secondary),
+                    ),
+                  ),
+                  FilledButton(
+                    onPressed: () => context.go('/landing'),
+                    child: Text(
+                      '동의하기',
+                      style: const TextStyle(
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ),
+                ]),
+            );
+          },
+        );
+      }, []);
+    }
     return SafeArea(
       child: TitleLayout(
+        showProfile: Padding(
+          padding: const EdgeInsets.only(right: 28.0),
+          child: TextButton(
+            onPressed: () => context.push('/mails/profile'),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(14),
+              child: Image.asset(
+                'assets/images/ryusihyun_profile.png',
+                height: 35,
+              ),
+            ),
+          ),
+        ),
         titleText: '받은 편지함',
-        body: QueryBuilder(
-            query: getMailListQuery(),
-            builder: (context, state) {
-              if (state.status == QueryStatus.loading)
-                return const CircularProgressIndicator();
-              if (state.status == QueryStatus.error)
-                return Text(state.error.toString());
-              return Column(
-                children: state.data
-                        ?.map((mail) => Text(mail.description))
-                        .toList() ??
-                    [],
-              );
-            }),
+        body: ListView(children: [
+          if (_mailNum.value != 0)
+            GridView.count(
+                crossAxisCount: 3,
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(20.0),
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childAspectRatio: 1.0,
+                children: [
+                  MailWidget(isRead: 'false', date: "9.10"),
+                  MailWidget(isRead: 'true', date: "9.09"),
+                  MailWidget(isRead: 'true', date: "9.08"),
+                  MailWidget(isRead: 'true', date: "9.07"),
+                  MailWidget(isRead: 'true', date: "9.06"),
+                  MailWidget(isRead: 'true', date: "9.05"),
+                  MailWidget(isRead: 'true', date: "9.04"),
+                  MailWidget(isRead: 'true', date: "9.03"),
+                ])
+          else
+            Column(
+              children: [
+                const SizedBox(height: 50),
+                const Text(
+                  '🍂',
+                  style: TextStyle(fontSize: 100),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  '아직 도착한 편지가 없어요. \n 내일 9시에 첫 편지가 올 거에요.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: ColorConstants.neutral, fontSize: 15, height: 1.5),
+                )
+              ],
+            ),
+        ]),
       ),
     );
   }
