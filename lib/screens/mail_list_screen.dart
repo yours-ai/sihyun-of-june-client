@@ -1,62 +1,72 @@
-import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/contrib/flutter_hooks.dart';
 import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/modal_widget.dart';
 
 import '../constants.dart';
 
-class MailListScreen extends HookWidget {
+class MailListScreen extends StatefulWidget {
   const MailListScreen({super.key});
 
   @override
-  Widget build(context) {
-    final _mailNum = useState(9);
-    final _agreeLetter = useState(false);
+  State<MailListScreen> createState() => _MailListScreenState();
+}
 
-    if (_agreeLetter.value == false) {
-      useAsyncEffect(() async {
-        final result = await showModalBottomSheet<void>(
-          context: context,
-          useRootNavigator: true,
-          builder: (BuildContext context) {
-            return ModalWidget(
-                title: '편지를 받으려면,\n알림 동의가 필요해요',
+class _MailListScreenState extends State<MailListScreen> {
+  int _mailNum = 9;
+  bool _agreeLetter = false;
 
-                choiceColumn: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-                  FilledButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all(ColorConstants.background),
-                    ),
-                    onPressed: () {
-                      context.pop();
-                    },
-                    child: Text(
-                      '취소',
-                      style: TextStyle(
-                          fontSize: 14.0, color: ColorConstants.secondary),
+  @override
+  initState() {
+    super.initState();
+    _showModal();
+  }
+
+  _showModal() async {
+    if (_agreeLetter == false) {
+      await showModalBottomSheet<void>(
+        context: context,
+        useRootNavigator: true,
+        builder: (BuildContext context) {
+          return ModalWidget(
+            title: '편지를 받으려면,\n알림 동의가 필요해요',
+            choiceColumn: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                FilledButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorConstants.background),
+                  ),
+                  onPressed: () {
+                    context.pop();
+                  },
+                  child: Text(
+                    '취소',
+                    style: TextStyle(
+                        fontSize: 14.0, color: ColorConstants.secondary),
+                  ),
+                ),
+                FilledButton(
+                  onPressed: () => context.go('/landing'),
+                  child: Text(
+                    '동의하기',
+                    style: const TextStyle(
+                      fontSize: 14.0,
                     ),
                   ),
-                  FilledButton(
-                    onPressed: () => context.go('/landing'),
-                    child: Text(
-                      '동의하기',
-                      style: const TextStyle(
-                        fontSize: 14.0,
-                      ),
-                    ),
-                  ),
-                ]),
-            );
-          },
-        );
-      }, []);
+                ),
+              ],
+            ),
+          );
+        },
+      );
     }
+  }
+
+  @override
+  Widget build(context) {
     return SafeArea(
       child: TitleLayout(
         showProfile: Padding(
@@ -74,7 +84,7 @@ class MailListScreen extends HookWidget {
         ),
         titleText: '받은 편지함',
         body: ListView(children: [
-          if (_mailNum.value != 0)
+          if (_mailNum != 0)
             GridView.count(
                 crossAxisCount: 3,
                 shrinkWrap: true,
