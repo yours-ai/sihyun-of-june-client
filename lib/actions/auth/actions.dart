@@ -8,6 +8,33 @@ import 'models/Token.dart';
 
 const _SERVER_TOKEN_KEY = 'SERVER_TOKEN';
 
+Future<AuthorizationCredentialAppleID> getAppleLoginCredential() async {
+  try {
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+    );
+    print(credential);
+    return credential;
+  } catch (error) {
+    print("Apple Login Error: $error");
+    rethrow;
+  }
+}
+
+Future<String> getServerTokenByAppleCredential(AuthorizationCredentialAppleID appleCredentials) async {
+  final response = await dio.post('/auth/apple/join-or-login/', data: {
+    "user_id": appleCredentials.userIdentifier,
+    "user": {
+      "email": appleCredentials.email,
+      "name": {
+        "firstName": appleCredentials.givenName,
+        "lastName": appleCredentials.familyName
+      }
+    }
+  }).then<Token>((response) => Token.fromJson(response.data));
+  return response.token;
+}
+
 Future<OAuthToken> getKakaoOAuthToken() async {
   if (await isKakaoTalkInstalled()) {
     try {
