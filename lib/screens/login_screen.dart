@@ -32,24 +32,40 @@ class LoginScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    FilledButton(
-                      onPressed: () {
-                        print('apple login clicked');
-                      },
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.apple),
-                          SizedBox(width: 8),
-                          Text('Apple로 계속하기')
-                        ],
+                    MutationBuilder(
+                      mutation: getLoginAsAppleMutation(
+                        onSuccess: (res, arg) {
+                          context.go('/profile');
+                        },
+                        onError: (arg, error, callback) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                '애플 로그인 중 에러가 발생했어요.',
+                              ),
+                            ),
+                          );
+                        },
                       ),
+                      builder: (context, state, mutate) {
+                        return FilledButton(
+                          onPressed: () =>  mutate(null),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.apple),
+                              SizedBox(width: 8),
+                              Text('Apple로 계속하기')
+                            ],
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 10),
                     MutationBuilder(
                       mutation: getLoginAsKakaoMutation(
                         onSuccess: (res, arg) {
-                          context.go('/mails');
+                          context.go('/profile');
                         },
                         onError: (arg, error, callback) {
                           ScaffoldMessenger.of(context).showSnackBar(

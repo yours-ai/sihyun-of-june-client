@@ -16,3 +16,18 @@ Mutation<void, void> getLoginAsKakaoMutation({
     onError: onError,
   );
 }
+
+Mutation<void, void> getLoginAsAppleMutation({
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, void>(
+    queryFn: (void _) async {
+      final appleCredentials = await getAppleLoginCredential();
+      final serverToken = await getServerTokenByAppleCredential(appleCredentials);
+      await saveServerToken(serverToken);
+    },
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}

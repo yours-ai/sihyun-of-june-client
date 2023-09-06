@@ -72,7 +72,7 @@ class _MailListScreenState extends State<MailListScreen> {
         showProfile: Padding(
           padding: const EdgeInsets.only(right: 28.0),
           child: TextButton(
-            onPressed: () => context.push('/mails/profile'),
+            onPressed: () => context.push('/profile'),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(14),
               child: Image.asset(

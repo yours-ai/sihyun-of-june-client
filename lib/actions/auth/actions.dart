@@ -3,10 +3,42 @@ import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'models/Token.dart';
 
 const _SERVER_TOKEN_KEY = 'SERVER_TOKEN';
+
+Future<AuthorizationCredentialAppleID> getAppleLoginCredential() async {
+  try {
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+    );
+    return credential;
+  } catch (error) {
+    rethrow;
+  }
+}
+
+Future<String> getServerTokenByAppleCredential(AuthorizationCredentialAppleID appleCredentials) async {
+  Map<String, dynamic> data = {
+    "user_id": appleCredentials.userIdentifier,
+  };
+
+  if (appleCredentials.email != null) {
+    data["user"] = {
+      "email": appleCredentials.email,
+      "name": {
+        "firstName": appleCredentials.givenName,
+        "lastName": appleCredentials.familyName
+      }
+    };
+  }
+
+  final response = await dio.post('/auth/apple/join-or-login/by-id/', data: data)
+      .then<Token>((response) => Token.fromJson(response.data));
+  return response.token;
+}
 
 Future<OAuthToken> getKakaoOAuthToken() async {
   if (await isKakaoTalkInstalled()) {
