@@ -14,10 +14,8 @@ Future<AuthorizationCredentialAppleID> getAppleLoginCredential() async {
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
     );
-    print(credential);
     return credential;
   } catch (error) {
-    print("Apple Login Error: $error");
     rethrow;
   }
 }

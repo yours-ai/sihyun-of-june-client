@@ -24,9 +24,7 @@ Mutation<void, void> getLoginAsAppleMutation({
   return Mutation<void, void>(
     queryFn: (void _) async {
       final appleCredentials = await getAppleLoginCredential();
-      print(appleCredentials);
       final serverToken = await getServerTokenByAppleCredential(appleCredentials);
-      print(serverToken);
       await saveServerToken(serverToken);
     },
     onSuccess: onSuccess,
