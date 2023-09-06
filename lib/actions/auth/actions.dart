@@ -23,16 +23,22 @@ Future<AuthorizationCredentialAppleID> getAppleLoginCredential() async {
 }
 
 Future<String> getServerTokenByAppleCredential(AuthorizationCredentialAppleID appleCredentials) async {
-  final response = await dio.post('/auth/apple/join-or-login/by-id/', data: {
+  Map<String, dynamic> data = {
     "user_id": appleCredentials.userIdentifier,
-    "user": {
+  };
+
+  if (appleCredentials.email != null) {
+    data["user"] = {
       "email": appleCredentials.email,
       "name": {
         "firstName": appleCredentials.givenName,
         "lastName": appleCredentials.familyName
       }
-    }
-  }).then<Token>((response) => Token.fromJson(response.data));
+    };
+  }
+
+  final response = await dio.post('/auth/apple/join-or-login/by-id/', data: data)
+      .then<Token>((response) => Token.fromJson(response.data));
   return response.token;
 }
 
