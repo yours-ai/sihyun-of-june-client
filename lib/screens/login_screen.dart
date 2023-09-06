@@ -32,11 +32,10 @@ class LoginScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-
                     MutationBuilder(
                       mutation: getLoginAsAppleMutation(
                         onSuccess: (res, arg) {
-                          context.go('/select');
+                          context.go('/profile');
                         },
                         onError: (arg, error, callback) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -66,7 +65,7 @@ class LoginScreen extends StatelessWidget {
                     MutationBuilder(
                       mutation: getLoginAsKakaoMutation(
                         onSuccess: (res, arg) {
-                          context.go('/select');
+                          context.go('/profile');
                         },
                         onError: (arg, error, callback) {
                           ScaffoldMessenger.of(context).showSnackBar(

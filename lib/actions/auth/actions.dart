@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'models/Token.dart';
 
@@ -22,7 +23,7 @@ Future<AuthorizationCredentialAppleID> getAppleLoginCredential() async {
 }
 
 Future<String> getServerTokenByAppleCredential(AuthorizationCredentialAppleID appleCredentials) async {
-  final response = await dio.post('/auth/apple/join-or-login/', data: {
+  final response = await dio.post('/auth/apple/join-or-login/by-id/', data: {
     "user_id": appleCredentials.userIdentifier,
     "user": {
       "email": appleCredentials.email,
