@@ -10,7 +10,7 @@ import '../../actions/character/models/Character.dart';
 class TestResultData {
   final String title;
   final Widget body;
-  final String button;
+  final Widget button;
 
   const TestResultData({
     required this.title,
@@ -21,10 +21,22 @@ class TestResultData {
 
 final List<TestResultData> tabList = [
   TestResultData(
-      title: '테스트가 완료됐어요!\n상대를 정하는 중이에요...',
-      body: Lottie.asset('assets/lotties/animation_lm8qjemt.zip'),
-      button: '두근두근...'),
-  TestResultData(title: '상대가 정해졌어요!\n확인해보실래요?', button: '확인해보기'),
+    title: '테스트가 완료됐어요!\n상대를 정하는 중이에요...',
+    body: Lottie.asset('assets/lotties/animation_lm8qjemt.zip'),
+    button: OutlinedButton(
+      onPressed: () {},
+      child: Text(
+        '두근두근...',
+        style: TextStyle(color: ColorConstants.neutral),
+      ),
+    ),
+  ),
+  TestResultData(
+      title: '상대가 정해졌어요!\n확인해보실래요?',
+      button: FilledButton(onPressed: () {}, child: Text('확인해보기'))),
+  TestResultData(
+      title: '오류가 발생했어요',
+      button: FilledButton(onPressed: () {}, child: Text('다시하기'))),
 ];
 
 class TestResultWidget extends StatefulWidget {
@@ -59,17 +71,29 @@ class _TestResultWidget extends State<TestResultWidget> {
   }
 
   Future<void> _switchPageAfterDelay() async {
-    await Future.delayed(Duration(seconds: 3));
-    setState(() {
-      _tab++;
-    });
+    await Future.delayed(Duration(seconds: 4));
+    if (!(await _sendAnswers())) {
+      await Future.delayed(Duration(seconds: 2));
+      setState(() {
+        _tab = 2;
+      });
+    } else {
+      setState(() {
+        _tab++;
+      });
+    }
   }
 
   Character? character;
 
-  Future<void> _sendAnswers() async {
-    character = await sendResponses(widget.output);
-    setState(() {});
+  Future<bool> _sendAnswers() async {
+    try {
+      character =
+          await sendResponses(widget.output).timeout(Duration(seconds: 5));
+      return character != null;
+    } catch (e) {
+      return false;
+    }
   }
 
   int _tab = 0;
@@ -108,18 +132,7 @@ class _TestResultWidget extends State<TestResultWidget> {
                 );
               },
             ),
-            actions: _tab == 0
-                ? OutlinedButton(
-                    onPressed: () {},
-                    child: Text(tabList[_tab].button,
-                        style: TextStyle(color: ColorConstants.neutral)),
-                  )
-                : FilledButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/profile',
-                          arguments: character);
-                    },
-                    child: Text('확인해보기'))),
+            actions: tabList[_tab].button),
       ),
     );
   }
