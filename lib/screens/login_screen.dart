@@ -34,7 +34,6 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     FilledButton(
                       onPressed: () {
-                        print('apple login clicked');
                       },
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -86,7 +85,6 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
-                        print('phone login clicked');
                       },
                       child: const Text('전화번호로 계속하기'),
                     ),

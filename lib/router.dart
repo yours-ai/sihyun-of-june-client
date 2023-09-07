@@ -4,10 +4,11 @@ import 'package:project_june_client/screens/all_screen.dart';
 import 'package:project_june_client/screens/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail_view_screen.dart';
 import 'package:project_june_client/screens/notification_list_screen.dart';
+import 'package:project_june_client/screens/other_character_screen.dart';
 import 'package:project_june_client/screens/profile_screen.dart';
-import 'package:project_june_client/screens/select_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
-
+import 'package:project_june_client/screens/test_result_screen.dart';
+import 'package:project_june_client/screens/test_screen.dart';
 import 'constants.dart';
 import 'screens/landing_screen.dart';
 import 'screens/login_screen.dart';
@@ -32,8 +33,12 @@ final router = GoRouter(
       builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
-      path: '/select',
-      builder: (context, state) => const SelectScreen(),
+      path: '/result',
+      builder: (context, state) => const ResultScreen(),
+    ),
+    GoRoute(
+      path: '/othercharacter',
+      builder: (context, state) => const OtherCharacterScreen(),
     ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -67,5 +72,6 @@ final router = GoRouter(
         ),
       ],
     ),
+    GoRoute(path: '/test', builder: (context, state) => TestScreen()),
   ],
 );

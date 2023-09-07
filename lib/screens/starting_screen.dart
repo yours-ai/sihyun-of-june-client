@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class StartingScreen extends StatefulWidget {
   const StartingScreen({super.key});
@@ -17,7 +16,7 @@ class _StartingScreen extends State<StartingScreen> {
     FlutterNativeSplash.remove();
     if (!context.mounted) return;
     if (isLogined) {
-      context.go('/select');
+      context.go('/test');
     } else {
       context.go('/landing');
     }
