@@ -12,7 +12,10 @@ const _SERVER_TOKEN_KEY = 'SERVER_TOKEN';
 Future<AuthorizationCredentialAppleID> getAppleLoginCredential() async {
   try {
     final credential = await SignInWithApple.getAppleIDCredential(
-      scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName
+      ],
     );
     return credential;
   } catch (error) {
@@ -20,7 +23,8 @@ Future<AuthorizationCredentialAppleID> getAppleLoginCredential() async {
   }
 }
 
-Future<String> getServerTokenByAppleCredential(AuthorizationCredentialAppleID appleCredentials) async {
+Future<String> getServerTokenByAppleCredential(
+    AuthorizationCredentialAppleID appleCredentials) async {
   Map<String, dynamic> data = {
     "user_id": appleCredentials.userIdentifier,
   };
@@ -35,8 +39,41 @@ Future<String> getServerTokenByAppleCredential(AuthorizationCredentialAppleID ap
     };
   }
 
-  final response = await dio.post('/auth/apple/join-or-login/by-id/', data: data)
+  final response = await dio
+      .post('/auth/apple/join-or-login/by-id/', data: data)
       .then<Token>((response) => Token.fromJson(response.data));
+  return response.token;
+}
+
+Future<String> smsSend(int phoneNumber) async {
+  final response = await dio.post('/auth/sms-auth/send/',
+      data: {'phone': phoneNumber, 'country_code': '82'});
+  return response.data['result'];
+}
+
+Future<String> smsVerify(int phoneNumber, int authNumber) async {
+  try{
+    final response = await dio.post('/auth/sms-auth/verify/', data: {
+      'phone': phoneNumber,
+      'country_code': '82',
+      'auth_code': authNumber
+    });
+    return response.data['result'];
+  }
+  catch(error){
+    return Future.error(error);
+  }
+}
+
+Future<String> getServerTokenBySMS(
+    int phoneNumber, lastName, firstName) async {
+  final response = await dio.post('/auth/sms-auth/join-or-login/', data: {
+    'phone': phoneNumber,
+    'country_code': '82',
+    'last_name': lastName,
+    'first_name': firstName
+  }).then<Token>((response) => Token.fromJson(response.data));
+  saveServerToken(response.token);
   return response.token;
 }
 

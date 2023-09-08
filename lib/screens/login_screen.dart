@@ -102,7 +102,7 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
-                        print('phone login clicked');
+                        context.go('/login/phone');
                       },
                       child: const Text('전화번호로 계속하기'),
                     ),
