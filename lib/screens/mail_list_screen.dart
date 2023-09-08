@@ -20,8 +20,14 @@ class _MailListScreenState extends State<MailListScreen> {
   @override
   initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _showModal();
   }
+
 
   _showModal() async {
     if (_agreeLetter == false) {

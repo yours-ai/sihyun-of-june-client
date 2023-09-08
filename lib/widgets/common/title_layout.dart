@@ -14,7 +14,7 @@ class TitleLayout extends StatelessWidget {
     this.titleStyle,
     required this.body,
     this.actions,
-    this.showProfile = const SizedBox( width:0, height:0),
+    this.showProfile = const SizedBox(width: 0, height: 0),
   }) : super(key: key);
 
   @override
@@ -36,7 +36,7 @@ class TitleLayout extends StatelessWidget {
             showProfile,
           ],
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 20),
         Expanded(
           child: body,
         ),
