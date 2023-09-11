@@ -28,7 +28,7 @@ class MenuWidget extends StatelessWidget {
           children: [
             Container(
               height: 83,
-              padding: EdgeInsets.only(left: 28),
+              padding: const EdgeInsets.only(left: 28),
               alignment: Alignment.centerLeft,
               child: Text(
                 title,

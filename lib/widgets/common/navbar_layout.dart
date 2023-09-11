@@ -28,9 +28,9 @@ class NavbarLayout extends StatelessWidget {
           context.go(tabList[index]);
         },
         selectedItemColor: ColorConstants.primary,
-        items: [
+        items: const [
           BottomNavigationBarItem(
-            icon: const Icon(
+            icon: Icon(
               PhosphorIcons.envelope_simple_light,
               size: 32,
             ),
@@ -41,7 +41,7 @@ class NavbarLayout extends StatelessWidget {
             label: '받은 편지함',
           ),
           BottomNavigationBarItem(
-            icon: const Icon(
+            icon: Icon(
               PhosphorIcons.bell_light,
               size: 32,
             ),
@@ -52,7 +52,7 @@ class NavbarLayout extends StatelessWidget {
             label: '알림',
           ),
           BottomNavigationBarItem(
-            icon: const Icon(PhosphorIcons.list_light, size: 32),
+            icon: Icon(PhosphorIcons.list_light, size: 32),
             activeIcon: Icon(
               PhosphorIcons.list_bold,
               size: 32,

@@ -44,7 +44,7 @@ List<ToLoginData> tabList = [
                 fontSize: 25,
                 color: ColorConstants.primary),
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           Expanded(
             child: TextField(
               key: _formKey,
@@ -125,7 +125,7 @@ List<ToLoginData> tabList = [
                     color: ColorConstants.primary),
               ),
             ),
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
             Expanded(
               child: TextFormField(
                 controller: firstNameController,
@@ -163,7 +163,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
         return ModalWidget(
           title: '시작하려면 동의해주세요',
           description: Padding(
-            padding: EdgeInsets.only(top: 26),
+            padding: const EdgeInsets.only(top: 26),
             child: RichText(
               text: TextSpan(
                   style: TextStyle(
@@ -172,27 +172,25 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
                       color: ColorConstants.black),
                   children: [
                     TextSpan(
-                        style: TextStyle(
+                        style: const TextStyle(
                           decoration: TextDecoration.underline,
                         ),
                         text: '이용약관',
                         recognizer: TapGestureRecognizer()
-                          ..onTap = () => {
-                                launchUrl(Uri.parse(
+                          ..onTap = () => launchUrl(Uri.parse(
                                     'https://pygmalion.app/policy/terms'))
-                              }),
-                    TextSpan(text: ' 및 '),
+                              ),
+                    const TextSpan(text: ' 및 '),
                     TextSpan(
-                        style: TextStyle(
+                        style: const TextStyle(
                           decoration: TextDecoration.underline,
                         ),
                         text: '개인정보처리방침',
                         recognizer: TapGestureRecognizer()
-                          ..onTap = () => {
-                                launchUrl(Uri.parse(
+                          ..onTap = () => launchUrl(Uri.parse(
                                     'https://pygmalion.app/policy/privacy'))
-                              }),
-                    TextSpan(text: '에 동의해야 시작할 수 있어요.'),
+                              ),
+                    const TextSpan(text: '에 동의해야 시작할 수 있어요.'),
                   ]),
             ),
           ),
@@ -215,9 +213,9 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
               ),
               FilledButton(
                 onPressed: () => context.go('/all'),
-                child: Text(
+                child: const Text(
                   '동의하고 시작하기',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14.0,
                   ),
                 ),
@@ -292,7 +290,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
           getServerTokenBySMS(_formData['phone'], _formData['last_name'],
               _formData['first_name']);
         });
-        if (token != null) {
+        if (token != '') {
           saveServerToken(token);
           _showModal();
         }
@@ -309,7 +307,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
           body: tabList[_tab].body,
           actions: OutlinedButton(
             onPressed: _changeTab,
-            child: Text('다음'),
+            child: const Text('다음'),
           ),
         ),
       ),
