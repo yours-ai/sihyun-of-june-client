@@ -68,4 +68,3 @@ Mutation<void, ValidatedUserDTO> getSmsTokenMutation({
     onError: onError,
   );
 }
-
