@@ -64,7 +64,7 @@ Future<bool> smsVerify(ValidatedAuthCodeDTO dto) async {
   } catch (error) {
     if (error is DioException) {
       if (error.response != null && error.response!.data != null) {
-        String detailError = error.response!.data['detail'];
+        String detailError = error.response!.data['detail'].toString();
         throw detailError;
       }
     }

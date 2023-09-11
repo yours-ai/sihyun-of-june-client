@@ -12,7 +12,10 @@ class VerifyTabWidget extends StatefulWidget {
   final void Function(ValidatedUserDTO dto) onSmsLogin;
 
   const VerifyTabWidget(
-      {Key? key, required this.dto, required this.onSmsVerify, required this.onSmsLogin})
+      {Key? key,
+      required this.dto,
+      required this.onSmsVerify,
+      required this.onSmsLogin})
       : super(key: key);
 
   @override
@@ -48,8 +51,6 @@ class _VerifyTabWidgetState extends State<VerifyTabWidget> {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     final mutation = getSmsVerifyMutation(
@@ -57,8 +58,7 @@ class _VerifyTabWidgetState extends State<VerifyTabWidget> {
         if (res == true) {
           var mutation = getSmsTokenMutation(
             onSuccess: (res, arg) {
-                widget.onSmsLogin(getValidatedUser());
-
+              widget.onSmsLogin(getValidatedUser());
             },
             onError: (arg, error, fallback) {
               ScaffoldMessenger.of(context).showSnackBar(

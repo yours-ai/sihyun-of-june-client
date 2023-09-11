@@ -1,14 +1,9 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import '../modal_widget.dart';
 
 class NameTabWidget extends StatefulWidget {
   final void Function(ValidatedUserDTO dto) onSmsLogin;
@@ -25,6 +20,8 @@ class _NameTabWidgetState extends State<NameTabWidget> {
   final _formKey = GlobalKey<FormState>();
   final lastNameController = TextEditingController();
   final firstNameController = TextEditingController();
+  String errorMessage= '';
+
 
   ValidatedUserDTO getValidatedData() {
     return ValidatedUserDTO(
@@ -35,7 +32,6 @@ class _NameTabWidgetState extends State<NameTabWidget> {
       lastName: lastNameController.text,
     );
   }
-
 
   @override
   void dispose() {
@@ -58,76 +54,102 @@ class _NameTabWidgetState extends State<NameTabWidget> {
         );
       },
     );
+
+
     return MutationBuilder(
       mutation: mutation,
       builder: (context, state, mutate) => Form(
         key: _formKey,
         child: TitleLayout(
           titleText: '이름을 알려주세요.',
-          body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IntrinsicWidth(
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '성을 입력해주세요.';
-                        }
-                        return null;
-                      },
-                      controller: lastNameController,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        hintText: '성',
-                        hintStyle: TextStyle(
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 28.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IntrinsicWidth(
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            throw Exception('성을 입력해주세요.');
+                          }
+                          return null;
+                        },
+                        controller: lastNameController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          hintText: '성',
+                          hintStyle: TextStyle(
+                              fontFamily: 'MaruBuri',
+                              fontSize: 25,
+                              color: ColorConstants.neutral),
+                          border: InputBorder.none,
+                        ),
+                        style: TextStyle(
                             fontFamily: 'MaruBuri',
                             fontSize: 25,
-                            color: ColorConstants.neutral),
-                        border: InputBorder.none,
+                            color: ColorConstants.primary),
                       ),
-                      style: TextStyle(
-                          fontFamily: 'MaruBuri',
-                          fontSize: 25,
-                          color: ColorConstants.primary),
                     ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '이름을 입력해주세요.';
-                        }
-                        return null;
-                      },
-                      controller: firstNameController,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        hintText: '이름',
-                        hintStyle: TextStyle(
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            throw Exception('이름을 입력해주세요.');
+                          }
+                          return null;
+                        },
+                        controller: firstNameController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          hintText: '이름',
+                          hintStyle: TextStyle(
+                              fontFamily: 'MaruBuri',
+                              fontSize: 25,
+                              color: ColorConstants.neutral),
+                          border: InputBorder.none,
+                        ),
+                        style: TextStyle(
                             fontFamily: 'MaruBuri',
                             fontSize: 25,
-                            color: ColorConstants.neutral),
-                        border: InputBorder.none,
+                            color: ColorConstants.primary),
                       ),
-                      style: TextStyle(
-                          fontFamily: 'MaruBuri',
-                          fontSize: 25,
-                          color: ColorConstants.primary),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+                SizedBox(height: 8),
+                Text(errorMessage,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                        fontFamily: 'MaruBuri',
+                        fontSize: 12,
+                        color: Colors.red)),
+              ],
             ),
-          ]),
+          ),
           actions: OutlinedButton.icon(
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                mutate(getValidatedData());
-              }
+              setState(() {
+                if (lastNameController.text.isEmpty) {
+                  errorMessage = '성을 입력해주세요.';
+                  return;
+                }
+
+                if (firstNameController.text.isEmpty) {
+                  errorMessage = '이름을 입력해주세요.';
+                  return;
+                }
+
+                errorMessage = '';  // If everything is fine, clear the errorMessage
+                if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+                  mutate(getValidatedData());
+                }
+              });
             },
             label: const Text('다음'),
             style:
