@@ -233,7 +233,19 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
     switch (_tab) {
       case 0:
         int? phoneNumber = int.tryParse(phoneController.text);
+
+        if (phoneController.text.length != 11 || phoneNumber == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                '올바른 전화번호를 입력해주세요.',
+              ),
+            ),
+          );
+        }
+
         _formData['phone'] = phoneNumber;
+
 
         String? result;
         try {
