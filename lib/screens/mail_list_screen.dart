@@ -20,7 +20,9 @@ class _MailListScreenState extends State<MailListScreen> {
   @override
   initState() {
     super.initState();
-    _showModal();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showModal();
+    });
   }
 
   _showModal() async {

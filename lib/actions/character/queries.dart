@@ -18,27 +18,13 @@ Query<List<Character>> getlistCharactersQuery() {
   );
 }
 
-Mutation<void, void> getQuestions({
-  OnSuccessCallback? onSuccess,
-  OnErrorCallback? onError,
-}) {
-  return Mutation<void, void>(
-    queryFn: (void _) async {
-      final questions = await fetchQuestions();
-      List<Question> tabList = await questions;
-    },
-    onSuccess: onSuccess,
-    onError: onError,
-  );
-}
-
 Query<List<Question>> getQuestionsQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
     key: ["questions"],
     queryFn: () => dio.post('/character/test/start/').then(
-          (response) {
+      (response) {
         return response.data
             .map<Question>((json) => Question.fromJson(json))
             .toList();
@@ -48,8 +34,7 @@ Query<List<Question>> getQuestionsQuery({
   );
 }
 
-Mutation<void, List<Map<String, dynamic>>>
-    sendResponseMutation({
+Mutation<void, List<Map<String, dynamic>>> sendResponseMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -66,9 +51,27 @@ Query<String> getTestStatusQuery({
   return Query(
     key: ["test-status"],
     queryFn: () => dio.get('/character/me/test-status/').then(
-          (response) {
+      (response) {
         if (response.data is List && response.data.isNotEmpty) {
           return response.data[0]['status'];
+        } else {
+          throw Exception('Response format is not as expected');
+        }
+      },
+    ),
+    onError: onError,
+  );
+}
+
+Query<Character> getPendingTestQuery({
+  OnQueryErrorCallback? onError,
+}) {
+  return Query(
+    key: ["pending-test"],
+    queryFn: () => dio.get('/character/test/pending/').then(
+      (response) {
+        if (response.data != null && response.data.isNotEmpty) {
+          return Character.fromJson(response.data);
         } else {
           throw Exception('Response format is not as expected');
         }
