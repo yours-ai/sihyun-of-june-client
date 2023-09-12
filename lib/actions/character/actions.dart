@@ -15,17 +15,44 @@ Future<List<Question>> fetchQuestions() async {
   }
 }
 
-Future<Character> sendResponses(List<Map<String, dynamic>> responses) async {
+Future<void> sendResponses(List<Map<String, dynamic>> responses) async {
   final response = await dio.post(
     '/character/test/end/',
     data: responses,
   );
 
   if (response.statusCode == 200) {
-    return response.data
-        .map<Character>((json) => Character.fromJson(json))
-        .toList();
+    return;
   } else {
-    throw Exception('Failed to send questions');
+    throw Exception('Failed to send responses');
+  }
+}
+
+
+Future<void> confirmChoice(num id) async {
+  final response = await dio.post('/character/test/$id/confirm/');
+  if (response.statusCode == 200) {
+    return;
+  } else {
+    throw Exception('Failed to confirm choice');
+  }
+}
+
+Future<void> denyChoice(num id) async {
+  final response = await dio.post('/character/test/$id/deny/');
+  if (response.statusCode == 200) {
+    return;
+  } else {
+    throw Exception('Failed to confirm choice');
+  }
+}
+
+Future<Character> fetchCharacter() async {
+  final response = await dio.get('/me/character/');
+
+  if (response.statusCode == 200) {
+    return Character.fromJson(response.data);
+  } else {
+    throw Exception('Failed to load character');
   }
 }

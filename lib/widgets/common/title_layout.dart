@@ -25,11 +25,14 @@ class TitleLayout extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: Text(
-                titleText,
-                style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: Text(
+                  titleText,
+                  style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
+                  softWrap: true,
+                ),
               ),
             ),
             showProfile,

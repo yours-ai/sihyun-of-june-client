@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
-import 'package:project_june_client/actions/character/actions.dart';
+import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
-import '../../actions/character/models/Character.dart';
 
 class TestResultData {
   final String title;
@@ -49,38 +49,18 @@ class TestResultWidget extends StatefulWidget {
 }
 
 class _TestResultWidget extends State<TestResultWidget> {
-
   @override
   void initState() {
     super.initState();
-    _sendAnswers();
-    _switchPageAfterDelay();
-  }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _switchPageAfterDelay();
+    });  }
 
   Future<void> _switchPageAfterDelay() async {
     await Future.delayed(Duration(seconds: 4));
-    if (!(await _sendAnswers())) {
-      await Future.delayed(Duration(seconds: 2));
-      setState(() {
-        _tab = 2;
-      });
-    } else {
-      setState(() {
-        _tab = 1;
-      });
-    }
-  }
-
-  Character? character;
-
-  Future<bool> _sendAnswers() async {
-    try {
-      character =
-          await sendResponses(widget.output).timeout(Duration(seconds: 5));
-      return character != null;
-    } catch (e) {
-      return false;
-    }
+    setState(() {
+      _tab = 1;
+    });
   }
 
   int _tab = 0;
@@ -106,37 +86,50 @@ class _TestResultWidget extends State<TestResultWidget> {
       ),
       body: SafeArea(
         child: TitleLayout(
-            titleText: tabList[_tab].title,
-            body: Builder(
-              builder: (context) {
-                return AnimatedCrossFade(
-                  firstChild: tabList[0].body,
-                  secondChild: tabList[1].body,
-                  crossFadeState: _tab == 0
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-                  duration: const Duration(milliseconds: 500),
-                );
-              },
-            ),
-            actions: _tab == 0
-                ? OutlinedButton(
-                    onPressed: () {},
-                    child: Text(tabList[_tab].button,
-                        style: TextStyle(color: ColorConstants.neutral)),
-                  )
-                : FilledButton(
-                    onPressed: () {
-                      if (_tab == 1)
-                        context.go('/profile/${character!.id}');
-                      else
+          titleText: tabList[_tab].title,
+          body: Builder(
+            builder: (context) {
+              return AnimatedCrossFade(
+                firstChild: tabList[0].body,
+                secondChild: tabList[1].body,
+                crossFadeState: _tab == 0
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
+                duration: const Duration(milliseconds: 500),
+              );
+            },
+          ),
+          actions: _tab == 0
+              ? OutlinedButton(
+                  onPressed: () {},
+                  child: Text(tabList[_tab].button,
+                      style: TextStyle(color: ColorConstants.neutral)),
+                )
+              : _tab == 1
+                  ? MutationBuilder(
+                      mutation: sendResponseMutation(
+                        onSuccess: (res, arg) {
+                          context.go('/result');
+                        },
+                        onError: (arg, error, callback) {
+                          setState(() {
+                            _tab = 2;
+                          });
+                        },
+                      ),
+                      builder: (context, state, mutate) => FilledButton(
+                            onPressed: () => {mutate(widget.output)},
+                            child: Text(tabList[_tab].button)),
+                    )
+                  : FilledButton(
+                      onPressed: () {
                         setState(() {
-                          _sendAnswers();
                           _tab = 0;
                           _switchPageAfterDelay();
                         });
-                    },
-                    child: Text(tabList[_tab].button))),
+                      },
+                      child: Text(tabList[_tab].button)),
+        ),
       ),
     );
   }
