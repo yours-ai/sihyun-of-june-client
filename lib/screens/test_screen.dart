@@ -11,7 +11,7 @@ class TestScreen extends StatefulWidget {
 }
 
 class _TestScreenState extends State<TestScreen> {
-  ActiveScreen activeScreen = ActiveScreen.result;
+  ActiveScreen activeScreen = ActiveScreen.info;
   List<List<num>> responses = [];
 
   void _setActiveScreen(ActiveScreen screen) {

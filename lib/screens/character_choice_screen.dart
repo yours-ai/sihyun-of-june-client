@@ -5,18 +5,20 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
 
+import '../actions/character/models/Character.dart';
 import '../widgets/profile_widget.dart';
 
-class ResultScreen extends StatefulWidget {
-  const ResultScreen({super.key});
+class CharacterChoiceScreen extends StatefulWidget {
+  final Character character;
+  const CharacterChoiceScreen({super.key, required this.character});
 
   @override
   State<StatefulWidget> createState() {
-    return _ResultScreen();
+    return _CharacterChoiceScreen();
   }
 }
 
-class _ResultScreen extends State<ResultScreen> {
+class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
   @override
   Widget build(context) {
     return Scaffold(

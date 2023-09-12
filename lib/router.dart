@@ -7,7 +7,7 @@ import 'package:project_june_client/screens/notification_list_screen.dart';
 import 'package:project_june_client/screens/other_character_screen.dart';
 import 'package:project_june_client/screens/profile_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
-import 'package:project_june_client/screens/test_result_screen.dart';
+import 'package:project_june_client/screens/character_choice_screen.dart';
 import 'package:project_june_client/screens/test_screen.dart';
 import 'constants.dart';
 import 'screens/landing_screen.dart';
@@ -32,10 +32,10 @@ final router = GoRouter(
       path: '/login',
       builder: (context, state) => const LoginScreen(),
     ),
-    GoRoute(
-      path: '/result',
-      builder: (context, state) => const ResultScreen(),
-    ),
+    // GoRoute(
+    //   path: '/result',
+    //   builder: (context, state) => CharacterChoiceScreen(),
+    // ),
     GoRoute(
       path: '/othercharacter',
       builder: (context, state) => const OtherCharacterScreen(),
