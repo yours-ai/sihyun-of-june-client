@@ -9,7 +9,7 @@ import '../common/title_layout.dart';
 class VerifyTabWidget extends StatefulWidget {
   final ValidatedPhoneDTO dto;
   final void Function(ValidatedAuthCodeDTO dto) onSmsVerify;
-  final void Function(ValidatedUserDTO dto) onSmsLogin;
+  final void Function(dynamic dto) onSmsLogin;
 
   const VerifyTabWidget(
       {Key? key,
@@ -35,16 +35,6 @@ class _VerifyTabWidgetState extends State<VerifyTabWidget> {
     );
   }
 
-  ValidatedUserDTO getValidatedUser() {
-    return ValidatedUserDTO(
-      authCode: authCode!,
-      countryCode: widget.dto.countryCode,
-      phone: widget.dto.phone,
-      firstName: null,
-      lastName: null,
-    );
-  }
-
   @override
   void dispose() {
     authController.dispose();
@@ -53,22 +43,23 @@ class _VerifyTabWidgetState extends State<VerifyTabWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var tokenMutation = getSmsTokenMutation(
+      onSuccess: (res, arg) {
+        // widget.onSmsLogin(getValidatedData());
+        widget.onSmsVerify(getValidatedData());
+      },
+      onError: (arg, error, fallback) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.toString()),
+          ),
+        );
+      },
+    );
     final mutation = getSmsVerifyMutation(
       onSuccess: (res, arg) {
         if (res == true) {
-          var mutation = getSmsTokenMutation(
-            onSuccess: (res, arg) {
-              widget.onSmsLogin(getValidatedUser());
-            },
-            onError: (arg, error, fallback) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(error.toString()),
-                ),
-              );
-            },
-          );
-          mutation.mutate(getValidatedUser());
+          tokenMutation.mutate(getValidatedData());
         } else {
           widget.onSmsVerify(getValidatedData());
         }

@@ -106,7 +106,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
     });
   }
 
-  void handleSmsLogin(ValidatedUserDTO dto) {
+  void handleSmsLogin(dynamic dto) {
     setState(() {
       context.go('/all');
     });

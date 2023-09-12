@@ -93,6 +93,25 @@ Future<String> getServerTokenBySMS(ValidatedUserDTO dto) async {
   }
 }
 
+Future<String> getServerTokenBySMSLogin(ValidatedAuthCodeDTO dto) async {
+  try{
+    final response = await dio.post('/auth/sms-auth/join-or-login/', data: {
+      'phone': dto.phone,
+      'country_code': dto.countryCode,
+      'auth_code': dto.authCode,
+    }).then<Token>((response) => Token.fromJson(response.data));
+    return response.token;
+  } catch (error) {
+    if (error is DioException) {
+      if (error.response != null && error.response!.data != null) {
+        String detailError = error.response!.data['detail'];
+        throw detailError;
+      }
+    }
+    throw error;
+  }
+}
+
 Future<OAuthToken> getKakaoOAuthToken() async {
   if (await isKakaoTalkInstalled()) {
     try {

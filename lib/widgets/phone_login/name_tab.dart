@@ -20,8 +20,7 @@ class _NameTabWidgetState extends State<NameTabWidget> {
   final _formKey = GlobalKey<FormState>();
   final lastNameController = TextEditingController();
   final firstNameController = TextEditingController();
-  String errorMessage= '';
-
+  String errorMessage = '';
 
   ValidatedUserDTO getValidatedData() {
     return ValidatedUserDTO(
@@ -31,6 +30,30 @@ class _NameTabWidgetState extends State<NameTabWidget> {
       firstName: firstNameController.text,
       lastName: lastNameController.text,
     );
+  }
+
+
+  String? _validator(String? value, TextEditingController controller) {
+    bool isLastNameEmpty = lastNameController.text.isEmpty;
+    bool isFirstNameEmpty = firstNameController.text.isEmpty;
+
+    if (isLastNameEmpty && isFirstNameEmpty) {
+      setState(() {
+        errorMessage = '성과 이름을 입력해주세요.';
+      });
+      return '';
+    } else if (isLastNameEmpty) {
+      setState(() {
+        errorMessage = '성을 입력해주세요.';
+      });
+      return '';
+    } else if (isFirstNameEmpty) {
+      setState(() {
+        errorMessage = '이름을 입력해주세요.';
+      });
+      return '';
+    }
+    return null;
   }
 
   @override
@@ -55,7 +78,6 @@ class _NameTabWidgetState extends State<NameTabWidget> {
       },
     );
 
-
     return MutationBuilder(
       mutation: mutation,
       builder: (context, state, mutate) => Form(
@@ -73,15 +95,16 @@ class _NameTabWidgetState extends State<NameTabWidget> {
                   children: [
                     IntrinsicWidth(
                       child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            throw Exception('성을 입력해주세요.');
-                          }
-                          return null;
-                        },
+                        validator: (value) =>
+                            _validator(value, lastNameController),
                         controller: lastNameController,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 0),
+                          errorStyle: TextStyle(
+                            fontSize: 0,
+                          ),
                           hintText: '성',
                           hintStyle: TextStyle(
                               fontFamily: 'MaruBuri',
@@ -98,15 +121,16 @@ class _NameTabWidgetState extends State<NameTabWidget> {
                     const SizedBox(width: 15),
                     Expanded(
                       child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            throw Exception('이름을 입력해주세요.');
-                          }
-                          return null;
-                        },
+                        validator: (value) =>
+                            _validator(value, firstNameController),
                         controller: firstNameController,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 0),
+                          errorStyle: TextStyle(
+                            fontSize: 0,
+                          ),
                           hintText: '이름',
                           hintStyle: TextStyle(
                               fontFamily: 'MaruBuri',
@@ -134,22 +158,10 @@ class _NameTabWidgetState extends State<NameTabWidget> {
           ),
           actions: OutlinedButton.icon(
             onPressed: () {
-              setState(() {
-                if (lastNameController.text.isEmpty) {
-                  errorMessage = '성을 입력해주세요.';
-                  return;
-                }
-
-                if (firstNameController.text.isEmpty) {
-                  errorMessage = '이름을 입력해주세요.';
-                  return;
-                }
-
-                errorMessage = '';  // If everything is fine, clear the errorMessage
-                if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-                  mutate(getValidatedData());
-                }
-              });
+              if (_formKey.currentState != null &&
+                  _formKey.currentState!.validate()) {
+                mutate(getValidatedData());
+              }
             },
             label: const Text('다음'),
             style:

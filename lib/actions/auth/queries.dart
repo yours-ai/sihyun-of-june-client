@@ -25,7 +25,8 @@ Mutation<void, void> getLoginAsAppleMutation({
   return Mutation<void, void>(
     queryFn: (void _) async {
       final appleCredentials = await getAppleLoginCredential();
-      final serverToken = await getServerTokenByAppleCredential(appleCredentials);
+      final serverToken =
+          await getServerTokenByAppleCredential(appleCredentials);
       await saveServerToken(serverToken);
     },
     onSuccess: onSuccess,
@@ -55,14 +56,19 @@ Mutation<bool, ValidatedAuthCodeDTO> getSmsVerifyMutation({
   );
 }
 
-Mutation<void, ValidatedUserDTO> getSmsTokenMutation({
+Mutation<void, ValidatedVerifyDTO> getSmsTokenMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
-  return Mutation<void, ValidatedUserDTO>(
-    queryFn: (validatedUserDTO) async{
-      final serverToken = await getServerTokenBySMS(validatedUserDTO);
-      await saveServerToken(serverToken);
+  return Mutation<void, ValidatedVerifyDTO>(
+    queryFn: (dto) async {
+      if (dto is ValidatedUserDTO) {
+        final serverToken = await getServerTokenBySMS(dto);
+        await saveServerToken(serverToken);
+      } else if (dto is ValidatedAuthCodeDTO) {
+        final serverToken = await getServerTokenBySMSLogin(dto);
+        await saveServerToken(serverToken);
+      }
     },
     onSuccess: onSuccess,
     onError: onError,

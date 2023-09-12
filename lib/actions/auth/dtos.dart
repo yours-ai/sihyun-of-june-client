@@ -12,8 +12,12 @@ class ValidatedPhoneDTO {
   });
 }
 
+abstract class ValidatedVerifyDTO {
+  const ValidatedVerifyDTO();
+}
+
 @immutable
-class ValidatedAuthCodeDTO {
+class ValidatedAuthCodeDTO extends ValidatedVerifyDTO {
   final int authCode;
   final String countryCode;
   final String phone;
@@ -26,7 +30,7 @@ class ValidatedAuthCodeDTO {
 }
 
 @immutable
-class ValidatedUserDTO {
+class ValidatedUserDTO extends ValidatedVerifyDTO {
   final int authCode;
   final String countryCode;
   final String phone;
