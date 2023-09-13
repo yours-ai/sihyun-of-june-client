@@ -78,27 +78,29 @@ class _MailListScreenState extends State<MailListScreen> {
                       )
                     ],
                   );
+                } else {
+                  return GridView.builder(
+                    padding: const EdgeInsets.all(20.0),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: state.data?.length ?? 0,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 1.0,
+                    ),
+                    itemBuilder: (context, index) {
+                      int reversedIndex = (state.data!.length - 1) - index;
+                      if (state.data!.length != 0) {
+                        return MailWidget(mail: state.data![reversedIndex]);
+                      } else {
+                        return Container();
+                      }
+                    },
+                  );
                 }
-                return GridView.builder(
-                  padding: const EdgeInsets.all(20.0),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: state.data?.length ?? 0,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    childAspectRatio: 1.0,
-                  ),
-                  itemBuilder: (context, index) {
-                    if (state.data!.length != 0) {
-                      return MailWidget(mail: state.data![index]);
-                    }
-                    else {
-                      return Container();
-                    }
-                  },
-                );
               },
             ),
           ],

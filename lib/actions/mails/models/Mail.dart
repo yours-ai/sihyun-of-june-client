@@ -5,7 +5,7 @@ part 'Mail.g.dart';
 
 @JsonSerializable()
 class Mail {
-  num id;
+  int id;
   num to;
   String to_full_name;
   num by;

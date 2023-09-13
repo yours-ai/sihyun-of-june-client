@@ -47,9 +47,14 @@ final router = GoRouter(
       builder: (context, state) => CharacterChoiceScreen(),
     ),
     GoRoute(
-      path: '/othercharacter/:id',
+      path: '/other-character/:id',
       builder: (context, state) =>
           OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)),
+    ),
+    GoRoute(
+      path: '/mail-view/:id',
+      builder: (context, state) =>
+          MailViewScreen(id: int.tryParse(state.pathParameters['id']!)),
     ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -61,19 +66,14 @@ final router = GoRouter(
       },
       routes: [
         GoRoute(
-            path: TabRoutePaths.mailList,
-            pageBuilder: (context, state) {
-              return NoTransitionPage(
-                key: state.pageKey,
-                child: const MailListScreen(),
-              );
-            },
-            routes: [
-              GoRoute(
-                path: 'view',
-                builder: (context, state) => const MailViewScreen(),
-              ),
-            ]),
+          path: TabRoutePaths.mailList,
+          pageBuilder: (context, state) {
+            return NoTransitionPage(
+              key: state.pageKey,
+              child: const MailListScreen(),
+            );
+          },
+        ),
         GoRoute(
           path: TabRoutePaths.notificationList,
           pageBuilder: (context, state) {
