@@ -40,17 +40,17 @@ class _NameTabWidgetState extends State<NameTabWidget> {
       setState(() {
         errorMessage = '성과 이름을 입력해주세요.';
       });
-      return '';
+      return '성과 이름을 입력해주세요.';
     } else if (isLastNameEmpty) {
       setState(() {
         errorMessage = '성을 입력해주세요.';
       });
-      return '';
+      return '성을 입력해주세요.';
     } else if (isFirstNameEmpty) {
       setState(() {
         errorMessage = '이름을 입력해주세요.';
       });
-      return '';
+      return '이름을 입력해주세요.';
     }
     return null;
   }
