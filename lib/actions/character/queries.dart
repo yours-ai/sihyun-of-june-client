@@ -1,6 +1,5 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/character/actions.dart';
-import 'package:project_june_client/actions/character/dtos.dart';
 
 import 'models/Character.dart';
 import 'models/Question.dart';

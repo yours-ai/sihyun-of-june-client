@@ -1,4 +1,3 @@
-import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/Question.dart';
 
