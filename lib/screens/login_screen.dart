@@ -1,6 +1,5 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
@@ -102,7 +101,7 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
-                        print('phone login clicked');
+                        context.go('/login/by-phone');
                       },
                       child: const Text('전화번호로 계속하기'),
                     ),
