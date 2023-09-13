@@ -32,7 +32,7 @@ final router = GoRouter(
       builder: (context, state) => const LoginScreen(),
       routes: [
         GoRoute(
-          path: 'phone',
+          path: 'by-phone',
           builder: (context, state) => const PhoneLoginScreen(),
         ),
       ]

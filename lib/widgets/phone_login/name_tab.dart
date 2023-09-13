@@ -32,7 +32,6 @@ class _NameTabWidgetState extends State<NameTabWidget> {
     );
   }
 
-
   String? _validator(String? value, TextEditingController controller) {
     bool isLastNameEmpty = lastNameController.text.isEmpty;
     bool isFirstNameEmpty = firstNameController.text.isEmpty;
@@ -156,27 +155,16 @@ class _NameTabWidgetState extends State<NameTabWidget> {
               ],
             ),
           ),
-          actions: OutlinedButton.icon(
+          actions: OutlinedButton(
             onPressed: () {
               if (_formKey.currentState != null &&
                   _formKey.currentState!.validate()) {
                 mutate(getValidatedData());
               }
             },
-            label: const Text('다음'),
+            child: const Text('다음'),
             style:
                 OutlinedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
-            icon: state.status == QueryStatus.loading
-                ? Container(
-                    width: 24,
-                    height: 24,
-                    padding: const EdgeInsets.all(2.0),
-                    child: CircularProgressIndicator(
-                      color: ColorConstants.primary,
-                      strokeWidth: 3,
-                    ),
-                  )
-                : const SizedBox(),
           ),
         ),
       ),

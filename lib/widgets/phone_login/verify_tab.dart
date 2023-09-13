@@ -1,5 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
@@ -25,7 +26,7 @@ class VerifyTabWidget extends StatefulWidget {
 class _VerifyTabWidgetState extends State<VerifyTabWidget> {
   final _formKey = GlobalKey<FormState>();
   final authController = TextEditingController();
-  int? authCode = 1;
+  int? authCode;
 
   ValidatedAuthCodeDTO getValidatedData() {
     return ValidatedAuthCodeDTO(
@@ -91,6 +92,9 @@ class _VerifyTabWidgetState extends State<VerifyTabWidget> {
                 controller: authController,
                 maxLines: 1,
                 keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
                 minLines: 1,
                 decoration: InputDecoration(
                   hintText: '123456',
@@ -107,27 +111,16 @@ class _VerifyTabWidgetState extends State<VerifyTabWidget> {
               ),
             ),
           ]),
-          actions: OutlinedButton.icon(
+          actions: OutlinedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 authCode = int.tryParse(authController.text);
                 mutate(getValidatedData());
               }
             },
-            label: const Text('다음'),
+            child: const Text('다음'),
             style:
                 OutlinedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
-            icon: state.status == QueryStatus.loading
-                ? Container(
-                    width: 24,
-                    height: 24,
-                    padding: const EdgeInsets.all(2.0),
-                    child: CircularProgressIndicator(
-                      color: ColorConstants.primary,
-                      strokeWidth: 3,
-                    ),
-                  )
-                : const SizedBox(),
           ),
         ),
       ),
