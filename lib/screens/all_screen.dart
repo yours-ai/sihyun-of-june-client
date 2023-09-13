@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../actions/auth/actions.dart';
 import '../constants.dart';
@@ -16,84 +16,47 @@ class AllScreen extends StatefulWidget {
 }
 
 class _AllScreenState extends State<AllScreen> {
-  bool _agreeShare = false;
-
-  _showShareModal() async {
-    if (_agreeShare == false) {
-      await showModalBottomSheet<void>(
-        context: context,
-        useRootNavigator: true,
-        builder: (BuildContext context) {
-          return ModalWidget(
-            description: Column(
-              children: [
-                const SizedBox(
-                  height: 26,
+  void _showLogoutModal() async {
+    await showModalBottomSheet<void>(
+      context: context,
+      useRootNavigator: true,
+      builder: (BuildContext context) {
+        return ModalWidget(
+          title: '정말 로그아웃하시겠어요?',
+          choiceColumn: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              FilledButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(ColorConstants.background),
                 ),
-                Container(
-                  padding: const EdgeInsets.only(top: 0.0),
-                  height: 20,
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      children: [
-                        Text(
-                          '친구가 링크로 가입하면 50',
-                          style: TextStyle(
-                              fontSize: 14, color: ColorConstants.neutral),
-                        ),
-                        Icon(PhosphorIcons.coin_vertical,
-                            size: 14, color: ColorConstants.neutral),
-                        Text(
-                          '을 받아요.',
-                          style: TextStyle(
-                              fontSize: 14, color: ColorConstants.neutral),
-                        ),
-                      ],
-                    ),
+                onPressed: () {
+                  context.pop();
+                },
+                child: Text(
+                  '아니요',
+                  style: TextStyle(
+                      fontSize: 14.0, color: ColorConstants.secondary),
+                ),
+              ),
+              FilledButton(
+                onPressed: () {
+                  logout();
+                  context.go('/login');
+                },
+                child: const Text(
+                  '네',
+                  style: TextStyle(
+                    fontSize: 14.0,
                   ),
                 ),
-              ],
-            ),
-            title: '친구에게 서비스를 소개하고,\n무료 코인을 받아보세요!',
-            choiceColumn: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                FilledButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(ColorConstants.background),
-                  ),
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: Text(
-                    '됐어요',
-                    style: TextStyle(
-                        fontSize: 14.0, color: ColorConstants.secondary),
-                  ),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                FilledButton(
-                  onPressed: () {
-                    // context.go('/landing');
-                    _agreeShare = true;
-                  },
-                  child: const Text(
-                    '친구에게 소개하고 50코인 받기',
-                    style: TextStyle(
-                      fontSize: 14.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    }
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -103,69 +66,30 @@ class _AllScreenState extends State<AllScreen> {
         titleText: '전체',
         body: ListView(
           children: [
-            Container(
-              color: ColorConstants.background,
-              child: TextButton(
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  splashFactory: NoSplash.splashFactory,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding:
-                          const EdgeInsets.only(left: 28, top: 30, bottom: 30),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '내 코인',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: ColorConstants.black,
-                            fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 28.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            '80',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: ColorConstants.neutral,
-                            ),
-                          ),
-                          Icon(
-                            PhosphorIcons.coin_vertical,
-                            size: 20,
-                            color: ColorConstants.neutral,
-                          ),
-                          Icon(
-                            PhosphorIcons.caret_right,
-                            size: 20,
-                            color: ColorConstants.neutral,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                onPressed: () {
-                  _showShareModal();
-                },
-              ),
+            MenuWidget(
+              title: '공지',
+              onPressed: () => launchUrl(Uri.parse(Urls.notice)),
             ),
-            const MenuWidget(title: '친구 초대하고, 50코인 받기'),
-            const MenuWidget(title: '공지'),
-            const MenuWidget(title: '자주 묻는 질문'),
-            const MenuWidget(title: '문의하기'),
-            const MenuWidget(title: '약관 및 정책 이해하기'),
+            MenuWidget(
+              title: '자주 묻는 질문',
+              onPressed: () => launchUrl(Uri.parse(Urls.faq)),
+            ),
+            MenuWidget(
+              title: '문의하기',
+              onPressed: () => launchUrl(Uri.parse(Urls.ask)),
+            ),
+            MenuWidget(
+              title: '이용약관',
+              onPressed: () => launchUrl(Uri.parse(Urls.terms)),
+            ),
+            MenuWidget(
+              title: '개인정보 처리방침',
+              onPressed: () => launchUrl(Uri.parse(Urls.privacy)),
+            ),
             MenuWidget(
               title: '로그아웃',
               onPressed: () {
-                logout();
-                context.go('/login');
+                _showLogoutModal();
               },
             ),
           ],
