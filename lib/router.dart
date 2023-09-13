@@ -33,7 +33,7 @@ final router = GoRouter(
       builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
-      path: '/result',
+      path: '/character-choice',
       builder: (context, state) => CharacterChoiceScreen(),
     ),
     GoRoute(
@@ -72,6 +72,6 @@ final router = GoRouter(
         ),
       ],
     ),
-    GoRoute(path: '/test', builder: (context, state) => TestScreen()),
+    GoRoute(path: '/character-test', builder: (context, state) => CharacterTestScreen()),
   ],
 );

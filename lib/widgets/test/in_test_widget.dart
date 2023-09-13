@@ -1,5 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/models/Question.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
@@ -8,10 +9,10 @@ import '../../screens/test_screen.dart';
 
 class InTestWidget extends StatefulWidget {
   const InTestWidget(
-      {super.key, required this.setActiveScreen, required this.responses});
+      {super.key, required this.onActiveScreen, required this.responses});
 
-  final Function(ActiveScreen) setActiveScreen;
-  final Function(List<List<num>>) responses;
+  final Function(ActiveScreen) onActiveScreen;
+  final Function(AnswerDTOList) responses;
 
   @override
   State<StatefulWidget> createState() {
@@ -20,14 +21,19 @@ class InTestWidget extends StatefulWidget {
 }
 
 class _InTestWidget extends State<InTestWidget> {
-  List<Question>? tabList;
+  List<Question>? questionList;
 
   int _currentQuestionIndex = 0;
 
-  List<List<num>> answers = [];
+  AnswerDTOList answerList = AnswerDTOList(answers: []);
 
   void addUserResponse(int question_id, int choice) {
-    answers.add([question_id, choice]);
+    setState(() {
+      answerList.addAnswer(AnswerDTO(
+        question_id: question_id,
+        choice: choice,
+      ));
+    });
   }
 
   @override
@@ -36,9 +42,10 @@ class _InTestWidget extends State<InTestWidget> {
       query: getQuestionsQuery(),
       builder: (context, state) {
         if (state.data == null) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
         }
-        tabList = state.data;
+        questionList = state.data;
         return Scaffold(
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(4.0),
@@ -58,7 +65,7 @@ class _InTestWidget extends State<InTestWidget> {
           ),
           body: SafeArea(
             child: TitleLayout(
-              titleText: tabList![_currentQuestionIndex].question_text,
+              titleText: questionList![_currentQuestionIndex].question_text,
               body: Container(),
               actions: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -66,16 +73,17 @@ class _InTestWidget extends State<InTestWidget> {
                   OutlinedButton(
                     onPressed: () {
                       addUserResponse(
-                          tabList![_currentQuestionIndex].id.toInt(), 1);
-                      if (_currentQuestionIndex == 7) {
-                        widget.setActiveScreen(ActiveScreen.result);
-                        widget.responses(answers);
+                          questionList![_currentQuestionIndex].id.toInt(), 1);
+                      if (_currentQuestionIndex == questionList!.length - 1) {
+                        widget.onActiveScreen(ActiveScreen.result);
+                        widget.responses(answerList);
                       } else
                         setState(() {
                           _currentQuestionIndex++;
                         });
                     },
-                    child: Text(tabList![_currentQuestionIndex].choice_1_text),
+                    child: Text(
+                        questionList![_currentQuestionIndex].choice_1_text),
                   ),
                   const SizedBox(
                     height: 15,
@@ -83,17 +91,18 @@ class _InTestWidget extends State<InTestWidget> {
                   OutlinedButton(
                     onPressed: () {
                       addUserResponse(
-                          tabList![_currentQuestionIndex].id.toInt(), 2);
-                      if (_currentQuestionIndex == 7) {
-                        widget.setActiveScreen(ActiveScreen.result);
-                        widget.responses(answers);
-                        print(answers);
-                      } else
+                          questionList![_currentQuestionIndex].id.toInt(), 2);
+                      if (_currentQuestionIndex == questionList!.length - 1) {
+                        widget.onActiveScreen(ActiveScreen.result);
+                        widget.responses(answerList);
+                      } else {
                         setState(() {
                           _currentQuestionIndex++;
                         });
+                      }
                     },
-                    child: Text(tabList![_currentQuestionIndex].choice_2_text),
+                    child: Text(
+                        questionList![_currentQuestionIndex].choice_2_text),
                   ),
                 ],
               ),

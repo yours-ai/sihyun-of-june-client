@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/widgets/test/in_test_widget.dart';
 import 'package:project_june_client/widgets/test/test_info_widget.dart';
 import 'package:project_june_client/widgets/test/test_result_widget.dart';
 
 enum ActiveScreen { info, inTest, result }
 
-class TestScreen extends StatefulWidget {
+class CharacterTestScreen extends StatefulWidget {
   @override
-  _TestScreenState createState() => _TestScreenState();
+  _CharacterTestScreenState createState() => _CharacterTestScreenState();
 }
 
-class _TestScreenState extends State<TestScreen> {
+class _CharacterTestScreenState extends State<CharacterTestScreen> {
   ActiveScreen activeScreen = ActiveScreen.info;
-  List<List<num>> responses = [];
+  AnswerDTOList responses = AnswerDTOList(answers: []);
 
-  void _setActiveScreen(ActiveScreen screen) {
+  void handleActiveScreen(ActiveScreen screen) {
     setState(() {
       activeScreen = screen;
     });
   }
 
-  void _responses (List<List<num>> answer) {
+  void _responses (AnswerDTOList answerDTOList) {
     setState(() {
-      responses = answer;
+      responses = answerDTOList;
     });
   }
 
@@ -39,9 +40,9 @@ class _TestScreenState extends State<TestScreen> {
   Widget _getActiveScreenContent() {
     switch (activeScreen) {
       case ActiveScreen.info:
-        return TestInfoWidget(setActiveScreen: _setActiveScreen);
+        return TestInfoWidget(onActiveScreen: handleActiveScreen);
       case ActiveScreen.inTest:
-        return InTestWidget(setActiveScreen: _setActiveScreen, responses: _responses);
+        return InTestWidget(onActiveScreen: handleActiveScreen, responses: _responses);
       case ActiveScreen.result:
         return TestResultWidget(responses: responses);
       default:

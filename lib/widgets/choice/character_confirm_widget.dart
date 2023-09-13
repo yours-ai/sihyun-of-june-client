@@ -1,7 +1,8 @@
+import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/character/actions.dart';
+import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 import '../../constants.dart';
@@ -9,14 +10,14 @@ import '../../screens/character_choice_screen.dart';
 import '../modal_widget.dart';
 
 class CharacterConfirmWidget extends StatelessWidget {
-  final int test_id;
+  final int testId;
   final String name;
-  final void Function(ActiveScreen) setActiveScreen;
+  final void Function(ActiveScreen) onActiveScreen;
 
   const CharacterConfirmWidget(
       {super.key,
-      required this.setActiveScreen,
-      required this.test_id,
+      required this.onActiveScreen,
+      required this.testId,
       required this.name});
 
   @override
@@ -49,15 +50,21 @@ class CharacterConfirmWidget extends StatelessWidget {
                 SizedBox(
                   height: 12,
                 ),
-                FilledButton(
-                  onPressed: () {
-                    denyChoice(test_id);
-                    context.go('/test');
-                  },
-                  child: const Text(
-                    '네',
-                    style: TextStyle(
-                      fontSize: 14.0,
+                MutationBuilder(
+                  mutation: getDenyChoiceMutation(
+                    onSuccess: (res, arg) {
+                      context.go('/chracter-test');
+                    },
+                  ),
+                  builder: (context, state, mutate) => FilledButton(
+                    onPressed: () {
+                      mutate(testId);
+                    },
+                    child: const Text(
+                      '네',
+                      style: TextStyle(
+                        fontSize: 14.0,
+                      ),
                     ),
                   ),
                 ),
@@ -74,7 +81,7 @@ class CharacterConfirmWidget extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            setActiveScreen(ActiveScreen.detail);
+            onActiveScreen(ActiveScreen.detail);
           },
           icon: Container(
             padding: const EdgeInsets.only(left: 23),
@@ -88,7 +95,7 @@ class CharacterConfirmWidget extends StatelessWidget {
       ),
       body: SafeArea(
         child: TitleLayout(
-          isAppBar: true,
+          withAppBar: true,
           titleText: '$name이가 마음에 드세요?\n오늘 저녁 9시에\n첫 편지가 올 거에요.',
           actions: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -101,12 +108,24 @@ class CharacterConfirmWidget extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              FilledButton(
-                  onPressed: () async {
-                    await confirmChoice(test_id);
+              MutationBuilder(
+                mutation: getConfirmChoiceMutation(
+                  onSuccess: (res, arg) {
                     context.go('/mails');
                   },
-                  child: const Text('좋아요!'))
+                ),
+                builder: (context, state, mutate) => FilledButton(
+                  onPressed: () {
+                    mutate(testId);
+                  },
+                  child: const Text(
+                    '네',
+                    style: TextStyle(
+                      fontSize: 14.0,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
           body: Container(),

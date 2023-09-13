@@ -4,6 +4,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
+import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
@@ -30,17 +31,9 @@ final List<TestResultData> tabList = [
 ];
 
 class TestResultWidget extends StatefulWidget {
-  final List<List<num>> responses;
+  final AnswerDTOList responses;
 
-  final List<Map<String, dynamic>> output;
-
-  TestResultWidget({super.key, required this.responses})
-      : output = responses.map((item) {
-          return {
-            'question_id': item[0].toInt(),
-            'choice': item[1].toInt(),
-          };
-        }).toList();
+  TestResultWidget({super.key, required this.responses});
 
   @override
   State<StatefulWidget> createState() {
@@ -107,9 +100,9 @@ class _TestResultWidget extends State<TestResultWidget> {
                 )
               : _tab == 1
                   ? MutationBuilder(
-                      mutation: sendResponseMutation(
+                      mutation: getSendResponseMutation(
                         onSuccess: (res, arg) {
-                          context.go('/result');
+                          context.go('/character-choice');
                         },
                         onError: (arg, error, callback) {
                           setState(() {
@@ -118,7 +111,7 @@ class _TestResultWidget extends State<TestResultWidget> {
                         },
                       ),
                       builder: (context, state, mutate) => FilledButton(
-                            onPressed: () => {mutate(widget.output)},
+                            onPressed: () => {mutate(widget.responses.toJsonList())},
                             child: Text(tabList[_tab].button)),
                     )
                   : FilledButton(

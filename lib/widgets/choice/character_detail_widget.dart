@@ -9,15 +9,15 @@ import 'package:project_june_client/widgets/profile_widget.dart';
 import '../../screens/character_choice_screen.dart';
 
 class CharacterDetailWidget extends StatelessWidget {
-  final void Function(ActiveScreen) setActiveScreen;
-  final void Function(int) setTestId;
-  final void Function(String) setName;
+  final void Function(ActiveScreen) onActiveScreen;
+  final void Function(int) onTestId;
+  final void Function(String) onName;
 
   const CharacterDetailWidget(
       {super.key,
-      required this.setActiveScreen,
-      required this.setTestId,
-      required this.setName});
+      required this.onActiveScreen,
+      required this.onTestId,
+      required this.onName});
 
   @override
   Widget build(BuildContext context) {
@@ -132,9 +132,9 @@ class CharacterDetailWidget extends StatelessWidget {
                             left: 28.0, right: 28.0, bottom: 20.0),
                         child: FilledButton(
                             onPressed: () {
-                              setActiveScreen(ActiveScreen.confirm);
-                              setTestId(state.data!['test_id']);
-                              setName(state.data!['character']['name']
+                              onActiveScreen(ActiveScreen.confirm);
+                              onTestId(state.data!['test_id']);
+                              onName(state.data!['character']['name']
                                   .substring(1));
                             },
                             child: const Text('다음')),

@@ -24,9 +24,9 @@ final List<TestInfoTabData> tabList = [
 ];
 
 class TestInfoWidget extends StatefulWidget {
-  final Function(ActiveScreen) setActiveScreen;
+  final Function(ActiveScreen) onActiveScreen;
 
-  const TestInfoWidget({super.key, required this.setActiveScreen});
+  const TestInfoWidget({super.key, required this.onActiveScreen});
 
   @override
   State<StatefulWidget> createState() {
@@ -67,7 +67,7 @@ class _TestInfoWidget extends State<TestInfoWidget> {
                     ? setState(() {
                         _tab++;
                       })
-                    : widget.setActiveScreen(ActiveScreen.inTest);
+                    : widget.onActiveScreen(ActiveScreen.inTest);
               },
               child: Text(tabList[_tab].button),
             )),

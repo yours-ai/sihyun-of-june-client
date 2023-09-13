@@ -25,12 +25,12 @@ class _StartingScreen extends State<StartingScreen> {
       if (character.isNotEmpty) {
         context.go('/mails');
         return;
-      }else {
+      } else {
         final testStatus = await getTestStatusQuery().result;
         if (testStatus.data == 'WAITING_CONFIRM') {
-          context.go('/result');
+          context.go('/character-choice');
         } else {
-          context.go('/test');
+          context.go('/character-test');
         }
       }
     }

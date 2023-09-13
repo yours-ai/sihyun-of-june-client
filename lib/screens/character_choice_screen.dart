@@ -10,22 +10,22 @@ class CharacterChoiceScreen extends StatefulWidget {
 
 class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
   ActiveScreen activeScreen = ActiveScreen.detail;
-  int test_id = 0;
+  int testId = 0;
   String name = '시현';
 
-  void _setActiveScreen(ActiveScreen screen) {
+  void handleActiveScreen(ActiveScreen screen) {
     setState(() {
       activeScreen = screen;
     });
   }
 
-  void _setTestId(int id) {
+  void handleTestId(int id) {
     setState(() {
-      test_id = id;
+      testId = id;
     });
   }
 
-  void _setName(String name) {
+  void handleName(String name) {
     setState(() {
       this.name = name;
     });
@@ -44,9 +44,9 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
   Widget _getActiveScreenContent() {
     switch (activeScreen) {
       case ActiveScreen.detail:
-        return CharacterDetailWidget(setActiveScreen: _setActiveScreen, setTestId: _setTestId, setName: _setName);
+        return CharacterDetailWidget(onActiveScreen: handleActiveScreen, onTestId: handleTestId, onName: handleName);
       case ActiveScreen.confirm:
-        return CharacterConfirmWidget(setActiveScreen: _setActiveScreen, test_id: test_id, name: name);
+        return CharacterConfirmWidget(onActiveScreen: handleActiveScreen, testId: testId, name: name);
       default:
         return Container();  // Default empty container
     }
