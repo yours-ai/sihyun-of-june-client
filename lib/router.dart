@@ -30,15 +30,14 @@ final router = GoRouter(
       builder: (context, state) => const LandingScreen(),
     ),
     GoRoute(
-      path: '/login',
-      builder: (context, state) => const LoginScreen(),
-      routes: [
-        GoRoute(
-          path: 'by-phone',
-          builder: (context, state) => const PhoneLoginScreen(),
-        ),
-      ]
-    ),
+        path: '/login',
+        builder: (context, state) => const LoginScreen(),
+        routes: [
+          GoRoute(
+            path: 'by-phone',
+            builder: (context, state) => const PhoneLoginScreen(),
+          ),
+        ]),
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
@@ -49,7 +48,8 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/othercharacter/:id',
-      builder: (context, state) => OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)),
+      builder: (context, state) =>
+          OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)),
     ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
@@ -62,7 +62,12 @@ final router = GoRouter(
       routes: [
         GoRoute(
             path: TabRoutePaths.mailList,
-            builder: (context, state) => const MailListScreen(),
+            pageBuilder: (context, state) {
+              return NoTransitionPage(
+                key: state.pageKey,
+                child: const MailListScreen(),
+              );
+            },
             routes: [
               GoRoute(
                 path: 'view',
@@ -71,15 +76,26 @@ final router = GoRouter(
             ]),
         GoRoute(
           path: TabRoutePaths.notificationList,
-          builder: (context, state) => const NotificationListScreen(),
+          pageBuilder: (context, state) {
+            return NoTransitionPage(
+              key: state.pageKey,
+              child: const NotificationListScreen(),
+            );
+          },
         ),
         GoRoute(
           path: TabRoutePaths.all,
-          builder: (context, state) => const AllScreen(),
+          pageBuilder: (context, state) {
+            return NoTransitionPage(
+              key: state.pageKey,
+              child: const AllScreen(),
+            );
+          },
         ),
       ],
     ),
-    GoRoute(path: '/character-test', builder: (context, state) => CharacterTestScreen()),
+    GoRoute(
+        path: '/character-test',
+        builder: (context, state) => CharacterTestScreen()),
   ],
 );
-
