@@ -14,14 +14,20 @@ class MailListScreen extends StatefulWidget {
 }
 
 class _MailListScreenState extends State<MailListScreen> {
-  int _mailNum = 9;
-  bool _agreeLetter = false;
+  final int _mailNum = 9;
+  final bool _agreeLetter = false;
 
   @override
   initState() {
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _showModal();
   }
+
 
   _showModal() async {
     if (_agreeLetter == false) {
@@ -50,9 +56,9 @@ class _MailListScreenState extends State<MailListScreen> {
                 ),
                 FilledButton(
                   onPressed: () => context.go('/landing'),
-                  child: Text(
+                  child: const Text(
                     '동의하기',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14.0,
                     ),
                   ),
@@ -93,14 +99,14 @@ class _MailListScreenState extends State<MailListScreen> {
                 crossAxisSpacing: 8,
                 childAspectRatio: 1.0,
                 children: [
-                  MailWidget(isRead: 'false', date: "9.10"),
-                  MailWidget(isRead: 'true', date: "9.09"),
-                  MailWidget(isRead: 'true', date: "9.08"),
-                  MailWidget(isRead: 'true', date: "9.07"),
-                  MailWidget(isRead: 'true', date: "9.06"),
-                  MailWidget(isRead: 'true', date: "9.05"),
-                  MailWidget(isRead: 'true', date: "9.04"),
-                  MailWidget(isRead: 'true', date: "9.03"),
+                  const MailWidget(isRead: 'false', date: "9.10"),
+                  const MailWidget(isRead: 'true', date: "9.09"),
+                  const MailWidget(isRead: 'true', date: "9.08"),
+                  const MailWidget(isRead: 'true', date: "9.07"),
+                  const MailWidget(isRead: 'true', date: "9.06"),
+                  const MailWidget(isRead: 'true', date: "9.05"),
+                  const MailWidget(isRead: 'true', date: "9.04"),
+                  const MailWidget(isRead: 'true', date: "9.03"),
                 ])
           else
             Column(

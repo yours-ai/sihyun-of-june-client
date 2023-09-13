@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:project_june_client/constants.dart';
 
 class ModalWidget extends StatelessWidget {

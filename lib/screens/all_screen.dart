@@ -20,7 +20,7 @@ class _AllScreenState extends State<AllScreen> {
 
   _showShareModal() async {
     if (_agreeShare == false) {
-      final result = await showModalBottomSheet<void>(
+      await showModalBottomSheet<void>(
         context: context,
         useRootNavigator: true,
         builder: (BuildContext context) {
@@ -124,28 +124,26 @@ class _AllScreenState extends State<AllScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(right: 28.0),
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Text(
-                              '80',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.neutral,
-                              ),
-                            ),
-                            Icon(
-                              PhosphorIcons.coin_vertical,
-                              size: 20,
+                      child: Row(
+                        children: [
+                          Text(
+                            '80',
+                            style: TextStyle(
+                              fontSize: 18,
                               color: ColorConstants.neutral,
                             ),
-                            Icon(
-                              PhosphorIcons.caret_right,
-                              size: 20,
-                              color: ColorConstants.neutral,
-                            ),
-                          ],
-                        ),
+                          ),
+                          Icon(
+                            PhosphorIcons.coin_vertical,
+                            size: 20,
+                            color: ColorConstants.neutral,
+                          ),
+                          Icon(
+                            PhosphorIcons.caret_right,
+                            size: 20,
+                            color: ColorConstants.neutral,
+                          ),
+                        ],
                       ),
                     )
                   ],

@@ -112,6 +112,20 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
             ),
           ),
         ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            splashFactory: NoSplash.splashFactory,
+            side: BorderSide(
+              color: ColorConstants.neutral,
+            ),
+            padding: const EdgeInsets.symmetric(
+              vertical: 17.0,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           backgroundColor: ColorConstants.background,
           elevation: 0,

@@ -145,7 +145,7 @@ class MailViewScreen extends StatelessWidget {
                                     fontWeight: FontWeight.normal,
                                     color: ColorConstants.primary),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 4,
                               ),
                               Text(
