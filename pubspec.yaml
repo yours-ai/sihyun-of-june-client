@@ -24,6 +24,9 @@ dependencies:
   flutter_riverpod: ^2.3.10
   flutter_secure_storage: ^9.0.0
   sign_in_with_apple: ^5.0.0
+  firebase_core: ^2.15.1
+  firebase_messaging: ^14.6.7
+  firebase_analytics: ^10.4.5
 
 dev_dependencies:
   flutter_test:
