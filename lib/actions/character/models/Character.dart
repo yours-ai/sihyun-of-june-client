@@ -6,10 +6,10 @@ part 'Character.g.dart';
 class Character {
   num id;
   bool is_active;
-  String name;
-  num age;
-  String MBTI;
-  String description;
+  String? name;
+  num? age;
+  String? MBTI;
+  String? description;
   String image;
 
   Character({required this.id, required this.is_active, required this.name, required this.age, required this.MBTI, required this.description, required this.image});

@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:project_june_client/constants.dart';
 
 class ProfileWidget extends StatelessWidget {
-  final String Name;
-  final String Age;
-  final String MBTI;
-  final String Description;
+  final String? Name;
+  final num? Age;
+  final String? MBTI;
+  final String? Description;
   final String ImagePath;
 
   ProfileWidget({
@@ -26,7 +26,7 @@ class ProfileWidget extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: Image.asset(
+          child: Image.network(
             ImagePath,
           ),
         ),
@@ -38,7 +38,7 @@ class ProfileWidget extends StatelessWidget {
             )),
         Container(
             child: Text(
-          Description,
+          Description ?? '',
           style: TextStyle(fontSize: 18, color: ColorConstants.neutral),
         )),
       ],

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/character/actions.dart';
 import 'package:project_june_client/actions/client.dart';
@@ -63,7 +65,7 @@ Query<String> getTestStatusQuery({
   );
 }
 
-Query<Character> getPendingTestQuery({
+Query<Map<String, dynamic>> getPendingTestQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
@@ -71,7 +73,7 @@ Query<Character> getPendingTestQuery({
     queryFn: () => dio.get('/character/test/pending/').then(
       (response) {
         if (response.data != null && response.data.isNotEmpty) {
-          return Character.fromJson(response.data);
+          return response.data;
         } else {
           throw Exception('Response format is not as expected');
         }
@@ -80,3 +82,29 @@ Query<Character> getPendingTestQuery({
     onError: onError,
   );
 }
+
+Query<List<Character>> getAllCharactersQuery({
+  OnQueryErrorCallback? onError,
+}) {
+  return Query(
+    key: ['characters'],
+    queryFn: () => dio.get('/character/characters/').then((response) {
+      return response.data
+          .map<Character>((json) => Character.fromJson(json))
+          .toList();
+    }),
+    onError: onError,
+  );
+}
+
+Query<Character> getCharacterQuery({
+  required num id,
+  OnQueryErrorCallback? onError,
+}) {
+  return Query(
+    key: ['character', id.toString()],
+    queryFn: () => dio.get('/character/characters/$id/').then((response) => response.data).then((json) => Character.fromJson(json)),
+    onError: onError,
+  );
+}
+
