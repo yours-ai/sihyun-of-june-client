@@ -10,7 +10,7 @@ class ProfileWidget extends StatelessWidget {
   final String? Description;
   final String ImagePath;
 
-  ProfileWidget({
+  const ProfileWidget({
     super.key,
     required this.Name,
     required this.Age,
@@ -34,13 +34,12 @@ class ProfileWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 36.0),
             child: Text(
               '$Name, $Age\n$MBTI',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             )),
-        Container(
-            child: Text(
+        Text(
           Description ?? '',
           style: TextStyle(fontSize: 18, color: ColorConstants.neutral),
-        )),
+        ),
       ],
     );
   }

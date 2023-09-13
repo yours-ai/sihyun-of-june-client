@@ -37,7 +37,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             Container(
                 padding: const EdgeInsets.symmetric(vertical: 36.0),
-                child: Text(
+                child: const Text(
                   '류시현, 24\nESFJ',
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 )),
@@ -60,56 +60,56 @@ class ProfileScreen extends StatelessWidget {
             GridView.count(
               crossAxisCount: 3,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
               childAspectRatio: 1.0,
               children: [
                 ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
                     child: Image.asset(
                       'assets/images/ryusihyun_profile.png',
                     ),
                   ),
-                  borderRadius: BorderRadius.circular(20),
                 ),
                 ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     'assets/images/ryusihyun_profile.png',
                   ),
-                  borderRadius: BorderRadius.circular(20),
                 ),
                 ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     'assets/images/ryusihyun_profile.png',
                   ),
-                  borderRadius: BorderRadius.circular(20),
                 ),
                 ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     'assets/images/ryusihyun_profile.png',
                   ),
-                  borderRadius: BorderRadius.circular(20),
                 ),
                 ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     'assets/images/ryusihyun_profile.png',
                   ),
-                  borderRadius: BorderRadius.circular(20),
                 ),
                 ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
                   child: Image.asset(
                     'assets/images/ryusihyun_profile.png',
                   ),
-                  borderRadius: BorderRadius.circular(20),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 36,
             ),
-            FilledButton(onPressed: () {}, child: Text('친구에게 자랑하기')),
+            FilledButton(onPressed: () {}, child: const Text('친구에게 자랑하기')),
           ],
         ),
       ),

@@ -19,8 +19,7 @@ class _AllScreenState extends State<AllScreen> {
   bool _agreeShare = false;
 
   _showShareModal() async {
-    if (_agreeShare == false) {
-      final result = await showModalBottomSheet<void>(
+    if (_agreeShare == false) {await showModalBottomSheet<void>(
         context: context,
         useRootNavigator: true,
         builder: (BuildContext context) {
@@ -72,6 +71,9 @@ class _AllScreenState extends State<AllScreen> {
                     style: TextStyle(
                         fontSize: 14.0, color: ColorConstants.secondary),
                   ),
+                ),
+                const SizedBox(
+                  height: 12,
                 ),
                 FilledButton(
                   onPressed: () {
@@ -155,11 +157,11 @@ class _AllScreenState extends State<AllScreen> {
                 },
               ),
             ),
-            MenuWidget(title: '친구 초대하고, 50코인 받기'),
-            MenuWidget(title: '공지'),
-            MenuWidget(title: '자주 묻는 질문'),
-            MenuWidget(title: '문의하기'),
-            MenuWidget(title: '약관 및 정책 이해하기'),
+            const MenuWidget(title: '친구 초대하고, 50코인 받기'),
+            const MenuWidget(title: '공지'),
+            const MenuWidget(title: '자주 묻는 질문'),
+            const MenuWidget(title: '문의하기'),
+            const MenuWidget(title: '약관 및 정책 이해하기'),
             MenuWidget(
               title: '로그아웃',
               onPressed: () {

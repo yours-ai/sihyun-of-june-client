@@ -17,7 +17,7 @@ class OtherCharacterScreen extends StatelessWidget {
       query: getCharacterQuery(id: id ?? 0),
       builder: (context, state) {
         if (state.data == null) {
-          return Scaffold(
+          return const Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),

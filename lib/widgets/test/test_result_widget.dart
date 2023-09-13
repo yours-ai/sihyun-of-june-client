@@ -25,8 +25,8 @@ final List<TestResultData> tabList = [
       title: '테스트가 완료됐어요!\n상대를 정하는 중이에요...',
       body: Lottie.asset('assets/lotties/animation_lm8qjemt.zip'),
       button: '두근두근...'),
-  TestResultData(title: '상대가 정해졌어요!\n확인해보실래요?', button: '확인해보기'),
-  TestResultData(title: '오류가 발생했어요', button: '다시 하기'),
+  const TestResultData(title: '상대가 정해졌어요!\n확인해보실래요?', button: '확인해보기'),
+  const TestResultData(title: '오류가 발생했어요', button: '다시 하기'),
 ];
 
 class TestResultWidget extends StatefulWidget {
@@ -57,7 +57,7 @@ class _TestResultWidget extends State<TestResultWidget> {
     });  }
 
   Future<void> _switchPageAfterDelay() async {
-    await Future.delayed(Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 4));
     setState(() {
       _tab = 1;
     });
@@ -74,7 +74,7 @@ class _TestResultWidget extends State<TestResultWidget> {
           backgroundColor: ColorConstants.background,
           elevation: 0,
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(1.0),
+            preferredSize: const Size.fromHeight(1.0),
             child: LinearProgressIndicator(
               value: 1,
               backgroundColor: ColorConstants.background,

@@ -6,7 +6,7 @@ class NotificationWidget extends StatefulWidget {
   final String title;
   final int time;
 
-  NotificationWidget(
+  const NotificationWidget(
       {super.key,
       required this.time,
       required this.title});

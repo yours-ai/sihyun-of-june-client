@@ -6,7 +6,7 @@ import 'package:project_june_client/constants.dart';
 class MailWidget extends StatelessWidget {
   final String isRead, date;
 
-  MailWidget({super.key, required this.isRead, required this.date});
+  const MailWidget({super.key, required this.isRead, required this.date});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class MailWidget extends StatelessWidget {
               height: 10,
               width: 10,
               decoration: BoxDecoration(
-                color: Color(0xffFE3140),
+                color: const Color(0xffFE3140),
                 borderRadius: BorderRadius.circular(5),
               ),
             ),

@@ -7,7 +7,7 @@ import 'package:project_june_client/widgets/common/title_layout.dart';
 import '../../screens/test_screen.dart';
 
 class InTestWidget extends StatefulWidget {
-  InTestWidget(
+  const InTestWidget(
       {super.key, required this.setActiveScreen, required this.responses});
 
   final Function(ActiveScreen) setActiveScreen;
@@ -22,15 +22,7 @@ class InTestWidget extends StatefulWidget {
 class _InTestWidget extends State<InTestWidget> {
   List<Question>? tabList;
 
-
   int _currentQuestionIndex = 0;
-  final PageController _controller = PageController();
-
-  void _nextQuestion(int index) {
-    setState(() {
-      _currentQuestionIndex = index;
-    });
-  }
 
   List<List<num>> answers = [];
 
@@ -44,7 +36,7 @@ class _InTestWidget extends State<InTestWidget> {
       query: getQuestionsQuery(),
       builder: (context, state) {
         if (state.data == null) {
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
         tabList = state.data;
         return Scaffold(
@@ -54,7 +46,7 @@ class _InTestWidget extends State<InTestWidget> {
               backgroundColor: ColorConstants.background,
               elevation: 0,
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(1.0),
+                preferredSize: const Size.fromHeight(1.0),
                 child: LinearProgressIndicator(
                   value: (_currentQuestionIndex + 1) / 8,
                   backgroundColor: ColorConstants.background,
