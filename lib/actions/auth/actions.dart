@@ -1,5 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
@@ -7,6 +8,7 @@ import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import '../notification/actions.dart';
 import 'models/Token.dart';
 
 const _SERVER_TOKEN_KEY = 'SERVER_TOKEN';
@@ -73,7 +75,7 @@ Future<bool> smsVerify(ValidatedAuthCodeDTO dto) async {
 }
 
 Future<String> getServerTokenBySMS(ValidatedUserDTO dto) async {
-  try{
+  try {
     final response = await dio.post('/auth/sms-auth/join-or-login/', data: {
       'phone': dto.phone,
       'country_code': dto.countryCode,
@@ -94,7 +96,7 @@ Future<String> getServerTokenBySMS(ValidatedUserDTO dto) async {
 }
 
 Future<String> getServerTokenBySMSLogin(ValidatedAuthCodeDTO dto) async {
-  try{
+  try {
     final response = await dio.post('/auth/sms-auth/join-or-login/', data: {
       'phone': dto.phone,
       'country_code': dto.countryCode,
@@ -137,11 +139,18 @@ void setServerTokenOnDio(String serverToken) {
   dio.options.headers['Authorization'] = "Token $serverToken";
 }
 
-Future<void> saveServerToken(String serverToken) async {
+Future<void> login(String serverToken, {bool? saveTokenToClient}) async {
+  saveTokenToClient ??= true;
   setServerTokenOnDio(serverToken);
-  final storage = getSecureStorage();
-  await storage.write(key: _SERVER_TOKEN_KEY, value: serverToken);
-  return;
+  if (saveTokenToClient) {
+    final storage = getSecureStorage();
+    await storage.write(key: _SERVER_TOKEN_KEY, value: serverToken);
+  }
+  FirebaseMessaging.instance
+      .getToken()
+      .then((token) => token != null ? getOrCreateUserDevice(token) : null);
+  FirebaseMessaging.instance.onTokenRefresh
+      .listen((token) => getOrCreateUserDevice(token));
 }
 
 Future<String?> getServerToken() async {
@@ -149,11 +158,11 @@ Future<String?> getServerToken() async {
   return await storage.read(key: _SERVER_TOKEN_KEY);
 }
 
-Future<bool> loadServerToken() async {
+Future<bool> loadIsLogined() async {
   final storage = getSecureStorage();
   final loaded = await storage.read(key: _SERVER_TOKEN_KEY);
   if (loaded == null) return false;
-  setServerTokenOnDio(loaded);
+  login(loaded, saveTokenToClient: false);
   return true;
 }
 
