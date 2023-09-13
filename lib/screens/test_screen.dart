@@ -21,7 +21,7 @@ class _CharacterTestScreenState extends State<CharacterTestScreen> {
     });
   }
 
-  void _responses (AnswerDTOList answerDTOList) {
+  void _responses(AnswerDTOList answerDTOList) {
     setState(() {
       responses = answerDTOList;
     });
@@ -42,11 +42,12 @@ class _CharacterTestScreenState extends State<CharacterTestScreen> {
       case ActiveScreen.info:
         return TestInfoWidget(onActiveScreen: handleActiveScreen);
       case ActiveScreen.inTest:
-        return InTestWidget(onActiveScreen: handleActiveScreen, responses: _responses);
+        return InTestWidget(
+            onActiveScreen: handleActiveScreen, responses: _responses);
       case ActiveScreen.result:
         return TestResultWidget(responses: responses);
       default:
-        return Container();  // Default empty container
+        return Container(); // Default empty container
     }
   }
 }
