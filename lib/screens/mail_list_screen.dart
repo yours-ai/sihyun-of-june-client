@@ -19,7 +19,6 @@ class MailListScreen extends StatefulWidget {
 
 class _MailListScreenState extends State<MailListScreen> {
   final int _mailNum = 9;
-  final bool _agreeLetter = false;
 
   @override
   Widget build(context) {
@@ -57,15 +56,15 @@ class _MailListScreenState extends State<MailListScreen> {
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
                 childAspectRatio: 1.0,
-                children: [
-                  const MailWidget(isRead: 'false', date: "9.10"),
-                  const MailWidget(isRead: 'true', date: "9.09"),
-                  const MailWidget(isRead: 'true', date: "9.08"),
-                  const MailWidget(isRead: 'true', date: "9.07"),
-                  const MailWidget(isRead: 'true', date: "9.06"),
-                  const MailWidget(isRead: 'true', date: "9.05"),
-                  const MailWidget(isRead: 'true', date: "9.04"),
-                  const MailWidget(isRead: 'true', date: "9.03"),
+                children: const [
+                  MailWidget(isRead: 'false', date: "9.10"),
+                  MailWidget(isRead: 'true', date: "9.09"),
+                  MailWidget(isRead: 'true', date: "9.08"),
+                  MailWidget(isRead: 'true', date: "9.07"),
+                  MailWidget(isRead: 'true', date: "9.06"),
+                  MailWidget(isRead: 'true', date: "9.05"),
+                  MailWidget(isRead: 'true', date: "9.04"),
+                  MailWidget(isRead: 'true', date: "9.03"),
                 ])
           else
             Column(

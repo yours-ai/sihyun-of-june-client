@@ -5,7 +5,7 @@ class MenuWidget extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
 
-  MenuWidget({
+  const MenuWidget({
     Key? key,
     required this.title,
     this.onPressed = defaultOnPressed,
