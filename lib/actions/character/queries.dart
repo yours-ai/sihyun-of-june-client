@@ -66,6 +66,16 @@ Query<Character> getCharacterQuery({
   );
 }
 
+Query<List<Character>> getMyCharacterQuery({
+  OnQueryErrorCallback? onError,
+}) {
+  return Query(
+    key: ['my-character'],
+    queryFn: fetchMyCharacter,
+    onError: onError,
+  );
+}
+
 Mutation<void, int> getDenyChoiceMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,

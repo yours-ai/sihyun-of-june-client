@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LandingTabData {
   final String title;
