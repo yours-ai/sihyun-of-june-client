@@ -7,7 +7,7 @@ class NotificationListScreen extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return SafeArea(
+    return const SafeArea(
       child: TitleLayout(
         titleText: '알림',
         body: Column(

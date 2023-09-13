@@ -6,6 +6,7 @@ class TitleLayout extends StatelessWidget {
   final Widget body;
   final Widget? actions;
   final Widget showProfile;
+  final bool withAppBar;
 
   const TitleLayout({
     Key? key,
@@ -13,7 +14,8 @@ class TitleLayout extends StatelessWidget {
     this.titleStyle,
     required this.body,
     this.actions,
-    this.showProfile = const SizedBox(width: 0, height: 0),
+    this.showProfile = const SizedBox( width:0, height:0),
+    this.withAppBar = false,
   }) : super(key: key);
 
   @override
@@ -21,15 +23,18 @@ class TitleLayout extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const SizedBox(height: 50),
+        withAppBar ? const SizedBox() : const SizedBox(height: 50),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28),
-              child: Text(
-                titleText,
-                style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: Text(
+                  titleText,
+                  style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
+                  softWrap: true,
+                ),
               ),
             ),
             showProfile,

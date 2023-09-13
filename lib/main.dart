@@ -68,7 +68,7 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
         splashFactory: NoSplash.splashFactory,
         textTheme: const TextTheme(
           titleLarge: TextStyle(
-            fontSize: 30,
+            fontSize: 28,
             fontWeight: FontWeight.bold,
           ),
         ),

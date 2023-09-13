@@ -20,12 +20,9 @@ class _MailListScreenState extends State<MailListScreen> {
   @override
   initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _showModal();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showModal();
+    });
   }
 
 
@@ -53,6 +50,9 @@ class _MailListScreenState extends State<MailListScreen> {
                     style: TextStyle(
                         fontSize: 14.0, color: ColorConstants.secondary),
                   ),
+                ),
+                const SizedBox(
+                  height: 12,
                 ),
                 FilledButton(
                   onPressed: () => context.go('/landing'),

@@ -73,6 +73,9 @@ class _AllScreenState extends State<AllScreen> {
                         fontSize: 14.0, color: ColorConstants.secondary),
                   ),
                 ),
+                const SizedBox(
+                  height: 12,
+                ),
                 FilledButton(
                   onPressed: () {
                     // context.go('/landing');
@@ -98,7 +101,7 @@ class _AllScreenState extends State<AllScreen> {
     return SafeArea(
       child: TitleLayout(
         titleText: '전체',
-        body: Column(
+        body: ListView(
           children: [
             Container(
               color: ColorConstants.background,
@@ -153,11 +156,11 @@ class _AllScreenState extends State<AllScreen> {
                 },
               ),
             ),
-            MenuWidget(title: '친구 초대하고, 50코인 받기'),
-            MenuWidget(title: '공지'),
-            MenuWidget(title: '자주 묻는 질문'),
-            MenuWidget(title: '문의하기'),
-            MenuWidget(title: '약관 및 정책 이해하기'),
+            const MenuWidget(title: '친구 초대하고, 50코인 받기'),
+            const MenuWidget(title: '공지'),
+            const MenuWidget(title: '자주 묻는 질문'),
+            const MenuWidget(title: '문의하기'),
+            const MenuWidget(title: '약관 및 정책 이해하기'),
             MenuWidget(
               title: '로그아웃',
               onPressed: () {

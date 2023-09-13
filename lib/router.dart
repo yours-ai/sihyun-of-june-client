@@ -5,9 +5,11 @@ import 'package:project_june_client/screens/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail_view_screen.dart';
 import 'package:project_june_client/screens/notification_list_screen.dart';
 import 'package:project_june_client/screens/phone_login_screen.dart';
+import 'package:project_june_client/screens/other_character_screen.dart';
 import 'package:project_june_client/screens/profile_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
-
+import 'package:project_june_client/screens/character_choice_screen.dart';
+import 'package:project_june_client/screens/test_screen.dart';
 import 'constants.dart';
 import 'screens/landing_screen.dart';
 import 'screens/login_screen.dart';
@@ -41,6 +43,14 @@ final router = GoRouter(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
     ),
+    GoRoute(
+      path: '/character-choice',
+      builder: (context, state) => CharacterChoiceScreen(),
+    ),
+    GoRoute(
+      path: '/othercharacter/:id',
+      builder: (context, state) => OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)),
+    ),
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
       builder: (context, state, child) {
@@ -69,6 +79,7 @@ final router = GoRouter(
         ),
       ],
     ),
+    GoRoute(path: '/character-test', builder: (context, state) => CharacterTestScreen()),
   ],
 );
 
