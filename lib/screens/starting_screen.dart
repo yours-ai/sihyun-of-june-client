@@ -19,7 +19,7 @@ class _StartingScreen extends State<StartingScreen> {
     if (!context.mounted) return;
 
     if (isLogined == false) {
-      context.go('/login');
+      context.go('/landing');
     } else {
       final character = await fetchCharacter();
       if (character.isNotEmpty) {

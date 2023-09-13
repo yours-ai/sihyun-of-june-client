@@ -15,13 +15,26 @@ class LoginScreen extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment.topCenter,
-              child: Column(children: [
-                const SizedBox(height: 350),
-                Image.asset(
-                  'assets/images/logo.png',
-                  height: 75,
-                ),
-              ]),
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  double totalHeight = constraints.maxHeight;
+                  double targetPosition = (2 / 5) * totalHeight;
+
+                  return Stack(
+                    children: [
+                      Positioned(
+                        top: targetPosition,
+                        left: 0,
+                        right: 0,
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          height: 75,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
             Align(
               alignment: Alignment.bottomCenter,

@@ -102,10 +102,7 @@ class _LandingScreen extends State<LandingScreen> {
               ),
               _tab == tabList.length - 1
                   ? FilledButton(
-                      onPressed: () async {
-                        final instance = await SharedPreferences.getInstance();
-                        instance.setBool('isLandingViewed', true);
-                        if (!context.mounted) return;
+                      onPressed: () {
                         context.go('/login');
                       },
                       child: const Text(
