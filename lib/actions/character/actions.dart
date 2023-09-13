@@ -1,7 +1,6 @@
 import 'package:project_june_client/actions/character/models/Character.dart';
 
 import '../client.dart';
-import 'models/Question.dart';
 
 Future<void> sendResponses(List<Map<String, dynamic>> responses) async {
   final response = await dio.post(
@@ -17,7 +16,7 @@ Future<void> sendResponses(List<Map<String, dynamic>> responses) async {
 }
 
 
-Future<void> confirmChoice(num id) async {
+Future<void> confirmChoice(int id) async {
   final response = await dio.post('/character/test/$id/confirm/');
   if (response.statusCode == 200) {
     return;
@@ -26,7 +25,7 @@ Future<void> confirmChoice(num id) async {
   }
 }
 
-Future<void> denyChoice(num id) async {
+Future<void> denyChoice(int id) async {
   final response = await dio.post('/character/test/$id/deny/');
   if (response.statusCode == 200) {
     return;
@@ -35,11 +34,11 @@ Future<void> denyChoice(num id) async {
   }
 }
 
-Future<Character> fetchCharacter() async {
-  final response = await dio.get('/me/character/');
+Future<List<Character>> fetchCharacter() async {
+  final response = await dio.get('/character/me/characters/');
 
   if (response.statusCode == 200) {
-    return Character.fromJson(response.data);
+    return (response.data as List).map((e) => Character.fromJson(e)).toList();
   } else {
     throw Exception('Failed to load character');
   }

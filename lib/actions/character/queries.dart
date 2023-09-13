@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/character/actions.dart';
 import 'package:project_june_client/actions/client.dart';
@@ -55,7 +53,7 @@ Query<String> getTestStatusQuery({
     queryFn: () => dio.get('/character/me/test-status/').then(
       (response) {
         if (response.data is List && response.data.isNotEmpty) {
-          return response.data[0]['status'];
+          return response.data.last['status'];
         } else {
           throw Exception('Response format is not as expected');
         }
@@ -103,8 +101,10 @@ Query<Character> getCharacterQuery({
 }) {
   return Query(
     key: ['character', id.toString()],
-    queryFn: () => dio.get('/character/characters/$id/').then((response) => response.data).then((json) => Character.fromJson(json)),
+    queryFn: () => dio
+        .get('/character/characters/$id/')
+        .then((response) => response.data)
+        .then((json) => Character.fromJson(json)),
     onError: onError,
   );
 }
-
