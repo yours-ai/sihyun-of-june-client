@@ -14,7 +14,7 @@ class StartingScreen extends StatefulWidget {
 
 class _StartingScreen extends State<StartingScreen> {
   _checkAuthAndLand() async {
-    final isLogined = await loadServerToken();
+    final isLogined = await loadIsLogined();
     FlutterNativeSplash.remove();
     if (!context.mounted) return;
 

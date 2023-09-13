@@ -11,7 +11,7 @@ Mutation<void, void> getLoginAsKakaoMutation({
     queryFn: (void _) async {
       final token = await getKakaoOAuthToken();
       final serverToken = await getServerTokenByKakaoToken(token);
-      await saveServerToken(serverToken);
+      await login(serverToken);
     },
     onSuccess: onSuccess,
     onError: onError,
@@ -27,7 +27,7 @@ Mutation<void, void> getLoginAsAppleMutation({
       final appleCredentials = await getAppleLoginCredential();
       final serverToken =
           await getServerTokenByAppleCredential(appleCredentials);
-      await saveServerToken(serverToken);
+      await login(serverToken);
     },
     onSuccess: onSuccess,
     onError: onError,
@@ -64,10 +64,10 @@ Mutation<void, ValidatedVerifyDTO> getSmsTokenMutation({
     queryFn: (dto) async {
       if (dto is ValidatedUserDTO) {
         final serverToken = await getServerTokenBySMS(dto);
-        await saveServerToken(serverToken);
+        await login(serverToken);
       } else if (dto is ValidatedAuthCodeDTO) {
         final serverToken = await getServerTokenBySMSLogin(dto);
-        await saveServerToken(serverToken);
+        await login(serverToken);
       }
     },
     onSuccess: onSuccess,

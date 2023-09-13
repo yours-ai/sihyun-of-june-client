@@ -1,9 +1,13 @@
+import 'package:cached_query_flutter/cached_query_flutter.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/modal_widget.dart';
+import 'package:project_june_client/widgets/notification_permission_check.dart';
 
+import '../actions/notification/queries.dart';
 import '../constants.dart';
 
 class MailListScreen extends StatefulWidget {
@@ -15,64 +19,10 @@ class MailListScreen extends StatefulWidget {
 
 class _MailListScreenState extends State<MailListScreen> {
   final int _mailNum = 9;
-  final bool _agreeLetter = false;
-
-  @override
-  initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showModal();
-    });
-  }
-
-
-  _showModal() async {
-    if (_agreeLetter == false) {
-      await showModalBottomSheet<void>(
-        context: context,
-        useRootNavigator: true,
-        builder: (BuildContext context) {
-          return ModalWidget(
-            title: '편지를 받으려면,\n알림 동의가 필요해요',
-            choiceColumn: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                FilledButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(ColorConstants.background),
-                  ),
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: Text(
-                    '취소',
-                    style: TextStyle(
-                        fontSize: 14.0, color: ColorConstants.secondary),
-                  ),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                FilledButton(
-                  onPressed: () => context.go('/landing'),
-                  child: const Text(
-                    '동의하기',
-                    style: TextStyle(
-                      fontSize: 14.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    }
-  }
 
   @override
   Widget build(context) {
+    final query = getIsNotificationAcceptedQuery();
     return SafeArea(
       child: TitleLayout(
         showProfile: Padding(
@@ -90,6 +40,14 @@ class _MailListScreenState extends State<MailListScreen> {
         ),
         titleText: '받은 편지함',
         body: ListView(children: [
+          QueryBuilder(
+            query: query,
+            builder: (context, state) {
+              return state.data == false
+                  ? RequestNotificationPermissionWidget()
+                  : Container();
+            },
+          ),
           if (_mailNum != 0)
             GridView.count(
                 crossAxisCount: 3,
@@ -98,15 +56,15 @@ class _MailListScreenState extends State<MailListScreen> {
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
                 childAspectRatio: 1.0,
-                children: [
-                  const MailWidget(isRead: 'false', date: "9.10"),
-                  const MailWidget(isRead: 'true', date: "9.09"),
-                  const MailWidget(isRead: 'true', date: "9.08"),
-                  const MailWidget(isRead: 'true', date: "9.07"),
-                  const MailWidget(isRead: 'true', date: "9.06"),
-                  const MailWidget(isRead: 'true', date: "9.05"),
-                  const MailWidget(isRead: 'true', date: "9.04"),
-                  const MailWidget(isRead: 'true', date: "9.03"),
+                children: const [
+                  MailWidget(isRead: 'false', date: "9.10"),
+                  MailWidget(isRead: 'true', date: "9.09"),
+                  MailWidget(isRead: 'true', date: "9.08"),
+                  MailWidget(isRead: 'true', date: "9.07"),
+                  MailWidget(isRead: 'true', date: "9.06"),
+                  MailWidget(isRead: 'true', date: "9.05"),
+                  MailWidget(isRead: 'true', date: "9.04"),
+                  MailWidget(isRead: 'true', date: "9.03"),
                 ])
           else
             Column(
