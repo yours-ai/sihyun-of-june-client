@@ -53,7 +53,7 @@ class CharacterConfirmWidget extends StatelessWidget {
                 MutationBuilder(
                   mutation: getDenyChoiceMutation(
                     onSuccess: (res, arg) {
-                      context.go('/chracter-test');
+                      context.go('/character-test');
                     },
                   ),
                   builder: (context, state, mutate) => FilledButton(
