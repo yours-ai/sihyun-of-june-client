@@ -4,6 +4,7 @@ import 'package:project_june_client/screens/all_screen.dart';
 import 'package:project_june_client/screens/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail_view_screen.dart';
 import 'package:project_june_client/screens/notification_list_screen.dart';
+import 'package:project_june_client/screens/phone_login_screen.dart';
 import 'package:project_june_client/screens/other_character_screen.dart';
 import 'package:project_june_client/screens/profile_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
@@ -31,6 +32,16 @@ final router = GoRouter(
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginScreen(),
+      routes: [
+        GoRoute(
+          path: 'by-phone',
+          builder: (context, state) => const PhoneLoginScreen(),
+        ),
+      ]
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
     ),
     GoRoute(
       path: '/character-choice',
@@ -57,10 +68,6 @@ final router = GoRouter(
                 path: 'view',
                 builder: (context, state) => const MailViewScreen(),
               ),
-              GoRoute(
-                path: 'profile',
-                builder: (context, state) => const ProfileScreen(),
-              ),
             ]),
         GoRoute(
           path: TabRoutePaths.notificationList,
@@ -75,3 +82,4 @@ final router = GoRouter(
     GoRoute(path: '/character-test', builder: (context, state) => CharacterTestScreen()),
   ],
 );
+

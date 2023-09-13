@@ -41,11 +41,10 @@ class ProfileScreen extends StatelessWidget {
                   '류시현, 24\nESFJ',
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 )),
-            Container(
-                child: Text(
+            Text(
               '서울에서 심리학과를 졸업한 시현이는 되었어요. 항상 섬세하고 자주 따뜻하게 편지를 보내주어요. 항상 섬세하고',
               style: TextStyle(fontSize: 18, color: ColorConstants.neutral),
-            )),
+            ),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 36.0),
               child: Text(

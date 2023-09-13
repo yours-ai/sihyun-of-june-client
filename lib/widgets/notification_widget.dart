@@ -22,7 +22,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
   Widget build(BuildContext context) {
     return Container(
       color: _isRead == false
-          ? Color.fromRGBO(236, 236, 236, 0.4)
+          ? const Color.fromRGBO(236, 236, 236, 0.4)
           : ColorConstants.background,
       child: TextButton(
         style: TextButton.styleFrom(
@@ -34,7 +34,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
           children: [
             Container(
               height: 83,
-              padding: EdgeInsets.only(left: 22),
+              padding: const EdgeInsets.only(left: 22),
               alignment: Alignment.centerLeft,
               child: Text(
                 widget.title,
@@ -47,7 +47,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
             ),
             Container(
               height: 20,
-              padding: EdgeInsets.only(right: 22),
+              padding: const EdgeInsets.only(right: 22),
               child: Row(
                 children: [
                   Text(
