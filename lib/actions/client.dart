@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/environments.dart';
+import 'package:project_june_client/globals.dart';
 
 final Dio dio = Dio(
   BaseOptions(
@@ -16,7 +17,7 @@ void initServerErrorSnackbar(BuildContext context) {
       onError: (error, handler) {
         if (error.response?.statusCode != null) {
           if (error.response!.statusCode! >= 500) {
-            ScaffoldMessenger.of(context).showSnackBar(
+            scaffoldMessengerKey.currentState?.showSnackBar(
               const SnackBar(
                 content: Text(
                   '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
@@ -26,7 +27,7 @@ void initServerErrorSnackbar(BuildContext context) {
           } else if (error.response!.statusCode == 401) {
             logout();
             context.go('/login');
-            ScaffoldMessenger.of(context).showSnackBar(
+            scaffoldMessengerKey.currentState?.showSnackBar(
               const SnackBar(
                 content: Text(
                   '로그인이 필요합니다.',

@@ -25,57 +25,48 @@ class CharacterDetailWidget extends StatelessWidget {
     return QueryBuilder(
       query: query,
       builder: (context, state) {
-        int excludeId = state.data?['character']['id'] ?? 0;
-        if (state.status == 'loading') {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+        if (state.data == null) {
+          return const SizedBox.shrink();
         }
-        ;
         return Scaffold(
-          body: state.data != null
-              ? SafeArea(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+          body: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(
+                  height: 50,
+                ),
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 28.0,
+                      vertical: 10,
+                    ),
                     children: [
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Expanded(
-                        child: ListView(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 28.0,
-                            vertical: 10,
-                          ),
-                          children: [
-                            ProfileWidget(
-                                name: state.data!['character']['name'],
-                                age: (state.data!['character']['age']),
-                                mbti: state.data!['character']['MBTI'],
-                                description: state.data!['character']
-                                    ['description'],
-                                imageSrc: state.data!['character']['image']),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 28.0, right: 28.0, bottom: 20.0),
-                        child: FilledButton(
-                            onPressed: () {
-                              onActiveScreen(ActiveScreen.confirm);
-                              onTestId(state.data!['test_id']);
-                              onName(state.data!['character']['name']
-                                  .substring(1));
-                            },
-                            child: const Text('다음')),
-                      ),
+                      ProfileWidget(
+                          name: state.data!['character']['name'],
+                          age: (state.data!['character']['age']),
+                          mbti: state.data!['character']['MBTI'],
+                          description: state.data!['character']['description'],
+                          imageSrc: state.data!['character']['image']),
                     ],
                   ),
-                )
-              : Container(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 28.0, right: 28.0, bottom: 20.0),
+                  child: FilledButton(
+                    onPressed: () {
+                      onActiveScreen(ActiveScreen.confirm);
+                      onTestId(state.data!['test_id']);
+                      onName(state.data!['character']['name'].substring(1));
+                    },
+                    child: const Text('다음'),
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
     );

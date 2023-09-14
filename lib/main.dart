@@ -10,6 +10,7 @@ import 'firebase_options.dart';
 
 import 'constants.dart';
 import 'environments.dart';
+import 'globals.dart';
 import 'router.dart';
 
 void main() async {
@@ -52,6 +53,7 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
     return MaterialApp.router(
       title: '유월의 시현이',
       routerConfig: router,
+      scaffoldMessengerKey: scaffoldMessengerKey,
       theme: ThemeData(
         fontFamily: 'MaruBuri',
         scaffoldBackgroundColor: ColorConstants.background,
