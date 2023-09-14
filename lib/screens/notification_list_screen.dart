@@ -37,14 +37,15 @@ class NotificationListScreen extends StatelessWidget {
                         ),
                       ],
                     )
-                  : Column(
+                  : ListView(
                       children: state.data!
                           .map<Widget>(
                             (notification) => NotificationWidget(
                               notification: notification,
                             ),
                           )
-                          .toList()),
+                          .toList(),
+                    ),
             ),
           );
         });
