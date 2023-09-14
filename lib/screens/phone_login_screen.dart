@@ -67,7 +67,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
                   MaterialStateProperty.all(ColorConstants.background),
                 ),
                 onPressed: () {
-                  context.go('/landing');
+                  context.pop();
                 },
                 child: Text(
                   '취소',
@@ -76,7 +76,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
                 ),
               ),
               FilledButton(
-                onPressed: () => context.go('/all'),
+                onPressed: () => context.go('/'),
                 child: const Text(
                   '동의하고 시작하기',
                   style: TextStyle(

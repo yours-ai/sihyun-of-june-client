@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -44,35 +46,36 @@ class LoginScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    MutationBuilder(
-                      mutation: getLoginAsAppleMutation(
-                        onSuccess: (res, arg) {
-                          context.go('/');
-                        },
-                        onError: (arg, error, callback) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                '애플 로그인 중 에러가 발생했어요.',
+                    if (Platform.isIOS)
+                      MutationBuilder(
+                        mutation: getLoginAsAppleMutation(
+                          onSuccess: (res, arg) {
+                            context.go('/');
+                          },
+                          onError: (arg, error, callback) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  '애플 로그인 중 에러가 발생했어요.',
+                                ),
                               ),
+                            );
+                          },
+                        ),
+                        builder: (context, state, mutate) {
+                          return FilledButton(
+                            onPressed: () => mutate(null),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.apple),
+                                SizedBox(width: 8),
+                                Text('Apple로 계속하기')
+                              ],
                             ),
                           );
                         },
                       ),
-                      builder: (context, state, mutate) {
-                        return FilledButton(
-                          onPressed: () =>  mutate(null),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.apple),
-                              SizedBox(width: 8),
-                              Text('Apple로 계속하기')
-                            ],
-                          ),
-                        );
-                      },
-                    ),
                     const SizedBox(height: 10),
                     MutationBuilder(
                       mutation: getLoginAsKakaoMutation(

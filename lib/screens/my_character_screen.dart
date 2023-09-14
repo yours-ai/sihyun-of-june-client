@@ -96,7 +96,7 @@ class MyCharacterScreen extends StatelessWidget {
                               return GestureDetector(
                                 onTap: () {
                                   num id = character.id;
-                                  context.go('/other-character/$id');
+                                  context.push('/other-character/$id');
                                 },
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
