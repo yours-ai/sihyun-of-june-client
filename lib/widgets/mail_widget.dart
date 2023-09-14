@@ -81,7 +81,7 @@ class MailWidget extends StatelessWidget {
                           height: 10,
                           width: 10,
                           decoration: BoxDecoration(
-                            color: const Color(0xffFE3140),
+                            color: ColorConstants.alert,
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),

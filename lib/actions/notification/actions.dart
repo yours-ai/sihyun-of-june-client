@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../client.dart';
+import 'models/AppNotification.dart';
 import 'models/UserDevice.dart';
 
 bool _checkIsAccepted(NotificationSettings settings) {
@@ -46,4 +47,15 @@ Future<void> getOrCreateUserDevice(String token) async {
       'device_token': token,
     });
   }
+}
+
+Future<List<AppNotification>> listAppNotifications() async {
+  return await dio.get('/notification/notifications/').then((response) =>
+      response.data
+          .map<AppNotification>((json) => AppNotification.fromJson(json))
+          .toList());
+}
+
+Future<void> readNotification(int id) async {
+  await dio.post('/notification/notifications/$id/read/');
 }
