@@ -9,13 +9,13 @@ import 'package:project_june_client/constants.dart';
 import '../actions/character/models/Character.dart';
 import '../actions/character/queries.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class MyCharacterScreen extends StatelessWidget {
+  const MyCharacterScreen({super.key});
 
   @override
   Widget build(context) {
     return QueryBuilder(
-        query: getMyCharacterQuery(),
+        query: getRetrieveMyCharacterQuery(),
         builder: (context, state) {
           int excludeId = state.data?[0].id ?? 0;
           return Scaffold(
@@ -23,7 +23,7 @@ class ProfileScreen extends StatelessWidget {
               backgroundColor: ColorConstants.background,
               elevation: 0,
               leading: IconButton(
-                onPressed: () => context.go('/mails'),
+                onPressed: () => context.pop(),
                 icon: Container(
                   padding: const EdgeInsets.only(left: 23),
                   child: Icon(

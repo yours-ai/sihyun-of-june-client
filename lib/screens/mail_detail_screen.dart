@@ -7,16 +7,16 @@ import 'package:project_june_client/constants.dart';
 
 import '../actions/mails/queries.dart';
 
-class MailViewScreen extends StatefulWidget {
+class MailDetailScreen extends StatefulWidget {
   final int? id;
 
-  MailViewScreen({super.key, required this.id});
+  const MailDetailScreen({super.key, required this.id});
 
   @override
-  State<MailViewScreen> createState() => _MailViewScreenState();
+  State<MailDetailScreen> createState() => _MailDetailScreenState();
 }
 
-class _MailViewScreenState extends State<MailViewScreen> {
+class _MailDetailScreenState extends State<MailDetailScreen> {
   final controller = TextEditingController();
 
   @override
@@ -47,7 +47,7 @@ class _MailViewScreenState extends State<MailViewScreen> {
             backgroundColor: ColorConstants.background,
             elevation: 0,
             leading: IconButton(
-              onPressed: () => context.go('/mails'),
+              onPressed: () => context.pop(),
               icon: Container(
                 padding: const EdgeInsets.only(left: 23),
                 child: Icon(

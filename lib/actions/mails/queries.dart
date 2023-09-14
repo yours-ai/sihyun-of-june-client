@@ -4,9 +4,9 @@ import 'package:project_june_client/actions/mails/dtos.dart';
 
 import 'models/Mail.dart';
 
-Query<List<Mail>> getMailListQuery({OnQueryErrorCallback? onError}) {
+Query<List<Mail>> getListMailQuery({OnQueryErrorCallback? onError}) {
   return Query<List<Mail>>(
-    key: ['character-sent-mails'],
+    key: ['character-sent-mail-list'],
     queryFn: fetchMailList,
     onError: onError,
   );

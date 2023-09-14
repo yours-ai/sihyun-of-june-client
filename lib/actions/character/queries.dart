@@ -66,7 +66,7 @@ Query<Character> getCharacterQuery({
   );
 }
 
-Query<List<Character>> getMyCharacterQuery({
+Query<List<Character>> getRetrieveMyCharacterQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(

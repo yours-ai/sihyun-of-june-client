@@ -47,7 +47,7 @@ class LoginScreen extends StatelessWidget {
                     MutationBuilder(
                       mutation: getLoginAsAppleMutation(
                         onSuccess: (res, arg) {
-                          context.go('/profile');
+                          context.go('/');
                         },
                         onError: (arg, error, callback) {
                           ScaffoldMessenger.of(context).showSnackBar(

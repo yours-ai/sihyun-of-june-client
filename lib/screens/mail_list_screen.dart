@@ -20,17 +20,33 @@ class MailListScreen extends StatefulWidget {
 class _MailListScreenState extends State<MailListScreen> {
   @override
   Widget build(context) {
-    final query = getIsNotificationAcceptedQuery();
+    final isNotificationAcceptedQuery =
+        getIsNotificationAcceptedQuery(onError: (err) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('알림 권한을 받아오지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
+      ));
+    });
+    final listMailQuery = getListMailQuery(onError: (err) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('메일을 불러오지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
+      ));
+    });
+    final retrieveMyCharacterQuery =
+        getRetrieveMyCharacterQuery(onError: (err) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('내 캐릭터를 불러오지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
+      ));
+    });
     return SafeArea(
       child: TitleLayout(
         showProfile: Padding(
           padding: const EdgeInsets.only(right: 28.0),
           child: QueryBuilder(
-            query: getMyCharacterQuery(),
+            query: retrieveMyCharacterQuery,
             builder: (context, state) {
               if (state.data != null) {
                 return TextButton(
-                  onPressed: () => context.push('/profile'),
+                  onPressed: () => context.push('/mails/my-character'),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14),
                     child: Image.network(
@@ -39,69 +55,56 @@ class _MailListScreenState extends State<MailListScreen> {
                     ),
                   ),
                 );
-              } else {
-                return Container();
               }
+              return const SizedBox.shrink();
             },
           ),
         ),
         titleText: '받은 편지함',
-        body: ListView(
+        body: Stack(
           children: [
             QueryBuilder(
-              query: query,
+              query: isNotificationAcceptedQuery,
               builder: (context, state) {
                 return state.data == false
                     ? RequestNotificationPermissionWidget()
-                    : Container();
+                    : const SizedBox.shrink();
               },
             ),
-            QueryBuilder(
-              query: getMailListQuery(),
-              builder: (context, state) {
-                if (state.data?.length == 0) {
-                  return Column(
-                    children: [
-                      const SizedBox(height: 50),
-                      const Text(
-                        '🍂',
-                        style: TextStyle(fontSize: 100),
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        '아직 도착한 편지가 없어요. \n 내일 9시에 첫 편지가 올 거에요.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: ColorConstants.neutral,
-                            fontSize: 15,
-                            height: 1.5),
-                      )
-                    ],
-                  );
-                } else {
-                  return GridView.builder(
+            Positioned.fill(
+              child: QueryBuilder(
+                query: listMailQuery,
+                builder: (context, state) {
+                  if (state.data?.isEmpty == true) {
+                    return Column(
+                      children: [
+                        const SizedBox(height: 50),
+                        const Text(
+                          '🍂',
+                          style: TextStyle(fontSize: 100),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          '아직 도착한 편지가 없어요. \n 내일 9시에 첫 편지가 올 거에요.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: ColorConstants.neutral,
+                              fontSize: 15,
+                              height: 1.5),
+                        )
+                      ],
+                    );
+                  }
+                  return GridView.count(
+                    crossAxisCount: 3,
                     padding: const EdgeInsets.all(20.0),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: state.data?.length ?? 0,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                      childAspectRatio: 1.0,
-                    ),
-                    itemBuilder: (context, index) {
-                      int reversedIndex = (state.data!.length - 1) - index;
-                      if (state.data!.length != 0) {
-                        return MailWidget(mail: state.data![reversedIndex]);
-                      } else {
-                        return Container();
-                      }
-                    },
+                    children: state.data
+                            ?.map<Widget>((mail) => MailWidget(mail: mail))
+                            .toList() ??
+                        [],
                   );
-                }
-              },
+                },
+              ),
             ),
           ],
         ),

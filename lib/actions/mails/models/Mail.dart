@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:project_june_client/actions/mails/models/Replies.dart';
+import 'package:project_june_client/actions/mails/models/Reply.dart';
 
 part 'Mail.g.dart';
 
@@ -14,7 +14,7 @@ class Mail {
   String description;
   String available_at;
   bool is_read;
-  List<RepliesBean>? replies;
+  List<Reply>? replies;
   String? image;
 
   Mail(
