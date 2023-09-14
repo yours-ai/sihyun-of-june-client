@@ -32,9 +32,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  withClock(Clock.fixed(DateTime(2023, 9, 3, 21, 5, 0)), () {
-    runApp(const ProviderScope(child: ProjectJuneApp()));
-  });
+  runApp(const ProviderScope(child: ProjectJuneApp()));
 }
 
 class ProjectJuneApp extends StatefulWidget {
