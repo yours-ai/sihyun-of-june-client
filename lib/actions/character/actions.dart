@@ -40,7 +40,7 @@ Future<void> denyChoice(int id) async {
   return;
 }
 
-Future<List<Character>> fetchCharacter() async {
+Future<List<Character>> fetchMyCharacter() async {
   final response = await dio.get('/character/me/characters/');
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }

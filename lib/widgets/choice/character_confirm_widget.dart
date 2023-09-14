@@ -7,6 +7,7 @@ import 'package:project_june_client/widgets/common/title_layout.dart';
 
 import '../../constants.dart';
 import '../../screens/character_choice_screen.dart';
+import '../../services.dart';
 import '../modal_widget.dart';
 
 class CharacterConfirmWidget extends StatelessWidget {
@@ -96,7 +97,7 @@ class CharacterConfirmWidget extends StatelessWidget {
       body: SafeArea(
         child: TitleLayout(
           withAppBar: true,
-          titleText: '$name이가 마음에 드세요?\n오늘 저녁 9시에\n첫 편지가 올 거에요.',
+          titleText: '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 편지가 올 거에요.',
           actions: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

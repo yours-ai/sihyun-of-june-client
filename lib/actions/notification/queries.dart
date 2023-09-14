@@ -2,10 +2,11 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 
 import 'actions.dart';
 
-Query<bool> getIsNotificationAcceptedQuery() {
+Query<bool> getIsNotificationAcceptedQuery({OnQueryErrorCallback? onError}) {
   return Query<bool>(
     key: ['notification-accepted'],
     queryFn: () => getIsNotificationAccepted(),
+    onError: onError,
   );
 }
 

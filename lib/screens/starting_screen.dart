@@ -21,7 +21,7 @@ class _StartingScreen extends State<StartingScreen> {
     if (isLogined == false) {
       context.go('/landing');
     } else {
-      final character = await fetchCharacter();
+      final character = await fetchMyCharacter();
       if (character.isNotEmpty) {
         context.go('/mails');
         return;

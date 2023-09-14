@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/router.dart';
 
 final tabList = [
   TabRoutePaths.mailList,
