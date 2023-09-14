@@ -55,10 +55,12 @@ final router = GoRouter(
     ShellRoute(
       navigatorKey: shellNavigatorKey,
       builder: (context, state, child) {
-        return NavbarLayout(
-          routePath: state.matchedLocation,
-          child: child,
-        );
+        // TODO(@narayo9): shell route 조회 가능해지면 공용 navbar layout으로 변경
+        // return NavbarLayout(
+        //   routePath: state.matchedLocation,
+        //   child: child,
+        // );
+        return child;
       },
       routes: [
         GoRoute(
@@ -66,7 +68,10 @@ final router = GoRouter(
           pageBuilder: (context, state) {
             return NoTransitionPage(
               key: state.pageKey,
-              child: const MailListScreen(),
+              child: NavbarLayout(
+                routePath: state.matchedLocation,
+                child: const MailListScreen(),
+              ),
             );
           },
           routes: [
@@ -76,8 +81,8 @@ final router = GoRouter(
             ),
             GoRoute(
               path: 'detail/:id',
-              builder: (context, state) =>
-                  MailDetailScreen(id: int.tryParse(state.pathParameters['id']!)),
+              builder: (context, state) => MailDetailScreen(
+                  id: int.tryParse(state.pathParameters['id']!)),
             ),
           ],
         ),
@@ -86,7 +91,10 @@ final router = GoRouter(
           pageBuilder: (context, state) {
             return NoTransitionPage(
               key: state.pageKey,
-              child: const NotificationListScreen(),
+              child: NavbarLayout(
+                routePath: state.matchedLocation,
+                child: const NotificationListScreen(),
+              ),
             );
           },
         ),
@@ -95,7 +103,10 @@ final router = GoRouter(
           pageBuilder: (context, state) {
             return NoTransitionPage(
               key: state.pageKey,
-              child: const AllScreen(),
+              child: NavbarLayout(
+                routePath: state.matchedLocation,
+                child: const AllScreen(),
+              ),
             );
           },
         ),

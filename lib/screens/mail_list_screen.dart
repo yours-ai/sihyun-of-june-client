@@ -9,6 +9,7 @@ import 'package:project_june_client/widgets/notification_permission_check.dart';
 import '../actions/mails/queries.dart';
 import '../actions/notification/queries.dart';
 import '../constants.dart';
+import '../services.dart';
 
 class MailListScreen extends StatefulWidget {
   const MailListScreen({super.key});
@@ -85,7 +86,7 @@ class _MailListScreenState extends State<MailListScreen> {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          '아직 도착한 편지가 없어요. \n 내일 9시에 첫 편지가 올 거에요.',
+                          '아직 도착한 편지가 없어요. \n ${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: ColorConstants.neutral,

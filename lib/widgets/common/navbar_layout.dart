@@ -19,7 +19,6 @@ class NavbarLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(shellNavigatorKey.currentState);
     return Scaffold(
       body: child,
       bottomNavigationBar: BottomNavigationBar(

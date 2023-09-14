@@ -20,7 +20,7 @@ Query<Mail> getMailQuery({OnQueryErrorCallback? onError, required int id}) {
   );
 }
 
-Mutation<void, int> getSendMailReadMutation({
+Mutation<void, int> getReadMailMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
