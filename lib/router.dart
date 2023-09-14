@@ -45,7 +45,7 @@ final router = GoRouter(
     GoRoute(
       path: '/other-character/:id',
       builder: (context, state) =>
-          OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)),
+          OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)!),
     ),
     ShellRoute(
       navigatorKey: shellNavigatorKey,

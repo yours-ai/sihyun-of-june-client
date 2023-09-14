@@ -8,60 +8,53 @@ import 'package:project_june_client/widgets/profile_widget.dart';
 import '../constants.dart';
 
 class OtherCharacterScreen extends StatelessWidget {
-  final int? id;
+  final int id;
 
   const OtherCharacterScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
+    final query = getCharacterQuery(id: id);
     return QueryBuilder(
-      query: getCharacterQuery(id: id ?? 0),
+      query: query,
       builder: (context, state) {
         if (state.data == null) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        } else {
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: ColorConstants.background,
-              elevation: 0,
-              leading: IconButton(
-                onPressed: () => context.pop(),
-                icon: Container(
-                  padding: const EdgeInsets.only(left: 23),
-                  child: Icon(
-                    PhosphorIcons.arrow_left,
-                    color: ColorConstants.black,
-                    size: 32,
-                  ),
+          return const SizedBox.shrink();
+        }
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: ColorConstants.background,
+            elevation: 0,
+            leading: IconButton(
+              onPressed: () => context.pop(),
+              icon: Container(
+                padding: const EdgeInsets.only(left: 23),
+                child: Icon(
+                  PhosphorIcons.arrow_left,
+                  color: ColorConstants.black,
+                  size: 32,
                 ),
               ),
             ),
-            body: SafeArea(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                      children: [
-                        ProfileWidget(
-                            name: state.data!.name,
-                            age: state.data!.age,
-                            mbti: state.data!.MBTI,
-                            description: state.data!.description,
-                            imageSrc: state.data!.image),
-                      ],
-                    ),
-                  ),
-                ],
+          ),
+          body: SafeArea(
+            child: ListView(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 28.0,
+                vertical: 10,
               ),
+              children: [
+                ProfileWidget(
+                  name: state.data!.name,
+                  age: state.data!.age,
+                  mbti: state.data!.MBTI,
+                  description: state.data!.description,
+                  imageSrc: state.data!.image,
+                ),
+              ],
             ),
-          );
-        }
+          ),
+        );
       },
     );
   }

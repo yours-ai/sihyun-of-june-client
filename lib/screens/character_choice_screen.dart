@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../widgets/choice/character_confirm_widget.dart';
-import '../widgets/choice/character_detail_widget.dart';
+
+import '../widgets/character/character_confirm_widget.dart';
+import '../widgets/character/character_detail_widget.dart';
 enum ActiveScreen { detail, confirm }
 
 class CharacterChoiceScreen extends StatefulWidget {
