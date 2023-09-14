@@ -4,7 +4,6 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/router.dart';
 
 import 'notification_icon.dart';
 
