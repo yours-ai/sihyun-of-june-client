@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project_june_client/constants.dart';
@@ -18,7 +19,7 @@ class MailService {
   const MailService();
 
   String getNextMailReceiveTimeStr() {
-    TimeOfDay now = TimeOfDay.fromDateTime(DateTime.now());
+    TimeOfDay now = TimeOfDay.fromDateTime(clock.now());
     if (now.compareTo(ProjectConstants.mailReceiveTime) >= 0) {
       return "내일 저녁 9시";
     }
@@ -29,7 +30,7 @@ class MailService {
     DateTime dueDate = mail.available_at.add(Duration(days: 1));
     DateTime dueDateTime = DateTime(dueDate.year, dueDate.month, dueDate.day,
         ProjectConstants.mailSendDueTime.hour, ProjectConstants.mailSendDueTime.minute);
-    return DateTime.now().isBefore(dueDateTime);
+    return clock.now().isBefore(dueDateTime);
   }
 
   String formatMailDate(DateTime dt) {

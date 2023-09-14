@@ -79,6 +79,6 @@ Mutation<void, ValidatedVerifyDTO> getSmsTokenMutation({
 Query<SihyunOfJuneUser> getRetrieveMeQuery() {
   return Query<SihyunOfJuneUser>(
     queryFn: retrieveMe,
-    key: ['retrieve-me'],
+    key: 'retrieve-me',
   );
 }

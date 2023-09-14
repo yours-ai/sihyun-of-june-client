@@ -6,7 +6,7 @@ import 'models/Mail.dart';
 
 Query<List<Mail>> getListMailQuery({OnQueryErrorCallback? onError}) {
   return Query<List<Mail>>(
-    key: ['character-sent-mail-list'],
+    key: 'character-sent-mail-list',
     queryFn: fetchMailList,
     onError: onError,
   );
@@ -14,17 +14,19 @@ Query<List<Mail>> getListMailQuery({OnQueryErrorCallback? onError}) {
 
 Query<Mail> getRetrieveMailQuery({OnQueryErrorCallback? onError, required int id}) {
   return Query<Mail>(
-    key: ['character-sent-mail', id],
+    key: 'character-sent-mail/$id',
     queryFn: () => fetchMailById(id),
     onError: onError,
   );
 }
 
 Mutation<void, int> getReadMailMutation({
+  List<String> refetchQueries = const [],
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, int>(
+    refetchQueries: refetchQueries,
     queryFn: readMailById,
     onSuccess: onSuccess,
     onError: onError,
@@ -32,10 +34,12 @@ Mutation<void, int> getReadMailMutation({
 }
 
 Mutation<void, ReplyMailDTO> getSendMailReplyMutation({
+  List<String> refetchQueries = const [],
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, ReplyMailDTO>(
+    refetchQueries: refetchQueries,
     queryFn: replyMailById,
     onSuccess: onSuccess,
     onError: onError,

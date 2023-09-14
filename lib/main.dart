@@ -1,5 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,7 +32,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const ProviderScope(child: ProjectJuneApp()));
+  withClock(Clock.fixed(DateTime(2023, 9, 3, 21, 5, 0)), () {
+    runApp(const ProviderScope(child: ProjectJuneApp()));
+  });
 }
 
 class ProjectJuneApp extends StatefulWidget {

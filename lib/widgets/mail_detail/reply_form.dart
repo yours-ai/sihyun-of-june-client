@@ -1,4 +1,5 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
@@ -38,16 +39,13 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
   @override
   Widget build(BuildContext context) {
     final mutation = getSendMailReplyMutation(
+      refetchQueries: ['character-sent-mail/${widget.mail.id}'],
       onSuccess: (res, arg) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('답장을 보냈습니다.'),
           ),
         );
-        CachedQuery.instance.invalidateCache(key: ['character-sent-mail', widget.mail.id]);
-      },
-      onError: (context, error, fallback) {
-        print(error);
       },
     );
     return Column(
@@ -56,7 +54,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
         MailInfoWidget(
           byFullName: widget.mail.to_full_name,
           toFullName: widget.mail.by_full_name,
-          availableAt: DateTime.now(),
+          availableAt: clock.now(),
         ),
         MutationBuilder(
           mutation: mutation,

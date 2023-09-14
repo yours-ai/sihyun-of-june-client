@@ -8,7 +8,7 @@ Query<List<Question>> getQuestionsQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: ["questions"],
+    key: "questions",
     queryFn: startTest,
     onError: onError,
   );
@@ -40,7 +40,7 @@ Query<String> getTestStatusQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: ["test-status"],
+    key: "test-status",
     queryFn: fetchTestStatus,
     onError: onError,
   );
@@ -50,7 +50,7 @@ Query<Map<String, dynamic>> getPendingTestQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: ["pending-test"],
+    key: "pending-test",
     queryFn: fetchPendingTest,
     onError: onError,
   );
@@ -60,7 +60,7 @@ Query<List<Character>> getAllCharactersQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: ['characters'],
+    key: 'characters',
     queryFn: fetchCharacters,
     onError: onError,
   );
@@ -71,7 +71,7 @@ Query<Character> getCharacterQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: ['character', id.toString()],
+    key: 'character/${id.toString()}',
     queryFn: () => fetchCharacterById(id),
     onError: onError,
   );
@@ -81,7 +81,7 @@ Query<List<Character>> getRetrieveMyCharacterQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: ['my-character'],
+    key: 'my-character',
     queryFn: fetchMyCharacter,
     onError: onError,
   );

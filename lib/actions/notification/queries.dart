@@ -4,7 +4,7 @@ import 'actions.dart';
 
 Query<bool> getIsNotificationAcceptedQuery({OnQueryErrorCallback? onError}) {
   return Query<bool>(
-    key: ['notification-accepted'],
+    key: 'notification-accepted',
     queryFn: () => getIsNotificationAccepted(),
     onError: onError,
   );
