@@ -2,21 +2,22 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ProfileWidget extends StatelessWidget {
-  final String? Name;
-  final num? Age;
-  final String? MBTI;
-  final String? Description;
-  final String ImagePath;
+  final String? name;
+  final num? age;
+  final String? mbti;
+  final String? description;
+  final String imageSrc;
 
   const ProfileWidget({
     super.key,
-    required this.Name,
-    required this.Age,
-    required this.MBTI,
-    required this.Description,
-    required this.ImagePath,
+    required this.name,
+    required this.age,
+    required this.mbti,
+    required this.description,
+    required this.imageSrc,
   });
 
   @override
@@ -26,18 +27,21 @@ class ProfileWidget extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: Image.network(
-            ImagePath,
+          child: FadeInImage.memoryNetwork(
+            fadeInDuration: const Duration(milliseconds: 200),
+            placeholder: kTransparentImage,
+            image: imageSrc,
           ),
         ),
         Container(
-            padding: const EdgeInsets.symmetric(vertical: 36.0),
-            child: Text(
-              '$Name, $Age\n$MBTI',
-              style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            )),
+          padding: const EdgeInsets.symmetric(vertical: 36.0),
+          child: Text(
+            '$name, $age\n$mbti',
+            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+          ),
+        ),
         Text(
-          Description ?? '',
+          description ?? '',
           style: TextStyle(fontSize: 18, color: ColorConstants.neutral),
         ),
       ],

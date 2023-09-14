@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 
 import 'actions.dart';
+import 'models/SihyunOfJuneUser.dart';
 
 Mutation<void, void> getLoginAsKakaoMutation({
   OnSuccessCallback? onSuccess,
@@ -72,5 +73,12 @@ Mutation<void, ValidatedVerifyDTO> getSmsTokenMutation({
     },
     onSuccess: onSuccess,
     onError: onError,
+  );
+}
+
+Query<SihyunOfJuneUser> getRetrieveMeQuery() {
+  return Query<SihyunOfJuneUser>(
+    queryFn: retrieveMe,
+    key: ['retrieve-me'],
   );
 }

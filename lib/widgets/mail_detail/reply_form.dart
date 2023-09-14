@@ -1,5 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
 
 import '../../actions/mails/dtos.dart';
@@ -29,7 +30,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
 
   ReplyMailDTO getReplyDTO() {
     return ReplyMailDTO(
-      id: widget.mail.id!,
+      id: widget.mail.id,
       description: controller.value.text,
     );
   }
@@ -37,8 +38,13 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
   @override
   Widget build(BuildContext context) {
     final mutation = getSendMailReplyMutation(
-      onSuccess: (context, data) {
-        context.go('/mails');
+      onSuccess: (res, arg) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('답장을 보냈습니다.'),
+          ),
+        );
+        CachedQuery.instance.invalidateCache(key: ['character-sent-mail', widget.mail.id]);
       },
       onError: (context, error, fallback) {
         print(error);
@@ -71,9 +77,6 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   keyboardType: TextInputType.multiline,
                   minLines: 8,
                   decoration: InputDecoration(
-                    errorStyle: TextStyle(
-                      fontSize: 0,
-                    ),
                     hintText: '답장을 적어주세요...',
                     hintStyle: TextStyle(
                         fontFamily: 'MaruBuri',
@@ -82,9 +85,11 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                     border: InputBorder.none,
                   ),
                   style: TextStyle(
-                      fontFamily: 'MaruBuri',
-                      fontSize: 14,
-                      color: ColorConstants.primary),
+                    fontFamily: 'MaruBuri',
+                    fontSize: 14,
+                    color: ColorConstants.primary,
+                    height: 1.5,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),

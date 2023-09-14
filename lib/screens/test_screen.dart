@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/widgets/test/in_test_widget.dart';
-import 'package:project_june_client/widgets/test/test_info_widget.dart';
+import 'package:project_june_client/widgets/test/test_start_widget.dart';
 import 'package:project_june_client/widgets/test/test_result_widget.dart';
 
-enum ActiveScreen { info, inTest, result }
+enum ActiveScreen { start, inTest, result }
 
 class CharacterTestScreen extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ class CharacterTestScreen extends StatefulWidget {
 }
 
 class _CharacterTestScreenState extends State<CharacterTestScreen> {
-  ActiveScreen activeScreen = ActiveScreen.info;
+  ActiveScreen activeScreen = ActiveScreen.start;
   AnswerDTOList responses = AnswerDTOList(answers: []);
 
   void handleActiveScreen(ActiveScreen screen) {
@@ -39,8 +39,8 @@ class _CharacterTestScreenState extends State<CharacterTestScreen> {
 
   Widget _getActiveScreenContent() {
     switch (activeScreen) {
-      case ActiveScreen.info:
-        return TestInfoWidget(onActiveScreen: handleActiveScreen);
+      case ActiveScreen.start:
+        return TestStartWidget(onActiveScreen: handleActiveScreen);
       case ActiveScreen.inTest:
         return InTestWidget(
             onActiveScreen: handleActiveScreen, responses: _responses);

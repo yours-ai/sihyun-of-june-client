@@ -8,7 +8,7 @@ Future<void> sendResponses(List<Map<String, int>> responses) async => await dio.
     data: responses,
   );
 
-Future<List<Question>> fetchQuestions() async {
+Future<List<Question>> startTest() async {
   final response = await dio.post('/character/test/start/');
   return response.data
       .map<Question>((json) => Question.fromJson(json))

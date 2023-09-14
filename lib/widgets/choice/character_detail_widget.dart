@@ -46,12 +46,12 @@ class CharacterDetailWidget extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 28.0),
                           children: [
                             ProfileWidget(
-                                Name: state.data!['character']['name'],
-                                Age: (state.data!['character']['age']),
-                                MBTI: state.data!['character']['MBTI'],
-                                Description: state.data!['character']
+                                name: state.data!['character']['name'],
+                                age: (state.data!['character']['age']),
+                                mbti: state.data!['character']['MBTI'],
+                                description: state.data!['character']
                                     ['description'],
-                                ImagePath: state.data!['character']['image']),
+                                imageSrc: state.data!['character']['image']),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
@@ -100,7 +100,7 @@ class CharacterDetailWidget extends StatelessWidget {
                                               onTap: () {
                                                 num id = character.id;
                                                 context
-                                                    .go('/othercharacter/$id');
+                                                    .go('/other-character/$id');
                                               },
                                               child: ClipRRect(
                                                 borderRadius:

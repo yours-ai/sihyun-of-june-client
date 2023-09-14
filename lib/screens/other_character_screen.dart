@@ -49,11 +49,11 @@ class OtherCharacterScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 28.0),
                       children: [
                         ProfileWidget(
-                            Name: state.data!.name,
-                            Age: state.data!.age,
-                            MBTI: state.data!.MBTI,
-                            Description: state.data!.description,
-                            ImagePath: state.data!.image),
+                            name: state.data!.name,
+                            age: state.data!.age,
+                            mbti: state.data!.MBTI,
+                            description: state.data!.description,
+                            imageSrc: state.data!.image),
                       ],
                     ),
                   ),

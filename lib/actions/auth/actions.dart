@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
+import 'package:project_june_client/actions/auth/models/SihyunOfJuneUser.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -129,10 +130,15 @@ Future<OAuthToken> getKakaoOAuthToken() async {
 }
 
 Future<String> getServerTokenByKakaoToken(OAuthToken token) async {
-  final response = await dio.post('/auth/kakao/join-or-login/by-token/', data: {
+  final tokenInstance = await dio.post('/auth/kakao/join-or-login/by-token/', data: {
     'token': token.accessToken,
   }).then<Token>((response) => Token.fromJson(response.data));
-  return response.token;
+  return tokenInstance.token;
+}
+
+Future<SihyunOfJuneUser> retrieveMe() async {
+  return await dio.get('/auth/me/').then<SihyunOfJuneUser>(
+      (response) => SihyunOfJuneUser.fromJson(response.data));
 }
 
 void setServerTokenOnDio(String serverToken) {

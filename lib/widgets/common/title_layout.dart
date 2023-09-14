@@ -23,7 +23,7 @@ class TitleLayout extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        withAppBar ? const SizedBox() : const SizedBox(height: 50),
+        withAppBar ? const SizedBox(height: 10) : const SizedBox(height: 50),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

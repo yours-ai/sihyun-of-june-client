@@ -9,16 +9,27 @@ Query<List<Question>> getQuestionsQuery({
 }) {
   return Query(
     key: ["questions"],
-    queryFn: fetchQuestions,
+    queryFn: startTest,
     onError: onError,
   );
 }
 
-Mutation<void, List<Map<String,int>>> getSendResponseMutation({
+Mutation<List<Question>, void> getStartTestMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
-  return Mutation<void, List<Map<String,int>>>(
+  return Mutation<List<Question>, void>(
+    queryFn: (void _) => startTest(),
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Mutation<void, List<Map<String, int>>> getSendResponseMutation({
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, List<Map<String, int>>>(
     queryFn: sendResponses,
     onSuccess: onSuccess,
     onError: onError,
