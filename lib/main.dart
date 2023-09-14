@@ -1,6 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
-import 'package:clock/clock.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -71,7 +71,6 @@ class _NotificationWidgetState extends State<NotificationWidget> {
         ),
         onPressed: () {
           notificationService.handleClickNotification(
-            context,
             widget.notification,
           );
         },
