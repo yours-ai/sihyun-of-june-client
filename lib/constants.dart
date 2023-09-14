@@ -18,3 +18,11 @@ abstract final class TabRoutePaths {
   static String notificationList = '/notifications';
   static String all = '/all';
 }
+
+abstract final class Urls {
+  static String notice = "https://pygmalion.app/notices/";
+  static String faq = "https://pygmalion.app/sihyun-of-june/%EB%A5%98%EC%8B%9C%ED%98%84#faq";
+  static String privacy = "https://pygmalion.app/policy/privacy";
+  static String terms = "https://pygmalion.app/policy/terms";
+  static String ask = "https://pf.kakao.com/_YYxoqG/chat";
+}

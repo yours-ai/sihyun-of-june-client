@@ -44,7 +44,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
                         text: '이용약관',
                         recognizer: TapGestureRecognizer()
                           ..onTap = () => launchUrl(
-                              Uri.parse('https://pygmalion.app/policy/terms'))),
+                              Uri.parse(Urls.terms))),
                     const TextSpan(text: ' 및 '),
                     TextSpan(
                         style: const TextStyle(
@@ -53,7 +53,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
                         text: '개인정보처리방침',
                         recognizer: TapGestureRecognizer()
                           ..onTap = () => launchUrl(Uri.parse(
-                              'https://pygmalion.app/policy/privacy'))),
+                              Urls.privacy))),
                     const TextSpan(text: '에 동의해야 시작할 수 있어요.'),
                   ]),
             ),
