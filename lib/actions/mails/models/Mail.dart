@@ -12,7 +12,7 @@ class Mail {
   String by_full_name;
   String? by_image;
   String description;
-  String available_at;
+  DateTime available_at;
   bool is_read;
   List<Reply>? replies;
   String? image;

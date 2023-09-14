@@ -21,23 +21,9 @@ class MailListScreen extends StatefulWidget {
 class _MailListScreenState extends State<MailListScreen> {
   @override
   Widget build(context) {
-    final isNotificationAcceptedQuery =
-        getIsNotificationAcceptedQuery(onError: (err) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('알림 권한을 받아오지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
-      ));
-    });
-    final listMailQuery = getListMailQuery(onError: (err) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('메일을 불러오지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
-      ));
-    });
-    final retrieveMyCharacterQuery =
-        getRetrieveMyCharacterQuery(onError: (err) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('내 캐릭터를 불러오지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
-      ));
-    });
+    final isNotificationAcceptedQuery = getIsNotificationAcceptedQuery();
+    final listMailQuery = getListMailQuery();
+    final retrieveMyCharacterQuery = getRetrieveMyCharacterQuery();
     return SafeArea(
       child: TitleLayout(
         showProfile: Padding(

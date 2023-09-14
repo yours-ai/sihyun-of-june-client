@@ -6,8 +6,8 @@ part 'Reply.g.dart';
 class Reply {
   num id;
   String description;
-  String created;
-  String modified;
+  DateTime created;
+  DateTime modified;
 
   Reply(
       {required this.id,

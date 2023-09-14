@@ -47,11 +47,6 @@ final router = GoRouter(
       builder: (context, state) =>
           OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)),
     ),
-    GoRoute(
-      path: '/mail-view/:id',
-      builder: (context, state) =>
-          MailDetailScreen(id: int.tryParse(state.pathParameters['id']!)),
-    ),
     ShellRoute(
       navigatorKey: shellNavigatorKey,
       builder: (context, state, child) {
@@ -82,7 +77,7 @@ final router = GoRouter(
             GoRoute(
               path: 'detail/:id',
               builder: (context, state) => MailDetailScreen(
-                  id: int.tryParse(state.pathParameters['id']!)),
+                  id: int.tryParse(state.pathParameters['id']!)!),
             ),
           ],
         ),
