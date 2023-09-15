@@ -46,7 +46,7 @@ class _VerifyTabWidgetState extends State<VerifyTabWidget> {
   Widget build(BuildContext context) {
     var tokenMutation = getSmsTokenMutation(
       onSuccess: (res, arg) {
-        // widget.onSmsLogin(getValidatedData());
+        widget.onSmsLogin(getValidatedData());
         widget.onSmsVerify(getValidatedData());
       },
       onError: (arg, error, fallback) {
