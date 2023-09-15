@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/environments.dart';
 import 'package:project_june_client/globals.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 final Dio dio = Dio(
   BaseOptions(
@@ -15,6 +16,7 @@ void initServerErrorSnackbar(BuildContext context) {
   dio.interceptors.add(
     InterceptorsWrapper(
       onError: (error, handler) {
+        Sentry.captureException(error);
         if (error.response?.statusCode != null) {
           if (error.response!.statusCode! >= 500) {
             scaffoldMessengerKey.currentState?.showSnackBar(

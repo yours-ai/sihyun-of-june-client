@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -83,6 +84,7 @@ class LoginScreen extends StatelessWidget {
                           context.go('/');
                         },
                         onError: (arg, error, callback) {
+                          Sentry.captureException(error);
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text(
