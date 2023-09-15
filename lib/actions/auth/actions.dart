@@ -144,15 +144,6 @@ Future<SihyunOfJuneUser> retrieveMe() async {
       (response) => SihyunOfJuneUser.fromJson(response.data));
 }
 
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-
-  if (message.notification != null) {
-    notificationService.handleNewNotification();
-  }
-}
-
 void setServerTokenOnDio(String serverToken) {
   dio.options.headers['Authorization'] = "Token $serverToken";
 }
@@ -164,20 +155,6 @@ Future<void> login(String serverToken, {bool? saveTokenToClient}) async {
     final storage = getSecureStorage();
     await storage.write(key: _SERVER_TOKEN_KEY, value: serverToken);
   }
-  FirebaseMessaging.instance
-      .getToken()
-      .then((token) => token != null ? getOrCreateUserDevice(token) : null);
-  FirebaseMessaging.instance.onTokenRefresh
-      .listen((token) => getOrCreateUserDevice(token));
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    if (message.notification != null) {
-      notificationService.handleNewNotification();
-    }
-  });
-  FirebaseMessaging.onMessageOpenedApp
-      .listen(notificationService.handleFCMMessageTap);
-  await notificationService.addBadgeControlListener();
 }
 
 Future<String?> getServerToken() async {
