@@ -1,6 +1,5 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -9,6 +8,7 @@ import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:moment_dart/moment_dart.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'firebase_options.dart';
 
 import 'constants.dart';
@@ -16,7 +16,11 @@ import 'environments.dart';
 import 'globals.dart';
 import 'router.dart';
 
-void main() async {
+void _appRunner() {
+  return runApp(const ProviderScope(child: ProjectJuneApp()));
+}
+
+Future<void> _initialize() async {
   CachedQuery.instance.configFlutter(
     config: QueryConfigFlutter(
       refetchOnConnection: true,
@@ -36,13 +40,29 @@ void main() async {
   );
   Moment.setGlobalLocalization(MomentLocalizations.koKr());
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor: ColorConstants.background, // navigation bar color
+    systemNavigationBarColor: ColorConstants.background,
+    // navigation bar color
     statusBarIconBrightness: Brightness.dark,
     statusBarBrightness: Brightness.dark,
     systemNavigationBarIconBrightness: Brightness.dark,
     statusBarColor: Colors.transparent, // status bar color
   ));
-  runApp(const ProviderScope(child: ProjectJuneApp()));
+}
+
+void main() async {
+  await _initialize();
+  if (BuildTimeEnvironments.sentryDsn == "") {
+    print("sentry dsn이 제공되지 않아, sentry를 init하지 않습니다.");
+    return _appRunner();
+  }
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = BuildTimeEnvironments.sentryDsn;
+      options.environment = BuildTimeEnvironments.sentryEnvironment;
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: _appRunner,
+  );
 }
 
 class ProjectJuneApp extends StatefulWidget {

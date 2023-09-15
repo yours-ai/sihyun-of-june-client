@@ -4,6 +4,8 @@ class BuildTimeEnvironments {
       const String.fromEnvironment('KAKAO_NATIVE_APP_KEY');
   static String kakaoJavascriptKey =
       const String.fromEnvironment('KAKAO_JAVASCRIPT_KEY');
+  static String sentryDsn = const String.fromEnvironment('SENTRY_DSN'); // Not required
+  static String sentryEnvironment = const String.fromEnvironment('SENTRY_ENVIRONMENT'); // Not required
 }
 
 final REQUIRED_VARIABLES = {
