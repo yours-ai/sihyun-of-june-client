@@ -47,7 +47,6 @@ class _VerifyTabWidgetState extends State<VerifyTabWidget> {
     var tokenMutation = getSmsTokenMutation(
       onSuccess: (res, arg) {
         widget.onSmsLogin(getValidatedData());
-        widget.onSmsVerify(getValidatedData());
       },
       onError: (arg, error, fallback) {
         ScaffoldMessenger.of(context).showSnackBar(
