@@ -34,6 +34,7 @@ dependencies:
   clock: ^1.1.1
   moment_dart: ^1.0.1
   flutter_app_badger: ^1.5.0
+  sentry_flutter: ^7.10.1
 
 dev_dependencies:
   flutter_test:

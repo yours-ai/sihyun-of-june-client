@@ -6,6 +6,7 @@ import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/character/actions.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/services.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class StartingScreen extends StatefulWidget {
   const StartingScreen({super.key});
@@ -16,6 +17,15 @@ class StartingScreen extends StatefulWidget {
 
 class _StartingScreen extends State<StartingScreen> {
   _checkAuthAndLand() async {
+    try {
+      throw Error();
+    } catch (exception, stackTrace) {
+      await Sentry.captureException(
+        exception,
+        stackTrace: stackTrace,
+      );
+    }
+
     final isLogined = await loadIsLogined();
     FlutterNativeSplash.remove();
     if (!context.mounted) return;
