@@ -106,13 +106,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
 
   void handleSmsLogin(dynamic dto) {
     setState(() {
-      context.go('/mails');
-    });
-  }
-
-  void handleSmsSignUp(dynamic dto) {
-    setState(() {
-      context.go('/character-test');
+      context.go('/');
     });
   }
 
@@ -133,7 +127,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
                 : _tab == 2
                     ? NameTabWidget(
                         dto: this.validatedAuthDTO!,
-                        onSmsSignUp: handleSmsSignUp,
+                        onSmsLogin: handleSmsLogin,
                       )
                     : Container(),
       ),
