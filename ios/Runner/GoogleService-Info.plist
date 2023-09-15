@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>938800695164-8pn9mrgngp21r7gev7rp6fnk37t7or24.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.938800695164-8pn9mrgngp21r7gev7rp6fnk37t7or24</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC64JtTAvDuqo8mQX36hYEFNWdU9kliVRs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>938800695164</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>team.pygmalion.projectJune</string>
+	<key>PROJECT_ID</key>
+	<string>project-june-firebase</string>
+	<key>STORAGE_BUCKET</key>
+	<string>project-june-firebase.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:938800695164:ios:5973d31442a4e595a546f9</string>
+</dict>
+</plist>

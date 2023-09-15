@@ -2,15 +2,13 @@
 
 프로젝트 준 클라이언트.
 
-## Getting Started
+## Dependencies
 
-This project is a starting point for a Flutter application.
+- [flutter 3.13.1](https://docs.flutter.dev/release/archive)
 
-A few resources to get you started if this is your first Flutter project:
+## Setup
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- splash screen, icon,
+  g.dart([running the code generation utility](https://docs.flutter.dev/data-and-backend/serialization/json#running-the-code-generation-utility)
+  참고) 파일들을 생성하기 위해, setup.sh를 실행해주세요.
+  - `source setup.sh`

@@ -9,11 +9,58 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  go_router: ^10.1.0
+  page_transition: ^2.0.9
+  flutter_native_splash: ^2.3.2
+  flutter_phosphor_icons: ^0.0.1+6
+  carousel_slider: ^4.2.1
+  shared_preferences: ^2.2.0
+  cached_query_flutter: ^1.0.0
+  cached_storage: ^1.0.0
+  dio: ^5.3.2
+  json_annotation: ^4.8.1
+  kakao_flutter_sdk_user: ^1.4.1
+  kakao_flutter_sdk_share: ^1.4.1
+  flutter_riverpod: ^2.3.10
+  flutter_secure_storage: ^9.0.0
+  lottie: ^2.6.0
+  sign_in_with_apple: ^5.0.0
+  url_launcher: ^6.1.14
+  firebase_core: ^2.15.1
+  firebase_messaging: ^14.6.7
+  firebase_analytics: ^10.4.5
+  intl: ^0.18.1
+  transparent_image: ^2.0.1
+  clock: ^1.1.1
+  moment_dart: ^1.0.1
+  flutter_app_badger: ^1.5.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
+  build_runner: ^2.4.6
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
+    - assets/images/
+    - assets/images/landing/
+    - assets/lotties/
+  fonts:
+    - family: MaruBuri
+      fonts:
+        - asset: assets/fonts/MaruBuri-ExtraLight.otf
+          weight: 200
+        - asset: assets/fonts/MaruBuri-Light.otf
+          weight: 300
+        - asset: assets/fonts/MaruBuri-Regular.otf
+          weight: 400
+        - asset: assets/fonts/MaruBuri-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/MaruBuri-Bold.otf
+          weight: 700
+
