@@ -32,18 +32,20 @@ class _NotificationWidgetState extends State<NotificationWidget> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              height: 83,
-              padding: const EdgeInsets.only(left: 22),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                widget.notification.body,
-                style: TextStyle(
-                    fontSize: 15,
-                    color: ColorConstants.secondary,
-                    fontWeight: widget.notification.is_read == false
-                        ? FontWeight.bold
-                        : FontWeight.normal),
+            Expanded(
+              child: Container(
+                height: 83,
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  widget.notification.body,
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: ColorConstants.secondary,
+                      fontWeight: widget.notification.is_read == false
+                          ? FontWeight.bold
+                          : FontWeight.normal),
+                ),
               ),
             ),
             Container(
