@@ -110,6 +110,12 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
     });
   }
 
+  void handleSmsSignUp(dynamic dto) {
+    setState(() {
+      context.go('/character-test');
+    });
+  }
+
   @override
   Widget build(context) {
     return Scaffold(
@@ -127,7 +133,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
                 : _tab == 2
                     ? NameTabWidget(
                         dto: this.validatedAuthDTO!,
-                        onSmsLogin: handleSmsLogin,
+                        onSmsSignUp: handleSmsSignUp,
                       )
                     : Container(),
       ),

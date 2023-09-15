@@ -6,10 +6,10 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 class NameTabWidget extends StatefulWidget {
-  final void Function(ValidatedUserDTO dto) onSmsLogin;
+  final void Function(ValidatedUserDTO dto) onSmsSignUp;
   final ValidatedAuthCodeDTO dto;
 
-  const NameTabWidget({Key? key, required this.onSmsLogin, required this.dto})
+  const NameTabWidget({Key? key, required this.onSmsSignUp, required this.dto})
       : super(key: key);
 
   @override
@@ -66,7 +66,7 @@ class _NameTabWidgetState extends State<NameTabWidget> {
   Widget build(BuildContext context) {
     final mutation = getSmsTokenMutation(
       onSuccess: (res, arg) {
-        widget.onSmsLogin(getValidatedData());
+        widget.onSmsSignUp(getValidatedData());
       },
       onError: (arg, error, fallback) {
         ScaffoldMessenger.of(context).showSnackBar(
