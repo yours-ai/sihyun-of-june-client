@@ -36,11 +36,11 @@ class TestStartWidget extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _TestInfoWidget();
+    return _TestStartWidget();
   }
 }
 
-class _TestInfoWidget extends State<TestStartWidget> {
+class _TestStartWidget extends State<TestStartWidget> {
   int _tab = 0;
   final PageController _controller = PageController();
 
