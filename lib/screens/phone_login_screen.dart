@@ -21,6 +21,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
   int _tab = 0;
   ValidatedPhoneDTO? validatedPhoneDTO;
   ValidatedAuthCodeDTO? validatedAuthDTO;
+
   void _showModal() async {
     await showModalBottomSheet<void>(
       context: context,
@@ -43,8 +44,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
                         ),
                         text: '이용약관',
                         recognizer: TapGestureRecognizer()
-                          ..onTap = () => launchUrl(
-                              Uri.parse(Urls.terms))),
+                          ..onTap = () => launchUrl(Uri.parse(Urls.terms))),
                     const TextSpan(text: ' 및 '),
                     TextSpan(
                         style: const TextStyle(
@@ -52,8 +52,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
                         ),
                         text: '개인정보처리방침',
                         recognizer: TapGestureRecognizer()
-                          ..onTap = () => launchUrl(Uri.parse(
-                              Urls.privacy))),
+                          ..onTap = () => launchUrl(Uri.parse(Urls.privacy))),
                     const TextSpan(text: '에 동의해야 시작할 수 있어요.'),
                   ]),
             ),
@@ -64,7 +63,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
               FilledButton(
                 style: ButtonStyle(
                   backgroundColor:
-                  MaterialStateProperty.all(ColorConstants.background),
+                      MaterialStateProperty.all(ColorConstants.background),
                 ),
                 onPressed: () {
                   context.pop();
@@ -91,7 +90,6 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
     );
   }
 
-
   void handleSmsSend(ValidatedPhoneDTO dto) {
     setState(() {
       validatedPhoneDTO = dto;
@@ -108,7 +106,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
 
   void handleSmsLogin(dynamic dto) {
     setState(() {
-      context.go('/all');
+      context.go('/mails');
     });
   }
 
