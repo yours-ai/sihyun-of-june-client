@@ -6,7 +6,8 @@ import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/character/actions.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/services.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+
+import '../actions/notification/actions.dart';
 
 class StartingScreen extends StatefulWidget {
   const StartingScreen({super.key});
@@ -17,18 +18,11 @@ class StartingScreen extends StatefulWidget {
 
 class _StartingScreen extends State<StartingScreen> {
   _checkAuthAndLand() async {
-    try {
-      throw Error();
-    } catch (exception, stackTrace) {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stackTrace,
-      );
-    }
-
     final isLogined = await loadIsLogined();
     FlutterNativeSplash.remove();
     if (!context.mounted) return;
+
+    await _initializeNotificationHandlerIfAccepted();
 
     if (isLogined == false) {
       context.go('/landing');
@@ -60,12 +54,19 @@ class _StartingScreen extends State<StartingScreen> {
     return initialMessage;
   }
 
+  _initializeNotificationHandlerIfAccepted() async {
+    final isAccepted = await getIsNotificationAccepted();
+    if (isAccepted == true) {
+      notificationService.initializeNotificationHandlers();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkAuthAndLand();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _checkAuthAndLand();
     });
   }
 

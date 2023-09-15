@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:project_june_client/services.dart';
 
 import '../client.dart';
 import 'models/AppNotification.dart';
@@ -31,6 +32,7 @@ Future<void> requestNotificationPermission() async {
   if (!_checkIsAccepted(settings)) {
     throw Exception("알림 동의를 받지 못했어요.");
   }
+  notificationService.initializeNotificationHandlers();
 }
 
 Future<void> getOrCreateUserDevice(String token) async {

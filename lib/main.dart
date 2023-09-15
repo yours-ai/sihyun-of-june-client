@@ -82,6 +82,7 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
   @override
   Widget build(context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: '유월의 시현이',
       routerConfig: router,
       scaffoldMessengerKey: scaffoldMessengerKey,
