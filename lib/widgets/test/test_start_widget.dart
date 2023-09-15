@@ -1,5 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
@@ -22,10 +23,12 @@ List<TestInfoTabData> getTabList(String firstName) {
     TestInfoTabData(
         title: '먼저, $firstName님과\n한달간 편지를 나눌\n상대를 정해드리려고 해요.',
         body:
-            SizedBox(child: Image.asset('assets/images/landing/landing2.png')),
+            Center(child: Image.asset('assets/images/landing/landing2.png')),
         button: '그래요?'),
     TestInfoTabData(
-        title: '간단한 질문들로,\n$firstName님에 대해 알아볼게요.', button: '알겠어요!'),
+        title: '간단한 질문들로,\n$firstName님에 대해 알아볼게요.',
+        body: Center(child: Lottie.asset('assets/lotties/testStartLottie.json')),
+        button: '알겠어요!'),
   ];
 }
 
@@ -36,11 +39,11 @@ class TestStartWidget extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _TestInfoWidget();
+    return _TestStartWidget();
   }
 }
 
-class _TestInfoWidget extends State<TestStartWidget> {
+class _TestStartWidget extends State<TestStartWidget> {
   int _tab = 0;
   final PageController _controller = PageController();
 

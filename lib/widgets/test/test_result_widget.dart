@@ -24,9 +24,11 @@ class TestResultData {
 final List<TestResultData> tabList = [
   TestResultData(
       title: '테스트가 완료됐어요!\n상대를 정하는 중이에요...',
-      body: Lottie.asset('assets/lotties/animation_lm8qjemt.zip'),
+      body: Lottie.asset('assets/lotties/waitingResultLottie.json'),
       button: '두근두근...'),
-  const TestResultData(title: '상대가 정해졌어요!\n확인해보실래요?', button: '확인해보기'),
+  TestResultData(title: '상대가 정해졌어요!\n확인해보실래요?',
+      body: Lottie.asset('assets/lotties/testResultLottie.json'),
+      button: '확인해보기'),
   const TestResultData(title: '오류가 발생했어요', button: '다시 하기'),
 ];
 
@@ -82,13 +84,15 @@ class _TestResultWidget extends State<TestResultWidget> {
           titleText: tabList[_tab].title,
           body: Builder(
             builder: (context) {
-              return AnimatedCrossFade(
-                firstChild: tabList[0].body,
-                secondChild: tabList[1].body,
-                crossFadeState: _tab == 0
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
-                duration: const Duration(milliseconds: 500),
+              return Center(
+                child: AnimatedCrossFade(
+                  firstChild: tabList[0].body,
+                  secondChild: tabList[1].body,
+                  crossFadeState: _tab == 0
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: const Duration(milliseconds: 500),
+                ),
               );
             },
           ),
