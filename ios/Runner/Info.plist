@@ -2,8 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
-	    <key>FirebaseMessagingAutoInitEnabled</key>
-        <false/>
+		<key>FirebaseMessagingAutoInitEnabled</key>
+		<false/>
 		<key>ITSAppUsesNonExemptEncryption</key>
 		<false/>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
@@ -44,7 +44,7 @@
 			<string>kakaokompassauth</string>
 			<string>kakaolink</string>
 			<string>https</string>
-            <string>http</string>
+			<string>http</string>
 		</array>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
@@ -72,8 +72,8 @@
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
 		<key>UIBackgroundModes</key>
-        <array>
-            <string>remote-notification</string>
-        </array>
+		<array>
+			<string>remote-notification</string>
+		</array>
 	</dict>
 </plist>
