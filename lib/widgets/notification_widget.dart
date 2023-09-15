@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:moment_dart/moment_dart.dart';
+import 'package:project_june_client/actions/notification/models/AppNotification.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/services.dart';
 
 class NotificationWidget extends StatefulWidget {
-  final String title;
-  final int time;
+  final AppNotification notification;
 
-  const NotificationWidget(
-      {super.key,
-      required this.time,
-      required this.title});
+  const NotificationWidget({
+    super.key,
+    required this.notification,
+  });
 
   @override
   State<NotificationWidget> createState() => _NotificationWidgetState();
 }
 
 class _NotificationWidgetState extends State<NotificationWidget> {
-  bool _isRead = false;
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: _isRead == false
+      color: widget.notification.is_read == false
           ? const Color.fromRGBO(236, 236, 236, 0.4)
           : ColorConstants.background,
       child: TextButton(
@@ -37,12 +37,13 @@ class _NotificationWidgetState extends State<NotificationWidget> {
               padding: const EdgeInsets.only(left: 22),
               alignment: Alignment.centerLeft,
               child: Text(
-                widget.title,
+                widget.notification.body,
                 style: TextStyle(
                     fontSize: 15,
                     color: ColorConstants.secondary,
-                    fontWeight:
-                        _isRead == false ? FontWeight.bold : FontWeight.normal),
+                    fontWeight: widget.notification.is_read == false
+                        ? FontWeight.bold
+                        : FontWeight.normal),
               ),
             ),
             Container(
@@ -51,10 +52,10 @@ class _NotificationWidgetState extends State<NotificationWidget> {
               child: Row(
                 children: [
                   Text(
-                    '11시간 전',
+                    Moment(widget.notification.created).fromNow(),
                     style: TextStyle(
                         color: ColorConstants.neutral,
-                        fontWeight: _isRead == false
+                        fontWeight: widget.notification.is_read == false
                             ? FontWeight.bold
                             : FontWeight.normal),
                   ),
@@ -69,9 +70,9 @@ class _NotificationWidgetState extends State<NotificationWidget> {
           ],
         ),
         onPressed: () {
-          setState(() {
-            _isRead = !_isRead;
-          });
+          notificationService.handleClickNotification(
+            widget.notification,
+          );
         },
       ),
     );

@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../client.dart';
+import 'models/AppNotification.dart';
 import 'models/UserDevice.dart';
 
 bool _checkIsAccepted(NotificationSettings settings) {
@@ -38,12 +40,31 @@ Future<void> getOrCreateUserDevice(String token) async {
           .map<UserDevice>((json) => UserDevice.fromJson(json))
           .toList());
   // if token not exists on userDevices, create new one
-  if (userDevices
-      .where((userDevice) => userDevice.device_token == token)
-      .toList()
-      .isEmpty) {
-    await dio.post('/notification/user-devices/', data: {
-      'device_token': token,
-    });
+  try {
+    if (userDevices
+        .where((userDevice) => userDevice.device_token == token)
+        .toList()
+        .isEmpty) {
+      await dio.post('/notification/user-devices/', data: {
+        'device_token': token,
+      });
+    }
+  } catch (e) {
+    if (e is DioException) {
+      return;  // unique constraint error
+    } else {
+      rethrow;
+    }
   }
+}
+
+Future<List<AppNotification>> listAppNotifications() async {
+  return await dio.get('/notification/notifications/').then((response) =>
+      response.data
+          .map<AppNotification>((json) => AppNotification.fromJson(json))
+          .toList());
+}
+
+Future<void> readNotification(int id) async {
+  await dio.post('/notification/notifications/$id/read/');
 }

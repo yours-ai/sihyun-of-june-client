@@ -398,6 +398,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_app_badger:
+    dependency: "direct main"
+    description:
+      name: flutter_app_badger
+      sha256: "64d4a279bab862ed28850431b9b446b9820aaae0bf363322d51077419f930fa8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -696,6 +704,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  moment_dart:
+    dependency: "direct main"
+    description:
+      name: moment_dart
+      sha256: c4c121d42c800182bb6f24a6e650a77c589c94374852bba130c89fa9bf3dc747
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   nm:
     dependency: transitive
     description:

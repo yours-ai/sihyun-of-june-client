@@ -1,5 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
@@ -7,6 +8,7 @@ import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/models/SihyunOfJuneUser.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
+import 'package:project_june_client/services.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../notification/actions.dart';
@@ -130,7 +132,8 @@ Future<OAuthToken> getKakaoOAuthToken() async {
 }
 
 Future<String> getServerTokenByKakaoToken(OAuthToken token) async {
-  final tokenInstance = await dio.post('/auth/kakao/join-or-login/by-token/', data: {
+  final tokenInstance =
+      await dio.post('/auth/kakao/join-or-login/by-token/', data: {
     'token': token.accessToken,
   }).then<Token>((response) => Token.fromJson(response.data));
   return tokenInstance.token;
@@ -139,6 +142,15 @@ Future<String> getServerTokenByKakaoToken(OAuthToken token) async {
 Future<SihyunOfJuneUser> retrieveMe() async {
   return await dio.get('/auth/me/').then<SihyunOfJuneUser>(
       (response) => SihyunOfJuneUser.fromJson(response.data));
+}
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+
+  if (message.notification != null) {
+    notificationService.handleNewNotification();
+  }
 }
 
 void setServerTokenOnDio(String serverToken) {
@@ -157,6 +169,15 @@ Future<void> login(String serverToken, {bool? saveTokenToClient}) async {
       .then((token) => token != null ? getOrCreateUserDevice(token) : null);
   FirebaseMessaging.instance.onTokenRefresh
       .listen((token) => getOrCreateUserDevice(token));
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    if (message.notification != null) {
+      notificationService.handleNewNotification();
+    }
+  });
+  FirebaseMessaging.onMessageOpenedApp
+      .listen(notificationService.handleFCMMessageTap);
+  await notificationService.addBadgeControlListener();
 }
 
 Future<String?> getServerToken() async {
