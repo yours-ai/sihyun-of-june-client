@@ -59,6 +59,48 @@ class _AllScreenState extends State<AllScreen> {
     );
   }
 
+  void _showWithdrawModal() async {
+    await showModalBottomSheet<void>(
+      context: context,
+      useRootNavigator: true,
+      builder: (BuildContext context) {
+        return ModalWidget(
+          title: '정말 탈퇴하시겠어요?',
+          choiceColumn: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              FilledButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all(ColorConstants.background),
+                ),
+                onPressed: () {
+                  context.pop();
+                },
+                child: Text(
+                  '아니요',
+                  style: TextStyle(
+                      fontSize: 14.0, color: ColorConstants.secondary),
+                ),
+              ),
+              FilledButton(
+                onPressed: () {
+                   launchUrl(Uri.parse(Urls.withdraw));
+                  },
+                child: const Text(
+                  '네',
+                  style: TextStyle(
+                    fontSize: 14.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(context) {
     return SafeArea(
@@ -90,6 +132,12 @@ class _AllScreenState extends State<AllScreen> {
               title: '로그아웃',
               onPressed: () {
                 _showLogoutModal();
+              },
+            ),
+            MenuWidget(
+              title: '탈퇴하기',
+              onPressed: () {
+                _showWithdrawModal();
               },
             ),
           ],

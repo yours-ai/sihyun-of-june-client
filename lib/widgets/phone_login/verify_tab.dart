@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
@@ -10,14 +11,12 @@ import '../common/title_layout.dart';
 class VerifyTabWidget extends StatefulWidget {
   final ValidatedPhoneDTO dto;
   final void Function(ValidatedAuthCodeDTO dto) onSmsVerify;
-  final void Function(dynamic dto) onSmsLogin;
 
-  const VerifyTabWidget(
-      {Key? key,
-      required this.dto,
-      required this.onSmsVerify,
-      required this.onSmsLogin})
-      : super(key: key);
+  const VerifyTabWidget({
+    Key? key,
+    required this.dto,
+    required this.onSmsVerify,
+  }) : super(key: key);
 
   @override
   State<VerifyTabWidget> createState() => _VerifyTabWidgetState();
@@ -46,7 +45,7 @@ class _VerifyTabWidgetState extends State<VerifyTabWidget> {
   Widget build(BuildContext context) {
     var tokenMutation = getSmsTokenMutation(
       onSuccess: (res, arg) {
-        widget.onSmsLogin(getValidatedData());
+        context.go('/');
       },
       onError: (arg, error, fallback) {
         ScaffoldMessenger.of(context).showSnackBar(

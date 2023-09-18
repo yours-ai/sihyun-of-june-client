@@ -28,6 +28,7 @@ abstract final class Urls {
   static String privacy = "https://pygmalion.app/policy/privacy";
   static String terms = "https://pygmalion.app/policy/terms";
   static String ask = "https://pf.kakao.com/_YYxoqG/chat";
+  static String withdraw ="https://form.sihyunofjune.com/delete-account";
 }
 
 abstract final class ProjectConstants {
