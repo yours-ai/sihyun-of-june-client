@@ -50,7 +50,7 @@ class MailService {
           millisecond: 0,
           microsecond: 0,
         );
-    Duration duration = due.difference(clock.now());
+    Duration duration = due.difference(clock.now().toLocal());
     if (duration.inMinutes < 60) {
       return '${duration.inMinutes}분 내에만 답장이 가능해요';
     }
