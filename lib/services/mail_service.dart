@@ -42,7 +42,8 @@ class MailService {
   }
 
   String getMailDueTimeLabel(DateTime availableAt) {
-    DateTime due = availableAt.add(const Duration(days: 1)).copyWith(
+    DateTime availableAtLocal = availableAt.toLocal();
+    DateTime due = availableAtLocal.add(const Duration(days: 1)).copyWith(
           hour: ProjectConstants.mailSendDueTime.hour,
           minute: ProjectConstants.mailSendDueTime.minute,
           second: 0,
