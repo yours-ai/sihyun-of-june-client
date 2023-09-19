@@ -42,14 +42,15 @@ class MailService {
   }
 
   String getMailDueTimeLabel(DateTime availableAt) {
-    DateTime due = availableAt.add(const Duration(days: 1)).copyWith(
+    DateTime availableAtLocal = availableAt.toLocal();
+    DateTime due = availableAtLocal.add(const Duration(days: 1)).copyWith(
           hour: ProjectConstants.mailSendDueTime.hour,
           minute: ProjectConstants.mailSendDueTime.minute,
           second: 0,
           millisecond: 0,
           microsecond: 0,
         );
-    Duration duration = due.difference(clock.now());
+    Duration duration = due.difference(clock.now().toLocal());
     if (duration.inMinutes < 60) {
       return '${duration.inMinutes}분 내에만 답장이 가능해요';
     }
