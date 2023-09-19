@@ -10,31 +10,49 @@ import 'package:project_june_client/widgets/mail_detail/reply_form.dart';
 
 import '../actions/mails/queries.dart';
 
-class MailDetailScreen extends StatelessWidget {
+class MailDetailScreen extends StatefulWidget {
   final int id;
 
   const MailDetailScreen({super.key, required this.id});
 
   @override
+  State<MailDetailScreen> createState() => _MailDetailScreenState();
+}
+
+class _MailDetailScreenState extends State<MailDetailScreen> {
+  Mutation<void, int>? mutation;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        mutation = getReadMailMutation(onError: (arr, err, fallback) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('메일을 읽지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
+            ),
+          );
+        });
+        mutation!.mutate(widget.id);
+      });
+    });
+  }
+
+  @override
   Widget build(context) {
     final query = getRetrieveMailQuery(
-      id: id,
+      id: widget.id,
     );
-    bool shouldMutationRun = true;
+
+    if (mutation == null) {
+      return SizedBox.shrink();
+    }
+
     return MutationBuilder(
-      mutation: getReadMailMutation(onError: (arr, err, fallback) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('메일을 읽지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
-          ),
-        );
-      }),
+      mutation: mutation!,
       builder: (context, state, mutate) {
-        if(shouldMutationRun) {
-          shouldMutationRun = false;
-          mutate(id);
-        }
-        return state.status.name == 'success'
+        return state.status == QueryStatus.success
             ? (QueryBuilder(
                 query: query,
                 builder: (context, mailState) {
@@ -104,7 +122,7 @@ class MailDetailScreen extends StatelessWidget {
                   );
                 },
               ))
-            : (const Scaffold());
+            : (const SizedBox());
       },
     );
   }

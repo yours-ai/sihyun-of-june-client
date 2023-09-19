@@ -17,10 +17,7 @@ class MailWidget extends StatelessWidget {
     return Center(
       child: TextButton(
         onPressed: () {
-          if (mail.is_read) {
-            context.push('/mails/detail/${mail.id}');
-            return;
-          }
+          context.push('/mails/detail/${mail.id}');
         },
         child: Stack(
           alignment: Alignment.center,
