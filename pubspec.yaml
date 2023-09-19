@@ -43,6 +43,7 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   build_runner: ^2.4.6
   json_serializable: ^6.7.1
+  sentry_dart_plugin: ^1.6.0
 
 flutter:
   uses-material-design: true
@@ -65,3 +66,7 @@ flutter:
         - asset: assets/fonts/MaruBuri-Bold.otf
           weight: 700
 
+sentry:
+  project : 'sihyun-of-june-flutter'
+  org : 'pygmalion-team'
+  auth_token : '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'
