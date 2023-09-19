@@ -104,7 +104,7 @@ class MailDetailScreen extends StatelessWidget {
                   );
                 },
               ))
-            : (Scaffold());
+            : (const Scaffold());
       },
     );
   }
