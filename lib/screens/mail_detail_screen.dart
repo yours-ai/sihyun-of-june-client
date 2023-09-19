@@ -25,7 +25,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
     final query = getRetrieveMailQuery(
       id: widget.id,
     );
-    bool isMutationRun = false;
+    bool shouldMutationRun = true;
     return MutationBuilder(
       mutation: getReadMailMutation(onError: (arr, err, fallback) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -35,8 +35,8 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
         );
       }),
       builder: (context, state, mutate) {
-        if(!isMutationRun) {
-          isMutationRun = true;
+        if(shouldMutationRun) {
+          shouldMutationRun = false;
           mutate(widget.id);
         }
         return state.status.name == 'success'
