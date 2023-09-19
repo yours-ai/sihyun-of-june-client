@@ -10,20 +10,15 @@ import 'package:project_june_client/widgets/mail_detail/reply_form.dart';
 
 import '../actions/mails/queries.dart';
 
-class MailDetailScreen extends StatefulWidget {
+class MailDetailScreen extends StatelessWidget {
   final int id;
 
   const MailDetailScreen({super.key, required this.id});
 
   @override
-  State<MailDetailScreen> createState() => _MailDetailScreenState();
-}
-
-class _MailDetailScreenState extends State<MailDetailScreen> {
-  @override
   Widget build(context) {
     final query = getRetrieveMailQuery(
-      id: widget.id,
+      id: id,
     );
     bool shouldMutationRun = true;
     return MutationBuilder(
@@ -37,7 +32,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
       builder: (context, state, mutate) {
         if(shouldMutationRun) {
           shouldMutationRun = false;
-          mutate(widget.id);
+          mutate(id);
         }
         return state.status.name == 'success'
             ? (QueryBuilder(
