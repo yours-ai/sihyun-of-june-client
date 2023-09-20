@@ -25,7 +25,7 @@ class NotificationService {
 
 
   void handleClickNotification(AppNotification notification) {
-    router.go(notification.link ?? '/mails');
+    router.push(notification.link ?? '/mails');
     final mutation = Mutation(
       queryFn: (int id) => readNotification(id),
       refetchQueries: ["list-app-notifications"],
