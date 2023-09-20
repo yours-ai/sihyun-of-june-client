@@ -27,13 +27,16 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        mutation = getReadMailMutation(onError: (arr, err, fallback) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('메일을 읽지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
-            ),
-          );
-        });
+        mutation = getReadMailMutation(
+          refetchQueries: ['character-sent-mail-list'],
+          onError: (arr, err, fallback) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('메일을 읽지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
+              ),
+            );
+          },
+        );
         mutation!.mutate(widget.id);
       });
     });
