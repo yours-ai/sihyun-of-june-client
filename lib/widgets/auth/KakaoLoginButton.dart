@@ -1,4 +1,3 @@
-
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,8 +20,7 @@ class KakaoLoginButton extends StatelessWidget {
           context.go('/');
         },
         onError: (arg, error, callback) {
-          if (error is PlatformException &&
-              error.code == "CANCELED") {
+          if (error is PlatformException && error.code == "CANCELED") {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text(
@@ -48,9 +46,8 @@ class KakaoLoginButton extends StatelessWidget {
             backgroundColor: const Color(0xFFFFE500),
             foregroundColor: ColorConstants.primary,
           ),
-          onPressed: () => state.status != QueryStatus.loading
-              ? mutate(null)
-              : null,
+          onPressed: () =>
+              state.status != QueryStatus.loading ? mutate(null) : null,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
