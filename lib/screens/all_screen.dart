@@ -109,6 +109,11 @@ class _AllScreenState extends State<AllScreen> {
         body: ListView(
           children: [
             MenuWidget(
+              //코인 갯수 뜨게 QueryBuilder 사용하기 @boxyhn
+              title: '내 코인',
+              onPressed: () => context.go('/my-coin'),
+            ),
+            MenuWidget(
               title: '공지',
               onPressed: () => launchUrl(Uri.parse(Urls.notice)),
             ),

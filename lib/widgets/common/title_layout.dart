@@ -5,7 +5,7 @@ class TitleLayout extends StatelessWidget {
   final TextStyle? titleStyle;
   final Widget body;
   final Widget? actions;
-  final Widget showProfile;
+  final Widget titleAddOn;
   final bool withAppBar;
 
   const TitleLayout({
@@ -14,7 +14,7 @@ class TitleLayout extends StatelessWidget {
     this.titleStyle,
     required this.body,
     this.actions,
-    this.showProfile = const SizedBox( width:0, height:0),
+    this.titleAddOn = const SizedBox( width:0, height:0),
     this.withAppBar = false,
   }) : super(key: key);
 
@@ -37,7 +37,7 @@ class TitleLayout extends StatelessWidget {
                 ),
               ),
             ),
-            showProfile,
+            titleAddOn,
           ],
         ),
         const SizedBox(height: 20),
