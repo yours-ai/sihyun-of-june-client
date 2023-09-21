@@ -4,15 +4,16 @@ import 'package:project_june_client/constants.dart';
 class MenuWidget extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
+  final Widget suffix;
 
   const MenuWidget({
     Key? key,
     required this.title,
     this.onPressed = defaultOnPressed,
+    this.suffix = const SizedBox.shrink(),
   }) : super(key: key);
 
   static void defaultOnPressed() {}
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class MenuWidget extends StatelessWidget {
           padding: EdgeInsets.zero,
           splashFactory: NoSplash.splashFactory,
         ),
+        onPressed: onPressed,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -38,9 +40,9 @@ class MenuWidget extends StatelessWidget {
                     fontWeight: FontWeight.normal),
               ),
             ),
+            suffix,
           ],
         ),
-        onPressed: onPressed,
       ),
     );
   }

@@ -26,7 +26,7 @@ class _MailListScreenState extends State<MailListScreen> {
     final retrieveMyCharacterQuery = getRetrieveMyCharacterQuery();
     return SafeArea(
       child: TitleLayout(
-        showProfile: Padding(
+        titleAddOn: Padding(
           padding: const EdgeInsets.only(right: 28.0),
           child: QueryBuilder(
             query: retrieveMyCharacterQuery,
