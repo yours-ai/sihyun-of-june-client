@@ -52,12 +52,14 @@ Future<void> _initialize() async {
   if (BuildTimeEnvironments.amplitudeApiKey.isNotEmpty) {
     final Amplitude amplitude = Amplitude.getInstance();
     amplitude.init(BuildTimeEnvironments.amplitudeApiKey);
+  } else {
+    print("amplitude api key가 제공되지 않아, amplitude를 init하지 않습니다.");
   }
 }
 
 void main() async {
   await _initialize();
-  if (BuildTimeEnvironments.sentryDsn == "") {
+  if (BuildTimeEnvironments.sentryDsn.isEmpty) {
     print("sentry dsn이 제공되지 않아, sentry를 init하지 않습니다.");
     return _appRunner();
   }
