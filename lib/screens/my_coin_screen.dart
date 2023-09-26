@@ -10,38 +10,40 @@ class MyCoinScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: TitleLayout(
-        titleText: '내 코인',
-        titleAddOn: Row(
-          children: [
-            Text('80'),
-            Icon(
-              PhosphorIcons.coin_vertical,
-              color: ColorConstants.black,
-              size: 32,
-            ),
-          ],
-        ),
-        body: Column(
-          children: [
-            MenuWidget(
-              title: '1,100원',
-              onPressed: () {},
-              suffix: Row(
-                children: [
-                  Text('10'),
-                  Icon(
-                    PhosphorIcons.arrow_left,
-                    color: ColorConstants.black,
-                    size: 32,
-                  ),
-                ],
+    return Scaffold(
+      body: SafeArea(
+        child: TitleLayout(
+          titleText: '내 코인',
+          titleAddOn: Row(
+            children: [
+              Text('80'),
+              Icon(
+                PhosphorIcons.coin_vertical,
+                color: ColorConstants.black,
+                size: 32,
               ),
-            ),
-            MenuWidget(title: '5,500원', onPressed: () {}),
-            MenuWidget(title: '11,000원', onPressed: () {}),
-          ],
+            ],
+          ),
+          body: Column(
+            children: [
+              MenuWidget(
+                title: '1,100원',
+                onPressed: () {},
+                suffix: Row(
+                  children: [
+                    Text('10'),
+                    Icon(
+                      PhosphorIcons.coin_vertical,
+                      color: ColorConstants.black,
+                      size: 32,
+                    ),
+                  ],
+                ),
+              ),
+              MenuWidget(title: '5,500원', onPressed: () {}),
+              MenuWidget(title: '11,000원', onPressed: () {}),
+            ],
+          ),
         ),
       ),
     );

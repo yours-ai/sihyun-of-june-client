@@ -40,7 +40,7 @@ class MenuWidget extends StatelessWidget {
                     fontWeight: FontWeight.normal),
               ),
             ),
-            suffix,
+            Container(padding: EdgeInsets.only(right: 28), child: suffix),
           ],
         ),
       ),
