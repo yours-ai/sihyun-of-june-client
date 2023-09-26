@@ -1,14 +1,25 @@
 import 'package:flutter/foundation.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
 @immutable
-class CoinTradeDTO {
-  final String transactionType;
-  final int amount;
-  final description;
+class StoreInfoDTO {
+  late  bool isAvailable;
+  late  List<ProductDetails> products;
+  final List<PurchaseDetails> purchases;
+  late  List<String> notFoundIds;
+  late  List<String> consumables;
+  final bool purchasePending;
+  late  bool loading;
+  late  String? queryProductError;
 
-  const CoinTradeDTO({
-    required this.transactionType,
-    required this.amount,
-    required this.description
+  StoreInfoDTO({
+    this.isAvailable = false,
+    this.products = const <ProductDetails>[],
+    this.purchases = const <PurchaseDetails>[],
+    this.notFoundIds = const <String>[],
+    this.consumables = const <String>[],
+    this.purchasePending = false,
+    this.loading = true,
+    this.queryProductError,
   });
 }
