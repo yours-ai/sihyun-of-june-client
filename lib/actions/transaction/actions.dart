@@ -1,14 +1,16 @@
 import '../client.dart';
-import 'models/CoinLog.dart';
 
-Future<List<CoinLog>> fetchCoinLogs() async {
-  final response = await dio.get('/transaction/coin/logs/');
-  return (response.data as List).map((e) => CoinLog.fromJson(e)).toList();
-}
-
-Future<void> purchaseCoin(CoinLog) async {
-  await dio.post('/transaction/coin/purchase/');
+Future<void> appleTransactionVerify(String serverVerificationData) async {
+  await dio.post('/transaction/apple/transaction/', data: {
+    'signedPayload': serverVerificationData,
+  });
   return;
 }
 
-
+Future<void> googleTransactionVerify(String serverVerificationData) async {
+  await dio.post('/transaction/google/transaction/', data: {
+    'product_id': serverVerificationData,
+    'token': serverVerificationData,
+  });
+  return;
+}

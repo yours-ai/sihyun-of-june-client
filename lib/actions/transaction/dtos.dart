@@ -6,7 +6,6 @@ class StoreInfoDTO {
   late  bool isAvailable;
   late  List<ProductDetails> products;
   final List<PurchaseDetails> purchases;
-  late  List<String> notFoundIds;
   late  List<String> consumables;
   final bool purchasePending;
   late  bool loading;
@@ -16,7 +15,6 @@ class StoreInfoDTO {
     this.isAvailable = false,
     this.products = const <ProductDetails>[],
     this.purchases = const <PurchaseDetails>[],
-    this.notFoundIds = const <String>[],
     this.consumables = const <String>[],
     this.purchasePending = false,
     this.loading = true,
