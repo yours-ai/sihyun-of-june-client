@@ -115,7 +115,28 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                   ReplyFormWidget(
                                     mail: mailState.data!,
                                   )
-                                ]
+                                ],
+                                if (mailState.data!.replies!.isEmpty &&
+                                    !mailService
+                                        .isMailReplyable(mailState.data!)) ...[
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 30, bottom: 45),
+                                    height: 1,
+                                    color: ColorConstants.light,
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      '답장 가능 시간이 지났어요.🥲\n답장은 오전 9시까지만 가능해요.',
+                                      style: TextStyle(
+                                        height: 1.5,
+                                        fontSize: 14,
+                                        color: ColorConstants.neutral,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                ],
                               ],
                             ),
                           ),
