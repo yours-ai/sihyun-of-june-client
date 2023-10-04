@@ -76,12 +76,20 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                   minLines: 8,
+                  maxLength: 1000,
                   decoration: InputDecoration(
+                    errorText: '',
+                    counterText: controller.text.length > 900
+                        ? '${controller.text.length}/1000'
+                        : '',
+                    errorStyle: TextStyle(
+                      color: ColorConstants.black,
+                    ),
                     hintText: '답장을 적어주세요...',
                     hintStyle: TextStyle(
                         fontFamily: 'MaruBuri',
                         fontSize: 14,
-                        color: ColorConstants.neutral),
+                        color: ColorConstants.primary),
                     border: InputBorder.none,
                   ),
                   style: TextStyle(
@@ -90,20 +98,18 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                     color: ColorConstants.primary,
                     height: 1.5,
                   ),
+                  onChanged: (text) {
+                    setState(() {});
+                  },
                 ),
-                Center(
-                    child: Text(
-                  mailDueTimeLabel,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: ColorConstants.secondary,
-                  ),
-                )),
+                SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: FilledButton(
                     onPressed: () {
-                      mutate(getReplyDTO());
+                      if (_formKey.currentState!.validate()) {
+                        mutate(getReplyDTO());
+                      }
                     },
                     child: const Text(
                       '답장하기',
@@ -114,6 +120,15 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                     ),
                   ),
                 ),
+                SizedBox(height: 10),
+                Center(
+                    child: Text(
+                  mailDueTimeLabel,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: ColorConstants.secondary,
+                  ),
+                )),
               ],
             ),
           ),
