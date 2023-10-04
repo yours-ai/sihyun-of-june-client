@@ -96,6 +96,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
         },
       );
     }
+
     final mailDueTimeLabel =
         mailService.getMailDueTimeLabel(widget.mail.available_at);
     return Column(
@@ -125,6 +126,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                 minLines: 8,
                 maxLength: 1000,
                 decoration: InputDecoration(
+                  helperText: '',
                   counterText: controller.text.length > 900
                       ? '${controller.text.length}/1000'
                       : '',
@@ -154,8 +156,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _showConfirmModal();
-                    }
-                    else {
+                    } else {
                       setState(() {
                         _autovalidateMode = AutovalidateMode.always;
                       });
