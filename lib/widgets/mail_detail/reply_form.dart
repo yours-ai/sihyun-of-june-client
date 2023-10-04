@@ -23,7 +23,7 @@ class ReplyFormWidget extends StatefulWidget {
 class _ReplyFormWidgetState extends State<ReplyFormWidget> {
   final controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  var _autovalidateMode = AutovalidateMode.disabled;
+  final _autovalidateMode = AutovalidateMode.onUserInteraction;
 
   @override
   void dispose() {
@@ -156,10 +156,6 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _showConfirmModal();
-                    } else {
-                      setState(() {
-                        _autovalidateMode = AutovalidateMode.always;
-                      });
                     }
                   },
                   child: const Text(
