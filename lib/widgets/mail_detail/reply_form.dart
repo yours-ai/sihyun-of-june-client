@@ -23,6 +23,7 @@ class ReplyFormWidget extends StatefulWidget {
 class _ReplyFormWidgetState extends State<ReplyFormWidget> {
   final controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  var _autovalidateMode = AutovalidateMode.disabled;
 
   @override
   void dispose() {
@@ -54,9 +55,9 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
         context: context,
         builder: (BuildContext context) {
           return ModalWidget(
-            title: '답장을 모두 작성하셨나요?',
-            description: Padding(
-              padding: const EdgeInsets.only(top:20),
+            title: '정말 이대로 보내시겠어요?',
+            description: const Padding(
+              padding: EdgeInsets.only(top: 20),
               child: Text('답장을 보내면 수정이 불가능해요.🥲'),
             ),
             choiceColumn: Column(
@@ -95,7 +96,6 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
         },
       );
     }
-
     final mailDueTimeLabel =
         mailService.getMailDueTimeLabel(widget.mail.available_at);
     return Column(
@@ -112,6 +112,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
+                autovalidateMode: _autovalidateMode,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '답장을 입력해주세요.';
@@ -124,18 +125,14 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                 minLines: 8,
                 maxLength: 1000,
                 decoration: InputDecoration(
-                  errorText: '',
                   counterText: controller.text.length > 900
                       ? '${controller.text.length}/1000'
                       : '',
-                  errorStyle: TextStyle(
-                    color: ColorConstants.black,
-                  ),
                   hintText: '답장을 적어주세요...',
                   hintStyle: TextStyle(
                       fontFamily: 'MaruBuri',
                       fontSize: 14,
-                      color: ColorConstants.primary),
+                      color: ColorConstants.neutral),
                   border: InputBorder.none,
                 ),
                 style: TextStyle(
@@ -145,16 +142,23 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   height: 1.5,
                 ),
                 onChanged: (text) {
-                  setState(() {});
+                  setState(() {
+                    controller.text = text;
+                  });
                 },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: FilledButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _showConfirmModal();
+                    }
+                    else {
+                      setState(() {
+                        _autovalidateMode = AutovalidateMode.always;
+                      });
                     }
                   },
                   child: const Text(
@@ -166,7 +170,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Center(
                   child: Text(
                 mailDueTimeLabel,
