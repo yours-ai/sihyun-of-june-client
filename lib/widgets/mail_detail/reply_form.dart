@@ -23,7 +23,6 @@ class ReplyFormWidget extends StatefulWidget {
 class _ReplyFormWidgetState extends State<ReplyFormWidget> {
   final controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final _autovalidateMode = AutovalidateMode.onUserInteraction;
 
   @override
   void dispose() {
@@ -113,7 +112,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
-                autovalidateMode: _autovalidateMode,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return '답장을 입력해주세요.';
