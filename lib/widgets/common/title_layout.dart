@@ -29,7 +29,7 @@ class TitleLayout extends StatelessWidget {
           children: [
             Flexible(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
+                padding: const EdgeInsets.only(left: 28),
                 child: Text(
                   titleText,
                   style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
@@ -37,7 +37,7 @@ class TitleLayout extends StatelessWidget {
                 ),
               ),
             ),
-            Container(padding: EdgeInsets.only(right: 28), child: titleAddOn),
+            Container(padding: const EdgeInsets.only(right: 28), child: titleAddOn),
           ],
         ),
         const SizedBox(height: 20),
