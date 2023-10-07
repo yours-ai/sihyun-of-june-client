@@ -4,6 +4,8 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
 
+import '../actions/transaction/actions.dart';
+
 class TransactionService {
   Future<StoreInfoDTO> initStoreInfo(
       List<String> _kProductIds, _inAppPurchase, StoreInfoDTO infoDTO) async {
@@ -47,17 +49,18 @@ class TransactionService {
   }
 
   Future<bool> verifyPurchase(PurchaseDetails purchaseDetails) async {
-    // try {
-    //   if (Platform.isIOS) {
-    //     appleTransactionVerify(
-    //         purchaseDetails.verificationData.serverVerificationData!);
-    //   } else {
+    try {
+      if (Platform.isIOS) {
+        appleTransactionVerify(
+            purchaseDetails.purchaseID!);
+      }
+      //   else {
     //     googleTransactionVerify(
     //         purchaseDetails.verificationData.serverVerificationData!);
     //   }
-    // } catch (e) {
-    //   return false;
-    // }
+    } catch (e) {
+      return false;
+    }
     return true;
   }
 }

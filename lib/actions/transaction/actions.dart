@@ -1,8 +1,8 @@
 import '../client.dart';
 
-Future<void> appleTransactionVerify(String serverVerificationData) async {
+Future<void> appleTransactionVerify(String purchaseID) async {
   await dio.post('/transaction/apple/transaction/', data: {
-    'signedPayload': serverVerificationData,
+    'purchase_id': purchaseID,
   });
   return;
 }
