@@ -14,7 +14,7 @@ class TitleLayout extends StatelessWidget {
     this.titleStyle,
     required this.body,
     this.actions,
-    this.titleAddOn = const SizedBox(width: 0, height: 0),
+    this.titleAddOn = const SizedBox.shrink(),
     this.withAppBar = false,
   }) : super(key: key);
 
@@ -24,21 +24,21 @@ class TitleLayout extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         withAppBar ? const SizedBox(height: 10) : const SizedBox(height: 50),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 28),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 28.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
                 child: Text(
                   titleText,
                   style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
                   softWrap: true,
                 ),
               ),
-            ),
-            Container(padding: const EdgeInsets.only(right: 28), child: titleAddOn),
-          ],
+              titleAddOn
+            ],
+          ),
         ),
         const SizedBox(height: 20),
         Expanded(
