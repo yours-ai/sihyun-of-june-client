@@ -59,7 +59,7 @@ class _ProductWidgetState extends State<ProductWidget> {
             }
           },
           title: Text(
-            productDetails.title,
+            Platform.isIOS ? productDetails.title : productDetails.title.substring(0,9),
             style: TextStyle(color: ColorConstants.black, fontSize: 18),
           ),
           trailing: Text(
