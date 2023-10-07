@@ -111,7 +111,7 @@ class _AllScreenState extends State<AllScreen> {
             MenuWidget(
               //코인 갯수 뜨게 QueryBuilder 사용하기 @boxyhn
               title: '내 코인',
-              onPressed: () => context.go('/my-coin'),
+              onPressed: () => context.push('/my-coin'),
             ),
             MenuWidget(
               title: '공지',
