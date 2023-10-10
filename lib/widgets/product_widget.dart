@@ -5,6 +5,8 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:project_june_client/constants.dart';
 
+import '../services/transaction_service.dart';
+
 class ProductWidget extends StatefulWidget {
   final List<ProductDetails> products;
   final InAppPurchase inAppPurchase;
@@ -27,6 +29,7 @@ class _ProductWidgetState extends State<ProductWidget> {
   );
 
   final List<ListTile> productList = <ListTile>[];
+  var transactionService = TransactionService();
 
   @override
   void initState() {
@@ -35,31 +38,17 @@ class _ProductWidgetState extends State<ProductWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if(productList.isEmpty) {
+    if (productList.isEmpty) {
       productList.addAll(widget.products.map((ProductDetails productDetails) {
         return ListTile(
           onTap: () {
-            late PurchaseParam purchaseParam;
-
-            if (Platform.isAndroid) {
-              purchaseParam = GooglePlayPurchaseParam(
-                productDetails: productDetails,
-              );
-            } else {
-              purchaseParam = PurchaseParam(
-                productDetails: productDetails,
-              );
-            }
-
-            if (productDetails.id == widget.kConsumableId) {
-              widget.inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
-            } else {
-              widget.inAppPurchase
-                  .buyNonConsumable(purchaseParam: purchaseParam);
-            }
+            transactionService.initiatePurchase(
+                productDetails, widget.inAppPurchase, widget.kConsumableId);
           },
           title: Text(
-            Platform.isIOS ? productDetails.title : productDetails.title.substring(0,9),
+            Platform.isIOS
+                ? productDetails.title
+                : productDetails.title.substring(0, 9),
             style: TextStyle(color: ColorConstants.black, fontSize: 18),
           ),
           trailing: Text(

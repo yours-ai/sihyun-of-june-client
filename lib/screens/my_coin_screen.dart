@@ -11,6 +11,7 @@ import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/product_widget.dart';
 
 import '../actions/auth/queries.dart';
+import '../actions/transaction/actions.dart';
 import '../constants.dart';
 import '../services/transaction_service.dart';
 
@@ -32,6 +33,10 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
   late StreamSubscription<List<PurchaseDetails>> _subscription;
   var transactionService = TransactionService();
 
+  Future<void> _updateStoreInfo() async {
+    await initStoreInfo(_kProductIds, _inAppPurchase, _storeInfoDTO);
+  }
+
   @override
   void initState() {
     final Stream<List<PurchaseDetails>> purchaseUpdated =
@@ -41,69 +46,21 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
       _listenToPurchaseUpdated(purchaseDetailsList);
     }, onDone: () {
       _subscription.cancel();
-    }, onError: (error) {
-      // handle error here.
     });
-    Future<void> _updateStoreInfo() async {
-      final updatedStoreInfoDTO = await transactionService.initStoreInfo(
-          _kProductIds, _inAppPurchase, _storeInfoDTO);
-      setState(() {
-        _storeInfoDTO = updatedStoreInfoDTO;
-      });
-    }
-
     _updateStoreInfo();
     super.initState();
   }
 
   @override
   void dispose() {
-    if (Platform.isIOS) {
-      final InAppPurchaseStoreKitPlatformAddition iosPlatformAddition =
-          _inAppPurchase
-              .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
-      iosPlatformAddition.setDelegate(null);
-    }
     _subscription.cancel();
     super.dispose();
   }
 
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
-    purchaseDetailsList.forEach(
-      (PurchaseDetails purchaseDetails) async {
-        if (purchaseDetails.status == PurchaseStatus.pending) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                '잠시만 기다려주세요...',
-              ),
-            ),
-          );
-        } else {
-          if (purchaseDetails.status == PurchaseStatus.error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  '결제 도중 에러가 발생했어요. 에러가 계속되면 고객센터로 문의주세요.',
-                ),
-              ),
-            );
-          } else if (purchaseDetails.status == PurchaseStatus.purchased ||
-              purchaseDetails.status == PurchaseStatus.restored) {
-            bool valid =
-                await transactionService.verifyPurchase(purchaseDetails);
-            if (valid) {
-              print('valid'); // 서버에서 다 해줌.
-            } else {
-              print('invalid');
-            }
-          }
-          if (purchaseDetails.pendingCompletePurchase) {
-            await InAppPurchase.instance.completePurchase(purchaseDetails);
-          }
-        }
-      },
-    );
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      transactionService.purchaseUpdatedListener(context, purchaseDetails);
+    });
   }
 
   @override
@@ -136,9 +93,9 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
                     titleAddOn: Row(
                       children: [
                         Text(state.data!.coin.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.bold)),
-                        SizedBox(width: 8),
+                        const SizedBox(width: 8),
                         Icon(
                           PhosphorIcons.coin_vertical,
                           color: ColorConstants.black,
@@ -148,7 +105,7 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
                     ),
                     body: Column(
                       children: [
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         ProductWidget(
                           products: _storeInfoDTO.products,
                           inAppPurchase: _inAppPurchase,
