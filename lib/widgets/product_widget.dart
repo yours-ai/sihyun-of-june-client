@@ -11,12 +11,14 @@ class ProductWidget extends StatefulWidget {
   final List<ProductDetails> products;
   final InAppPurchase inAppPurchase;
   final List<String> kProductIds;
+  bool isProcessing;
 
   ProductWidget(
       {Key? key,
       required this.products,
       required this.inAppPurchase,
-      required this.kProductIds})
+      required this.kProductIds,
+      required this.isProcessing})
       : super(key: key);
 
   @override
@@ -42,8 +44,12 @@ class _ProductWidgetState extends State<ProductWidget> {
       productList.addAll(widget.products.map((ProductDetails productDetails) {
         return ListTile(
           onTap: () {
-            transactionService.initiatePurchase(
-                productDetails, widget.inAppPurchase, widget.kProductIds);
+            if (widget.isProcessing == false) {
+              widget.isProcessing = true;
+              setState(() {});
+              transactionService.initiatePurchase(
+                  productDetails, widget.inAppPurchase, widget.kProductIds);
+            }
           },
           title: Text(
             Platform.isIOS

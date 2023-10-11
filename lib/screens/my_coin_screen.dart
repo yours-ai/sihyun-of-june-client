@@ -38,7 +38,7 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
     await initStoreInfo(_kProductIds, _inAppPurchase, _storeInfoDTO);
   }
 
-  Future<void> handlePastTransactions() async{
+  Future<void> handlePastTransactions() async {
     var transactions = await SKPaymentQueueWrapper().transactions();
     transactions.forEach((SKPaymentTransactionWrapper) {
       SKPaymentQueueWrapper().finishTransaction(SKPaymentTransactionWrapper);
@@ -95,6 +95,7 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
         child: QueryBuilder(
           query: getRetrieveMeQuery(),
           builder: (context, state) {
+            bool isProcessing = false;
             return state.data == null
                 ? const SizedBox.shrink()
                 : TitleLayout(
@@ -117,9 +118,11 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
                       children: [
                         const SizedBox(height: 16),
                         ProductWidget(
-                            products: _storeInfoDTO.products,
-                            inAppPurchase: _inAppPurchase,
-                            kProductIds: _kProductIds),
+                          products: _storeInfoDTO.products,
+                          inAppPurchase: _inAppPurchase,
+                          kProductIds: _kProductIds,
+                          isProcessing: isProcessing,
+                        ),
                       ],
                     ),
                   );
