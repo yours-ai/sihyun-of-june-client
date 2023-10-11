@@ -40,7 +40,7 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
   @override
   void initState() {
     final Stream<List<PurchaseDetails>> purchaseUpdated =
-        InAppPurchase.instance.purchaseStream;
+        _inAppPurchase.purchaseStream;
     _subscription =
         purchaseUpdated.listen((List<PurchaseDetails> purchaseDetailsList) {
       _listenToPurchaseUpdated(purchaseDetailsList);
@@ -59,7 +59,8 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
 
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
-      transactionService.purchaseUpdatedListener(context, purchaseDetails);
+      transactionService.purchaseUpdatedListener(
+          context, purchaseDetails, _inAppPurchase);
     });
   }
 

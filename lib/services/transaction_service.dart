@@ -9,15 +9,15 @@ import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import '../actions/transaction/queries.dart';
 
 class TransactionService {
-  void purchaseUpdatedListener(
-      BuildContext context, PurchaseDetails purchaseDetails) {
+  void purchaseUpdatedListener(BuildContext context,
+      PurchaseDetails purchaseDetails, InAppPurchase inAppPurchase) {
     if (purchaseDetails.status == PurchaseStatus.pending) {
       _handlePendingTransaction(context, purchaseDetails);
     } else {
       if (purchaseDetails.status == PurchaseStatus.error) {
         _handleErrorTransaction(context, purchaseDetails);
       } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-        _handlePurchasedTransaction(context, purchaseDetails);
+        _handlePurchasedTransaction(context, purchaseDetails, inAppPurchase);
       }
     }
   }
@@ -44,10 +44,11 @@ class TransactionService {
     );
   }
 
-  void _handlePurchasedTransaction(
-      BuildContext context, PurchaseDetails purchaseDetails) {
+  void _handlePurchasedTransaction(BuildContext context,
+      PurchaseDetails purchaseDetails, InAppPurchase inAppPurchase) {
     verifyPurchaseMutation(
       onSuccess: (res, arg) {
+        inAppPurchase.completePurchase(purchaseDetails);
         handleNewTransaction();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
