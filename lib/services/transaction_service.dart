@@ -49,6 +49,13 @@ class TransactionService {
     verifyPurchaseMutation(
       onSuccess: (res, arg) {
         handleNewTransaction();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              '결제가 완료되었어요.',
+            ),
+          ),
+        );
       },
     ).mutate(purchaseDetails);
   }
@@ -68,9 +75,9 @@ class TransactionService {
   }
 
   void initiatePurchase(ProductDetails productDetails,
-      InAppPurchase inAppPurchase, String kConsumableId) {
+      InAppPurchase inAppPurchase, List<String> kProductIds) {
     var purchaseParam = setPurchaseParam(productDetails);
-    if (productDetails.id == kConsumableId) {
+    if (kProductIds.contains(productDetails.id)) {
       inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
     } else {
       inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);

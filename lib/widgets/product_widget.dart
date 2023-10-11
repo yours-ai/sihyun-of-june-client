@@ -10,13 +10,13 @@ import '../services/transaction_service.dart';
 class ProductWidget extends StatefulWidget {
   final List<ProductDetails> products;
   final InAppPurchase inAppPurchase;
-  final String kConsumableId;
+  final List<String> kProductIds;
 
   ProductWidget(
       {Key? key,
       required this.products,
       required this.inAppPurchase,
-      required this.kConsumableId})
+      required this.kProductIds})
       : super(key: key);
 
   @override
@@ -43,7 +43,7 @@ class _ProductWidgetState extends State<ProductWidget> {
         return ListTile(
           onTap: () {
             transactionService.initiatePurchase(
-                productDetails, widget.inAppPurchase, widget.kConsumableId);
+                productDetails, widget.inAppPurchase, widget.kProductIds);
           },
           title: Text(
             Platform.isIOS

@@ -13,9 +13,9 @@ Mutation<void, PurchaseDetails> verifyPurchaseMutation({
   return Mutation<void, PurchaseDetails>(
     queryFn: (purchaseDetails) async {
       if (Platform.isIOS) {
-        appleTransactionVerify(purchaseDetails.purchaseID!);
+        await appleTransactionVerify(purchaseDetails.purchaseID!);
       } else {
-        googleTransactionVerify(
+        await googleTransactionVerify(
           GoogleVerificationDTO(
             orderId: purchaseDetails.purchaseID!,
             productId: purchaseDetails.productID,

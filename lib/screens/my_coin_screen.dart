@@ -15,9 +15,9 @@ import '../actions/transaction/actions.dart';
 import '../constants.dart';
 import '../services/transaction_service.dart';
 
-const String _kConsumableId = 'purchase_50_coins';
 const List<String> _kProductIds = <String>[
-  _kConsumableId,
+  'purchase_50_coins',
+  'purchase_100_coins'
 ];
 
 class MyCoinScreen extends StatefulWidget {
@@ -109,7 +109,7 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
                         ProductWidget(
                           products: _storeInfoDTO.products,
                           inAppPurchase: _inAppPurchase,
-                          kConsumableId: _kConsumableId,
+                          kProductIds: _kProductIds,
                         ),
                       ],
                     ),
