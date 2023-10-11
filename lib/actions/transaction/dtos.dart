@@ -3,11 +3,11 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 
 @immutable
 class StoreInfoDTO {
-  late  bool isAvailable;
-  late  List<ProductDetails> products;
+  late bool isAvailable;
+  late List<ProductDetails> products;
   final List<PurchaseDetails> purchases;
   final bool purchasePending;
-  late  bool loading;
+  late bool loading;
 
   StoreInfoDTO({
     this.isAvailable = false,
@@ -15,5 +15,18 @@ class StoreInfoDTO {
     this.purchases = const <PurchaseDetails>[],
     this.purchasePending = false,
     this.loading = true,
+  });
+}
+
+@immutable
+class GoogleVerificationDTO {
+  final String orderId;
+  final String productId;
+  final String purchaseToken;
+
+  GoogleVerificationDTO({
+    required this.orderId,
+    required this.productId,
+    required this.purchaseToken,
   });
 }

@@ -5,14 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
-import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
-import 'package:project_june_client/actions/transaction/dtos.dart';
 
-import '../actions/transaction/actions.dart';
 import '../actions/transaction/queries.dart';
 
 class TransactionService {
-  void purchaseUpdatedListener(BuildContext context, PurchaseDetails purchaseDetails) {
+  void purchaseUpdatedListener(
+      BuildContext context, PurchaseDetails purchaseDetails) {
     if (purchaseDetails.status == PurchaseStatus.pending) {
       _handlePendingTransaction(context, purchaseDetails);
     } else {
@@ -24,7 +22,8 @@ class TransactionService {
     }
   }
 
-  void _handlePendingTransaction(BuildContext context, PurchaseDetails purchaseDetails) {
+  void _handlePendingTransaction(
+      BuildContext context, PurchaseDetails purchaseDetails) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
@@ -34,7 +33,8 @@ class TransactionService {
     );
   }
 
-  void _handleErrorTransaction(BuildContext context, PurchaseDetails purchaseDetails) {
+  void _handleErrorTransaction(
+      BuildContext context, PurchaseDetails purchaseDetails) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
@@ -44,10 +44,13 @@ class TransactionService {
     );
   }
 
-  void _handlePurchasedTransaction(BuildContext context, PurchaseDetails purchaseDetails) {
-    verifyPurchaseMutation(onSuccess: (res, arg) {
-      handleNewTransaction();
-    },).mutate(purchaseDetails);
+  void _handlePurchasedTransaction(
+      BuildContext context, PurchaseDetails purchaseDetails) {
+    verifyPurchaseMutation(
+      onSuccess: (res, arg) {
+        handleNewTransaction();
+      },
+    ).mutate(purchaseDetails);
   }
 
   PurchaseParam setPurchaseParam(ProductDetails productDetails) {

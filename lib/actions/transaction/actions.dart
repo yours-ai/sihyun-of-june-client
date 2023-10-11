@@ -10,10 +10,11 @@ Future<void> appleTransactionVerify(String purchaseID) async {
   return;
 }
 
-Future<void> googleTransactionVerify(String serverVerificationData) async {
+Future<void> googleTransactionVerify(GoogleVerificationDTO dto) async {
   await dio.post('/transaction/google/transaction/', data: {
-    'product_id': serverVerificationData,
-    'token': serverVerificationData,
+    'order_id': dto.orderId,
+    'product_id': dto.productId,
+    'token': dto.purchaseToken,
   });
   return;
 }
