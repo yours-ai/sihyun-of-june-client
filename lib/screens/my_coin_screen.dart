@@ -6,6 +6,7 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
+import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/product_widget.dart';
@@ -37,6 +38,13 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
     await initStoreInfo(_kProductIds, _inAppPurchase, _storeInfoDTO);
   }
 
+  Future<void> handlePastTransactions() async{
+    var transactions = await SKPaymentQueueWrapper().transactions();
+    transactions.forEach((SKPaymentTransactionWrapper) {
+      SKPaymentQueueWrapper().finishTransaction(SKPaymentTransactionWrapper);
+    });
+  }
+
   @override
   void initState() {
     final Stream<List<PurchaseDetails>> purchaseUpdated =
@@ -48,6 +56,7 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
       _subscription.cancel();
     });
     _updateStoreInfo();
+    handlePastTransactions();
     super.initState();
   }
 
@@ -108,10 +117,9 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
                       children: [
                         const SizedBox(height: 16),
                         ProductWidget(
-                          products: _storeInfoDTO.products,
-                          inAppPurchase: _inAppPurchase,
-                          kProductIds: _kProductIds,
-                        ),
+                            products: _storeInfoDTO.products,
+                            inAppPurchase: _inAppPurchase,
+                            kProductIds: _kProductIds),
                       ],
                     ),
                   );

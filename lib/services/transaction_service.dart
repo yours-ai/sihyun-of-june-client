@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
+import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 
 import '../actions/transaction/queries.dart';
 
@@ -13,12 +14,11 @@ class TransactionService {
       PurchaseDetails purchaseDetails, InAppPurchase inAppPurchase) {
     if (purchaseDetails.status == PurchaseStatus.pending) {
       _handlePendingTransaction(context, purchaseDetails);
-    } else {
-      if (purchaseDetails.status == PurchaseStatus.error) {
-        _handleErrorTransaction(context, purchaseDetails);
-      } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-        _handlePurchasedTransaction(context, purchaseDetails, inAppPurchase);
-      }
+    } else if (purchaseDetails.status == PurchaseStatus.error ||
+        purchaseDetails.status == PurchaseStatus.canceled) {
+      _handleErrorTransaction(context, purchaseDetails, inAppPurchase);
+    } else if (purchaseDetails.status == PurchaseStatus.purchased) {
+      _handlePurchasedTransaction(context, purchaseDetails, inAppPurchase);
     }
   }
 
@@ -33,8 +33,10 @@ class TransactionService {
     );
   }
 
-  void _handleErrorTransaction(
-      BuildContext context, PurchaseDetails purchaseDetails) {
+  void _handleErrorTransaction(BuildContext context,
+      PurchaseDetails purchaseDetails, InAppPurchase inAppPurchase) {
+    inAppPurchase.completePurchase(purchaseDetails);
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
@@ -76,7 +78,7 @@ class TransactionService {
   }
 
   void initiatePurchase(ProductDetails productDetails,
-      InAppPurchase inAppPurchase, List<String> kProductIds) {
+      InAppPurchase inAppPurchase, List<String> kProductIds) async {
     var purchaseParam = setPurchaseParam(productDetails);
     if (kProductIds.contains(productDetails.id)) {
       inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
