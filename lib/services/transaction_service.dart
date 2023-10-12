@@ -88,6 +88,6 @@ class TransactionService {
   }
 
   void handleNewTransaction() {
-    CachedQuery.instance.refetchQueries(keys: ["retrieve-me"]);
+    CachedQuery.instance.refetchQueries(keys: ["retrieve-me", "coin-logs"]);
   }
 }

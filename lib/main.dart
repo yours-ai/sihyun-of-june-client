@@ -153,9 +153,9 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
           elevation: 0,
           color: ColorConstants.background,
         ),
-        listTileTheme: ListTileThemeData(
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 28,
+        listTileTheme: const ListTileThemeData(
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 26,
             vertical: 8,
           ),
         ),

@@ -5,6 +5,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
 
 import 'actions.dart';
+import 'models/CoinLog.dart';
 
 Mutation<void, PurchaseDetails> verifyPurchaseMutation({
   OnSuccessCallback? onSuccess,
@@ -27,6 +28,14 @@ Mutation<void, PurchaseDetails> verifyPurchaseMutation({
       ;
     },
     onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Query<List<CoinLog>> getCoinLogsQuery({OnQueryErrorCallback? onError}) {
+  return Query<List<CoinLog>>(
+    key: 'coin-logs',
+    queryFn: getCoinLogs,
     onError: onError,
   );
 }

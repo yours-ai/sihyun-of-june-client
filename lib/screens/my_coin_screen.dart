@@ -9,6 +9,7 @@ import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
+import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/product_widget.dart';
 
 import '../actions/auth/queries.dart';
@@ -117,6 +118,12 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
                     body: Column(
                       children: [
                         const SizedBox(height: 16),
+                        MenuWidget(
+                          onPressed: () {
+                            context.push('/my-coin/log');
+                          },
+                          title: '코인 내역 조회하기',
+                        ),
                         ProductWidget(
                           products: _storeInfoDTO.products,
                           inAppPurchase: _inAppPurchase,

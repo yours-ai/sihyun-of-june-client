@@ -26,10 +26,6 @@ class ProductWidget extends StatefulWidget {
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
-  static const ListTile productHeader = ListTile(
-    title: Text('코인 추가로 구매하기', style: TextStyle(fontSize: 18)),
-  );
-
   final List<ListTile> productList = <ListTile>[];
   var transactionService = TransactionService();
 
@@ -64,6 +60,6 @@ class _ProductWidgetState extends State<ProductWidget> {
         );
       }));
     }
-    return Card(child: Column(children: <Widget>[productHeader] + productList));
+    return Column(children: productList);
   }
 }
