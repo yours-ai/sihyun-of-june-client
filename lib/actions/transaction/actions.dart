@@ -32,3 +32,8 @@ Future<StoreInfoDTO> initStoreInfo(List<String> ProductIds,
   infoDTO.loading = false;
   return infoDTO;
 }
+
+Future<List<CoinLog>> getCoinLogs() async {
+  final response = await dio.get('/transaction/coin/logs/');
+  return response.data.map<CoinLog>((json) => CoinLog.fromJson(json)).toList();
+}
