@@ -20,17 +20,11 @@ Future<void> googleTransactionVerify(GoogleVerificationDTO dto) async {
   return;
 }
 
-Future<StoreInfoDTO> initStoreInfo(List<String> ProductIds,
-    InAppPurchase inAppPurchase, StoreInfoDTO infoDTO) async {
-  try {
-    final ProductDetailsResponse productDetailResponse =
-        await InAppPurchase.instance.queryProductDetails(ProductIds.toSet());
-    infoDTO.products = productDetailResponse.productDetails;
-  } catch (e) {
-    infoDTO.isAvailable = false;
-  }
-  infoDTO.loading = false;
-  return infoDTO;
+Future<List<ProductDetails>> initStoreInfo(
+    List<String> ProductIds, InAppPurchase inAppPurchase) async {
+  final ProductDetailsResponse response =
+      await InAppPurchase.instance.queryProductDetails(ProductIds.toSet());
+  return response.productDetails.toList();
 }
 
 Future<List<CoinLog>> getCoinLogs() async {

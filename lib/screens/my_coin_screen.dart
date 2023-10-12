@@ -8,6 +8,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
+import 'package:project_june_client/actions/transaction/queries.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/product_widget.dart';
@@ -17,11 +18,6 @@ import '../actions/transaction/actions.dart';
 import '../constants.dart';
 import '../services/transaction_service.dart';
 
-const List<String> _kProductIds = <String>[
-  'purchase_50_coins',
-  'purchase_100_coins'
-];
-
 class MyCoinScreen extends StatefulWidget {
   const MyCoinScreen({Key? key}) : super(key: key);
 
@@ -30,14 +26,8 @@ class MyCoinScreen extends StatefulWidget {
 }
 
 class _MyCoinScreenState extends State<MyCoinScreen> {
-  final InAppPurchase _inAppPurchase = InAppPurchase.instance;
-  StoreInfoDTO _storeInfoDTO = StoreInfoDTO();
   late StreamSubscription<List<PurchaseDetails>> _subscription;
   var transactionService = TransactionService();
-
-  Future<void> _updateStoreInfo() async {
-    await initStoreInfo(_kProductIds, _inAppPurchase, _storeInfoDTO);
-  }
 
   Future<void> handlePastTransactions() async {
     var transactions = await SKPaymentQueueWrapper().transactions();
@@ -49,14 +39,13 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
   @override
   void initState() {
     final Stream<List<PurchaseDetails>> purchaseUpdated =
-        _inAppPurchase.purchaseStream;
+        InAppPurchase.instance.purchaseStream;
     _subscription =
         purchaseUpdated.listen((List<PurchaseDetails> purchaseDetailsList) {
       _listenToPurchaseUpdated(purchaseDetailsList);
     }, onDone: () {
       _subscription.cancel();
     });
-    _updateStoreInfo();
     handlePastTransactions();
     super.initState();
   }
@@ -70,7 +59,7 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       transactionService.purchaseUpdatedListener(
-          context, purchaseDetails, _inAppPurchase);
+          context, purchaseDetails, InAppPurchase.instance);
     });
   }
 
@@ -124,12 +113,18 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
                           },
                           title: '코인 내역 조회하기',
                         ),
-                        ProductWidget(
-                          products: _storeInfoDTO.products,
-                          inAppPurchase: _inAppPurchase,
-                          kProductIds: _kProductIds,
-                          isProcessing: isProcessing,
-                        ),
+                        QueryBuilder(
+                            query: getStoreInfoQuery(),
+                            builder: (context, state) {
+                              return state.data == null
+                                  ? SizedBox.shrink()
+                                  : ProductWidget(
+                                      products: transactionService.productListFromJson(state.data!) ?? [],
+                                      inAppPurchase: InAppPurchase.instance,
+                                      kProductIds: kProductIds,
+                                      isProcessing: isProcessing,
+                                    );
+                            }),
                       ],
                     ),
                   );

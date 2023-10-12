@@ -90,4 +90,28 @@ class TransactionService {
   void handleNewTransaction() {
     CachedQuery.instance.refetchQueries(keys: ["retrieve-me", "coin-logs"]);
   }
+
+  Map<String, dynamic> productDetailsToJson(ProductDetails details) {
+    return {
+      'id': details.id,
+      'title': details.title,
+      'description': details.description,
+      'price': details.price,
+      'currencyCode': details.currencyCode,
+      'rawPrice': details.rawPrice,
+    };
+  }
+
+  List<ProductDetails> productListFromJson(List<Map<String, dynamic>> json) {
+    return json
+        .map((e) => ProductDetails(
+              id: e['id'],
+              title: e['title'],
+              description: e['description'],
+              price: e['price'],
+              currencyCode: e['currencyCode'],
+              rawPrice: e['rawPrice'],
+            ))
+        .toList();
+  }
 }
