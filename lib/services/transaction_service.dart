@@ -36,7 +36,7 @@ class TransactionService {
   void _handleErrorTransaction(BuildContext context,
       PurchaseDetails purchaseDetails, InAppPurchase inAppPurchase) {
     inAppPurchase.completePurchase(purchaseDetails);
-
+    handleNewTransaction();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
