@@ -37,6 +37,7 @@ dependencies:
   sentry_flutter: ^7.10.1
   amplitude_flutter: ^3.16.0
   device_info_plus: ^9.0.3
+  korea_regexp: ^1.2.1
 
 dev_dependencies:
   flutter_test:
