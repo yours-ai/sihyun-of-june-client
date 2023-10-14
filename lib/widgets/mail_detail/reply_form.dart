@@ -1,7 +1,11 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:korea_regexp/korea_regexp.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
 import 'package:project_june_client/widgets/modal_widget.dart';
 
@@ -23,6 +27,7 @@ class ReplyFormWidget extends StatefulWidget {
 class _ReplyFormWidgetState extends State<ReplyFormWidget> {
   final controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Timer? debounce;
 
   @override
   void dispose() {
@@ -143,9 +148,22 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   height: 1.5,
                 ),
                 onChanged: (text) {
-                  setState(() {
-                    controller.text = text;
-                  });
+                  Platform.isIOS
+                      ? setState(() {
+                          if (debounce?.isActive ?? false) debounce?.cancel();
+                          debounce =
+                              Timer(const Duration(milliseconds: 300), () {
+                            final combinedText = implode(controller.text);
+                            setState(() {
+                              controller.text = combinedText;
+                              controller.selection = TextSelection.collapsed(
+                                  offset: combinedText.length);
+                            });
+                          });
+                        })
+                      : setState(() {
+                          controller.text = text;
+                        });
                 },
               ),
               const SizedBox(height: 10),
