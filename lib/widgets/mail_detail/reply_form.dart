@@ -161,9 +161,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                             });
                           });
                         })
-                      : setState(() {
-                          controller.text = text;
-                        });
+                      : setState(() {});
                 },
               ),
               const SizedBox(height: 10),
