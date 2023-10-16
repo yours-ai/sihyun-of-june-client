@@ -25,12 +25,13 @@ class NotificationService {
   }
 
   void handleClickNotification(AppNotification notification) {
-    if (notification.link != null &&
-        notification.link!.length > 4 &&
-        notification.link!.substring(0, 4) == 'http') {
-      launchUrl(Uri.parse(notification.link!));
-    } else {
-      router.push(notification.link ?? '/mails');
+    if (notification.link != null) {
+      if (notification.link!.length > 4 &&
+          notification.link!.substring(0, 4) == 'http') {
+        launchUrl(Uri.parse(notification.link!));
+      } else if (notification.link!.isEmpty == false) {
+        router.push(notification.link!);
+      }
     }
     final mutation = Mutation(
       queryFn: (int id) => readNotification(id),
