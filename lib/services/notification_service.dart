@@ -26,6 +26,7 @@ class NotificationService {
 
   void handleClickNotification(AppNotification notification) {
     if (notification.link != null &&
+        notification.link!.length > 4 &&
         notification.link!.substring(0, 4) == 'http') {
       launchUrl(Uri.parse(notification.link!));
     } else {
