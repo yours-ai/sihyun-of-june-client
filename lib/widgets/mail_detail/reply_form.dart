@@ -143,9 +143,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   height: 1.5,
                 ),
                 onChanged: (text) {
-                  setState(() {
-                    controller.text = text;
-                  });
+                  setState(() {});
                 },
               ),
               const SizedBox(height: 10),
