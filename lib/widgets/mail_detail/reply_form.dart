@@ -27,7 +27,6 @@ class ReplyFormWidget extends StatefulWidget {
 class _ReplyFormWidgetState extends State<ReplyFormWidget> {
   final controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Timer? debounce;
 
   @override
   void dispose() {
@@ -148,20 +147,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   height: 1.5,
                 ),
                 onChanged: (text) {
-                  Platform.isIOS
-                      ? setState(() {
-                          if (debounce?.isActive ?? false) debounce?.cancel();
-                          debounce =
-                              Timer(const Duration(milliseconds: 300), () {
-                            final combinedText = implode(controller.text);
-                            setState(() {
-                              controller.text = combinedText;
-                              controller.selection = TextSelection.collapsed(
-                                  offset: combinedText.length);
-                            });
-                          });
-                        })
-                      : setState(() {});
+                  setState(() {});
                 },
               ),
               const SizedBox(height: 10),
