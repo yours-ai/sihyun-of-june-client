@@ -47,6 +47,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
             content: Text('답장을 보냈습니다.'),
           ),
         );
+        context.pop();
       },
     );
     _showConfirmModal() async {
