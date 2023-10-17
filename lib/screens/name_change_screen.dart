@@ -82,6 +82,12 @@ class _NameChangeScreenState extends State<NameChangeScreen> {
   }
 
   @override
+  void dispose() {
+    formController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
