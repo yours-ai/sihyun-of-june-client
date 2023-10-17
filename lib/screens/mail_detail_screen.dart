@@ -62,32 +62,35 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                   if (mailState.data == null) {
                     return const Scaffold();
                   }
-                  return Scaffold(
-                    appBar: AppBar(
-                      backgroundColor: ColorConstants.background,
-                      elevation: 0,
-                      leading: IconButton(
-                        onPressed: () => context.pop(),
-                        icon: Container(
-                          padding: const EdgeInsets.only(left: 23),
-                          child: Icon(
-                            PhosphorIcons.arrow_left,
-                            color: ColorConstants.black,
-                            size: 32,
+                  return GestureDetector(
+                    onTap: () => FocusScope.of(context).unfocus(),
+                    child: Scaffold(
+                      appBar: AppBar(
+                        backgroundColor: ColorConstants.background,
+                        elevation: 0,
+                        leading: IconButton(
+                          onPressed: () => context.pop(),
+                          icon: Container(
+                            padding: const EdgeInsets.only(left: 23),
+                            child: Icon(
+                              PhosphorIcons.arrow_left,
+                              color: ColorConstants.black,
+                              size: 32,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    body: SafeArea(
-                      child: ListView(
-                        children: [
-                          Padding(
+                      body: SafeArea(
+                        child: SingleChildScrollView(
+                          reverse: MediaQuery.of(context).viewInsets.bottom > 0? true: false,
+                          child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 30.0,
                               vertical: 10.0,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 CharacterMailWidget(mail: mailState.data!),
                                 if (mailState.data!.replies!.isNotEmpty) ...[
@@ -140,7 +143,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                               ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   );

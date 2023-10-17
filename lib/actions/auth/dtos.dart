@@ -44,3 +44,14 @@ class ValidatedUserDTO extends ValidatedVerifyDTO {
     required this.lastName,
   });
 }
+
+@immutable
+class UserNameDTO {
+  final String firstName;
+  final String lastName;
+
+  const UserNameDTO({
+    required this.firstName,
+    required this.lastName,
+  });
+}

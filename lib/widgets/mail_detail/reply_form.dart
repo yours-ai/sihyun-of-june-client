@@ -1,11 +1,7 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:korea_regexp/korea_regexp.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
 import 'package:project_june_client/widgets/modal_widget.dart';
 
@@ -51,6 +47,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
             content: Text('답장을 보냈습니다.'),
           ),
         );
+        context.pop();
       },
     );
     _showConfirmModal() async {
