@@ -89,38 +89,41 @@ class _NameChangeScreenState extends State<NameChangeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: TitleLayout(
-            titleText: "어떻게\n불러드릴까요?",
-            body: QueryBuilder(
-              query: getRetrieveMeQuery(),
-              builder: (context, state) {
-                return state.data == null
-                    ? const SizedBox.shrink()
-                    : Form(
-                        child: NameFormWidget(
-                          initialFirstName: state.data!.first_name,
-                          initialLastName: state.data!.last_name,
-                          formController: formController,
-                          shouldHandleNameController: true,
-                        ),
-                      );
-              },
-            ),
-            actions: FilledButton(
-              onPressed: () {
-                if (formController.validate()) {
-                  nameChangeModal(formController.getFormData());
-                }
-              },
-              child: const Text(
-                '변경하기',
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: SafeArea(
+          child: TitleLayout(
+              titleText: "어떻게\n불러드릴까요?",
+              body: QueryBuilder(
+                query: getRetrieveMeQuery(),
+                builder: (context, state) {
+                  return state.data == null
+                      ? const SizedBox.shrink()
+                      : Form(
+                          child: NameFormWidget(
+                            initialFirstName: state.data!.first_name,
+                            initialLastName: state.data!.last_name,
+                            formController: formController,
+                            shouldHandleNameController: true,
+                          ),
+                        );
+                },
               ),
-            )),
+              actions: FilledButton(
+                onPressed: () {
+                  if (formController.validate()) {
+                    nameChangeModal(formController.getFormData());
+                  }
+                },
+                child: const Text(
+                  '변경하기',
+                  style: TextStyle(
+                    fontSize: 14.0,
+                  ),
+                ),
+              )),
+        ),
       ),
     );
   }
