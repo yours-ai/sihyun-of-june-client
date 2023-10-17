@@ -54,6 +54,7 @@ class CharacterConfirmWidget extends StatelessWidget {
                 MutationBuilder(
                   mutation: getDenyChoiceMutation(
                     onSuccess: (res, arg) {
+                      context.pop();
                       context.go('/character-test');
                     },
                   ),
@@ -97,7 +98,8 @@ class CharacterConfirmWidget extends StatelessWidget {
       body: SafeArea(
         child: TitleLayout(
           withAppBar: true,
-          titleText: '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 편지가 올 거에요.',
+          titleText:
+              '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 편지가 올 거에요.',
           actions: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

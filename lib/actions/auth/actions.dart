@@ -166,7 +166,6 @@ void _setAmplitudeProps() {
   }).result;
 }
 
-
 Future<void> login(String serverToken, {bool? saveTokenToClient}) async {
   saveTokenToClient ??= true;
   setServerTokenOnDio(serverToken);
@@ -198,5 +197,13 @@ logout() async {
   } catch (e) {}
   CachedQuery.instance.deleteCache();
   dio.options.headers.clear();
+  return;
+}
+
+Future<void> changeName(UserNameDTO dto) async {
+  await dio.post('/auth/me/name/', data: {
+    'first_name': dto.firstName,
+    'last_name': dto.lastName,
+  });
   return;
 }
