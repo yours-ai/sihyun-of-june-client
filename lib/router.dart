@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/screens/all_screen.dart';
 import 'package:project_june_client/screens/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail_detail_screen.dart';
+import 'package:project_june_client/screens/name_change_screen.dart';
 import 'package:project_june_client/screens/notification_list_screen.dart';
 import 'package:project_june_client/screens/phone_login_screen.dart';
 import 'package:project_june_client/screens/other_character_screen.dart';
@@ -110,5 +111,9 @@ final router = GoRouter(
     GoRoute(
         path: '/character-test',
         builder: (context, state) => CharacterTestScreen()),
+    GoRoute(
+      path: '/change-name',
+      builder: (context, state) => NameChangeScreen(),
+    ),
   ],
 );

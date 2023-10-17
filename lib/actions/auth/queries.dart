@@ -85,3 +85,15 @@ Query<SihyunOfJuneUser> getRetrieveMeQuery({
     onSuccess: onSuccess,
   );
 }
+
+Mutation<void, UserNameDTO> getNameChangeMutation({
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, UserNameDTO>(
+    refetchQueries: ['retrieve-me'],
+    queryFn: changeName,
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
