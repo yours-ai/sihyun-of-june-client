@@ -34,22 +34,25 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
 
   @override
   Widget build(context) {
-    return Scaffold(
-      body: SafeArea(
-        child: _tab == 0
-            ? PhoneTabWidget(
-                onSmsSend: handleSmsSend,
-              )
-            : _tab == 1
-                ? VerifyTabWidget(
-                    dto: validatedPhoneDTO!,
-                    onSmsVerify: handleVerify,
-                  )
-                : _tab == 2
-                    ? NameTabWidget(
-                        dto: validatedAuthDTO!,
-                      )
-                    : Container(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        body: SafeArea(
+          child: _tab == 0
+              ? PhoneTabWidget(
+                  onSmsSend: handleSmsSend,
+                )
+              : _tab == 1
+                  ? VerifyTabWidget(
+                      dto: validatedPhoneDTO!,
+                      onSmsVerify: handleVerify,
+                    )
+                  : _tab == 2
+                      ? NameTabWidget(
+                          dto: validatedAuthDTO!,
+                        )
+                      : Container(),
+        ),
       ),
     );
   }
