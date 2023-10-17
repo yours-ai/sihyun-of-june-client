@@ -81,68 +81,68 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                         ),
                       ),
                       body: SafeArea(
-                        child: ListView(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 30.0,
-                                vertical: 10.0,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  CharacterMailWidget(mail: mailState.data!),
-                                  if (mailState.data!.replies!.isNotEmpty) ...[
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 30),
-                                      height: 1,
-                                      color: ColorConstants.light,
-                                    ),
-                                    ReplyWidget(
-                                      reply: mailState.data!.replies!.first,
-                                      toFullName: mailState.data!.by_full_name,
-                                      byFullName: mailState.data!.to_full_name,
-                                    )
-                                  ],
-                                  if (mailState.data!.replies!.isEmpty &&
-                                      mailService
-                                          .isMailReplyable(mailState.data!)) ...[
-                                    Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 30),
-                                      height: 1,
-                                      color: ColorConstants.light,
-                                    ),
-                                    ReplyFormWidget(
-                                      mail: mailState.data!,
-                                    )
-                                  ],
-                                  if (mailState.data!.replies!.isEmpty &&
-                                      !mailService
-                                          .isMailReplyable(mailState.data!)) ...[
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                          top: 30, bottom: 45),
-                                      height: 1,
-                                      color: ColorConstants.light,
-                                    ),
-                                    Center(
-                                      child: Text(
-                                        '답장 가능 시간이 지났어요.🥲\n답장은 오전 9시까지만 가능해요.',
-                                        style: TextStyle(
-                                          height: 1.5,
-                                          fontSize: 14,
-                                          color: ColorConstants.neutral,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    )
-                                  ],
-                                ],
-                              ),
+                        child: SingleChildScrollView(
+                          reverse: MediaQuery.of(context).viewInsets.bottom > 0? true: false,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 30.0,
+                              vertical: 10.0,
                             ),
-                          ],
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CharacterMailWidget(mail: mailState.data!),
+                                if (mailState.data!.replies!.isNotEmpty) ...[
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 30),
+                                    height: 1,
+                                    color: ColorConstants.light,
+                                  ),
+                                  ReplyWidget(
+                                    reply: mailState.data!.replies!.first,
+                                    toFullName: mailState.data!.by_full_name,
+                                    byFullName: mailState.data!.to_full_name,
+                                  )
+                                ],
+                                if (mailState.data!.replies!.isEmpty &&
+                                    mailService
+                                        .isMailReplyable(mailState.data!)) ...[
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 30),
+                                    height: 1,
+                                    color: ColorConstants.light,
+                                  ),
+                                  ReplyFormWidget(
+                                    mail: mailState.data!,
+                                  )
+                                ],
+                                if (mailState.data!.replies!.isEmpty &&
+                                    !mailService
+                                        .isMailReplyable(mailState.data!)) ...[
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 30, bottom: 45),
+                                    height: 1,
+                                    color: ColorConstants.light,
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      '답장 가능 시간이 지났어요.🥲\n답장은 오전 9시까지만 가능해요.',
+                                      style: TextStyle(
+                                        height: 1.5,
+                                        fontSize: 14,
+                                        color: ColorConstants.neutral,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                ],
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
