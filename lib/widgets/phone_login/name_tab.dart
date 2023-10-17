@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/controllers/auth/name_form_controller.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
+import 'package:project_june_client/widgets/name_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../modal_widget.dart';
@@ -20,42 +22,16 @@ class NameTabWidget extends StatefulWidget {
 }
 
 class _NameTabWidgetState extends State<NameTabWidget> {
-  final _formKey = GlobalKey<FormState>();
-  final lastNameController = TextEditingController();
-  final firstNameController = TextEditingController();
-  String errorMessage = '';
+  final NameFormController formController = NameFormController();
 
   ValidatedUserDTO getValidatedData() {
     return ValidatedUserDTO(
       phone: widget.dto.phone,
       countryCode: widget.dto.countryCode,
       authCode: widget.dto.authCode,
-      firstName: firstNameController.text,
-      lastName: lastNameController.text,
+      firstName: formController.firstNameController.text,
+      lastName: formController.lastNameController.text,
     );
-  }
-
-  String? _validator(String? value, TextEditingController controller) {
-    bool isLastNameEmpty = lastNameController.text.isEmpty;
-    bool isFirstNameEmpty = firstNameController.text.isEmpty;
-
-    if (isLastNameEmpty && isFirstNameEmpty) {
-      setState(() {
-        errorMessage = '성과 이름을 입력해주세요.';
-      });
-      return '성과 이름을 입력해주세요.';
-    } else if (isLastNameEmpty) {
-      setState(() {
-        errorMessage = '성을 입력해주세요.';
-      });
-      return '성을 입력해주세요.';
-    } else if (isFirstNameEmpty) {
-      setState(() {
-        errorMessage = '이름을 입력해주세요.';
-      });
-      return '이름을 입력해주세요.';
-    }
-    return null;
   }
 
   void _showSignInModal(ValidatedUserDTO dto) async {
@@ -142,97 +118,26 @@ class _NameTabWidgetState extends State<NameTabWidget> {
 
   @override
   void dispose() {
-    firstNameController.dispose();
-    lastNameController.dispose();
+    formController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: TitleLayout(
-        titleText: '이름을 알려주세요.',
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IntrinsicWidth(
-                    child: TextFormField(
-                      validator: (value) =>
-                          _validator(value, lastNameController),
-                      controller: lastNameController,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 0),
-                        errorStyle: const TextStyle(
-                          fontSize: 0,
-                        ),
-                        hintText: '성',
-                        hintStyle: TextStyle(
-                            fontFamily: 'MaruBuri',
-                            fontSize: 25,
-                            color: ColorConstants.neutral),
-                        border: InputBorder.none,
-                      ),
-                      style: TextStyle(
-                          fontFamily: 'MaruBuri',
-                          fontSize: 25,
-                          color: ColorConstants.primary),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: TextFormField(
-                      validator: (value) =>
-                          _validator(value, firstNameController),
-                      controller: firstNameController,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 0),
-                        errorStyle: const TextStyle(
-                          fontSize: 0,
-                        ),
-                        hintText: '이름',
-                        hintStyle: TextStyle(
-                            fontFamily: 'MaruBuri',
-                            fontSize: 25,
-                            color: ColorConstants.neutral),
-                        border: InputBorder.none,
-                      ),
-                      style: TextStyle(
-                          fontFamily: 'MaruBuri',
-                          fontSize: 25,
-                          color: ColorConstants.primary),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(errorMessage,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                      fontFamily: 'MaruBuri', fontSize: 12, color: Colors.red)),
-            ],
-          ),
-        ),
-        actions: OutlinedButton(
-          onPressed: () {
-            if (_formKey.currentState != null &&
-                _formKey.currentState!.validate()) {
-              _showSignInModal(getValidatedData());
-            }
-          },
-          style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
-          child: const Text('다음'),
-        ),
+    return TitleLayout(
+      titleText: '이름을 알려주세요.',
+      body: Form(
+          child: NameFormWidget(
+        formController: formController,
+      )),
+      actions: OutlinedButton(
+        onPressed: () {
+          if (formController.validate()) {
+            _showSignInModal(getValidatedData());
+          }
+        },
+        style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
+        child: const Text('다음'),
       ),
     );
   }

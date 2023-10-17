@@ -41,7 +41,9 @@ class _NameFormWidgetState extends State<NameFormWidget> {
 
   @override
   void initState() {
-    setNameControllerText();
+    if (widget.shouldHandleNameController == true) {
+      setNameControllerText();
+    }
     super.initState();
   }
 
@@ -92,6 +94,9 @@ class _NameFormWidgetState extends State<NameFormWidget> {
                           fontFamily: 'MaruBuri',
                           fontSize: 25,
                           color: ColorConstants.neutral),
+                      border: widget.shouldHandleNameController == false
+                          ? InputBorder.none
+                          : const UnderlineInputBorder(),
                     ),
                     style: TextStyle(
                         fontFamily: 'MaruBuri',
@@ -117,6 +122,9 @@ class _NameFormWidgetState extends State<NameFormWidget> {
                           fontFamily: 'MaruBuri',
                           fontSize: 25,
                           color: ColorConstants.neutral),
+                      border: widget.shouldHandleNameController == false
+                          ? InputBorder.none
+                          : const UnderlineInputBorder(),
                     ),
                     style: TextStyle(
                         fontFamily: 'MaruBuri',
