@@ -8,6 +8,7 @@ import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/notification/actions.dart';
+import '../widgets/update_widget.dart';
 
 class StartingScreen extends StatefulWidget {
   const StartingScreen({super.key});
@@ -23,6 +24,28 @@ class _StartingScreen extends State<StartingScreen> {
     if (!context.mounted) return;
 
     await _initializeNotificationHandlerIfAccepted();
+
+    if (await updateService.isUpdateRequired() == 'required') {
+      // showDialog(
+      //   context: context,
+      //   builder: (BuildContext context) {
+      //     return AlertDialog(
+      //       title: Text('업데이트가 필요합니다.'),
+      //       content: Text('앱을 업데이트 해주세요.'),
+      //       actions: [
+      //         TextButton(
+      //           onPressed: () {},
+      //           child: Text('확인'),
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // );
+      // return;
+      showDialog(
+          context: context, builder: (BuildContext context) => UpdateWidget());
+      return;
+    }
 
     if (isLogined == false) {
       context.go('/landing');
