@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -25,12 +27,18 @@ class _StartingScreen extends State<StartingScreen> {
 
     await _initializeNotificationHandlerIfAccepted();
 
-    final String updateStatus = await updateService.isUpdateRequired();
-    if (updateStatus != 'none') {
-      showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) =>
-              UpdateWidget(isUpdateRequired: updateStatus));
+    if (Platform.isAndroid) {
+      updateService.updateAndroidApp();
+    }
+
+    if (Platform.isIOS) {
+      final String updateStatus = await updateService.isUpdateRequired();
+      if (updateStatus != 'none') {
+        await showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) =>
+                UpdateWidget(isUpdateRequired: updateStatus));
+      }
     }
 
     if (isLogined == false) {

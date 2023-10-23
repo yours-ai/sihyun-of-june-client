@@ -40,6 +40,7 @@ dependencies:
   package_info_plus: ^4.2.0
   firebase_remote_config: ^4.3.0
   pub_semver: ^2.1.4
+  in_app_update: ^4.2.2
 
 dev_dependencies:
   flutter_test:
