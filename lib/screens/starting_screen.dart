@@ -25,26 +25,12 @@ class _StartingScreen extends State<StartingScreen> {
 
     await _initializeNotificationHandlerIfAccepted();
 
-    if (await updateService.isUpdateRequired() == 'required') {
-      // showDialog(
-      //   context: context,
-      //   builder: (BuildContext context) {
-      //     return AlertDialog(
-      //       title: Text('업데이트가 필요합니다.'),
-      //       content: Text('앱을 업데이트 해주세요.'),
-      //       actions: [
-      //         TextButton(
-      //           onPressed: () {},
-      //           child: Text('확인'),
-      //         ),
-      //       ],
-      //     );
-      //   },
-      // );
-      // return;
-      showDialog(
-          context: context, builder: (BuildContext context) => UpdateWidget());
-      return;
+    final String updateStatus = await updateService.isUpdateRequired();
+    if (updateStatus != 'none') {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) =>
+              UpdateWidget(isUpdateRequired: updateStatus));
     }
 
     if (isLogined == false) {
@@ -95,6 +81,6 @@ class _StartingScreen extends State<StartingScreen> {
 
   @override
   Widget build(context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }
