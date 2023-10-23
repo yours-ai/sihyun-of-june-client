@@ -47,9 +47,8 @@ class UpdateService {
   Future<String> isUpdateRequired() async {
     final currentVersion = Version.parse(await getCurrentVersion());
     final latestVersion = Version.parse(await getLatestVersion());
-    if (latestVersion.major > currentVersion.major) {
-      return "required";
-    } else if (latestVersion.minor > currentVersion.minor) {
+    if (latestVersion.major > currentVersion.major ||
+        latestVersion.minor > currentVersion.minor ) {
       return "required";
     } else if (latestVersion.patch > currentVersion.patch) {
       return "optional";
