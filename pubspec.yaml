@@ -37,10 +37,8 @@ dependencies:
   sentry_flutter: ^7.10.1
   amplitude_flutter: ^3.16.0
   device_info_plus: ^9.0.3
-  package_info_plus: ^4.2.0
-  firebase_remote_config: ^4.3.0
-  pub_semver: ^2.1.4
   in_app_update: ^4.2.2
+  new_version_plus: ^0.0.11
 
 dev_dependencies:
   flutter_test:

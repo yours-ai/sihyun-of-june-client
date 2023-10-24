@@ -10,7 +10,6 @@ import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/notification/actions.dart';
-import '../widgets/update_widget.dart';
 
 class StartingScreen extends StatefulWidget {
   const StartingScreen({super.key});
@@ -26,20 +25,7 @@ class _StartingScreen extends State<StartingScreen> {
     if (!context.mounted) return;
 
     await _initializeNotificationHandlerIfAccepted();
-
-    if (Platform.isAndroid) {
-      updateService.updateAndroidApp();
-    }
-
-    if (Platform.isIOS) {
-      final String updateStatus = await updateService.isUpdateRequired();
-      if (updateStatus != 'none') {
-        await showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) =>
-                UpdateWidget(isUpdateRequired: updateStatus));
-      }
-    }
+    await _checkUpdateAvailable();
 
     if (isLogined == false) {
       context.go('/landing');
@@ -61,6 +47,16 @@ class _StartingScreen extends State<StartingScreen> {
       } else {
         context.go('/character-test');
       }
+    }
+  }
+
+  _checkUpdateAvailable() async {
+    if (Platform.isAndroid) {
+      updateService.updateAndroidApp();
+    }
+
+    if (Platform.isIOS) {
+      await updateService.updateIOSApp(context);
     }
   }
 
