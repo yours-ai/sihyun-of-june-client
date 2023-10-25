@@ -5,7 +5,7 @@ class TitleLayout extends StatelessWidget {
   final TextStyle? titleStyle;
   final Widget body;
   final Widget? actions;
-  final Widget showProfile;
+  final Widget titleAddOn;
   final bool withAppBar;
 
   const TitleLayout({
@@ -24,21 +24,21 @@ class TitleLayout extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         withAppBar ? const SizedBox(height: 10) : const SizedBox(height: 50),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 28.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
                 child: Text(
                   titleText,
                   style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
                   softWrap: true,
                 ),
               ),
-            ),
-            showProfile,
-          ],
+              titleAddOn
+            ],
+          ),
         ),
         const SizedBox(height: 20),
         Expanded(

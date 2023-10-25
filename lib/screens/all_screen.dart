@@ -1,9 +1,12 @@
+import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../actions/auth/actions.dart';
+import '../actions/auth/queries.dart';
 import '../constants.dart';
 import '../router.dart';
 import '../widgets/common/title_layout.dart';
@@ -109,6 +112,30 @@ class _AllScreenState extends State<AllScreen> {
         titleText: '전체',
         body: ListView(
           children: [
+            QueryBuilder(
+              query: getRetrieveMeQuery(),
+              builder: (context, state) {
+                return MenuWidget(
+                  title: '내 코인',
+                  onPressed: () => context.push('/my-coin'),
+                  suffix: Row(
+                    children: [
+                      Text(
+                        state.data?.coin.toString() ?? '',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.neutral,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      Icon(
+                        PhosphorIcons.coin_vertical,
+                        color: ColorConstants.neutral,
+                        size: 18,)
+                    ]
+                  ),
+                );
+              },
+            ),
             MenuWidget(
               title: '공지',
               onPressed: () => launchUrl(Uri.parse(Urls.notice)),

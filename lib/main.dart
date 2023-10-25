@@ -157,6 +157,16 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
           elevation: 0,
           unselectedItemColor: ColorConstants.primary,
         ),
+        cardTheme: CardTheme(
+          elevation: 0,
+          color: ColorConstants.background,
+        ),
+        listTileTheme: const ListTileThemeData(
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 26,
+            vertical: 8,
+          ),
+        ),
       ),
     );
   }
