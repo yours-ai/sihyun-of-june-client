@@ -16,6 +16,7 @@ import 'package:project_june_client/widgets/product_widget.dart';
 import '../actions/auth/queries.dart';
 import '../actions/transaction/actions.dart';
 import '../constants.dart';
+import '../services.dart';
 import '../services/transaction_service.dart';
 
 class MyCoinScreen extends StatefulWidget {
@@ -27,7 +28,6 @@ class MyCoinScreen extends StatefulWidget {
 
 class _MyCoinScreenState extends State<MyCoinScreen> {
   late StreamSubscription<List<PurchaseDetails>> _subscription;
-  var transactionService = TransactionService();
 
   Future<void> handlePastTransactions() async {
     var transactions = await SKPaymentQueueWrapper().transactions();
@@ -119,7 +119,10 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
                               return state.data == null
                                   ? SizedBox.shrink()
                                   : ProductWidget(
-                                      products: transactionService.productListFromJson(state.data!) ?? [],
+                                      products: transactionService
+                                              .productListFromJson(
+                                                  state.data!) ??
+                                          [],
                                       inAppPurchase: InAppPurchase.instance,
                                       kProductIds: kProductIds,
                                       isProcessing: isProcessing,

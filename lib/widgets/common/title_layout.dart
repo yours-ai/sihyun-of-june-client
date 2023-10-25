@@ -14,7 +14,7 @@ class TitleLayout extends StatelessWidget {
     this.titleStyle,
     required this.body,
     this.actions,
-    this.titleAddOn = const SizedBox(width: 0, height: 0),
+    this.titleAddOn = const SizedBox.shrink(),
     this.withAppBar = false,
   }) : super(key: key);
 

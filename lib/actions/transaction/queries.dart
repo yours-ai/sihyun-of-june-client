@@ -4,6 +4,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
 
+import '../../services.dart';
 import '../../services/transaction_service.dart';
 import 'actions.dart';
 import 'models/CoinLog.dart';
@@ -52,7 +53,6 @@ Query<List<Map<String, dynamic>>> getStoreInfoQuery({
   return Query(
     key: 'store-info',
     queryFn: () async {
-      var transactionService = TransactionService();
       var detailsList =
           await initStoreInfo(kProductIds, InAppPurchase.instance);
       return detailsList

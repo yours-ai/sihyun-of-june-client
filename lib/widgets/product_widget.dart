@@ -5,6 +5,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:project_june_client/constants.dart';
 
+import '../services.dart';
 import '../services/transaction_service.dart';
 
 class ProductWidget extends StatefulWidget {
@@ -27,7 +28,6 @@ class ProductWidget extends StatefulWidget {
 
 class _ProductWidgetState extends State<ProductWidget> {
   final List<ListTile> productList = <ListTile>[];
-  var transactionService = TransactionService();
 
   @override
   void initState() {
