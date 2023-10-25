@@ -1,17 +1,18 @@
+import 'dart:io';
+
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/models/SihyunOfJuneUser.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
-import 'package:project_june_client/services.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../notification/actions.dart';
 import 'models/Token.dart';
 
 const _SERVER_TOKEN_KEY = 'SERVER_TOKEN';
@@ -148,6 +149,23 @@ void setServerTokenOnDio(String serverToken) {
   dio.options.headers['Authorization'] = "Token $serverToken";
 }
 
+void _setAmplitudeProps() {
+  getRetrieveMeQuery(onSuccess: (data) async {
+    final amplitude = Amplitude.getInstance();
+    amplitude.setUserId(data.id.toString());
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      amplitude.setDeviceId(androidInfo.id);
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      if (iosInfo.identifierForVendor != null) {
+        amplitude.setDeviceId(iosInfo.identifierForVendor!);
+      }
+    }
+  }).result;
+}
+
 Future<void> login(String serverToken, {bool? saveTokenToClient}) async {
   saveTokenToClient ??= true;
   setServerTokenOnDio(serverToken);
@@ -155,6 +173,7 @@ Future<void> login(String serverToken, {bool? saveTokenToClient}) async {
     final storage = getSecureStorage();
     await storage.write(key: _SERVER_TOKEN_KEY, value: serverToken);
   }
+  _setAmplitudeProps();
 }
 
 Future<String?> getServerToken() async {
@@ -178,5 +197,13 @@ logout() async {
   } catch (e) {}
   CachedQuery.instance.deleteCache();
   dio.options.headers.clear();
+  return;
+}
+
+Future<void> changeName(UserNameDTO dto) async {
+  await dio.post('/auth/me/name/', data: {
+    'first_name': dto.firstName,
+    'last_name': dto.lastName,
+  });
   return;
 }

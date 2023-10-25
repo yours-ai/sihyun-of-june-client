@@ -7,15 +7,16 @@ import 'package:project_june_client/actions/notification/actions.dart';
 import 'package:project_june_client/actions/notification/models/AppNotification.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../router.dart';
-
 
 class NotificationService {
   const NotificationService();
 
   @pragma('vm:entry-point')
-  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
     await Firebase.initializeApp();
 
     if (message.notification != null) {
@@ -23,9 +24,15 @@ class NotificationService {
     }
   }
 
-
   void handleClickNotification(AppNotification notification) {
-    router.push(notification.link ?? '/mails');
+    if (notification.link != null) {
+      if (notification.link!.length > 4 &&
+          notification.link!.substring(0, 4) == 'http') {
+        launchUrl(Uri.parse(notification.link!));
+      } else if (notification.link!.isEmpty == false) {
+        router.push(notification.link!);
+      }
+    }
     final mutation = Mutation(
       queryFn: (int id) => readNotification(id),
       refetchQueries: ["list-app-notifications"],

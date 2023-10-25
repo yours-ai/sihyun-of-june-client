@@ -76,9 +76,24 @@ Mutation<void, ValidatedVerifyDTO> getSmsTokenMutation({
   );
 }
 
-Query<SihyunOfJuneUser> getRetrieveMeQuery() {
+Query<SihyunOfJuneUser> getRetrieveMeQuery({
+  OnQuerySuccessCallback<SihyunOfJuneUser>? onSuccess,
+}) {
   return Query<SihyunOfJuneUser>(
     queryFn: retrieveMe,
     key: 'retrieve-me',
+    onSuccess: onSuccess,
+  );
+}
+
+Mutation<void, UserNameDTO> getNameChangeMutation({
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, UserNameDTO>(
+    refetchQueries: ['retrieve-me'],
+    queryFn: changeName,
+    onSuccess: onSuccess,
+    onError: onError,
   );
 }

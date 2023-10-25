@@ -27,13 +27,16 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        mutation = getReadMailMutation(onError: (arr, err, fallback) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('메일을 읽지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
-            ),
-          );
-        });
+        mutation = getReadMailMutation(
+          refetchQueries: ['character-sent-mail-list'],
+          onError: (arr, err, fallback) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('메일을 읽지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
+              ),
+            );
+          },
+        );
         mutation!.mutate(widget.id);
       });
     });
@@ -59,32 +62,35 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                   if (mailState.data == null) {
                     return const Scaffold();
                   }
-                  return Scaffold(
-                    appBar: AppBar(
-                      backgroundColor: ColorConstants.background,
-                      elevation: 0,
-                      leading: IconButton(
-                        onPressed: () => context.pop(),
-                        icon: Container(
-                          padding: const EdgeInsets.only(left: 23),
-                          child: Icon(
-                            PhosphorIcons.arrow_left,
-                            color: ColorConstants.black,
-                            size: 32,
+                  return GestureDetector(
+                    onTap: () => FocusScope.of(context).unfocus(),
+                    child: Scaffold(
+                      appBar: AppBar(
+                        backgroundColor: ColorConstants.background,
+                        elevation: 0,
+                        leading: IconButton(
+                          onPressed: () => context.pop(),
+                          icon: Container(
+                            padding: const EdgeInsets.only(left: 23),
+                            child: Icon(
+                              PhosphorIcons.arrow_left,
+                              color: ColorConstants.black,
+                              size: 32,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    body: SafeArea(
-                      child: ListView(
-                        children: [
-                          Padding(
+                      body: SafeArea(
+                        child: SingleChildScrollView(
+                          reverse: MediaQuery.of(context).viewInsets.bottom > 0? true: false,
+                          child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 30.0,
                               vertical: 10.0,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 CharacterMailWidget(mail: mailState.data!),
                                 if (mailState.data!.replies!.isNotEmpty) ...[
@@ -112,11 +118,32 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                   ReplyFormWidget(
                                     mail: mailState.data!,
                                   )
-                                ]
+                                ],
+                                if (mailState.data!.replies!.isEmpty &&
+                                    !mailService
+                                        .isMailReplyable(mailState.data!)) ...[
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        top: 30, bottom: 45),
+                                    height: 1,
+                                    color: ColorConstants.light,
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      '답장 가능 시간이 지났어요.🥲\n답장은 오전 9시까지만 가능해요.',
+                                      style: TextStyle(
+                                        height: 1.5,
+                                        fontSize: 14,
+                                        color: ColorConstants.neutral,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                ],
                               ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   );

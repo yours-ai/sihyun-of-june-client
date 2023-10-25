@@ -1,5 +1,7 @@
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
+import 'package:amplitude_flutter/identify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -47,11 +49,17 @@ Future<void> _initialize() async {
     systemNavigationBarIconBrightness: Brightness.dark,
     statusBarColor: Colors.transparent, // status bar color
   ));
+  if (BuildTimeEnvironments.amplitudeApiKey.isNotEmpty) {
+    final Amplitude amplitude = Amplitude.getInstance();
+    amplitude.init(BuildTimeEnvironments.amplitudeApiKey);
+  } else {
+    print("amplitude api key가 제공되지 않아, amplitude를 init하지 않습니다.");
+  }
 }
 
 void main() async {
   await _initialize();
-  if (BuildTimeEnvironments.sentryDsn == "") {
+  if (BuildTimeEnvironments.sentryDsn.isEmpty) {
     print("sentry dsn이 제공되지 않아, sentry를 init하지 않습니다.");
     return _appRunner();
   }

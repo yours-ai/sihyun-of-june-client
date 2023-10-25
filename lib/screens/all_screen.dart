@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../actions/auth/actions.dart';
 import '../actions/auth/queries.dart';
 import '../constants.dart';
+import '../router.dart';
 import '../widgets/common/title_layout.dart';
 import '../widgets/modal_widget.dart';
 
@@ -146,6 +147,10 @@ class _AllScreenState extends State<AllScreen> {
             MenuWidget(
               title: '문의하기',
               onPressed: () => launchUrl(Uri.parse(Urls.ask)),
+            ),
+            MenuWidget(
+              title: '이름 변경하기',
+              onPressed: () => context.push('/change-name'),
             ),
             MenuWidget(
               title: '이용약관',

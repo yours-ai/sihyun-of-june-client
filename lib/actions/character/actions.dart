@@ -3,10 +3,11 @@ import 'package:project_june_client/actions/character/models/Question.dart';
 
 import '../client.dart';
 
-Future<void> sendResponses(List<Map<String, int>> responses) async => await dio.post(
-    '/character/test/end/',
-    data: responses,
-  );
+Future<void> sendResponses(List<Map<String, int>> responses) async =>
+    await dio.post(
+      '/character/test/end/',
+      data: responses,
+    );
 
 Future<List<Question>> startTest() async {
   final response = await dio.post('/character/test/start/');
