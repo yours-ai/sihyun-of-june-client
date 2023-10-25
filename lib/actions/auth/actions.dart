@@ -207,3 +207,16 @@ Future<void> changeName(UserNameDTO dto) async {
   });
   return;
 }
+
+Future<void> sendQuitResponse(QuitReasonDTO dto) async {
+  await dio.post('/auth/quit-response/', data: {
+    'reason_multiple_choice': dto.reasons,
+    'reason_other': dto.otherReason
+  });
+  return;
+}
+
+Future<void> deleteUser() async {
+  var response = await dio.delete('/auth/delete-user/');
+  return response.data;
+}

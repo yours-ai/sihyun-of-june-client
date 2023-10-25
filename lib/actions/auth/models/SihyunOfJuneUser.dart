@@ -10,6 +10,8 @@ class SihyunOfJuneUser {
   String first_name;
   bool is_active;
   bool is_activable;
+  int coin;
+  String env;
 
   SihyunOfJuneUser({
     required this.id,
@@ -18,6 +20,8 @@ class SihyunOfJuneUser {
     required this.first_name,
     required this.is_active,
     required this.is_activable,
+    required this.coin,
+    required this.env,
   });
 
   factory SihyunOfJuneUser.fromJson(Map<String, dynamic> json) =>
