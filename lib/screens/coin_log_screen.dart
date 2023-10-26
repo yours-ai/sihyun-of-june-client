@@ -40,13 +40,22 @@ class _CoinLogScreenState extends State<CoinLogScreen> {
           body: QueryBuilder(
               query: getCoinLogsQuery(),
               builder: (context, state) {
-                return ListView(
-                  children: state.data
-                          ?.map<Widget>(
-                              (coinLog) => CoinLogWidget(coinLog: coinLog))
-                          .toList() ??
-                      [],
-                );
+                return state.data != null
+                    ? state.data!.length > 0
+                        ? ListView(
+                            children: state.data
+                                    ?.map<Widget>((coinLog) =>
+                                        CoinLogWidget(coinLog: coinLog))
+                                    .toList() ??
+                                [],
+                          )
+                        : const Column(
+                          children: [
+                            SizedBox(height: 16),
+                            Text('구매 내역이 없습니다.'),
+                          ],
+                        )
+                    : const SizedBox.shrink();
               }),
         ),
       ),

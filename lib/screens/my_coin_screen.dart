@@ -114,20 +114,31 @@ class _MyCoinScreenState extends State<MyCoinScreen> {
                           title: '코인 내역 조회하기',
                         ),
                         QueryBuilder(
-                            query: getStoreInfoQuery(),
-                            builder: (context, state) {
-                              return state.data == null
-                                  ? SizedBox.shrink()
-                                  : ProductWidget(
-                                      products: transactionService
-                                              .productListFromJson(
-                                                  state.data!) ??
-                                          [],
-                                      inAppPurchase: InAppPurchase.instance,
-                                      kProductIds: kProductIds,
-                                      isProcessing: isProcessing,
-                                    );
-                            }),
+                          query: getStoreInfoQuery(),
+                          builder: (context, state) {
+                            return state.data == null
+                                ? SizedBox.shrink()
+                                : ProductWidget(
+                                    products: transactionService
+                                            .productListFromJson(state.data!) ??
+                                        [],
+                                    inAppPurchase: InAppPurchase.instance,
+                                    kProductIds: kProductIds,
+                                    isProcessing: isProcessing,
+                                  );
+                          },
+                        ),
+                        const ExpansionTile(
+                            title: Text('코인 구매안내'),
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(28, 10, 28, 15),
+                                child: Text(
+                                  "• 구매한 코인은 유월의 시현이에서만 사용하실 수 있습니다.\n• 이벤트로 받은 무료 코인은 구매 취소 및 환불 대상이 아닙니다.\n• Google Play 결제로 구매한 코인은 구매 후 48시간 이내는 Google Play 고객센터를 통해 환불이 가능합니다.\n• Google Play 결제로 구매한 쿠키의 구매내역은 'Google Play 스토어 앱>계정>결제 및 정기 결제>예산 및 기록'에서도 확인하실 수 있습니다.\n• iOS앱에서 구매한 코인의 구매취소는 App Store의 정책 상 Apple 고객센터 를 통해서만 가능합니다.\n• iOS앱에서 구매한 코인 구매내역은 'iOS설정>계정' 또는 'iTunes> 계정>나의 계정보기> 구입내역' 메뉴에서도 확인 가능합니다.",
+                                  style: TextStyle(height: 1.5),
+                                ),
+                              )
+                            ]),
                       ],
                     ),
                   );
