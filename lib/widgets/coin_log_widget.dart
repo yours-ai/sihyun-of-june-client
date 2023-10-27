@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:project_june_client/services.dart';
 
 import '../actions/transaction/models/CoinLog.dart';
 import '../constants.dart';
@@ -25,7 +26,9 @@ class CoinLogWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                coinLog.amount.toString(),
+                transactionService.currencyFormatter
+                    .format(coinLog.amount)
+                    .toString(),
                 style: TextStyle(fontSize: 18),
               ),
               Icon(
@@ -40,7 +43,9 @@ class CoinLogWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                coinLog.balance.toString(),
+                transactionService.currencyFormatter
+                    .format(coinLog.balance)
+                    .toString(),
                 style: TextStyle(color: ColorConstants.neutral, fontSize: 14),
               ),
               Icon(

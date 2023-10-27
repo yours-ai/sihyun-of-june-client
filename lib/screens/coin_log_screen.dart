@@ -4,7 +4,7 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import '../actions/transaction/queries.dart';
 import '../constants.dart';
-import '../widgets/coinLog_wiget.dart';
+import '../widgets/coin_log_widget.dart';
 import '../widgets/common/title_layout.dart';
 
 class CoinLogScreen extends StatefulWidget {

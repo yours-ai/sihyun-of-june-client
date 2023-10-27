@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
+import 'package:intl/intl.dart';
 import 'package:project_june_client/constants.dart';
 
 import '../services.dart';
@@ -34,6 +35,8 @@ class _ProductWidgetState extends State<ProductWidget> {
     super.initState();
   }
 
+  var currencyFormatter = NumberFormat.currency(decimalDigits: 0, name: '');
+
   @override
   Widget build(BuildContext context) {
     if (productList.isEmpty) {
@@ -54,7 +57,9 @@ class _ProductWidgetState extends State<ProductWidget> {
             style: TextStyle(color: ColorConstants.black, fontSize: 18),
           ),
           trailing: Text(
-            productDetails.price,
+            productDetails.currencyCode == 'KRW'
+                ? (currencyFormatter.format(productDetails.rawPrice) + '원')
+                : productDetails.price.toString(),
             style: TextStyle(color: ColorConstants.black, fontSize: 18),
           ),
         );

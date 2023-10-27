@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/screens/all_screen.dart';
+import 'package:project_june_client/screens/coin_charge_screen.dart';
 import 'package:project_june_client/screens/coin_log_screen.dart';
 import 'package:project_june_client/screens/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail_detail_screen.dart';
@@ -51,12 +52,13 @@ final router = GoRouter(
           OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)!),
     ),
     GoRoute(
-      path: '/my-coin',
-      builder: (context, state) => MyCoinScreen(),
-      routes: [GoRoute(
-          path: 'log',
-          builder: (context, state) => CoinLogScreen()),]
-    ),
+        path: '/my-coin',
+        builder: (context, state) => MyCoinScreen(),
+        routes: [
+          GoRoute(path: 'log', builder: (context, state) => CoinLogScreen()),
+          GoRoute(
+              path: 'charge', builder: (context, state) => CoinChargeScreen()),
+        ]),
     ShellRoute(
       navigatorKey: shellNavigatorKey,
       builder: (context, state, child) {

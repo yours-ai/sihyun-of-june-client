@@ -9,6 +9,7 @@ import '../actions/auth/actions.dart';
 import '../actions/auth/queries.dart';
 import '../constants.dart';
 import '../router.dart';
+import '../services.dart';
 import '../widgets/common/title_layout.dart';
 import '../widgets/modal_widget.dart';
 
@@ -121,7 +122,7 @@ class _AllScreenState extends State<AllScreen> {
                   suffix: Row(
                     children: [
                       Text(
-                        state.data?.coin.toString() ?? '',
+                        state.data?.coin != null? transactionService.currencyFormatter.format(state.data?.coin) : '',
                         style: TextStyle(
                             fontSize: 18,
                             color: ColorConstants.neutral,
