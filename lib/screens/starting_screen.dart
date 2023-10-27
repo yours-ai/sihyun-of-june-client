@@ -52,11 +52,11 @@ class _StartingScreen extends State<StartingScreen> {
 
   _checkUpdateAvailable() async {
     if (Platform.isAndroid) {
-      updateService.updateAndroidApp();
+      updateService.checkAndUpdateAndroidApp();
     }
 
     if (Platform.isIOS) {
-      await updateService.updateIOSApp(context);
+      await updateService.checkAndUpdateIOSApp(context);
     }
   }
 
