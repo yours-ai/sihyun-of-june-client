@@ -89,7 +89,7 @@ class _AllScreenState extends State<AllScreen> {
                       ),
                       children: [
                         TextSpan(
-                          text: '편지와 사진\n',
+                          text: '편지\n',
                           style: TextStyle(
                             color: Color(0xffFF7389),
                           ),
