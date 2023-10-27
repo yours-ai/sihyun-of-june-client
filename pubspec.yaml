@@ -41,6 +41,8 @@ dependencies:
   in_app_purchase_storekit: ^0.3.6+7
   in_app_purchase_android: ^0.3.0+13
   in_app_purchase_platform_interface: ^1.3.5
+  in_app_update: ^4.2.2
+  new_version_plus: ^0.0.11
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +75,6 @@ flutter:
           weight: 700
 
 sentry:
-  project : 'sihyun-of-june-flutter'
-  org : 'pygmalion-team'
-  auth_token : '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'
+  project: 'sihyun-of-june-flutter'
+  org: 'pygmalion-team'
+  auth_token: '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'
