@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -23,6 +25,7 @@ class _StartingScreen extends State<StartingScreen> {
     if (!context.mounted) return;
 
     await _initializeNotificationHandlerIfAccepted();
+    await _checkUpdateAvailable();
 
     if (isLogined == false) {
       context.go('/landing');
@@ -44,6 +47,16 @@ class _StartingScreen extends State<StartingScreen> {
       } else {
         context.go('/character-test');
       }
+    }
+  }
+
+  _checkUpdateAvailable() async {
+    if (Platform.isAndroid) {
+      updateService.checkAndUpdateAndroidApp();
+    }
+
+    if (Platform.isIOS) {
+      await updateService.checkAndUpdateIOSApp(context);
     }
   }
 
@@ -72,6 +85,6 @@ class _StartingScreen extends State<StartingScreen> {
 
   @override
   Widget build(context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }

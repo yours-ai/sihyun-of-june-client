@@ -1,11 +1,15 @@
+import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../actions/auth/actions.dart';
+import '../actions/auth/queries.dart';
 import '../constants.dart';
 import '../router.dart';
+import '../services.dart';
 import '../widgets/common/title_layout.dart';
 import '../widgets/modal_widget.dart';
 
@@ -70,6 +74,39 @@ class _AllScreenState extends State<AllScreen> {
           choiceColumn: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    height: 1.6,
+                    color: ColorConstants.secondary,
+                    fontFamily: 'MaruBuri',
+                    fontSize: 16.0,
+                  ),
+                  children: const [
+                    TextSpan(
+                      text: '탈퇴하기 신청을 하면 이런 내용이 전부 삭제되어요.\n',
+                    ),
+                    TextSpan(
+                      text: '- 시현이 또는 우빈이와 함께 나누었던 ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '편지\n',
+                          style: TextStyle(
+                            color: Color(0xffFF7389),
+                          ),
+                        ),
+                        TextSpan(
+                          text: '- 앞으로 새로운 친구들을 만나볼 기회',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
               FilledButton(
                 style: ButtonStyle(
                   backgroundColor:
@@ -86,7 +123,8 @@ class _AllScreenState extends State<AllScreen> {
               ),
               FilledButton(
                 onPressed: () {
-                  launchUrl(Uri.parse(Urls.withdraw));
+                  context.push('/withdraw');
+                  context.pop();
                 },
                 child: const Text(
                   '네',
@@ -109,6 +147,30 @@ class _AllScreenState extends State<AllScreen> {
         titleText: '전체',
         body: ListView(
           children: [
+            QueryBuilder(
+              query: getRetrieveMeQuery(),
+              builder: (context, state) {
+                return MenuWidget(
+                  title: '내 코인',
+                  onPressed: () => context.push('/my-coin'),
+                  suffix: Row(
+                    children: [
+                      Text(
+                        state.data?.coin != null? transactionService.currencyFormatter.format(state.data?.coin) : '',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: ColorConstants.neutral,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      Icon(
+                        PhosphorIcons.coin_vertical,
+                        color: ColorConstants.neutral,
+                        size: 18,)
+                    ]
+                  ),
+                );
+              },
+            ),
             MenuWidget(
               title: '공지',
               onPressed: () => launchUrl(Uri.parse(Urls.notice)),

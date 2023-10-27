@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/screens/all_screen.dart';
+import 'package:project_june_client/screens/coin_charge_screen.dart';
+import 'package:project_june_client/screens/coin_log_screen.dart';
 import 'package:project_june_client/screens/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail_detail_screen.dart';
 import 'package:project_june_client/screens/name_change_screen.dart';
+import 'package:project_june_client/screens/my_coin_screen.dart';
 import 'package:project_june_client/screens/notification_list_screen.dart';
 import 'package:project_june_client/screens/phone_login_screen.dart';
 import 'package:project_june_client/screens/other_character_screen.dart';
@@ -11,6 +14,7 @@ import 'package:project_june_client/screens/my_character_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
 import 'package:project_june_client/screens/character_choice_screen.dart';
 import 'package:project_june_client/screens/test_screen.dart';
+import 'package:project_june_client/screens/withdraw_screen.dart';
 import 'constants.dart';
 import 'screens/landing_screen.dart';
 import 'screens/login_screen.dart';
@@ -44,10 +48,22 @@ final router = GoRouter(
       builder: (context, state) => CharacterChoiceScreen(),
     ),
     GoRoute(
+      path: '/withdraw',
+      builder: (context, state) => WithdrawScreen(),
+    ),
+    GoRoute(
       path: '/other-character/:id',
       builder: (context, state) =>
           OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)!),
     ),
+    GoRoute(
+        path: '/my-coin',
+        builder: (context, state) => MyCoinScreen(),
+        routes: [
+          GoRoute(path: 'log', builder: (context, state) => CoinLogScreen()),
+          GoRoute(
+              path: 'charge', builder: (context, state) => CoinChargeScreen()),
+        ]),
     ShellRoute(
       navigatorKey: shellNavigatorKey,
       builder: (context, state, child) {

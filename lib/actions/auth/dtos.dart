@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -54,4 +56,22 @@ class UserNameDTO {
     required this.firstName,
     required this.lastName,
   });
+}
+
+class QuitReasonDTO {
+  Map<String, bool> reasons = <String, bool>{
+    'dailyReplyBurden': false,
+    'wantOtherCharacters': false,
+    'notLikeHuman': false,
+    'toResetLetters': false,
+    'manyErrors': false,
+  };
+
+  late String? otherReason;
+
+  QuitReasonDTO({this.otherReason});
+
+  bool get isAllFalse {
+    return reasons.values.every((element) => element == false);
+  }
 }

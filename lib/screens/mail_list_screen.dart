@@ -26,26 +26,23 @@ class _MailListScreenState extends State<MailListScreen> {
     final retrieveMyCharacterQuery = getRetrieveMyCharacterQuery();
     return SafeArea(
       child: TitleLayout(
-        showProfile: Padding(
-          padding: const EdgeInsets.only(right: 28.0),
-          child: QueryBuilder(
-            query: retrieveMyCharacterQuery,
-            builder: (context, state) {
-              if (state.data != null) {
-                return TextButton(
-                  onPressed: () => context.push('/mails/my-character'),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(14),
-                    child: Image.network(
-                      state.data![0].image,
-                      height: 35,
-                    ),
+        titleAddOn: QueryBuilder(
+          query: retrieveMyCharacterQuery,
+          builder: (context, state) {
+            if (state.data != null) {
+              return TextButton(
+                onPressed: () => context.push('/mails/my-character'),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(14),
+                  child: Image.network(
+                    state.data![0].image,
+                    height: 35,
                   ),
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
         ),
         titleText: '받은 편지함',
         body: Stack(
