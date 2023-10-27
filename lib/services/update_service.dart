@@ -7,6 +7,7 @@ import '../widgets/update_widget.dart';
 class UpdateService {
   const UpdateService();
 
+
   Future<void> checkAndUpdateAndroidApp() async {
     try {
       final info = await InAppUpdate.checkForUpdate();
@@ -22,6 +23,7 @@ class UpdateService {
           );
     }
   }
+
 
   Future<void> checkAndUpdateIOSApp(BuildContext context) async {
     try {

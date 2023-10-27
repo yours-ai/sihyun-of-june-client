@@ -11,6 +11,7 @@ import 'package:project_june_client/screens/my_character_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
 import 'package:project_june_client/screens/character_choice_screen.dart';
 import 'package:project_june_client/screens/test_screen.dart';
+import 'package:project_june_client/screens/withdraw_screen.dart';
 import 'constants.dart';
 import 'screens/landing_screen.dart';
 import 'screens/login_screen.dart';
@@ -42,6 +43,10 @@ final router = GoRouter(
     GoRoute(
       path: '/character-choice',
       builder: (context, state) => CharacterChoiceScreen(),
+    ),
+    GoRoute(
+      path: '/withdraw',
+      builder: (context, state) => WithdrawScreen(),
     ),
     GoRoute(
       path: '/other-character/:id',

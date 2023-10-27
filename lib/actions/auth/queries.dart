@@ -97,3 +97,27 @@ Mutation<void, UserNameDTO> getNameChangeMutation({
     onError: onError,
   );
 }
+
+Mutation<void, QuitReasonDTO> sendQuitResponseMutation({
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, QuitReasonDTO>(
+    queryFn: sendQuitResponse,
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Mutation<void, void> setUserDeleted({
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, void>(
+    queryFn: (void _) async {
+      await deleteUser();
+    },
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}

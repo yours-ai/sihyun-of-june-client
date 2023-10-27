@@ -70,6 +70,39 @@ class _AllScreenState extends State<AllScreen> {
           choiceColumn: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    height: 1.6,
+                    color: ColorConstants.secondary,
+                    fontFamily: 'MaruBuri',
+                    fontSize: 16.0,
+                  ),
+                  children: const [
+                    TextSpan(
+                      text: '탈퇴하기 신청을 하면 이런 내용이 전부 삭제되어요.\n',
+                    ),
+                    TextSpan(
+                      text: '- 시현이 또는 우빈이와 함께 나누었던 ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: '편지\n',
+                          style: TextStyle(
+                            color: Color(0xffFF7389),
+                          ),
+                        ),
+                        TextSpan(
+                          text: '- 앞으로 새로운 친구들을 만나볼 기회',
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
               FilledButton(
                 style: ButtonStyle(
                   backgroundColor:
@@ -86,7 +119,8 @@ class _AllScreenState extends State<AllScreen> {
               ),
               FilledButton(
                 onPressed: () {
-                  launchUrl(Uri.parse(Urls.withdraw));
+                  context.push('/withdraw');
+                  context.pop();
                 },
                 child: const Text(
                   '네',
