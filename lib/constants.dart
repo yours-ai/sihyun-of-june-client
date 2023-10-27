@@ -29,6 +29,7 @@ abstract final class Urls {
   static String terms = "https://pygmalion.app/policy/terms";
   static String ask = "https://pf.kakao.com/_YYxoqG/chat";
   static String withdraw ="https://form.sihyunofjune.com/delete-account";
+  static String appstore = 'https://apps.apple.com/kr/app/%EC%9C%A0%EC%9B%94%EC%9D%98-%EC%8B%9C%ED%98%84%EC%9D%B4/id6463772803';
 }
 
 abstract final class ProjectConstants {
