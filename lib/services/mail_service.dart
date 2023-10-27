@@ -26,17 +26,6 @@ class MailService {
     return "오늘 저녁 9시";
   }
 
-  bool isMailReplyable(Mail mail) {
-    DateTime dueDate = mail.available_at.add(Duration(days: 1));
-    DateTime dueDateTime = DateTime(
-        dueDate.year,
-        dueDate.month,
-        dueDate.day,
-        ProjectConstants.mailSendDueTime.hour,
-        ProjectConstants.mailSendDueTime.minute);
-    return clock.now().isBefore(dueDateTime);
-  }
-
   String formatMailDate(DateTime dt) {
     return DateFormat('yyyy.MM.dd').format(dt);
   }
