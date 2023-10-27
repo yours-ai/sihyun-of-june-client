@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
@@ -47,6 +48,10 @@ class _NameChangeScreenState extends State<NameChangeScreen> {
           ),
           builder: (context, state, mutate) => ModalWidget(
             title: '이렇게 불러드릴까요?',
+            description: const Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Text('이름을 바꾸신 다음 날부터 편지에 적용되어요!'),
+            ),
             choiceColumn: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -92,8 +97,24 @@ class _NameChangeScreenState extends State<NameChangeScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: ColorConstants.background,
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () => context.pop(),
+            icon: Container(
+              padding: const EdgeInsets.only(left: 23),
+              child: Icon(
+                PhosphorIcons.arrow_left,
+                color: ColorConstants.black,
+                size: 32,
+              ),
+            ),
+          ),
+        ),
         body: SafeArea(
           child: TitleLayout(
+              withAppBar: true,
               titleText: "어떻게\n불러드릴까요?",
               body: QueryBuilder(
                 query: getRetrieveMeQuery(),

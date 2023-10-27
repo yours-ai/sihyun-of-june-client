@@ -7,7 +7,8 @@ import '../widgets/update_widget.dart';
 class UpdateService {
   const UpdateService();
 
-  Future<void> updateAndroidApp() async {
+
+  Future<void> checkAndUpdateAndroidApp() async {
     try {
       final info = await InAppUpdate.checkForUpdate();
       if (info.updateAvailability == UpdateAvailability.updateAvailable) {
@@ -23,7 +24,8 @@ class UpdateService {
     }
   }
 
-  Future<void> updateIOSApp(BuildContext context) async {
+
+  Future<void> checkAndUpdateIOSApp(BuildContext context) async {
     try {
       final newVersionPlus = await NewVersionPlus(
           iOSId: 'team.pygmalion.projectJune',
