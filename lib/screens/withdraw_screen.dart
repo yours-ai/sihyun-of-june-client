@@ -17,9 +17,19 @@ class WithdrawScreen extends StatefulWidget {
 
 class _WithdrawScreenState extends State<WithdrawScreen> {
   int _tab = 0;
+  QuitReasonDTO reasonDTO = QuitReasonDTO();
 
-  void handleQuitResponse() {
+  final reasonController = TextEditingController();
+
+  @override
+  void dispose() {
+    reasonController.dispose();
+    super.dispose();
+  }
+
+  void handleQuitResponse(QuitReasonDTO dto) {
     setState(() {
+      reasonDTO = dto;
       _tab = 1;
     });
   }
@@ -48,7 +58,11 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
         backgroundColor: ColorConstants.background,
         elevation: 0,
         leading: IconButton(
-          onPressed: () => context.pop(),
+          onPressed: _tab == 0
+              ? () => context.pop()
+              : () => setState(() {
+                    _tab = 0;
+                  }),
           icon: Container(
             padding: const EdgeInsets.only(left: 23),
             child: Icon(
@@ -63,9 +77,14 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
         child: _tab == 0
             ? ReasonTabWidget(
                 onQuitResponse: handleQuitResponse,
+                dto: reasonDTO,
+                reasonController: reasonController,
               )
             : _tab == 1
-                ? GuideTabWidget(onWithdraw: _showWithdrawModal)
+                ? GuideTabWidget(
+                    onWithdraw: _showWithdrawModal,
+                    dto: reasonDTO,
+                  )
                 : Container(),
       ),
     );
