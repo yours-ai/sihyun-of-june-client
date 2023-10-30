@@ -50,6 +50,7 @@ class _ReasonTabWidgetState extends State<ReasonTabWidget> {
       builder: (context, state, mutate) => Form(
         key: _formKey,
         child: TitleLayout(
+          withAppBar: true,
           titleText: '탈퇴 사유를 알려주세요',
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),

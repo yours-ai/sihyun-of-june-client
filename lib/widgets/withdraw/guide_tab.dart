@@ -26,6 +26,7 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
       query: getRetrieveMeQuery(),
       builder: (context, state) {
         return TitleLayout(
+          withAppBar: true,
           titleText: '탈퇴 주의사항',
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 28.0),

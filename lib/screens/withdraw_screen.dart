@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/widgets/withdraw/guide_tab.dart';
 import 'package:project_june_client/widgets/withdraw/reason_tab.dart';
 
+import '../constants.dart';
 import '../widgets/modal_widget.dart';
 
 class WithdrawScreen extends StatefulWidget {
@@ -42,6 +44,21 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: ColorConstants.background,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () => context.pop(),
+          icon: Container(
+            padding: const EdgeInsets.only(left: 23),
+            child: Icon(
+              PhosphorIcons.arrow_left,
+              color: ColorConstants.black,
+              size: 32,
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: _tab == 0
             ? ReasonTabWidget(
