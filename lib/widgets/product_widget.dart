@@ -40,30 +40,37 @@ class _ProductWidgetState extends State<ProductWidget> {
   @override
   Widget build(BuildContext context) {
     if (productList.isEmpty) {
-      productList.addAll(widget.products.map((ProductDetails productDetails) {
-        return ListTile(
-          onTap: () {
-            if (widget.isProcessing == false) {
-              widget.isProcessing = true;
-              setState(() {});
-              transactionService.initiatePurchase(
-                  productDetails, widget.inAppPurchase, widget.kProductIds);
-            }
+      productList.addAll(
+        widget.kProductIds.map(
+          (id) {
+            var product = widget.products.firstWhere(
+                (product) => product.id == id,
+                orElse: () => widget.products.first);
+            return ListTile(
+              onTap: () {
+                if (widget.isProcessing == false) {
+                  widget.isProcessing = true;
+                  setState(() {});
+                  transactionService.initiatePurchase(
+                      product, widget.inAppPurchase, widget.kProductIds);
+                }
+              },
+              title: Text(
+                Platform.isIOS
+                    ? product.title
+                    : product.title.substring(0, 9),
+                style: TextStyle(color: ColorConstants.black, fontSize: 18),
+              ),
+              trailing: Text(
+                product.currencyCode == 'KRW'
+                    ? (currencyFormatter.format(product.rawPrice) + '원')
+                    : product.price.toString(),
+                style: TextStyle(color: ColorConstants.black, fontSize: 18),
+              ),
+            );
           },
-          title: Text(
-            Platform.isIOS
-                ? productDetails.title
-                : productDetails.title.substring(0, 9),
-            style: TextStyle(color: ColorConstants.black, fontSize: 18),
-          ),
-          trailing: Text(
-            productDetails.currencyCode == 'KRW'
-                ? (currencyFormatter.format(productDetails.rawPrice) + '원')
-                : productDetails.price.toString(),
-            style: TextStyle(color: ColorConstants.black, fontSize: 18),
-          ),
-        );
-      }));
+        ),
+      );
     }
     return Column(children: productList);
   }
