@@ -113,8 +113,17 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         splashFactory: NoSplash.splashFactory,
+        textTheme: const TextTheme(
+          titleMedium: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
+            textStyle: TextStyle(
+              fontWeight: FontWeight.w600,
+            ),
             backgroundColor: ColorConstants.pink,
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(

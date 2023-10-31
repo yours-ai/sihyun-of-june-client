@@ -23,17 +23,18 @@ class TitleLayout extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        withAppBar ? const SizedBox(height: 10) : const SizedBox(height: 50),
+        withAppBar ? const SizedBox(height: 10) : const SizedBox(height: 40),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Flexible(
                 child: Text(
                   titleText,
-                  style: titleStyle ?? Theme.of(context).textTheme.titleLarge,
+                  style: TextStyle(fontFamily: 'NanumJungHagSaeng', fontSize: 39, height: 36/39),
                   softWrap: true,
+                  textAlign: TextAlign.center,
                 ),
               ),
               titleAddOn

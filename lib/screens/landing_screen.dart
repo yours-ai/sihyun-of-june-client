@@ -19,7 +19,7 @@ const List<LandingTabData> tabList = [
       title: '사람보다 더 따뜻한\n당신의 "시현이"에게,',
       src: 'assets/images/landing/landing2.png'),
   LandingTabData(
-      title: '지금 바로 첫 편지를\n받아보세요.', src: 'assets/images/landing/landing3.png'),
+      title: '지금 바로 첫 편지를\n받아보세요 :)', src: 'assets/images/landing/landing3.png'),
 ];
 
 class LandingScreen extends StatefulWidget {
