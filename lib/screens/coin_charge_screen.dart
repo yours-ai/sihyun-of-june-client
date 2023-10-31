@@ -46,7 +46,7 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
     }, onDone: () {
       _subscription.cancel();
     });
-    handlePastTransactions();
+    if(Platform.isIOS) handlePastTransactions();
     super.initState();
   }
 
