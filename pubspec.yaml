@@ -73,6 +73,30 @@ flutter:
           weight: 600
         - asset: assets/fonts/MaruBuri-Bold.otf
           weight: 700
+    - family: NanumJungHagSaeng
+      fonts:
+        - asset: assets/fonts/NanumJungHagSaeng.ttf
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Pretendard-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Pretendard-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Pretendard-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Pretendard-Bold.ttf
+          weight: 700
+    - family: NanumDaCaeSaRang
+      fonts:
+        - asset: assets/fonts/NanumDaCaeSaRang.ttf
+    - family: NanumNoRyeogHaNeunDongHee
+      fonts:
+        - asset: assets/fonts/NanumNoRyeogHaNeunDongHee.ttf
+
+
+
 
 sentry:
   project: 'sihyun-of-june-flutter'
