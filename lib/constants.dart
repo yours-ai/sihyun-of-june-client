@@ -3,15 +3,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 abstract final class ColorConstants {
-  static Color primary = const Color(0xff1a1a1a);
-  static Color background = const Color(0xfff6f6f6);
-  static Color secondary = const Color.fromRGBO(68, 68, 68, 0.9);
+  static Color primary = const Color(0xffFF5574);
+  static Color background = const Color(0xffFBFBFB);
+  static Color secondary = const Color(0xffffafbe);
+  static Color medium = const Color(0xff827B7B);
+  static Color dark = const Color(0xff615B56);
+  static Color neutral = const Color(0xffc0bebb);
   static Color alert = const Color.fromRGBO(254, 49, 64, 1);
-  static Color light = const Color(0xffcacaca);
-  static Color veryLight = const Color(0xffdedede);
-  static Color neutral = const Color(0xff9a9a9a);
-
-  static Color white = const Color(0xfffcfcfc);
+  static Color veryLight = const Color(0xffDEDEDE);
+  static Color light = const Color(0xffC0BDB8);
+  static Color white = const Color(0xfffbfbfb);
   static Color black = const Color(0xff1a1a1a);
 }
 
