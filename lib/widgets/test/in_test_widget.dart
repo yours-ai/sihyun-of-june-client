@@ -83,7 +83,7 @@ class _InTestWidget extends State<InTestWidget> {
                         value: (_currentQuestionIndex + 1) / 8,
                         backgroundColor: ColorConstants.background,
                         valueColor: AlwaysStoppedAnimation<Color>(
-                            ColorConstants.secondary),
+                            ColorConstants.lightPink),
                       ),
                     ),
                   ),

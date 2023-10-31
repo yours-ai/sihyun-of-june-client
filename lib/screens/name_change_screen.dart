@@ -66,7 +66,7 @@ class _NameChangeScreenState extends State<NameChangeScreen> {
                   child: Text(
                     '아니요',
                     style: TextStyle(
-                        fontSize: 14.0, color: ColorConstants.secondary),
+                        fontSize: 14.0, color: ColorConstants.lightPink),
                   ),
                 ),
                 FilledButton(

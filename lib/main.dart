@@ -95,32 +95,27 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
       routerConfig: router,
       scaffoldMessengerKey: scaffoldMessengerKey,
       theme: ThemeData(
-        fontFamily: 'MaruBuri',
+        fontFamily: 'Pretendard',
         scaffoldBackgroundColor: ColorConstants.background,
         colorScheme: ColorScheme(
           brightness: Brightness.light,
           primary: ColorConstants.primary,
           onPrimary: ColorConstants.white,
-          secondary: ColorConstants.secondary,
+          secondary: ColorConstants.lightPink,
           onSecondary: ColorConstants.white,
           error: ColorConstants.alert,
           onError: ColorConstants.white,
           background: ColorConstants.background,
-          onBackground: ColorConstants.primary,
+          onBackground: ColorConstants.pink,
           surface: ColorConstants.background,
-          onSurface: ColorConstants.primary,
+          onSurface: ColorConstants.pink,
         ),
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         splashFactory: NoSplash.splashFactory,
-        textTheme: const TextTheme(
-          titleLarge: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
+            backgroundColor: ColorConstants.pink,
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(
               vertical: 17.0,

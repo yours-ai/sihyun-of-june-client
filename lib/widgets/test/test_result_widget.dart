@@ -74,7 +74,7 @@ class _TestResultWidget extends State<TestResultWidget> {
               value: 1,
               backgroundColor: ColorConstants.background,
               valueColor:
-                  AlwaysStoppedAnimation<Color>(ColorConstants.secondary),
+                  AlwaysStoppedAnimation<Color>(ColorConstants.lightPink),
             ),
           ),
         ),

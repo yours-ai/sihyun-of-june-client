@@ -22,7 +22,7 @@ class ViewOthersWidget extends StatelessWidget {
           child: Text(
             '다른 상대도\n살펴볼까요?',
             style: TextStyle(
-              color: ColorConstants.secondary,
+              color: ColorConstants.lightPink,
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),

@@ -31,7 +31,7 @@ class NotificationListScreen extends StatelessWidget {
                             "아직 도착한 알림이 없습니다.",
                             style: TextStyle(
                               fontSize: 14,
-                              color: ColorConstants.secondary,
+                              color: ColorConstants.lightPink,
                             ),
                           ),
                         ),

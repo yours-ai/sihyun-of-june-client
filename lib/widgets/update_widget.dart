@@ -33,7 +33,8 @@ class UpdateWidget extends StatelessWidget {
             },
             child: Text(
               '나중에 할게요.',
-              style: TextStyle(fontSize: 14.0, color: ColorConstants.secondary),
+              style: TextStyle(fontSize: 14.0, color: ColorConstants.pink),
+              // 모달은 alert로 바꾸면 dark가 안 중요해짐
             ),
           ),
           FilledButton(

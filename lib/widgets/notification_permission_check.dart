@@ -53,7 +53,7 @@ class _RequestNotificationPermissionWidgetState
                     child: Text(
                       '취소',
                       style: TextStyle(
-                          fontSize: 14.0, color: ColorConstants.secondary),
+                          fontSize: 14.0, color: ColorConstants.lightPink),
                     ),
                   ),
                   FilledButton(

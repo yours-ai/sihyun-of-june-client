@@ -92,8 +92,8 @@ class _LandingScreen extends State<LandingScreen> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _tab == entry.key
-                            ? ColorConstants.secondary
-                            : ColorConstants.veryLight,
+                            ? ColorConstants.lightPink
+                            : ColorConstants.veryLightGray,
                       ),
                     ),
                   );

@@ -74,7 +74,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   child: Text(
                     '아니요',
                     style: TextStyle(
-                        fontSize: 14.0, color: ColorConstants.secondary),
+                        fontSize: 14.0, color: ColorConstants.lightPink),
                   ),
                 ),
                 MutationBuilder(
@@ -171,7 +171,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                 mailDueTimeLabel,
                 style: TextStyle(
                   fontSize: 12,
-                  color: ColorConstants.secondary,
+                  color: ColorConstants.lightPink,
                 ),
               )),
             ],

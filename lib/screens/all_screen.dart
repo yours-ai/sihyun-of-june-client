@@ -42,7 +42,7 @@ class _AllScreenState extends State<AllScreen> {
                 child: Text(
                   '아니요',
                   style: TextStyle(
-                      fontSize: 14.0, color: ColorConstants.secondary),
+                      fontSize: 14.0, color: ColorConstants.lightPink),
                 ),
               ),
               FilledButton(
@@ -78,7 +78,7 @@ class _AllScreenState extends State<AllScreen> {
                 text: TextSpan(
                   style: TextStyle(
                     height: 1.6,
-                    color: ColorConstants.secondary,
+                    color: ColorConstants.lightPink,
                     fontFamily: 'MaruBuri',
                     fontSize: 16.0,
                   ),
@@ -118,7 +118,7 @@ class _AllScreenState extends State<AllScreen> {
                 child: Text(
                   '아니요',
                   style: TextStyle(
-                      fontSize: 14.0, color: ColorConstants.secondary),
+                      fontSize: 14.0, color: ColorConstants.lightPink),
                 ),
               ),
               FilledButton(

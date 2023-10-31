@@ -41,7 +41,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                   widget.notification.body,
                   style: TextStyle(
                       fontSize: 15,
-                      color: ColorConstants.secondary,
+                      color: ColorConstants.lightPink,
                       fontWeight: widget.notification.is_read == false
                           ? FontWeight.bold
                           : FontWeight.normal),

@@ -98,7 +98,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 30),
                                     height: 1,
-                                    color: ColorConstants.light,
+                                    color: ColorConstants.lightGray,
                                   ),
                                   ReplyWidget(
                                     reply: mailState.data!.replies!.first,
@@ -113,7 +113,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 30),
                                     height: 1,
-                                    color: ColorConstants.light,
+                                    color: ColorConstants.lightGray,
                                   ),
                                   ReplyFormWidget(
                                     mail: mailState.data!,
@@ -126,7 +126,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                     margin: const EdgeInsets.only(
                                         top: 30, bottom: 45),
                                     height: 1,
-                                    color: ColorConstants.light,
+                                    color: ColorConstants.lightGray,
                                   ),
                                   Center(
                                     child: Text(

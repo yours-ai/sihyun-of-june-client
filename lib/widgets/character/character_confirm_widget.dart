@@ -45,7 +45,7 @@ class CharacterConfirmWidget extends StatelessWidget {
                   child: Text('됐어요',
                       style: TextStyle(
                         fontSize: 14.0,
-                        color: ColorConstants.secondary,
+                        color: ColorConstants.lightPink,
                       )),
                 ),
                 SizedBox(
