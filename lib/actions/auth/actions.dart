@@ -220,3 +220,9 @@ Future<void> deleteUser() async {
   var response = await dio.delete('/auth/delete-user/');
   return response.data;
 }
+
+Future<void> withdrawUser(QuitReasonDTO dto) async {
+  await sendQuitResponse(dto);
+  await deleteUser();
+  return;
+}

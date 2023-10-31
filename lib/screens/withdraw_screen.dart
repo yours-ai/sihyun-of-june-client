@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/widgets/withdraw/guide_tab.dart';
 import 'package:project_june_client/widgets/withdraw/reason_tab.dart';
 
+import '../constants.dart';
 import '../widgets/modal_widget.dart';
 
 class WithdrawScreen extends StatefulWidget {
@@ -15,9 +17,19 @@ class WithdrawScreen extends StatefulWidget {
 
 class _WithdrawScreenState extends State<WithdrawScreen> {
   int _tab = 0;
+  QuitReasonDTO reasonDTO = QuitReasonDTO();
 
-  void handleQuitResponse() {
+  final reasonController = TextEditingController();
+
+  @override
+  void dispose() {
+    reasonController.dispose();
+    super.dispose();
+  }
+
+  void handleQuitResponse(QuitReasonDTO dto) {
     setState(() {
+      reasonDTO = dto;
       _tab = 1;
     });
   }
@@ -41,15 +53,42 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: _tab == 0
-            ? ReasonTabWidget(
-                onQuitResponse: handleQuitResponse,
-              )
-            : _tab == 1
-                ? GuideTabWidget(onWithdraw: _showWithdrawModal)
-                : Container(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: ColorConstants.background,
+          elevation: 0,
+          leading: IconButton(
+            onPressed: _tab == 0
+                ? () => context.pop()
+                : () => setState(() {
+                      _tab = 0;
+                    }),
+            icon: Container(
+              padding: const EdgeInsets.only(left: 23),
+              child: Icon(
+                PhosphorIcons.arrow_left,
+                color: ColorConstants.black,
+                size: 32,
+              ),
+            ),
+          ),
+        ),
+        body: SafeArea(
+          child: _tab == 0
+              ? ReasonTabWidget(
+                  onQuitResponse: handleQuitResponse,
+                  dto: reasonDTO,
+                  reasonController: reasonController,
+                )
+              : _tab == 1
+                  ? GuideTabWidget(
+                      onWithdraw: _showWithdrawModal,
+                      dto: reasonDTO,
+                    )
+                  : Container(),
+        ),
       ),
     );
   }

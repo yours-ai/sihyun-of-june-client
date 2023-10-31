@@ -82,9 +82,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                       ),
                       body: SafeArea(
                         child: SingleChildScrollView(
-                          reverse: MediaQuery.of(context).viewInsets.bottom > 0
-                              ? true
-                              : false,
+                          reverse: MediaQuery.of(context).viewInsets.bottom > 0? true: false,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 30.0,
@@ -109,7 +107,8 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                   )
                                 ],
                                 if (mailState.data!.replies!.isEmpty &&
-                                    mailState.data!.is_latest) ...[
+                                    mailService
+                                        .isMailReplyable(mailState.data!)) ...[
                                   Container(
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 30),
@@ -121,7 +120,8 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                   )
                                 ],
                                 if (mailState.data!.replies!.isEmpty &&
-                                    !mailState.data!.is_latest) ...[
+                                    !mailService
+                                        .isMailReplyable(mailState.data!)) ...[
                                   Container(
                                     margin: const EdgeInsets.only(
                                         top: 30, bottom: 45),
@@ -130,7 +130,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                   ),
                                   Center(
                                     child: Text(
-                                      '답장 가능한 시간이 지났어요.🥲\n최근 편지에만 답장이 가능해요.',
+                                      '답장 가능 시간이 지났어요.🥲\n답장은 오전 9시까지만 가능해요.',
                                       style: TextStyle(
                                         height: 1.5,
                                         fontSize: 14,

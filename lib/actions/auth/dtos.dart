@@ -67,6 +67,7 @@ class QuitReasonDTO {
     'manyErrors': false,
   };
 
+  bool haveOtherReason = false;
   late String? otherReason;
 
   QuitReasonDTO({this.otherReason});

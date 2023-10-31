@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,22 +11,24 @@ import '../../actions/auth/actions.dart';
 import '../../constants.dart';
 
 class GuideTabWidget extends StatefulWidget {
-  const GuideTabWidget({super.key, required this.onWithdraw});
+  const GuideTabWidget(
+      {super.key, required this.onWithdraw, required this.dto});
+
   final void Function() onWithdraw;
+  final QuitReasonDTO dto;
 
   @override
   State<GuideTabWidget> createState() => _GuideTabWidgetState();
 }
 
 class _GuideTabWidgetState extends State<GuideTabWidget> {
-
-
   @override
   Widget build(BuildContext context) {
     return QueryBuilder(
       query: getRetrieveMeQuery(),
       builder: (context, state) {
         return TitleLayout(
+          withAppBar: true,
           titleText: '탈퇴 주의사항',
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 28.0),
@@ -37,7 +40,7 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                     ? state.data!.env == 'apple'
                         ? Column(
                             children: [
-                              Text('애플 계정 연결 해제를 위해 아래 링크를 따라 주세요.'),
+                              const Text('애플 계정 연결 해제를 위해 아래 링크를 따라 주세요.'),
                               const SizedBox(height: 20),
                               TextButton(
                                   onPressed: () =>
@@ -52,7 +55,7 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                                         Clipboard.setData(ClipboardData(
                                             text: Urls.appleWithdraw));
                                       },
-                                      child: Text('링크 복사하기')),
+                                      child: const Text('링크 복사하기')),
                                 ],
                               )
                             ],
@@ -89,21 +92,19 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
             ),
           ),
           actions: MutationBuilder(
-            mutation: setUserDeleted(
-              onSuccess: (res, arg) async {
-                widget.onWithdraw();
-                await Future.delayed(Duration(seconds: 3));
-                logout();
-                context.go('/login');
-              }
-            ),
+            mutation: getWithdrawUserMutation(onSuccess: (res, arg) async {
+              widget.onWithdraw();
+              await Future.delayed(const Duration(seconds: 3));
+              logout();
+              context.go('/login');
+            }),
             builder: (context, state, mutate) {
               return OutlinedButton(
                 onPressed: () {
-                  mutate(null);
+                  mutate(widget.dto);
                 },
                 child: const Text(
-                  '완료했어요',
+                  '탈퇴하기',
                   style: TextStyle(
                     fontFamily: 'MaruBuri',
                     fontSize: 14,

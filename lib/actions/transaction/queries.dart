@@ -43,8 +43,9 @@ Query<List<CoinLog>> getCoinLogsQuery({OnQueryErrorCallback? onError}) {
 }
 
 const List<String> kProductIds = <String>[
+  'purchase_10_coins',
   'purchase_50_coins',
-  'purchase_100_coins'
+  'purchase_100_coins',
 ];
 
 Query<List<Map<String, dynamic>>> getStoreInfoQuery({
