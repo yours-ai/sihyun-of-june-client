@@ -50,17 +50,34 @@ class MyCoinScreen extends StatelessWidget {
                 ? const SizedBox.shrink()
                 : TitleLayout(
                     withAppBar: true,
-                    titleText: '내 코인',
-                    titleAddOn: Row(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(transactionService.currencyFormatter.format(state.data!.coin),
-                            style: const TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold)),
-                        const SizedBox(width: 8),
-                        Icon(
-                          PhosphorIcons.coin_vertical,
-                          color: ColorConstants.black,
-                          size: 32,
+                        const Flexible(
+                          child: Text(
+                            '내 코인',
+                            style: TextStyle(
+                                fontFamily: 'NanumJungHagSaeng',
+                                fontSize: 39,
+                                height: 36 / 39),
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                                transactionService.currencyFormatter
+                                    .format(state.data!.coin),
+                                style: const TextStyle(
+                                    fontSize: 30, fontWeight: FontWeight.bold)),
+                            const SizedBox(width: 8),
+                            Icon(
+                              PhosphorIcons.coin_vertical,
+                              color: ColorConstants.black,
+                              size: 32,
+                            ),
+                          ],
                         ),
                       ],
                     ),

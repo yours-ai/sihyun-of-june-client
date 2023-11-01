@@ -26,25 +26,40 @@ class _MailListScreenState extends State<MailListScreen> {
     final retrieveMyCharacterQuery = getRetrieveMyCharacterQuery();
     return SafeArea(
       child: TitleLayout(
-        titleAddOn: QueryBuilder(
-          query: retrieveMyCharacterQuery,
-          builder: (context, state) {
-            if (state.data != null) {
-              return TextButton(
-                onPressed: () => context.push('/mails/my-character'),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
-                  child: Image.network(
-                    state.data![0].image,
-                    height: 35,
-                  ),
-                ),
-              );
-            }
-            return const SizedBox.shrink();
-          },
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+              child: Text(
+                '받은 편지함',
+                style: TextStyle(
+                    fontFamily: 'NanumJungHagSaeng',
+                    fontSize: 39,
+                    height: 36 / 39),
+                softWrap: true,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            QueryBuilder(
+              query: retrieveMyCharacterQuery,
+              builder: (context, state) {
+                if (state.data != null) {
+                  return TextButton(
+                    onPressed: () => context.push('/mails/my-character'),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: Image.network(
+                        state.data![0].image,
+                        height: 35,
+                      ),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
         ),
-        titleText: '받은 편지함',
         body: Stack(
           children: [
             QueryBuilder(
