@@ -23,7 +23,7 @@ class TitleLayout extends StatelessWidget {
       children: [
         withAppBar ? const SizedBox(height: 10) : const SizedBox(height: 40),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: titleText != '' ? Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
