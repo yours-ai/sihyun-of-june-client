@@ -125,12 +125,16 @@ class _NameTabWidgetState extends State<NameTabWidget> {
   @override
   Widget build(BuildContext context) {
     return TitleLayout(
-      titleText: '이름을 알려주세요.',
+      withAppBar: true,
+      title: Text(
+        '이름을 알려주세요.',
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
       body: Form(
           child: NameFormWidget(
         formController: formController,
       )),
-      actions: OutlinedButton(
+      actions: FilledButton(
         onPressed: () {
           if (formController.validate()) {
             _showSignInModal(getValidatedData());
