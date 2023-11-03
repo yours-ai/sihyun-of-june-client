@@ -100,7 +100,7 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
         colorScheme: ColorScheme(
           brightness: Brightness.light,
           primary: ColorConstants.primary,
-          onPrimary: ColorConstants.white,
+          onPrimary: ColorConstants.background,
           secondary: ColorConstants.lightPink,
           onSecondary: ColorConstants.white,
           error: ColorConstants.alert,
@@ -118,7 +118,7 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
             fontFamily: 'NanumJungHagSaeng',
             fontSize: 39,
             height: 36 / 39,
-          )
+          ),
         ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
