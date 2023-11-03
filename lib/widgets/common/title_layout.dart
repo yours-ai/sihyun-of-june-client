@@ -30,7 +30,7 @@ class TitleLayout extends StatelessWidget {
               Flexible(
                 child: Text(
                   titleText,
-                  style: TextStyle(fontFamily: 'NanumJungHagSaeng', fontSize: 39, height: 36/39),
+                  style: const TextStyle(fontFamily: 'NanumJungHagSaeng', fontSize: 39, height: 36/39),
                   softWrap: true,
                   textAlign: TextAlign.center,
                 ),

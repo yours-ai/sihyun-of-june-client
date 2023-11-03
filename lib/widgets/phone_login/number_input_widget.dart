@@ -113,7 +113,7 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                                 vertical: 14.0,
                                 horizontal: 20.0,
                               ),
-                            ), //기존 FilledButton과 다른 Padding을 주기 위함.
+                            ),
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
