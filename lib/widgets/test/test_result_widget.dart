@@ -10,7 +10,7 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 class TestResultData {
-  final String title;
+  final Widget title;
   final Widget body;
   final String button;
 
@@ -21,18 +21,48 @@ class TestResultData {
   });
 }
 
-final List<TestResultData> tabList = [
-  TestResultData(
-      title: '테스트가 완료됐어요!\n상대를 정하는 중이에요...',
-      body: Lottie.asset('assets/lotties/waitingResultLottie.json'),
-      button: '두근두근...'),
-  TestResultData(title: '상대가 정해졌어요!\n확인해보실래요?',
-      body: Lottie.asset('assets/lotties/testResultLottie.json'),
-      button: '확인해보기'),
-  const TestResultData(title: '오류가 발생했어요', button: '다시 하기'),
-];
+List<TestResultData> getTabList(context) {
+  return [
+    TestResultData(
+        title: Text(
+          '테스트가 완료됐어요!\n상대를 정하는 중이에요...',
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(color: ColorConstants.primary),
+          softWrap: true,
+          textAlign: TextAlign.center,
+        ),
+        body: Lottie.asset('assets/lotties/waitingResultLottie.json'),
+        button: '두근두근...'),
+    TestResultData(
+        title: Text(
+          '상대가 정해졌어요!\n확인해보시겠어요?',
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(color: ColorConstants.primary),
+          softWrap: true,
+          textAlign: TextAlign.center,
+        ),
+        body: Container(),
+        button: '확인해보기'),
+    TestResultData(
+        title: Text(
+          '오류가 발생했어요',
+          style: Theme.of(context)
+              .textTheme
+              .titleLarge!
+              .copyWith(color: ColorConstants.primary),
+          softWrap: true,
+          textAlign: TextAlign.center,
+        ),
+        button: '다시 하기'),
+  ];
+}
 
 class TestResultWidget extends StatefulWidget {
+
   final AnswerDTOList responses;
 
   TestResultWidget({super.key, required this.responses});
@@ -44,12 +74,15 @@ class TestResultWidget extends StatefulWidget {
 }
 
 class _TestResultWidget extends State<TestResultWidget> {
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _switchPageAfterDelay();
-    });  }
+    });
+
+  }
 
   Future<void> _switchPageAfterDelay() async {
     await Future.delayed(const Duration(seconds: 4));
@@ -62,26 +95,27 @@ class _TestResultWidget extends State<TestResultWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final tabList = getTabList(context);
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(4.0),
-        child: AppBar(
-          backgroundColor: ColorConstants.background,
-          elevation: 0,
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1.0),
-            child: LinearProgressIndicator(
-              value: 1,
-              backgroundColor: ColorConstants.background,
-              valueColor:
-                  AlwaysStoppedAnimation<Color>(ColorConstants.lightPink),
+      appBar: AppBar(
+        backgroundColor: ColorConstants.background,
+        elevation: 0,
+        title: Center(
+          child: Text(
+            '${_tab + 9}/10',
+            style: TextStyle(
+              fontFamily: 'Pretendard',
+              fontSize: 20,
+              color: ColorConstants.neutral,
             ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
       body: SafeArea(
         child: TitleLayout(
-          titleText: tabList[_tab].title,
+          withAppBar: true,
+          title: tabList[_tab].title,
           body: Builder(
             builder: (context) {
               return Center(
@@ -115,8 +149,9 @@ class _TestResultWidget extends State<TestResultWidget> {
                         },
                       ),
                       builder: (context, state, mutate) => FilledButton(
-                            onPressed: () => {mutate(widget.responses.toJsonList())},
-                            child: Text(tabList[_tab].button)),
+                          onPressed: () =>
+                              {mutate(widget.responses.toJsonList())},
+                          child: Text(tabList[_tab].button)),
                     )
                   : FilledButton(
                       onPressed: () {
