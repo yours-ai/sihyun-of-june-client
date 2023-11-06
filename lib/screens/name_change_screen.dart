@@ -1,5 +1,4 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +6,7 @@ import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/controllers/auth/name_form_controller.dart';
-import 'package:project_june_client/widgets/name_widget.dart';
+import 'package:project_june_client/widgets/name_form_widget.dart';
 
 import '../constants.dart';
 import '../widgets/modal_widget.dart';
@@ -21,6 +20,14 @@ class NameChangeScreen extends StatefulWidget {
 
 class _NameChangeScreenState extends State<NameChangeScreen> {
   final NameFormController formController = NameFormController();
+  bool isSubmitClicked = false;
+  bool isValid = true;
+
+  void handleError(bool hasError) {
+    setState(() {
+      isValid = !hasError;
+    });
+  }
 
   void nameChangeModal(UserNameDTO dto) async {
     await showModalBottomSheet<void>(
@@ -121,19 +128,22 @@ class _NameChangeScreenState extends State<NameChangeScreen> {
                 builder: (context, state) {
                   return state.data == null
                       ? const SizedBox.shrink()
-                      : Form(
-                          child: NameFormWidget(
-                            initialFirstName: state.data!.first_name,
-                            initialLastName: state.data!.last_name,
-                            formController: formController,
-                            shouldHandleNameController: true,
-                          ),
+                      : NameFormWidget(
+                          initialFirstName: state.data!.first_name,
+                          initialLastName: state.data!.last_name,
+                          formController: formController,
+                          shouldHandleNameController: true,
+                          isSubmitClicked: isSubmitClicked,
+                          onError: handleError,
                         );
                 },
               ),
               actions: FilledButton(
                 onPressed: () {
-                  if (formController.validate()) {
+                  setState(() {
+                    isSubmitClicked = true;
+                  });
+                  if (isValid) {
                     nameChangeModal(formController.getFormData());
                   }
                 },

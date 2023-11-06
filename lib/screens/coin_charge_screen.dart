@@ -93,7 +93,7 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Flexible(
+                        const Flexible(
                           child: Text(
                             '충전하기',
                             style: TextStyle(
@@ -129,7 +129,7 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
                             query: getStoreInfoQuery(),
                             builder: (context, state) {
                               return state.data == null
-                                  ? SizedBox.shrink()
+                                  ? const SizedBox.shrink()
                                   : ProductWidget(
                                       products: transactionService
                                               .productListFromJson(
