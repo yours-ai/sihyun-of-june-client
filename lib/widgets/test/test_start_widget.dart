@@ -8,43 +8,26 @@ import '../../constants.dart';
 import '../../screens/test_screen.dart';
 
 class TestInfoTabData {
-  final Widget title;
+  final String titleText;
   final Widget body;
   final String button;
 
   const TestInfoTabData({
-    required this.title,
+    required this.titleText,
     this.body = const SizedBox(),
     required this.button,
   });
 }
 
-List<TestInfoTabData> getTabList(context, String firstName) {
+List<TestInfoTabData> getTabList(String firstName) {
   return [
     TestInfoTabData(
-        title: Text(
-          '이제, $firstName님과 편지를\n나눌 상대를 정해드리려 해요.',
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge!
-              .copyWith(color: ColorConstants.primary),
-          softWrap: true,
-          textAlign: TextAlign.center,
-        ),
-        body: Center(child: Image.asset('assets/images/landing/landing4.png')),
+        titleText: '이제, $firstName님과 편지를\n나눌 상대를 정해드리려 해요.',
+        body:
+            Center(child: Image.asset('assets/images/landing/test_image.png')),
         button: '다음'),
     TestInfoTabData(
-        title: Text(
-          '간단한 질문들로\n$firstName님을 알아가 볼게요 :)',
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge!
-              .copyWith(color: ColorConstants.primary),
-          softWrap: true,
-          textAlign: TextAlign.center,
-        ),
-        body: Container(),
-        button: '알겠어요!'),
+        titleText: '간단한 질문들로\n$firstName님을 알아가 볼게요 :)', button: '알겠어요!'),
   ];
 }
 
@@ -100,10 +83,18 @@ class _TestStartWidget extends State<TestStartWidget> {
             if (state.data == null) {
               return const SizedBox.shrink();
             }
-            final tab = getTabList(context, state.data!.first_name)[_tab];
+            final tab = getTabList(state.data!.first_name)[_tab];
             return TitleLayout(
               withAppBar: true,
-              title: tab.title,
+              title: Text(
+                tab.titleText,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge!
+                    .copyWith(color: ColorConstants.primary),
+                softWrap: true,
+                textAlign: TextAlign.center,
+              ),
               body: Builder(builder: (context) {
                 return PageView(
                   controller: _controller,

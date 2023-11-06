@@ -10,56 +10,32 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 class TestResultData {
-  final Widget title;
+  final String titleText;
   final Widget body;
   final String button;
 
   const TestResultData({
-    required this.title,
+    required this.titleText,
     this.body = const SizedBox(),
     required this.button,
   });
 }
 
-List<TestResultData> getTabList(context) {
-  return [
-    TestResultData(
-        title: Text(
-          '테스트가 완료됐어요!\n상대를 정하는 중이에요...',
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge!
-              .copyWith(color: ColorConstants.primary),
-          softWrap: true,
-          textAlign: TextAlign.center,
-        ),
-        body: Lottie.asset('assets/lotties/waitingResultLottie.json'),
-        button: '두근두근...'),
-    TestResultData(
-        title: Text(
-          '상대가 정해졌어요!\n확인해보시겠어요?',
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge!
-              .copyWith(color: ColorConstants.primary),
-          softWrap: true,
-          textAlign: TextAlign.center,
-        ),
-        body: Container(),
-        button: '확인해보기'),
-    TestResultData(
-        title: Text(
-          '오류가 발생했어요',
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge!
-              .copyWith(color: ColorConstants.primary),
-          softWrap: true,
-          textAlign: TextAlign.center,
-        ),
-        button: '다시 하기'),
-  ];
-}
+final List<TestResultData> tabList = [
+  TestResultData(
+    titleText: '테스트가 완료됐어요!\n상대를 정하는 중이에요...',
+    body: Lottie.asset('assets/lotties/waitingResultLottie.json'),
+    button: '두근두근...',
+  ),
+  const TestResultData(
+    titleText: '상대가 정해졌어요!\n확인해보시겠어요?',
+    button: '확인해보기',
+  ),
+  const TestResultData(
+    titleText: '오류가 발생했어요',
+    button: '다시 하기',
+  ),
+];
 
 class TestResultWidget extends StatefulWidget {
   final AnswerDTOList responses;
@@ -92,11 +68,18 @@ class _TestResultWidget extends State<TestResultWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final tabList = getTabList(context);
     return Scaffold(
       body: SafeArea(
         child: TitleLayout(
-          title: tabList[_tab].title,
+          title: Text(
+            tabList[_tab].titleText,
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge!
+                .copyWith(color: ColorConstants.primary),
+            softWrap: true,
+            textAlign: TextAlign.center,
+          ),
           body: Builder(
             builder: (context) {
               return Center(

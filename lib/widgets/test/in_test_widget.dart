@@ -106,7 +106,7 @@ class _InTestWidget extends State<InTestWidget> {
                         wrapAlignment: WrapAlignment.center,
                       ),
                     ),
-                    body: Container(),
+                    body: const SizedBox(),
                     actions: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
