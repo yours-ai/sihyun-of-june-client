@@ -78,7 +78,7 @@ class _InTestWidget extends State<InTestWidget> {
                   elevation: 0,
                   title: Center(
                     child: Text(
-                      '${_currentQuestionIndex + 1}/10',
+                      '${_currentQuestionIndex + 1}/${questionList!.length}',
                       style: TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: 20,

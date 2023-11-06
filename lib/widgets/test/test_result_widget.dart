@@ -62,7 +62,6 @@ List<TestResultData> getTabList(context) {
 }
 
 class TestResultWidget extends StatefulWidget {
-
   final AnswerDTOList responses;
 
   TestResultWidget({super.key, required this.responses});
@@ -74,14 +73,12 @@ class TestResultWidget extends StatefulWidget {
 }
 
 class _TestResultWidget extends State<TestResultWidget> {
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _switchPageAfterDelay();
     });
-
   }
 
   Future<void> _switchPageAfterDelay() async {
@@ -97,24 +94,8 @@ class _TestResultWidget extends State<TestResultWidget> {
   Widget build(BuildContext context) {
     final tabList = getTabList(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorConstants.background,
-        elevation: 0,
-        title: Center(
-          child: Text(
-            '${_tab + 9}/10',
-            style: TextStyle(
-              fontFamily: 'Pretendard',
-              fontSize: 20,
-              color: ColorConstants.neutral,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
       body: SafeArea(
         child: TitleLayout(
-          withAppBar: true,
           title: tabList[_tab].title,
           body: Builder(
             builder: (context) {
