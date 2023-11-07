@@ -16,6 +16,7 @@ class Mail {
   bool is_read;
   List<Reply>? replies;
   String? image;
+  bool is_latest;
 
   Mail(
       {required this.id,
@@ -28,7 +29,8 @@ class Mail {
       required this.available_at,
       required this.is_read,
       required this.replies,
-      required this.image});
+      required this.image,
+      required this.is_latest});
 
   factory Mail.fromJson(Map<String, dynamic> json) => _$MailFromJson(json);
 
