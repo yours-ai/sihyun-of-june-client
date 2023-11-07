@@ -18,13 +18,13 @@ class MenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ColorConstants.lightGray,
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: onPressed,
-            child: Row(
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        color: ColorConstants.lightGray,
+        child: Column(
+          children: [
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
@@ -43,19 +43,19 @@ class MenuWidget extends StatelessWidget {
                 Container(padding: EdgeInsets.only(right: 28), child: suffix),
               ],
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 28),
-            height: 2,
-            decoration: DottedDecoration(
-              shape: Shape.line,
-              linePosition: LinePosition.top,
-              color: ColorConstants.neutral,
-              dash: const [5, 5],
-              strokeWidth: 1,
-            ),
-          )
-        ],
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 28),
+              height: 2,
+              decoration: DottedDecoration(
+                shape: Shape.line,
+                linePosition: LinePosition.top,
+                color: ColorConstants.neutral,
+                dash: const [5, 5],
+                strokeWidth: 1,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
