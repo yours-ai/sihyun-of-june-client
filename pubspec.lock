@@ -1397,6 +1397,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.2"
+  word_break_text:
+    dependency: "direct main"
+    description:
+      name: word_break_text
+      sha256: "232b5d949f8c9279b8addc1478f04b1de1867eb53ab2925caa70f5cf03a97d5a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   xdg_directories:
     dependency: transitive
     description:
