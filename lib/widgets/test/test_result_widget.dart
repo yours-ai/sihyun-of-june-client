@@ -73,10 +73,7 @@ class _TestResultWidget extends State<TestResultWidget> {
         child: TitleLayout(
           title: Text(
             tabList[_tab].titleText,
-            style: Theme.of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(color: ColorConstants.primary),
+            style: Theme.of(context).textTheme.titleLarge,
             softWrap: true,
             textAlign: TextAlign.center,
           ),

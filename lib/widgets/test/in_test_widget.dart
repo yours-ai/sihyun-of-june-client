@@ -96,10 +96,7 @@ class _InTestWidget extends State<InTestWidget> {
                           horizontal: MediaQuery.of(context).size.width * 0.1),
                       child: WordBreakText(
                         questionList![_currentQuestionIndex].question_text,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(color: ColorConstants.primary),
+                        style: Theme.of(context).textTheme.titleLarge,
                         textAlign: TextAlign.center,
                         spacingByWrap: true,
                         spacing: 10,

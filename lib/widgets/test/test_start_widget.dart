@@ -88,10 +88,7 @@ class _TestStartWidget extends State<TestStartWidget> {
               withAppBar: true,
               title: Text(
                 tab.titleText,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(color: ColorConstants.primary),
+                style: Theme.of(context).textTheme.titleLarge,
                 softWrap: true,
                 textAlign: TextAlign.center,
               ),
