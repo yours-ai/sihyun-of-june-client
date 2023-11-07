@@ -22,12 +22,8 @@ class MenuWidget extends StatelessWidget {
       color: ColorConstants.lightGray,
       child: Column(
         children: [
-          TextButton(
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              splashFactory: NoSplash.splashFactory,
-            ),
-            onPressed: onPressed,
+          GestureDetector(
+            onTap: onPressed,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

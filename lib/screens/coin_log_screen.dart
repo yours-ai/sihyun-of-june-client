@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/widgets/common/title_underline.dart';
 import '../actions/transaction/queries.dart';
 import '../constants.dart';
 import '../widgets/coin_log_widget.dart';
@@ -36,27 +37,11 @@ class _CoinLogScreenState extends State<CoinLogScreen> {
       body: SafeArea(
         child: TitleLayout(
           withAppBar: true,
-          title: Row(
+          title: const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Flexible(
-                child: Container(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        width: 2,
-                        color: ColorConstants.primary,
-                      ),
-                    ),
-                  ),
-                  child: Text(
-                    "코인 내역",
-                    style: Theme.of(context).textTheme.titleLarge,
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+              TitleUnderline(
+                titleText: '코인 내역',
               ),
             ],
           ),

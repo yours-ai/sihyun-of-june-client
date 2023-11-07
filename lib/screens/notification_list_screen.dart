@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
+import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/notification_widget.dart';
 
 import '../actions/notification/queries.dart';
@@ -20,7 +21,14 @@ class NotificationListScreen extends StatelessWidget {
           }
           return SafeArea(
             child: TitleLayout(
-              titleText: '알림',
+              title: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TitleUnderline(
+                    titleText: "알림",
+                  ),
+                ],
+              ),
               body: state.data!.isEmpty
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
