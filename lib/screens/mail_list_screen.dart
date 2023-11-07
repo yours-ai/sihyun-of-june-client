@@ -22,7 +22,12 @@ class MailListScreen extends StatefulWidget {
 class _MailListScreenState extends State<MailListScreen> {
   List<Widget> updateMails(List<Mail> mails) {
     var firstMailDate = mails.last.available_at;
-    List<Widget> mailWidgetList = List.generate(30, (index) => MailWidget(firstMailDate: firstMailDate, mailNumber: index,));
+    List<Widget> mailWidgetList = List.generate(
+        30,
+        (index) => MailWidget(
+              firstMailDate: firstMailDate,
+              mailNumber: index,
+            ));
     for (var mail in mails) {
       var mailDateDiff =
           mailService.getMailDateDiff(mail.available_at, firstMailDate);
@@ -124,15 +129,16 @@ class _MailListScreenState extends State<MailListScreen> {
                             "Sat"
                           ])
                             Text(day,
-                                style: TextStyle(color: ColorConstants.gray, fontWeight: FontWeight.w600)),
+                                style: TextStyle(
+                                    color: ColorConstants.gray,
+                                    fontWeight: FontWeight.w600)),
                         ],
                       ),
                       SizedBox(height: 20),
                       Expanded(
                         child: GridView.count(
                           crossAxisCount: 7,
-                          padding: const EdgeInsets.all(4.0),
-                          mainAxisSpacing: 30.0,
+                          childAspectRatio: 7/11,
                           children: state.data != null
                               ? updateMails(state.data!)
                               : [],

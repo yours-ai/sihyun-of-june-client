@@ -18,39 +18,40 @@ class MailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: 38,
-        child: mail != null
-            ? GestureDetector(
-                onTap: () {
-                  context.push('/mails/detail/${mail!.id}');
-                },
-                child: Column(
-                  children: [
-                    mail!.replies!.isEmpty
-                        ? Image.asset('assets/images/mail/mailNotReplied.png')
-                        : Image.asset('assets/images/mail/mailReplied.png'),
-                    Text(
-                      mailService.getMailReceiveTimeStr(
-                          mail!.available_at, mailNumber == 0),
-                      style: TextStyle(fontSize: 8),
-                    )
-                  ],
-                ),
-              )
-            : Column(
+    return Container(
+      child: mail != null
+          ? GestureDetector(
+              onTap: () {
+                context.push('/mails/detail/${mail!.id}');
+              },
+              child: Column(
                 children: [
-                  Image.asset('assets/images/mail/mailNotSent.png'),
+                  mail!.replies!.isEmpty
+                      ? Image.asset('assets/images/mail/mailNotReplied.png',
+                          width: 35)
+                      : Image.asset('assets/images/mail/mailReplied.png',
+                          width: 35),
+                  SizedBox(height: 1),
                   Text(
                     mailService.getMailReceiveTimeStr(
-                        firstMailDate!.add(Duration(days: mailNumber!)),
-                        mailNumber == 0),
-                    style: TextStyle(fontSize: 8),
-                  ),
+                        mail!.available_at, mailNumber == 0),
+                    style: TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
+                  )
                 ],
               ),
-      ),
+            )
+          : Column(
+              children: [
+                Image.asset('assets/images/mail/mailNotSent.png', width: 35),
+                SizedBox(height: 1),
+                Text(
+                  mailService.getMailReceiveTimeStr(
+                      firstMailDate!.add(Duration(days: mailNumber!)),
+                      mailNumber == 0),
+                  style: TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
+                ),
+              ],
+            ),
     );
   }
 }
