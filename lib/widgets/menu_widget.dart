@@ -1,3 +1,4 @@
+import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:project_june_client/constants.dart';
 
@@ -18,31 +19,47 @@ class MenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorConstants.background,
-      child: TextButton(
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.zero,
-          splashFactory: NoSplash.splashFactory,
-        ),
-        onPressed: onPressed,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              height: 83,
-              padding: const EdgeInsets.only(left: 28),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                title,
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorConstants.black,
-                    fontWeight: FontWeight.normal),
-              ),
+      color: ColorConstants.lightGray,
+      child: Column(
+        children: [
+          TextButton(
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              splashFactory: NoSplash.splashFactory,
             ),
-            Container(padding: EdgeInsets.only(right: 28), child: suffix),
-          ],
-        ),
+            onPressed: onPressed,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: 66,
+                  padding: const EdgeInsets.only(left: 28),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstants.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Container(padding: EdgeInsets.only(right: 28), child: suffix),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 28),
+            height: 2,
+            decoration: DottedDecoration(
+              shape: Shape.line,
+              linePosition: LinePosition.top,
+              color: ColorConstants.neutral,
+              dash: const [5, 5],
+              strokeWidth: 1,
+            ),
+          )
+        ],
       ),
     );
   }
