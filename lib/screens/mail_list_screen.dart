@@ -6,6 +6,7 @@ import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/notification_permission_check.dart';
 
+import '../actions/mails/models/Mail.dart';
 import '../actions/mails/queries.dart';
 import '../actions/notification/queries.dart';
 import '../constants.dart';
@@ -19,6 +20,20 @@ class MailListScreen extends StatefulWidget {
 }
 
 class _MailListScreenState extends State<MailListScreen> {
+  List<Widget> updateMails(List<Mail> mails) {
+    var firstMailDate = mails.last.available_at;
+    List<Widget> mailWidgetList = List.generate(30, (index) => MailWidget(firstMailDate: firstMailDate, mailNumber: index,));
+    for (var mail in mails) {
+      var mailDateDiff =
+          mailService.getMailDateDiff(mail.available_at, firstMailDate);
+      mailWidgetList[mailDateDiff] =
+          MailWidget(mail: mail, mailNumber: mailDateDiff);
+    }
+    List<Widget> emptyCellsForWeekDay = List.generate(
+        (firstMailDate.weekday - DateTime.sunday) % 7, (index) => SizedBox());
+    return emptyCellsForWeekDay + mailWidgetList;
+  }
+
   @override
   Widget build(context) {
     final isNotificationAcceptedQuery = getIsNotificationAcceptedQuery();
@@ -94,13 +109,36 @@ class _MailListScreenState extends State<MailListScreen> {
                       ],
                     );
                   }
-                  return GridView.count(
-                    crossAxisCount: 3,
-                    padding: const EdgeInsets.all(20.0),
-                    children: state.data
-                            ?.map<Widget>((mail) => MailWidget(mail: mail))
-                            .toList() ??
-                        [],
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          for (var day in [
+                            "Sun",
+                            "Mon",
+                            "Tue",
+                            "Wed",
+                            "Thu",
+                            "Fri",
+                            "Sat"
+                          ])
+                            Text(day,
+                                style: TextStyle(color: ColorConstants.gray, fontWeight: FontWeight.w600)),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      Expanded(
+                        child: GridView.count(
+                          crossAxisCount: 7,
+                          padding: const EdgeInsets.all(4.0),
+                          mainAxisSpacing: 30.0,
+                          children: state.data != null
+                              ? updateMails(state.data!)
+                              : [],
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),

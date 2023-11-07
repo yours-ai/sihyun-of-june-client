@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project_june_client/constants.dart';
 
-import '../actions/mails/models/Mail.dart';
-
 extension TimeOfDayExtension on TimeOfDay {
   int compareTo(TimeOfDay other) {
     if (hour < other.hour) return -1;
@@ -24,6 +22,20 @@ class MailService {
       return "내일 저녁 9시";
     }
     return "오늘 저녁 9시";
+  }
+
+  int getMailDateDiff(DateTime dt, DateTime firstMailDate) {
+    DateTime normalizedDt = DateTime(dt.year, dt.month, dt.day);
+    DateTime normalizedFirstMailDate =
+        DateTime(firstMailDate.year, firstMailDate.month, firstMailDate.day);
+    return normalizedDt.difference(normalizedFirstMailDate).inDays;
+  }
+
+  String getMailReceiveTimeStr(DateTime dt, bool needMonth) {
+    if (needMonth || dt.day == 1) {
+      return DateFormat('M월 d일').format(dt);
+    }
+    return DateFormat('d').format(dt);
   }
 
   String formatMailDate(DateTime dt) {
