@@ -43,6 +43,7 @@ dependencies:
   in_app_purchase_platform_interface: ^1.3.5
   in_app_update: ^4.2.2
   new_version_plus: ^0.0.11
+  sprung: ^3.0.1
   word_break_text: ^0.1.0
 
 dev_dependencies:
@@ -60,6 +61,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/images/landing/
+    - assets/images/navbar/
     - assets/lotties/
   fonts:
     - family: MaruBuri

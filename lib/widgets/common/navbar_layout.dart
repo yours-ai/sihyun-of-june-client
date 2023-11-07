@@ -5,7 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:project_june_client/constants.dart';
 
-import 'notification_icon.dart';
+import 'navbar/navbar_icon.dart';
+import 'navbar/notification_icon.dart';
 
 final tabList = [
   TabRoutePaths.mailList,
@@ -41,34 +42,36 @@ class NavbarLayout extends StatelessWidget {
               },
               selectedItemColor: ColorConstants.primary,
               items: [
-                const BottomNavigationBarItem(
-                  icon: Icon(
-                    PhosphorIcons.envelope_simple_light,
-                    size: 32,
+                BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Image.asset('assets/images/navbar/mail.png',
+                        height: 32),
                   ),
-                  activeIcon: Icon(
-                    PhosphorIcons.envelope_simple_fill,
-                    size: 32,
+                  activeIcon: const NavbarIconWidget(
+                    IMGpath: 'assets/images/navbar/mail_active.png',
+                    RotateDirection: 'left',
                   ),
                   label: '받은 편지함',
                 ),
                 BottomNavigationBarItem(
                   icon: NotificationIconWidget(
-                    isActive: false,
                     hasUnread: hasUnread,
                   ),
-                  activeIcon: NotificationIconWidget(
-                    isActive: true,
-                    hasUnread: hasUnread,
-                  ),
+                  activeIcon: const NavbarIconWidget(
+                      IMGpath: 'assets/images/navbar/bell_active.png',
+                      RotateDirection: 'left'),
                   label: '알림',
                 ),
-                const BottomNavigationBarItem(
-                  icon: Icon(PhosphorIcons.list_light, size: 32),
-                  activeIcon: Icon(
-                    PhosphorIcons.list_bold,
-                    size: 32,
+                BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    child: Image.asset('assets/images/navbar/menu.png',
+                        height: 32),
                   ),
+                  activeIcon: const NavbarIconWidget(
+                      IMGpath: 'assets/images/navbar/menu_active.png',
+                      RotateDirection: 'right'),
                   label: '전체',
                 ),
               ],
