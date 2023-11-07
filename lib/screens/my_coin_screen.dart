@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
 import 'package:project_june_client/actions/transaction/queries.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
+import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/product_widget.dart';
 
@@ -56,25 +57,8 @@ class MyCoinScreen extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 14),
-                                height: 45,
-                                padding: const EdgeInsets.only(bottom: 6),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      width: 2,
-                                      color: ColorConstants.primary,
-                                    ),
-                                  ),
-                                ),
-                                child: Text(
-                                  "내 코인",
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                  softWrap: true,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
+                              const TitleUnderline(titleText: '내 코인'),
+                              const SizedBox(height: 14),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
