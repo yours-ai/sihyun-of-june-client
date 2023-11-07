@@ -45,6 +45,7 @@ dependencies:
   new_version_plus: ^0.0.11
   sprung: ^3.0.1
   word_break_text: ^0.1.0
+  dotted_decoration: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -91,33 +91,51 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
                 : TitleLayout(
                     withAppBar: true,
                     title: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Flexible(
-                          child: Text(
-                            '충전하기',
-                            style: TextStyle(
-                                fontFamily: 'NanumJungHagSaeng',
-                                fontSize: 39,
-                                height: 36 / 39),
-                            softWrap: true,
-                            textAlign: TextAlign.center,
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 14),
+                                height: 45,
+                                padding: const EdgeInsets.only(bottom: 6),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      width: 2,
+                                      color: ColorConstants.primary,
+                                    ),
+                                  ),
+                                ),
+                                child: Text(
+                                  "충전하기",
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    transactionService.currencyFormatter
+                                        .format(state.data!.coin),
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: ColorConstants.primary,
+                                    ),
+                                  ),
+                                  Icon(
+                                    PhosphorIcons.coin_vertical,
+                                    color: ColorConstants.primary,
+                                    size: 36,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                                transactionService.currencyFormatter
-                                    .format(state.data!.coin),
-                                style: const TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold)),
-                            const SizedBox(width: 8),
-                            Icon(
-                              PhosphorIcons.coin_vertical,
-                              color: ColorConstants.black,
-                              size: 32,
-                            ),
-                          ],
                         ),
                       ],
                     ),
