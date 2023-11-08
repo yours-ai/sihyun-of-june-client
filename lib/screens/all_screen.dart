@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -144,29 +145,10 @@ class _AllScreenState extends State<AllScreen> {
   Widget build(context) {
     return SafeArea(
       child: TitleLayout(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Flexible(
-              child: Container(
-                padding: const EdgeInsets.only(bottom: 6),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      width: 2,
-                      color: ColorConstants.primary,
-                    ),
-                  ),
-                ),
-                child: Text(
-                  "전체",
-                  style: Theme.of(context).textTheme.titleLarge,
-                  softWrap: true,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ],
+        title: const Center(
+          child: TitleUnderline(
+            titleText: '전체',
+          ),
         ),
         body: ListView(
           children: [

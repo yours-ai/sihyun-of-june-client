@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/notification_permission_check.dart';
@@ -29,17 +30,7 @@ class _MailListScreenState extends State<MailListScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(
-              child: Text(
-                '받은 편지함',
-                style: TextStyle(
-                    fontFamily: 'NanumJungHagSaeng',
-                    fontSize: 39,
-                    height: 36 / 39),
-                softWrap: true,
-                textAlign: TextAlign.center,
-              ),
-            ),
+            const TitleUnderline(titleText: '받은 편지함'),
             QueryBuilder(
               query: retrieveMyCharacterQuery,
               builder: (context, state) {
@@ -84,7 +75,8 @@ class _MailListScreenState extends State<MailListScreen> {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          '아직 도착한 편지가 없어요. \n ${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요.',
+                          '아직 도착한 편지가 없어요. \n ${mailService
+                              .getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: ColorConstants.neutral,
@@ -98,8 +90,8 @@ class _MailListScreenState extends State<MailListScreen> {
                     crossAxisCount: 3,
                     padding: const EdgeInsets.all(20.0),
                     children: state.data
-                            ?.map<Widget>((mail) => MailWidget(mail: mail))
-                            .toList() ??
+                        ?.map<Widget>((mail) => MailWidget(mail: mail))
+                        .toList() ??
                         [],
                   );
                 },
