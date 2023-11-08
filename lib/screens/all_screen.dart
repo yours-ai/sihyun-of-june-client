@@ -145,13 +145,10 @@ class _AllScreenState extends State<AllScreen> {
   Widget build(context) {
     return SafeArea(
       child: TitleLayout(
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TitleUnderline(
-              titleText: '전체',
-            ),
-          ],
+        title: const Center(
+          child: TitleUnderline(
+            titleText: '전체',
+          ),
         ),
         body: ListView(
           children: [
