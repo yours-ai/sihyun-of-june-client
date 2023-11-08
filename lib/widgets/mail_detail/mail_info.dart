@@ -62,33 +62,38 @@ class MailInfoWidget extends StatelessWidget {
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: isMe? CrossAxisAlignment.end :CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                 children: [
                   Text(
                     'From. $byFullName',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstants.gray),
+                      fontFamily: 'Pretendard',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: ColorConstants.gray,
+                    ),
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     'To. $toFullName',
                     style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: ColorConstants.pink),
+                      fontFamily: 'Pretendard',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: ColorConstants.pink,
+                    ),
                   ),
                 ],
               ),
               Text(
                 mailService.formatMailDate(availableAt),
                 style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: ColorConstants.gray),
+                  fontFamily: 'Pretendard',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: ColorConstants.gray,
+                ),
               ),
             ],
           ),

@@ -40,6 +40,7 @@ class ReplyWidget extends StatelessWidget {
             fontSize: 19,
             fontWeight: FontWeight.w600,
             color: ColorConstants.primary,
+            letterSpacing: 1.5,
           ),
         ),
       ],

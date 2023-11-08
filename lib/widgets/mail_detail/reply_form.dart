@@ -136,6 +136,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                     fontSize: 19,
                     color: ColorConstants.neutral,
                     fontWeight: FontWeight.w600,
+                    letterSpacing: 1.5,
                   ),
                   border: InputBorder.none,
                 ),
@@ -145,6 +146,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   color: ColorConstants.primary,
                   fontWeight: FontWeight.w600,
                   height: 1.5,
+                  letterSpacing: 1.5,
                 ),
                 onChanged: (text) {
                   setState(() {});
