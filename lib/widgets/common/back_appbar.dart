@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import '../../constants.dart';
 
 class BackAppbar extends StatelessWidget implements PreferredSizeWidget {
+
+  @override
   final Size preferredSize;
 
-  BackAppbar({Key? key})
+  const BackAppbar({Key? key})
       : preferredSize = const Size.fromHeight(kToolbarHeight),
         super(key: key);
 
