@@ -27,7 +27,7 @@ class MyCharacterScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 23),
                   child: Icon(
                     PhosphorIcons.arrow_left,
-                    color: ColorConstants.black,
+                    color: ColorConstants.gray,
                     size: 32,
                   ),
                 ),
