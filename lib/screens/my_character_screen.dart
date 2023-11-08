@@ -4,6 +4,7 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/character/view_others.dart';
+import 'package:project_june_client/widgets/common/back_appbar.dart';
 
 import '../actions/character/queries.dart';
 import '../widgets/profile_widget.dart';
@@ -18,21 +19,7 @@ class MyCharacterScreen extends StatelessWidget {
         query: query,
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBar(
-              backgroundColor: ColorConstants.background,
-              elevation: 0,
-              leading: IconButton(
-                onPressed: () => context.pop(),
-                icon: Container(
-                  padding: const EdgeInsets.only(left: 23),
-                  child: Icon(
-                    PhosphorIcons.arrow_left,
-                    color: ColorConstants.gray,
-                    size: 32,
-                  ),
-                ),
-              ),
-            ),
+            appBar: BackAppbar(),
             body: SafeArea(
               child: ListView(
                 padding: const EdgeInsets.symmetric(
