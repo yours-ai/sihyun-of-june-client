@@ -21,13 +21,10 @@ class NotificationListScreen extends StatelessWidget {
           }
           return SafeArea(
             child: TitleLayout(
-              title: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TitleUnderline(
-                    titleText: "알림",
-                  ),
-                ],
+              title: const Center(
+                child: TitleUnderline(
+                  titleText: "알림",
+                ),
               ),
               body: state.data!.isEmpty
                   ? Column(

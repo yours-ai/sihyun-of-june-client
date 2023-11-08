@@ -37,13 +37,10 @@ class _CoinLogScreenState extends State<CoinLogScreen> {
       body: SafeArea(
         child: TitleLayout(
           withAppBar: true,
-          title: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TitleUnderline(
-                titleText: '코인 내역',
-              ),
-            ],
+          title: const Center(
+            child: TitleUnderline(
+              titleText: '코인 내역',
+            ),
           ),
           body: QueryBuilder(
               query: getCoinLogsQuery(),

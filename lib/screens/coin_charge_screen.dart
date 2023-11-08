@@ -100,7 +100,6 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
                               const TitleUnderline(titleText: '충전하기'),
                               const SizedBox(height: 14),
                               Row(
-
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
