@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:project_june_client/services.dart';
+import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
 import '../actions/transaction/models/CoinLog.dart';
 import '../constants.dart';
@@ -23,9 +24,20 @@ class CoinLogWidget extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 5),
               child: Text(
                 coinLog.description,
+                style: TextStyle(
+                  color: ColorConstants.primary,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
-            subtitle: Text(coinLog.created.toString().substring(2, 10)),
+            subtitle: Text(
+              coinLog.created.toString().substring(2, 10),
+              style: TextStyle(
+                fontSize: 14,
+                color: ColorConstants.primary,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
             trailing: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -34,13 +46,15 @@ class CoinLogWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                        transactionService.currencyFormatter
-                            .format(coinLog.amount)
-                            .toString(),
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: ColorConstants.primary,
-                        )),
+                      transactionService.currencyFormatter
+                          .format(coinLog.amount)
+                          .toString(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: ColorConstants.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     Icon(
                       PhosphorIcons.coin_vertical,
                       color: ColorConstants.primary,
@@ -48,7 +62,7 @@ class CoinLogWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 3),
+                const SizedBox(height: 3),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -57,7 +71,10 @@ class CoinLogWidget extends StatelessWidget {
                           .format(coinLog.balance)
                           .toString(),
                       style: TextStyle(
-                          color: ColorConstants.neutral, fontSize: 14),
+                        color: ColorConstants.primary,
+                        fontSize: 14,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                     Icon(
                       PhosphorIcons.coin_vertical,
@@ -69,17 +86,7 @@ class CoinLogWidget extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 28),
-            height: 2,
-            decoration: DottedDecoration(
-              shape: Shape.line,
-              linePosition: LinePosition.top,
-              color: ColorConstants.neutral,
-              dash: const [5, 5],
-              strokeWidth: 1,
-            ),
-          ),
+          const DottedUnderline(28),
         ],
       ),
     );
