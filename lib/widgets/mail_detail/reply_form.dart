@@ -97,8 +97,6 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
       );
     }
 
-    final mailDueTimeLabel =
-        mailService.getMailDueTimeLabel(widget.mail.available_at);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -166,14 +164,6 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                 ),
               ),
               const SizedBox(height: 10),
-              Center(
-                  child: Text(
-                mailDueTimeLabel,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: ColorConstants.lightPink,
-                ),
-              )),
             ],
           ),
         ),
