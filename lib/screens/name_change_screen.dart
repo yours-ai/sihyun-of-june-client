@@ -4,6 +4,7 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
+import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/controllers/auth/name_form_controller.dart';
 import 'package:project_june_client/widgets/name_form_widget.dart';
@@ -104,21 +105,7 @@ class _NameChangeScreenState extends State<NameChangeScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: ColorConstants.background,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () => context.pop(),
-            icon: Container(
-              padding: const EdgeInsets.only(left: 23),
-              child: Icon(
-                PhosphorIcons.arrow_left,
-                color: ColorConstants.gray,
-                size: 32,
-              ),
-            ),
-          ),
-        ),
+        appBar: BackAppbar(),
         body: SafeArea(
           child: TitleLayout(
               withAppBar: true,

@@ -28,10 +28,12 @@ class CharacterMailWidget extends StatelessWidget {
         Text(
           mail.description,
           style: TextStyle(
-              fontFamily: 'NanumNoRyeogHaNeunDongHee',
-              fontSize: 19,
-              fontWeight: FontWeight.w600,
-              color: ColorConstants.primary),
+            fontFamily: 'NanumNoRyeogHaNeunDongHee',
+            fontSize: 19,
+            fontWeight: FontWeight.w600,
+            color: ColorConstants.primary,
+            letterSpacing: 1.5,
+          ),
         ),
       ],
     );
