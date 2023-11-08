@@ -11,6 +11,7 @@ class Mail {
   num by;
   String by_full_name;
   String? by_image;
+  String? to_image;
   String description;
   DateTime available_at;
   bool is_read;
@@ -25,6 +26,7 @@ class Mail {
       required this.by,
       required this.by_full_name,
       required this.by_image,
+      required this.to_image,
       required this.description,
       required this.available_at,
       required this.is_read,

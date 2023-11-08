@@ -4,6 +4,7 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
+import 'package:project_june_client/widgets/common/dotted_underline.dart';
 import 'package:project_june_client/widgets/mail_detail/character_mail.dart';
 import 'package:project_june_client/widgets/mail_detail/reply.dart';
 import 'package:project_june_client/widgets/mail_detail/reply_form.dart';
@@ -87,7 +88,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                               : false,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 30.0,
+                              horizontal: 36.0,
                               vertical: 10.0,
                             ),
                             child: Column(
@@ -101,11 +102,13 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                         vertical: 30),
                                     height: 1,
                                     color: ColorConstants.lightGray,
+                                    child: const DottedUnderline(0),
                                   ),
                                   ReplyWidget(
                                     reply: mailState.data!.replies!.first,
                                     toFullName: mailState.data!.by_full_name,
                                     byFullName: mailState.data!.to_full_name,
+                                    toImage: mailState.data!.to_image,
                                   )
                                 ],
                                 if (mailState.data!.replies!.isEmpty &&
@@ -115,6 +118,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                         vertical: 30),
                                     height: 1,
                                     color: ColorConstants.lightGray,
+                                    child: const DottedUnderline(0),
                                   ),
                                   ReplyFormWidget(
                                     mail: mailState.data!,
@@ -127,13 +131,14 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                         top: 30, bottom: 45),
                                     height: 1,
                                     color: ColorConstants.lightGray,
+                                    child: const DottedUnderline(0),
                                   ),
                                   Center(
                                     child: Text(
                                       '답장 가능한 시간이 지났어요.🥲\n최근 편지에만 답장이 가능해요.',
                                       style: TextStyle(
                                         height: 1.5,
-                                        fontSize: 14,
+                                        fontSize: 19,
                                         color: ColorConstants.neutral,
                                       ),
                                       textAlign: TextAlign.center,

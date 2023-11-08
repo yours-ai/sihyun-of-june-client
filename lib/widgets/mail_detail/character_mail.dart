@@ -20,6 +20,7 @@ class CharacterMailWidget extends StatelessWidget {
           toFullName: mail.to_full_name,
           byFullName: mail.by_full_name,
           availableAt: mail.available_at,
+          isMe: false,
         ),
         const SizedBox(
           height: 22,
@@ -27,8 +28,9 @@ class CharacterMailWidget extends StatelessWidget {
         Text(
           mail.description,
           style: TextStyle(
-              fontFamily: 'MaruBuri',
-              fontSize: 14,
+              fontFamily: 'NanumNoRyeogHaNeunDongHee',
+              fontSize: 19,
+              fontWeight: FontWeight.w600,
               color: ColorConstants.primary),
         ),
       ],
