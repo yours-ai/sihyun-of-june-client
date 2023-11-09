@@ -22,19 +22,19 @@ class NotificationWidget extends StatefulWidget {
 class _NotificationWidgetState extends State<NotificationWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: widget.notification.is_read == false
-          ? ColorConstants.lightGray
-          : ColorConstants.background,
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              notificationService.handleClickNotification(
-                widget.notification,
-              );
-            },
-            child: Row(
+    return GestureDetector(
+      onTap: () {
+        notificationService.handleClickNotification(
+          widget.notification,
+        );
+      },
+      child: Container(
+        color: widget.notification.is_read == false
+            ? ColorConstants.lightGray
+            : ColorConstants.background,
+        child: Column(
+          children: [
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
@@ -76,9 +76,9 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                 ),
               ],
             ),
-          ),
-          const DottedUnderline(22),
-        ],
+            const DottedUnderline(22),
+          ],
+        ),
       ),
     );
   }
