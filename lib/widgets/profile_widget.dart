@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/widgets/common/dotted_underline.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProfileWidget extends StatelessWidget {
@@ -23,6 +24,7 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         ClipRRect(
@@ -33,17 +35,43 @@ class ProfileWidget extends StatelessWidget {
             image: imageSrc,
           ),
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 36.0),
+        const SizedBox(height: 36),
+        Center(
           child: Text(
-            '$name, $age\n$mbti',
-            style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            '$name($age)',
+            style: TextStyle(
+              color: ColorConstants.pink,
+              fontFamily: 'NanumJungHagSaeng',
+              fontSize: 54,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 2,
+            ),
           ),
         ),
+        Center(
+          child: Text(
+            '$mbti',
+            style: TextStyle(
+              color: ColorConstants.primary,
+              fontFamily: 'NanumJungHagSaeng',
+              fontSize: 32,
+              height: 28 / 32,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 2,
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
         Text(
           description ?? '',
-          style: TextStyle(fontSize: 18, color: ColorConstants.neutral),
+          style: TextStyle(
+            fontSize: 17,
+            color: ColorConstants.neutral,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 1.5,
+          ),
         ),
+        const SizedBox(height: 48),
       ],
     );
   }
