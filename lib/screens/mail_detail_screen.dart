@@ -93,8 +93,8 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                   ),
                                   ReplyWidget(
                                     reply: mailState.data!.replies!.first,
-                                    toFullName: mailState.data!.by_full_name,
-                                    byFullName: mailState.data!.to_full_name,
+                                    toFullName: mailState.data!.by_first_name,
+                                    byFullName: mailState.data!.to_first_name,
                                     toImage: mailState.data!.to_image,
                                   )
                                 ],

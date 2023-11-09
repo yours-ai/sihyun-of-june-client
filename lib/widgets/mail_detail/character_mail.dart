@@ -17,8 +17,8 @@ class CharacterMailWidget extends StatelessWidget {
       children: [
         MailInfoWidget(
           byImage: mail.by_image,
-          toFullName: mail.to_full_name,
-          byFullName: mail.by_full_name,
+          toFullName: mail.to_first_name,
+          byFullName: mail.by_first_name,
           availableAt: mail.available_at,
           isMe: false,
         ),

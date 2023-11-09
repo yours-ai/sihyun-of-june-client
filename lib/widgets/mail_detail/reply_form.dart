@@ -101,8 +101,8 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MailInfoWidget(
-          byFullName: widget.mail.to_full_name,
-          toFullName: widget.mail.by_full_name,
+          byFullName: widget.mail.to_first_name,
+          toFullName: widget.mail.by_first_name,
           byImage: widget.mail.to_image,
           isMe: true,
           availableAt: clock.now(),

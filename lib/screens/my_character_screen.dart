@@ -30,9 +30,9 @@ class MyCharacterScreen extends StatelessWidget {
                   ProfileWidget(
                     name: state.data!.first.name,
                     age: state.data!.first.age,
-                    mbti: state.data!.first.MBTI,
+                    mbti: state.data!.first.one_line_description,
                     description: state.data!.first.description,
-                    imageSrc: state.data!.first.image,
+                    imageSrc: state.data!.first.default_image,
                   ),
                   ViewOthersWidget(excludeId: state.data!.first.id),
                 ],
