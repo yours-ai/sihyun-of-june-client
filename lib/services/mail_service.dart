@@ -31,7 +31,7 @@ class MailService {
     return normalizedDt.difference(normalizedFirstMailDate).inDays;
   }
 
-  String getMailReceiveTimeStr(DateTime dt, bool needMonth) {
+  String getMailReceiveDateStr(DateTime dt, bool needMonth) {
     if (needMonth || dt.day == 1) {
       return DateFormat('M월 d일').format(dt);
     }

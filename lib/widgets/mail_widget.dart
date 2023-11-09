@@ -33,7 +33,7 @@ class MailWidget extends StatelessWidget {
                           width: 35),
                   SizedBox(height: 1),
                   Text(
-                    mailService.getMailReceiveTimeStr(
+                    mailService.getMailReceiveDateStr(
                         mail!.available_at, mailNumber == 0),
                     style: TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
                   )
@@ -45,7 +45,7 @@ class MailWidget extends StatelessWidget {
                 Image.asset('assets/images/mail/mailNotSent.png', width: 35),
                 SizedBox(height: 1),
                 Text(
-                  mailService.getMailReceiveTimeStr(
+                  mailService.getMailReceiveDateStr(
                       firstMailDate!.add(Duration(days: mailNumber!)),
                       mailNumber == 0),
                   style: TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),

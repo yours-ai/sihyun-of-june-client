@@ -35,7 +35,8 @@ class _MailListScreenState extends State<MailListScreen> {
           MailWidget(mail: mail, mailNumber: mailDateDiff);
     }
     List<Widget> emptyCellsForWeekDay = List.generate(
-        (firstMailDate.weekday - DateTime.sunday) % 7, (index) => SizedBox());
+        (firstMailDate.weekday - DateTime.sunday) % 7,
+        (index) => const SizedBox());
     return emptyCellsForWeekDay + mailWidgetList;
   }
 
@@ -49,7 +50,7 @@ class _MailListScreenState extends State<MailListScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(
+            const Flexible(
               child: Text(
                 '받은 편지함',
                 style: TextStyle(
@@ -134,11 +135,11 @@ class _MailListScreenState extends State<MailListScreen> {
                                     fontWeight: FontWeight.w600)),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Expanded(
                         child: GridView.count(
                           crossAxisCount: 7,
-                          childAspectRatio: 7/11,
+                          childAspectRatio: 7 / 11,
                           children: state.data != null
                               ? updateMails(state.data!)
                               : [],
