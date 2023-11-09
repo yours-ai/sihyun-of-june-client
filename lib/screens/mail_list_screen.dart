@@ -40,7 +40,7 @@ class _MailListScreenState extends State<MailListScreen> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(14),
                       child: Image.network(
-                        state.data![0].image,
+                        state.data![0].default_image,
                         height: 35,
                       ),
                     ),

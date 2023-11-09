@@ -7,9 +7,9 @@ part 'Mail.g.dart';
 class Mail {
   int id;
   num to;
-  String to_full_name;
+  String to_first_name;
   num by;
-  String by_full_name;
+  String by_first_name;
   String? by_image;
   String? to_image;
   String description;
@@ -22,9 +22,9 @@ class Mail {
   Mail(
       {required this.id,
       required this.to,
-      required this.to_full_name,
+      required this.to_first_name,
       required this.by,
-      required this.by_full_name,
+      required this.by_first_name,
       required this.by_image,
       required this.to_image,
       required this.description,
