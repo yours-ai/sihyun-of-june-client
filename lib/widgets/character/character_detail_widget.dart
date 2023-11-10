@@ -44,11 +44,17 @@ class CharacterDetailWidget extends StatelessWidget {
                     ),
                     children: [
                       ProfileWidget(
-                          name: state.data!['character']['name'],
-                          age: (state.data!['character']['age']),
-                          mbti: state.data!['character']['MBTI'],
-                          description: state.data!['character']['description'],
-                          imageSrc: state.data!['character']['image']),
+                        name: state.data!['character']['name'],
+                        age: (state.data!['character']['age']),
+                        one_line_description: state.data!['character']
+                            ['one_line_description'],
+                        description: state.data!['character']['description'],
+                        imageList: state.data!['character']['images']
+                            .where((image) =>
+                                image !=
+                                state.data!['character']['default_image'])
+                            .toList(),
+                      ),
                     ],
                   ),
                 ),

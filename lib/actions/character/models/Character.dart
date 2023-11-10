@@ -12,7 +12,7 @@ class Character {
   String? one_line_description;
   String? description;
   String default_image;
-  List<String> images;
+  List<String>? images;
 
   Character({
     required this.id,

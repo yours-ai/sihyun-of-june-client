@@ -14,8 +14,8 @@ class ViewOthersWidget extends StatelessWidget {
 
   const ViewOthersWidget({super.key, required this.excludeId});
 
-  Widget addBlur(bool is_blurred) {
-    if (is_blurred == false) {
+  Widget addBlur(bool isBlurred) {
+    if (isBlurred == false) {
       return const SizedBox.shrink();
     }
     return Positioned.fill(
@@ -73,7 +73,7 @@ class ViewOthersWidget extends StatelessWidget {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: Image.network(
-                                  character.image,
+                                  character.default_image,
                                   color: Colors.black45,
                                   colorBlendMode: BlendMode.darken,
                                 ),
@@ -108,11 +108,10 @@ class ViewOthersWidget extends StatelessWidget {
                               Positioned.fill(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(character.image),
+                                  child: Image.network(character.default_image),
                                 ),
                               ),
-                              // addBlur(character.is_blurred!),
-                              addBlur(true),
+                              addBlur(character.is_blurred!),
                             ],
                           ),
                         ),
