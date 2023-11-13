@@ -41,4 +41,60 @@ class MailService {
   String formatMailDate(DateTime dt) {
     return DateFormat('yyyy.MM.dd').format(dt);
   }
+
+  List<Widget> emptyCellsForWeekDay(DateTime firstDate){
+    return List.generate(
+      (firstDate.weekday - DateTime.sunday) % 7,
+          (index) => const SizedBox());
+  }
+
+  Widget calendarWeekday() {
+    return Row(
+      mainAxisAlignment:
+      MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        for (var day in [
+          "Sun",
+          "Mon",
+          "Tue",
+          "Wed",
+          "Thu",
+          "Fri",
+          "Sat"
+        ])
+          Text(day,
+              style: TextStyle(
+                  color: ColorConstants.gray,
+                  fontWeight: FontWeight.w600)),
+      ],
+    );
+  }
+
+  String kMonthData(index) {
+    switch (index) {
+      case 1:
+        return '첫 번째 달';
+      case 2:
+        return '두 번째 달';
+      case 3:
+        return '세 번째 달';
+      case 4:
+        return '네 번째 달';
+      case 5:
+        return '다섯 번째 달';
+      case 6:
+        return '여섯 번째 달';
+      case 7:
+        return '일곱 번째 달';
+      case 8:
+        return '여덟 번째 달';
+      case 9:
+        return '아홉 번째 달';
+      case 10:
+        return '열 번째 달';
+      case 11:
+        return '열한 번째 달';
+    }
+    return '';
+  }
 }

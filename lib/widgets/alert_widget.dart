@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 import '../constants.dart';
 
 class AlertWidget extends StatelessWidget {
-  final String title;
+  final String? title;
   final Widget? content;
   final String confirmText;
 
   const AlertWidget(
       {super.key,
-      required this.title,
+      this.title,
       required this.content,
       required this.confirmText});
 
@@ -22,18 +22,20 @@ class AlertWidget extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      title: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0),
-        child: Text(
-          title,
-          style: const TextStyle(
-            fontFamily: 'Pretendard',
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ),
+      title: title != null
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              child: Text(
+                title ?? "",
+                style: const TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            )
+          : null,
       content: content,
       buttonPadding: const EdgeInsets.only(bottom: 20),
       actions: [

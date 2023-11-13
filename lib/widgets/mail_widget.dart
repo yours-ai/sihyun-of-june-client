@@ -34,7 +34,7 @@ class MailWidget extends StatelessWidget {
                   SizedBox(height: 1),
                   Text(
                     mailService.getMailReceiveDateStr(
-                        mail!.available_at, mailNumber == 0),
+                        mail!.available_at, (mailNumber!) % 30 == 0),
                     style: TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
                   )
                 ],
@@ -47,7 +47,7 @@ class MailWidget extends StatelessWidget {
                 Text(
                   mailService.getMailReceiveDateStr(
                       firstMailDate!.add(Duration(days: mailNumber!)),
-                      mailNumber == 0),
+                      (mailNumber!) % 30 == 0),
                   style: TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
                 ),
               ],
