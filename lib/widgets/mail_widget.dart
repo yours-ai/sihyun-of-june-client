@@ -1,77 +1,57 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/mails/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/services.dart';
 
 import '../actions/mails/models/Mail.dart';
 
 class MailWidget extends StatelessWidget {
-  final Mail mail;
+  final Mail? mail;
+  final int? mailNumber;
+  final DateTime? firstMailDate;
 
-  const MailWidget({super.key, required this.mail});
+  MailWidget({super.key, this.mail, this.mailNumber = 0, this.firstMailDate});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: TextButton(
-        onPressed: () {
-          context.push('/mails/detail/${mail.id}');
-        },
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            const SizedBox(
-              height: 57,
-              width: 50,
-            ),
-            Positioned(
-              top: 0,
-              child: Icon(
-                  mail.is_read == true
-                      ? (PhosphorIcons.envelope_simple_open_thin)
-                      : (PhosphorIcons.envelope_simple),
-                  color: mail.is_read == true
-                      ? ColorConstants.neutral
-                      : ColorConstants.primary,
-                  size: 50),
-            ),
-            Positioned(
-              top: 43,
-              child: Text(
-                mail.available_at.toString().substring(5, 10),
-                style: TextStyle(
-                  fontWeight: mail.is_read == true
-                      ? FontWeight.normal
-                      : FontWeight.bold,
-                  color: mail.is_read == true
-                      ? ColorConstants.neutral
-                      : ColorConstants.primary,
-                  fontSize: 10,
-                ),
-              ),
-            ),
-            mail.is_read == true
-                ? const SizedBox(
-                    height: 0,
-                    width: 0,
+    return Container(
+      child: mail != null
+          ? GestureDetector(
+              onTap: () {
+                context.push('/mails/detail/${mail!.id}');
+              },
+              child: Column(
+                children: [
+                  mail!.replies!.isEmpty
+                      ? Image.asset('assets/images/mail/mailNotReplied.png',
+                          width: 35)
+                      : Image.asset('assets/images/mail/mailReplied.png',
+                          width: 35),
+                  SizedBox(height: 1),
+                  Text(
+                    mailService.getMailReceiveDateStr(
+                        mail!.available_at, (mailNumber!) % 30 == 0),
+                    style: TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
                   )
-                : Positioned(
-                    top: 5,
-                    left: 39,
-                    child: Container(
-                      height: 10,
-                      width: 10,
-                      decoration: BoxDecoration(
-                        color: ColorConstants.alert,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                  ),
-          ],
-        ),
-      ),
+                ],
+              ),
+            )
+          : Column(
+              children: [
+                Image.asset('assets/images/mail/mailNotSent.png', width: 35),
+                SizedBox(height: 1),
+                Text(
+                  mailService.getMailReceiveDateStr(
+                      firstMailDate!.add(Duration(days: mailNumber!)),
+                      (mailNumber!) % 30 == 0),
+                  style: TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
+                ),
+              ],
+            ),
     );
   }
 }
