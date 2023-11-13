@@ -73,18 +73,24 @@ void main() async {
   );
 }
 
-class ProjectJuneApp extends StatefulWidget {
+final topPaddingProvider = StateProvider<double?>((ref) => null);
+
+class ProjectJuneApp extends ConsumerStatefulWidget {
   const ProjectJuneApp({super.key});
 
   @override
-  State<StatefulWidget> createState() => _ProjectJuneApp();
+  ProjectJuneAppState createState() => ProjectJuneAppState();
 }
 
-class _ProjectJuneApp extends State<ProjectJuneApp> {
+class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
   @override
   void initState() {
     super.initState();
     initServerErrorSnackbar(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final topPadding = MediaQuery.of(context).padding.top;
+      ref.read(topPaddingProvider.notifier).state = topPadding;
+    });
   }
 
   @override

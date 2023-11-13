@@ -1,97 +1,105 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/main.dart';
+import 'package:project_june_client/screens/starting_screen.dart';
 
-class ProfileDetailsScreen extends StatefulWidget {
+class ProfileDetailsScreen extends ConsumerStatefulWidget {
   final List<String> imageList;
 
   const ProfileDetailsScreen(this.imageList, {super.key});
 
   @override
-  State<ProfileDetailsScreen> createState() => _ProfileDetailsScreenState();
+  ProfileDetailsScreenView createState() => ProfileDetailsScreenView();
 }
 
-class _ProfileDetailsScreenState extends State<ProfileDetailsScreen> {
-  final PageController _pageController = PageController();
+class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
   int _currentPage = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController.addListener(() {
-      int next = _pageController.page!.round();
-      if (_currentPage != next) {
-        setState(() {
-          _currentPage = next;
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: Container(
-            padding: const EdgeInsets.only(left: 15),
-            child: const Icon(
-              PhosphorIcons.x_bold,
-              color: Colors.white,
-              size: 32,
-            ),
-          ),
-        ),
-        backgroundColor: Colors.black,
-        title: Text(
-          '${_currentPage + 1}/${widget.imageList.length}',
-          style: const TextStyle(
-            color: Colors.white,
-            fontFamily: 'Pretendard',
-            fontSize: 16,
-          ),
-        ),
-      ),
       body: Container(
         color: Colors.black,
         child: SafeArea(
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              final double appBarHeight =
-                  Scaffold.of(context).appBarMaxHeight ?? 0;
-              final double availableHeight =
-                  constraints.maxHeight - appBarHeight;
-              return Center(
-                child: SizedBox(
-                  height: availableHeight,
-                  child: PageView.builder(
-                    controller: _pageController,
-                    itemCount: widget.imageList.length,
-                    itemBuilder: (context, index) {
-                      return Hero(
-                        tag: widget.imageList[index],
-                        child: InteractiveViewer(
-                          panEnabled: false,
-                          minScale: 0.5,
-                          maxScale: 4,
-                          child: Image.network(
-                            widget.imageList[index],
-                            fit: BoxFit.fitWidth,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: ref.watch(topPaddingProvider),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            onPressed: () => context.pop(),
+                            icon: const Icon(
+                              PhosphorIcons.x_bold,
+                              color: Colors.white,
+                              size: 32,
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        ],
+                      ),
+                    ),
                   ),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        '${_currentPage + 1}/${widget.imageList.length}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Pretendard',
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Expanded(child: SizedBox.shrink())
+                ],
+              ),
+              Expanded(
+                child: ExtendedImageGesturePageView.builder(
+                  itemCount: widget.imageList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ExtendedImage.network(
+                      widget.imageList[index],
+                      fit: BoxFit.fitWidth,
+                      mode: ExtendedImageMode.gesture,
+                      enableSlideOutPage: true,
+                      initGestureConfigHandler: (state) {
+                        return GestureConfig(
+                          minScale: 1.0,
+                          animationMinScale: 0.7,
+                          maxScale: 3.0,
+                          animationMaxScale: 3.5,
+                          speed: 1.0,
+                          inertialSpeed: 100.0,
+                          inPageView: true,
+                          initialScale: 1.0001,
+                          // 안드로이드에서 줌된 상태에서는 확대가 매우 잘됩니다. 유저가 알아볼수없는 정도로 확대해놓았습니다
+                          cacheGesture: false,
+                        );
+                      },
+                    );
+                  },
+                  onPageChanged: (int index) {
+                    setState(() {
+                      _currentPage = index;
+                    });
+                  },
+                  scrollDirection: Axis.horizontal,
                 ),
-              );
-            },
+              ),
+            ],
           ),
         ),
       ),

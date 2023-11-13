@@ -39,14 +39,10 @@ class ProfileWidget extends StatelessWidget {
                 3 * ((stackedImageList.length - 1) / 2 - index) * 3.14 / 360;
             return GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfileDetailsScreen(imageList),
-                    // GoRouter를 쓰고 싶었지만 그럴 경우 위젯을 재사용하기 어려워, 일부 Navigator를 사용
-                    fullscreenDialog: true,
-                  ),
-                );
+                showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (context) => ProfileDetailsScreen(imageList));
               },
               child: Transform.rotate(
                 angle: angle,
@@ -55,14 +51,11 @@ class ProfileWidget extends StatelessWidget {
                   child: SizedBox(
                     width: 320,
                     height: 480,
-                    child: Hero(
-                      tag: stackedImageList[index],
-                      child: FadeInImage.memoryNetwork(
-                        fadeInDuration: const Duration(milliseconds: 200),
-                        placeholder: kTransparentImage,
-                        image: stackedImageList[index],
-                        fit: BoxFit.cover,
-                      ),
+                    child: FadeInImage.memoryNetwork(
+                      fadeInDuration: const Duration(milliseconds: 200),
+                      placeholder: kTransparentImage,
+                      image: stackedImageList[index],
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
