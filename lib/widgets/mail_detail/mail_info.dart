@@ -8,22 +8,25 @@ class MailInfoWidget extends StatelessWidget {
   final String toFullName;
   final String byFullName;
   final DateTime availableAt;
+  final bool isMe;
 
   const MailInfoWidget({
     Key? key,
-    this.byImage,
+    required this.byImage,
     required this.toFullName,
     required this.byFullName,
     required this.availableAt,
+    required this.isMe,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      textDirection: isMe ? TextDirection.rtl : TextDirection.ltr,
       children: [
         if (byImage != null) ...[
           ClipRRect(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(50),
             child: Image.network(
               loadingBuilder: (context, child, loadingProgress) {
                 return SizedBox(
@@ -36,73 +39,61 @@ class MailInfoWidget extends StatelessWidget {
               height: 46,
             ),
           ),
-        const SizedBox(
-          width: 16,
-        )],
+          const SizedBox(
+            width: 16,
+          )
+        ] else ...[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: Image.asset(
+              'assets/images/default_user_image.png',
+              height: 46,
+            ),
+          ),
+          const SizedBox(
+            width: 16,
+          ),
+        ],
         Expanded(
-          child: Column(
+          child: Row(
+            textDirection: isMe ? TextDirection.rtl : TextDirection.ltr,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment:
+                    isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Text(
-                        'From.',
-                        style: TextStyle(
-                            fontFamily: 'MaruBuri',
-                            fontSize: 12,
-                            fontWeight: FontWeight.normal,
-                            color: ColorConstants.primary),
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        byFullName,
-                        style: TextStyle(
-                            fontFamily: 'MaruBuri',
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: ColorConstants.primary),
-                      ),
-                    ],
-                  ),
                   Text(
-                    mailService.formatMailDate(availableAt),
+                    'From. $byFullName',
                     style: TextStyle(
-                        fontFamily: 'MaruBuri',
-                        fontSize: 12,
-                        color: ColorConstants.primary),
+                      fontFamily: 'Pretendard',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: ColorConstants.gray,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'To. $toFullName',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: ColorConstants.pink,
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 2,
-              ),
-              Row(
-                children: [
-                  Text(
-                    'To.',
-                    style: TextStyle(
-                        fontFamily: 'MaruBuri',
-                        fontSize: 12,
-                        fontWeight: FontWeight.normal,
-                        color: ColorConstants.primary),
-                  ),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    toFullName,
-                    style: TextStyle(
-                        fontFamily: 'MaruBuri',
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: ColorConstants.primary),
-                  ),
-                ],
+              Text(
+                mailService.formatMailDate(availableAt),
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: ColorConstants.gray,
+                ),
               ),
             ],
           ),

@@ -8,12 +8,14 @@ class ReplyWidget extends StatelessWidget {
   final String toFullName;
   final String byFullName;
   final Reply reply;
+  final String? toImage;
 
   const ReplyWidget({
     Key? key,
     required this.reply,
     required this.toFullName,
     required this.byFullName,
+    required this.toImage,
   }) : super(key: key);
 
   @override
@@ -25,6 +27,8 @@ class ReplyWidget extends StatelessWidget {
           byFullName: byFullName,
           toFullName: toFullName,
           availableAt: reply.created,
+          byImage: toImage,
+          isMe: true,
         ),
         const SizedBox(
           height: 15,
@@ -32,9 +36,11 @@ class ReplyWidget extends StatelessWidget {
         Text(
           reply.description,
           style: TextStyle(
-            fontFamily: 'MaruBuri',
-            fontSize: 14,
+            fontFamily: 'NanumDaCaeSaRang',
+            fontSize: 19,
+            fontWeight: FontWeight.w600,
             color: ColorConstants.primary,
+            letterSpacing: 1.5,
           ),
         ),
       ],

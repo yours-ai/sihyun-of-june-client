@@ -6,6 +6,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:intl/intl.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
 import '../services.dart';
 import '../services/transaction_service.dart';
@@ -48,53 +49,55 @@ class _ProductWidgetState extends State<ProductWidget> {
                 (product) => product.id == id,
                 orElse: () => widget.products.first);
             return Container(
-              color: ColorConstants.lightGray,
-              child: Column(
-                children: [
-                  ListTile(
-                    onTap: () {
-                      if (widget.isProcessing == false) {
-                        widget.isProcessing = true;
-                        setState(() {});
-                        transactionService.initiatePurchase(
-                            product, widget.inAppPurchase, widget.kProductIds);
-                      }
-                    },
-                    title: Text(
-                      Platform.isIOS
-                          ? product.title
-                          : product.title.substring(0, 9),
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: ColorConstants.primary,
-                        fontWeight: FontWeight.w600,
+                color: ColorConstants.lightGray,
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        if (widget.isProcessing == false) {
+                          widget.isProcessing = true;
+                          setState(() {});
+                          transactionService.initiatePurchase(product,
+                              widget.inAppPurchase, widget.kProductIds);
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 66,
+                            padding: const EdgeInsets.only(left: 28),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              Platform.isIOS
+                                  ? product.title
+                                  : product.title.substring(0, 9),
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: ColorConstants.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(right: 28),
+                            child: Text(
+                              product.currencyCode == 'KRW'
+                                  ? ('${currencyFormatter.format(product.rawPrice)}원')
+                                  : product.price.toString(),
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: ColorConstants.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    trailing: Text(
-                      product.currencyCode == 'KRW'
-                          ? (currencyFormatter.format(product.rawPrice) + '원')
-                          : product.price.toString(),
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: ColorConstants.primary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 28),
-                    height: 2,
-                    decoration: DottedDecoration(
-                      shape: Shape.line,
-                      linePosition: LinePosition.top,
-                      color: ColorConstants.neutral,
-                      dash: const [5, 5],
-                      strokeWidth: 1,
-                    ),
-                  ),
-                ],
-              ),
-            );
+                    const DottedUnderline(28),
+                  ],
+                ));
           },
         ),
       );

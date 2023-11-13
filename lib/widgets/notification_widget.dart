@@ -5,6 +5,7 @@ import 'package:moment_dart/moment_dart.dart';
 import 'package:project_june_client/actions/notification/models/AppNotification.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
+import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
 class NotificationWidget extends StatefulWidget {
   final AppNotification notification;
@@ -46,7 +47,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                       fontSize: 16,
                       color: ColorConstants.primary,
                       fontWeight: widget.notification.is_read == false
-                          ? FontWeight.bold
+                          ? FontWeight.w600
                           : FontWeight.normal,
                     ),
                   ),
@@ -62,7 +63,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                             color: ColorConstants.primary,
                             fontSize: 12,
                             fontWeight: widget.notification.is_read == false
-                                ? FontWeight.bold
+                                ? FontWeight.w600
                                 : FontWeight.normal),
                       ),
                       Icon(
@@ -76,17 +77,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
               ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 22),
-            height: 2,
-            decoration: DottedDecoration(
-              shape: Shape.line,
-              linePosition: LinePosition.top,
-              color: ColorConstants.neutral,
-              dash: const [5, 5],
-              strokeWidth: 1,
-            ),
-          ),
+          const DottedUnderline(22),
         ],
       ),
     );

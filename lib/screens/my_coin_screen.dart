@@ -10,6 +10,7 @@ import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:intl/intl.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
 import 'package:project_june_client/actions/transaction/queries.dart';
+import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
@@ -27,21 +28,7 @@ class MyCoinScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorConstants.background,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: Container(
-            padding: const EdgeInsets.only(left: 23),
-            child: Icon(
-              PhosphorIcons.arrow_left,
-              color: ColorConstants.black,
-              size: 32,
-            ),
-          ),
-        ),
-      ),
+      appBar: BackAppbar(),
       body: SafeArea(
         child: QueryBuilder(
           query: getRetrieveMeQuery(),
