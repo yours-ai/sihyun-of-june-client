@@ -101,8 +101,10 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MailInfoWidget(
-          byFullName: widget.mail.to_full_name,
-          toFullName: widget.mail.by_full_name,
+          byFullName: widget.mail.to_first_name,
+          toFullName: widget.mail.by_first_name,
+          byImage: widget.mail.to_image,
+          isMe: true,
           availableAt: clock.now(),
         ),
         Form(
@@ -128,18 +130,23 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   counterText: controller.text.length > 900
                       ? '${controller.text.length}/1000'
                       : '',
-                  hintText: '답장을 적어주세요...',
+                  hintText: '답장을 입력해주세요...',
                   hintStyle: TextStyle(
-                      fontFamily: 'MaruBuri',
-                      fontSize: 14,
-                      color: ColorConstants.neutral),
+                    fontFamily: 'NanumDaCaeSaRang',
+                    fontSize: 19,
+                    color: ColorConstants.neutral,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.5,
+                  ),
                   border: InputBorder.none,
                 ),
                 style: TextStyle(
-                  fontFamily: 'MaruBuri',
-                  fontSize: 14,
+                  fontFamily: 'NanumDaCaeSaRang',
+                  fontSize: 19,
                   color: ColorConstants.primary,
+                  fontWeight: FontWeight.w600,
                   height: 1.5,
+                  letterSpacing: 1.5,
                 ),
                 onChanged: (text) {
                   setState(() {});
@@ -149,16 +156,20 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: FilledButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorConstants.gray),
+                  ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _showConfirmModal();
                     }
                   },
                   child: const Text(
-                    '답장하기',
+                    '답장 보내기',
                     style: TextStyle(
-                      fontFamily: 'MaruBuri',
-                      fontSize: 14,
+                      fontFamily: 'Pretendard',
+                      fontSize: 16,
                     ),
                   ),
                 ),

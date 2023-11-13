@@ -113,12 +113,12 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         splashFactory: NoSplash.splashFactory,
-        textTheme: const TextTheme(
+        textTheme: TextTheme(
           titleLarge: TextStyle(
-            fontFamily: 'NanumJungHagSaeng',
-            fontSize: 39,
-            height: 36 / 39,
-          ),
+              fontFamily: 'NanumJungHagSaeng',
+              fontSize: 39,
+              height: 36 / 39,
+              color: ColorConstants.primary),
         ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(

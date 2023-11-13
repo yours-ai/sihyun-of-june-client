@@ -97,4 +97,7 @@ class MailService {
     }
     return '';
   }
+  String formatMailDate(DateTime dt) {
+    return DateFormat('yyyy.MM.dd').format(dt);
+  }
 }

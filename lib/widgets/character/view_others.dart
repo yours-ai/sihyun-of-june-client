@@ -48,7 +48,7 @@ class ViewOthersWidget extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Image.network(
-                              character.image,
+                              character.default_image,
                               color: Colors.black45,
                               colorBlendMode: BlendMode.darken,
                             ),
@@ -74,7 +74,7 @@ class ViewOthersWidget extends StatelessWidget {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Image.network(character.image),
+                        child: Image.network(character.default_image),
                       ),
                     );
                   }

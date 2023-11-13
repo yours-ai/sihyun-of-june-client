@@ -2,6 +2,8 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/widgets/common/back_appbar.dart';
+import 'package:project_june_client/widgets/common/title_underline.dart';
 import '../actions/transaction/queries.dart';
 import '../constants.dart';
 import '../widgets/coin_log_widget.dart';
@@ -18,25 +20,15 @@ class _CoinLogScreenState extends State<CoinLogScreen> {
   @override
   Widget build(context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorConstants.background,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: Container(
-            padding: const EdgeInsets.only(left: 23),
-            child: Icon(
-              PhosphorIcons.arrow_left,
-              color: ColorConstants.black,
-              size: 32,
-            ),
-          ),
-        ),
-      ),
+      appBar: BackAppbar(),
       body: SafeArea(
         child: TitleLayout(
           withAppBar: true,
-          titleText: '코인 내역',
+          title: const Center(
+            child: TitleUnderline(
+              titleText: '코인 내역',
+            ),
+          ),
           body: QueryBuilder(
               query: getCoinLogsQuery(),
               builder: (context, state) {

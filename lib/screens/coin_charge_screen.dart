@@ -9,7 +9,9 @@ import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
 import 'package:project_june_client/actions/transaction/queries.dart';
+import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
+import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/product_widget.dart';
 
@@ -66,21 +68,7 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorConstants.background,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: Container(
-            padding: const EdgeInsets.only(left: 23),
-            child: Icon(
-              PhosphorIcons.arrow_left,
-              color: ColorConstants.black,
-              size: 32,
-            ),
-          ),
-        ),
-      ),
+      appBar: BackAppbar(),
       body: SafeArea(
         child: QueryBuilder(
           query: getRetrieveMeQuery(),
@@ -91,33 +79,34 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
                 : TitleLayout(
                     withAppBar: true,
                     title: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Flexible(
-                          child: Text(
-                            '충전하기',
-                            style: TextStyle(
-                                fontFamily: 'NanumJungHagSaeng',
-                                fontSize: 39,
-                                height: 36 / 39),
-                            softWrap: true,
-                            textAlign: TextAlign.center,
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const TitleUnderline(titleText: '충전하기'),
+                              const SizedBox(height: 14),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    transactionService.currencyFormatter
+                                        .format(state.data!.coin),
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: ColorConstants.primary,
+                                    ),
+                                  ),
+                                  Icon(
+                                    PhosphorIcons.coin_vertical,
+                                    color: ColorConstants.primary,
+                                    size: 36,
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                                transactionService.currencyFormatter
-                                    .format(state.data!.coin),
-                                style: const TextStyle(
-                                    fontSize: 30, fontWeight: FontWeight.bold)),
-                            const SizedBox(width: 8),
-                            Icon(
-                              PhosphorIcons.coin_vertical,
-                              color: ColorConstants.black,
-                              size: 32,
-                            ),
-                          ],
                         ),
                       ],
                     ),

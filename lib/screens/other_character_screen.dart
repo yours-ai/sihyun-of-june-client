@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/profile_widget.dart';
 
 import '../constants.dart';
@@ -22,21 +23,7 @@ class OtherCharacterScreen extends StatelessWidget {
           return const SizedBox.shrink();
         }
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: ColorConstants.background,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () => context.pop(),
-              icon: Container(
-                padding: const EdgeInsets.only(left: 23),
-                child: Icon(
-                  PhosphorIcons.arrow_left,
-                  color: ColorConstants.black,
-                  size: 32,
-                ),
-              ),
-            ),
-          ),
+          appBar: BackAppbar(),
           body: SafeArea(
             child: ListView(
               padding: const EdgeInsets.symmetric(
@@ -47,9 +34,9 @@ class OtherCharacterScreen extends StatelessWidget {
                 ProfileWidget(
                   name: state.data!.name,
                   age: state.data!.age,
-                  mbti: state.data!.MBTI,
+                  mbti: state.data!.one_line_description,
                   description: state.data!.description,
-                  imageSrc: state.data!.image,
+                  imageSrc: state.data!.default_image,
                 ),
               ],
             ),

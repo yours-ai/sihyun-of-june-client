@@ -7,6 +7,7 @@ import 'package:project_june_client/actions/character/models/Question.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
+import 'package:word_break_text/word_break_text.dart';
 import '../../screens/test_screen.dart';
 
 class InTestWidget extends StatefulWidget {
@@ -72,31 +73,49 @@ class _InTestWidget extends State<InTestWidget> {
               }
               questionList = state.data;
               return Scaffold(
-                appBar: PreferredSize(
-                  preferredSize: const Size.fromHeight(4.0),
-                  child: AppBar(
-                    backgroundColor: ColorConstants.background,
-                    elevation: 0,
-                    bottom: PreferredSize(
-                      preferredSize: const Size.fromHeight(1.0),
-                      child: LinearProgressIndicator(
-                        value: (_currentQuestionIndex + 1) / 8,
-                        backgroundColor: ColorConstants.background,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                            ColorConstants.lightPink),
+                appBar: AppBar(
+                  backgroundColor: ColorConstants.background,
+                  elevation: 0,
+                  title: Center(
+                    child: Text(
+                      '${_currentQuestionIndex + 1}/${questionList!.length}',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: 20,
+                        color: ColorConstants.neutral,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
                 body: SafeArea(
                   child: TitleLayout(
-                    titleText:
+                    withAppBar: true,
+                    title: Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.1),
+                      child: WordBreakText(
                         questionList![_currentQuestionIndex].question_text,
-                    body: Container(),
+                        style: Theme.of(context).textTheme.titleLarge,
+                        textAlign: TextAlign.center,
+                        spacingByWrap: true,
+                        spacing: 10,
+                        wrapAlignment: WrapAlignment.center,
+                      ),
+                    ),
+                    body: const SizedBox(),
                     actions: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        OutlinedButton(
+                        FilledButton(
+                          style: Theme.of(context)
+                              .filledButtonTheme
+                              .style!
+                              .copyWith(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        ColorConstants.gray),
+                              ),
                           onPressed: () {
                             addUserResponse(
                                 questionList![_currentQuestionIndex].id.toInt(),
@@ -116,7 +135,15 @@ class _InTestWidget extends State<InTestWidget> {
                         const SizedBox(
                           height: 15,
                         ),
-                        OutlinedButton(
+                        FilledButton(
+                          style: Theme.of(context)
+                              .filledButtonTheme
+                              .style!
+                              .copyWith(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        ColorConstants.gray),
+                              ),
                           onPressed: () {
                             addUserResponse(
                                 questionList![_currentQuestionIndex].id.toInt(),

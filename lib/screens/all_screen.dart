@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -106,7 +107,7 @@ class _AllScreenState extends State<AllScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               FilledButton(
                 style: ButtonStyle(
                   backgroundColor:
@@ -144,7 +145,11 @@ class _AllScreenState extends State<AllScreen> {
   Widget build(context) {
     return SafeArea(
       child: TitleLayout(
-        titleText: '전체',
+        title: const Center(
+          child: TitleUnderline(
+            titleText: '전체',
+          ),
+        ),
         body: ListView(
           children: [
             QueryBuilder(
@@ -153,21 +158,29 @@ class _AllScreenState extends State<AllScreen> {
                 return MenuWidget(
                   title: '내 코인',
                   onPressed: () => context.push('/my-coin'),
-                  suffix: Row(
-                    children: [
-                      Text(
-                        state.data?.coin != null? transactionService.currencyFormatter.format(state.data?.coin) : '',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: ColorConstants.neutral,
-                            fontWeight: FontWeight.normal),
+                  suffix: Row(children: [
+                    Text(
+                      state.data?.coin != null
+                          ? transactionService.currencyFormatter
+                              .format(state.data?.coin)
+                          : '',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: ColorConstants.primary,
+                        fontWeight: FontWeight.w600,
                       ),
-                      Icon(
-                        PhosphorIcons.coin_vertical,
-                        color: ColorConstants.neutral,
-                        size: 18,)
-                    ]
-                  ),
+                    ),
+                    Icon(
+                      PhosphorIcons.coin_vertical,
+                      color: ColorConstants.primary,
+                      size: 24,
+                    ),
+                    Icon(
+                      PhosphorIcons.caret_right_bold,
+                      color: ColorConstants.primary,
+                      size: 24,
+                    ),
+                  ]),
                 );
               },
             ),
