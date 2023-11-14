@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/character/view_others.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
-
+import 'package:project_june_client/widgets/common/dotted_underline.dart';
 import '../actions/character/queries.dart';
 import '../widgets/profile_widget.dart';
 
@@ -19,7 +19,7 @@ class MyCharacterScreen extends StatelessWidget {
         query: query,
         builder: (context, state) {
           return Scaffold(
-            appBar: BackAppbar(),
+            appBar: const BackAppbar(),
             body: SafeArea(
               child: ListView(
                 padding: const EdgeInsets.symmetric(
@@ -30,9 +30,13 @@ class MyCharacterScreen extends StatelessWidget {
                   ProfileWidget(
                     name: state.data!.first.name,
                     age: state.data!.first.age,
-                    mbti: state.data!.first.one_line_description,
+                    one_line_description:
+                        state.data!.first.one_line_description,
                     description: state.data!.first.description,
-                    imageSrc: state.data!.first.default_image,
+                    imageList: state.data!.first.images!
+                        .where(
+                            (image) => image != state.data!.first.default_image)
+                        .toList(),
                   ),
                   ViewOthersWidget(excludeId: state.data!.first.id),
                 ],

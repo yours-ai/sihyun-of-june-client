@@ -22,37 +22,40 @@ class NotificationWidget extends StatefulWidget {
 class _NotificationWidgetState extends State<NotificationWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: widget.notification.is_read == false
-          ? ColorConstants.lightGray
-          : ColorConstants.background,
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              notificationService.handleClickNotification(
-                widget.notification,
-              );
-            },
-            child: Row(
+    return GestureDetector(
+      onTap: () {
+        notificationService.handleClickNotification(
+          widget.notification,
+        );
+      },
+      child: Container(
+        color: widget.notification.is_read == false
+            ? ColorConstants.lightGray
+            : ColorConstants.background,
+        child: Column(
+          children: [
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  height: 81,
-                  padding: const EdgeInsets.only(left: 22),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    widget.notification.body,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: ColorConstants.primary,
-                      fontWeight: widget.notification.is_read == false
-                          ? FontWeight.w600
-                          : FontWeight.normal,
+                Expanded(
+                  child: Container(
+                    height: 81,
+                    padding: const EdgeInsets.only(left: 22),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      widget.notification.body,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: ColorConstants.primary,
+                        fontWeight: widget.notification.is_read == false
+                            ? FontWeight.w600
+                            : FontWeight.normal,
+                      ),
                     ),
                   ),
                 ),
                 Container(
+                  width: 100,
                   padding: const EdgeInsets.only(right: 22),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -76,9 +79,9 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                 ),
               ],
             ),
-          ),
-          const DottedUnderline(22),
-        ],
+            const DottedUnderline(22),
+          ],
+        ),
       ),
     );
   }
