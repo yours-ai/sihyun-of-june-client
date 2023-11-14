@@ -45,15 +45,9 @@ class CharacterDetailWidget extends StatelessWidget {
                     children: [
                       ProfileWidget(
                         name: state.data!['character']['name'],
-                        age: (state.data!['character']['age']),
-                        one_line_description: state.data!['character']
-                            ['one_line_description'],
-                        description: state.data!['character']['description'],
-                        imageList: state.data!['character']['images']
-                            .where((image) =>
-                                image !=
-                                state.data!['character']['default_image'])
-                            .toList(),
+                        defaultImage: state.data!['character']['default_image'],
+                        characterInfo: state.data!['character']
+                            ['character_info'],
                       ),
                     ],
                   ),

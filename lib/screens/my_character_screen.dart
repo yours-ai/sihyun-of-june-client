@@ -29,14 +29,8 @@ class MyCharacterScreen extends StatelessWidget {
                 children: [
                   ProfileWidget(
                     name: state.data!.first.name,
-                    age: state.data!.first.age,
-                    one_line_description:
-                        state.data!.first.one_line_description,
-                    description: state.data!.first.description,
-                    imageList: state.data!.first.images!
-                        .where(
-                            (image) => image != state.data!.first.default_image)
-                        .toList(),
+                    characterInfo: state.data!.first.character_info!,
+                    defaultImage: state.data!.first.default_image,
                   ),
                   ViewOthersWidget(excludeId: state.data!.first.id),
                 ],
