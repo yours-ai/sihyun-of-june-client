@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -22,6 +26,19 @@ class AllScreen extends StatefulWidget {
 }
 
 class _AllScreenState extends State<AllScreen> {
+  final ImagePicker _picker = ImagePicker();
+  XFile? _image;
+
+  Future<void> _pickImg() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      uploadUserProfile(image);
+    }
+    setState(() {
+      _image = image;
+    });
+  }
+
   void _showLogoutModal() async {
     await showModalBottomSheet<void>(
       context: context,
@@ -152,6 +169,95 @@ class _AllScreenState extends State<AllScreen> {
         ),
         body: ListView(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    QueryBuilder(
+                      query: getRetrieveMyCharacterQuery(),
+                      builder: (context, state) {
+                        if (state.data != null) {
+                          return Center(
+                            child: ClipRRect(
+                              clipBehavior: Clip.hardEdge,
+                              borderRadius: BorderRadius.circular(66),
+                              child: Container(
+                                  width: 132,
+                                  height: 132,
+                                  child: Image.network(
+                                      state.data!.first.default_image)),
+                            ),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        context.push('/mails/my-character');
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: ColorConstants.gray,
+                              width: 1.0,
+                            ),
+                          ),
+                        ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
+                        padding: const EdgeInsets.all(0),
+                        child: Text('프로필 보기',
+                            style: TextStyle(
+                                color: ColorConstants.gray, height: 0.7)),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    QueryBuilder(
+                      query: getRetrieveMeQuery(),
+                      builder: (context, state) => Center(
+                        child: ClipRRect(
+                          clipBehavior: Clip.hardEdge,
+                          borderRadius: BorderRadius.circular(66),
+                          child: Container(
+                            width: 132,
+                            height: 132,
+                            child: _image == null
+                                ? Image.asset(
+                                    'assets/images/default_user_image.png')
+                                : Image(
+                                    image: FileImage(File(_image!.path)),
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    TextButton(
+                      onPressed: _pickImg,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: ColorConstants.gray,
+                              width: 1.0,
+                            ),
+                          ),
+                        ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
+                        padding: const EdgeInsets.all(0),
+                        child: Text('프로필 변경하기',
+                            style: TextStyle(
+                                color: ColorConstants.gray, height: 0.7)),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
             QueryBuilder(
               query: getRetrieveMeQuery(),
               builder: (context, state) {

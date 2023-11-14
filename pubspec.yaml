@@ -47,6 +47,7 @@ dependencies:
   word_break_text: ^0.1.0
   dotted_decoration: ^2.0.0
   extended_image: ^8.1.1
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:

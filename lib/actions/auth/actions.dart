@@ -5,6 +5,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/models/SihyunOfJuneUser.dart';
@@ -225,4 +226,16 @@ Future<void> withdrawUser(QuitReasonDTO dto) async {
   await sendQuitResponse(dto);
   await deleteUser();
   return;
+}
+
+Future<void> uploadUserProfile(XFile img) async {
+  var imgFile = MultipartFile.fromFileSync(img.path, filename: 'user_profile.jpg');
+  FormData formData = FormData.fromMap({'image': imgFile});
+  await dio.post('/auth/me/image/', data: formData);
+  return;
+}
+
+Future<Map<String, dynamic>> getUserProfile() async {
+  var response = await dio.get('/auth/me/image/');
+  return response.data;
 }
