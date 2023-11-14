@@ -6,7 +6,6 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/character/view_others.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
-
 import '../actions/character/queries.dart';
 import '../widgets/profile_widget.dart';
 

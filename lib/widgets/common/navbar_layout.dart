@@ -49,7 +49,7 @@ class NavbarLayout extends StatelessWidget {
                         height: 32),
                   ),
                   activeIcon: const NavbarIconWidget(
-                    IMGpath: 'assets/images/navbar/mail_active.png',
+                    IMGpath: 'assets/images/navbar/mailActive.png',
                     RotateDirection: 'left',
                   ),
                   label: '받은 편지함',
@@ -59,7 +59,7 @@ class NavbarLayout extends StatelessWidget {
                     hasUnread: hasUnread,
                   ),
                   activeIcon: const NavbarIconWidget(
-                      IMGpath: 'assets/images/navbar/bell_active.png',
+                      IMGpath: 'assets/images/navbar/bellActive.png',
                       RotateDirection: 'left'),
                   label: '알림',
                 ),
@@ -70,7 +70,7 @@ class NavbarLayout extends StatelessWidget {
                         height: 32),
                   ),
                   activeIcon: const NavbarIconWidget(
-                      IMGpath: 'assets/images/navbar/menu_active.png',
+                      IMGpath: 'assets/images/navbar/menuActive.png',
                       RotateDirection: 'right'),
                   label: '전체',
                 ),

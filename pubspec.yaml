@@ -64,6 +64,7 @@ flutter:
     - assets/images/
     - assets/images/landing/
     - assets/images/navbar/
+    - assets/images/mail/
     - assets/lotties/
   fonts:
     - family: MaruBuri
@@ -78,6 +79,9 @@ flutter:
           weight: 600
         - asset: assets/fonts/MaruBuri-Bold.otf
           weight: 700
+    - family: GowunDodum
+      fonts:
+        - asset: assets/fonts/GowunDodum-Regular.ttf
     - family: NanumJungHagSaeng
       fonts:
         - asset: assets/fonts/NanumJungHagSaeng.ttf
