@@ -59,7 +59,6 @@ class ViewOthersWidget extends StatelessWidget {
                   .toList();
               return GridView.count(
                 mainAxisSpacing: 10.0,
-                // crossAxisSpacing: -2.0,
                 shrinkWrap: true,
                 crossAxisCount: 3,
                 children: filteredCharacters.map((character) {
