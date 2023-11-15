@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/main.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
+import 'package:project_june_client/widgets/user_profile_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../actions/auth/actions.dart';
 import '../actions/auth/queries.dart';
 import '../constants.dart';
-import '../router.dart';
 import '../services.dart';
 import '../widgets/common/title_layout.dart';
 import '../widgets/modal_widget.dart';
@@ -164,6 +165,7 @@ class AllScreenState extends ConsumerState<AllScreen> {
         ),
         body: ListView(
           children: [
+            UserProfileWidget(),
             QueryBuilder(
               query: getRetrieveMeQuery(),
               builder: (context, state) {

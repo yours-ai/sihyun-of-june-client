@@ -30,7 +30,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
       child: Scaffold(
         appBar: AppBar(
           leading: Padding(
-            padding: const EdgeInsets.only(left: 23, top: 30),
+            padding: const EdgeInsets.only(left: 20, top: 30),
             child: Text(
               '$_tab/2',
               style: TextStyle(color: ColorConstants.neutral, fontSize: 20),

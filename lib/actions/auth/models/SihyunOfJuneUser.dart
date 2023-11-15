@@ -12,6 +12,7 @@ class SihyunOfJuneUser {
   bool is_activable;
   int coin;
   String env;
+  String? image;
 
   SihyunOfJuneUser({
     required this.id,
@@ -22,6 +23,7 @@ class SihyunOfJuneUser {
     required this.is_activable,
     required this.coin,
     required this.env,
+    this.image,
   });
 
   factory SihyunOfJuneUser.fromJson(Map<String, dynamic> json) =>
