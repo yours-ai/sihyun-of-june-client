@@ -1,14 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/CharacterInfo.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/screens/profile_details_screen.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends ConsumerWidget {
   final String? name;
   final CharacterInfo characterInfo;
   final String defaultImage;
@@ -21,7 +23,7 @@ class ProfileWidget extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final OtherImageList = characterInfo.images!
         .where((image) => image != defaultImage)
         .toList();
@@ -68,7 +70,7 @@ class ProfileWidget extends StatelessWidget {
           child: Text(
             '$name(${characterInfo.age})',
             style: TextStyle(
-              color: ColorConstants.pink,
+              color: Color(ref.watch(characterThemeProvider).colors!.primary!),
               fontFamily: 'NanumJungHagSaeng',
               fontSize: 54,
               fontWeight: FontWeight.w600,

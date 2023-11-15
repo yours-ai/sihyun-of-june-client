@@ -1,7 +1,9 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
 import 'package:project_june_client/widgets/modal_widget.dart';
 
@@ -11,16 +13,16 @@ import '../../actions/mails/queries.dart';
 import '../../constants.dart';
 import '../../services.dart';
 
-class ReplyFormWidget extends StatefulWidget {
+class ReplyFormWidget extends ConsumerStatefulWidget {
   final Mail mail;
 
   const ReplyFormWidget({Key? key, required this.mail}) : super(key: key);
 
   @override
-  State<ReplyFormWidget> createState() => _ReplyFormWidgetState();
+  ReplyFormWidgetState createState() => ReplyFormWidgetState();
 }
 
-class _ReplyFormWidgetState extends State<ReplyFormWidget> {
+class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   final controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
@@ -74,7 +76,10 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   child: Text(
                     '아니요',
                     style: TextStyle(
-                        fontSize: 14.0, color: ColorConstants.lightPink),
+                      fontSize: 14.0,
+                      color: Color(
+                          ref.watch(characterThemeProvider).colors!.secondary!),
+                    ),
                   ),
                 ),
                 MutationBuilder(
@@ -132,7 +137,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                       : '',
                   hintText: '답장을 입력해주세요...',
                   hintStyle: TextStyle(
-                    fontFamily: 'NanumDaCaeSaRang',
+                    fontFamily: ref.watch(characterThemeProvider).font,
                     fontSize: 19,
                     color: ColorConstants.neutral,
                     fontWeight: FontWeight.w600,
@@ -141,7 +146,7 @@ class _ReplyFormWidgetState extends State<ReplyFormWidget> {
                   border: InputBorder.none,
                 ),
                 style: TextStyle(
-                  fontFamily: 'NanumDaCaeSaRang',
+                  fontFamily: ref.watch(characterThemeProvider).font,
                   fontSize: 19,
                   color: ColorConstants.primary,
                   fontWeight: FontWeight.w600,

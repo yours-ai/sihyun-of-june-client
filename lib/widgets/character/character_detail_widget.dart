@@ -1,14 +1,17 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/profile_widget.dart';
 
 import '../../screens/character_choice_screen.dart';
 
-class CharacterDetailWidget extends StatelessWidget {
+class CharacterDetailWidget extends ConsumerWidget {
   final void Function(ActiveScreen) onActiveScreen;
   final void Function(int) onTestId;
   final void Function(String) onName;
@@ -20,7 +23,7 @@ class CharacterDetailWidget extends StatelessWidget {
       required this.onName});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final query = getPendingTestQuery();
     return QueryBuilder(
       query: query,
@@ -28,6 +31,10 @@ class CharacterDetailWidget extends StatelessWidget {
         if (state.data == null) {
           return const SizedBox.shrink();
         }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          CharacterTheme characterTheme = state.data!['character']['theme'];
+          ref.read(characterThemeProvider.notifier).state = characterTheme;
+        });
         return Scaffold(
           body: SafeArea(
             child: Column(

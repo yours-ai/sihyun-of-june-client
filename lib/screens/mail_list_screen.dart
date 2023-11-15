@@ -1,8 +1,11 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
@@ -15,14 +18,14 @@ import '../constants.dart';
 import '../services.dart';
 import '../widgets/alert_widget.dart';
 
-class MailListScreen extends StatefulWidget {
+class MailListScreen extends ConsumerStatefulWidget {
   const MailListScreen({super.key});
 
   @override
-  State<MailListScreen> createState() => _MailListScreenState();
+  MailListScreenState createState() => MailListScreenState();
 }
 
-class _MailListScreenState extends State<MailListScreen> {
+class MailListScreenState extends ConsumerState<MailListScreen> {
   int? mailReceivedMonth; //편지를 받은 개월 수, 1부터 시작
   int? selectedMonth; //0부터 시작
   DateTime? firstMailDate;
@@ -144,31 +147,35 @@ class _MailListScreenState extends State<MailListScreen> {
               ? const SizedBox()
               : TitleLayout(
                   title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Flexible(
-                        child: Text(
-                          '받은 편지함',
-                          style: TextStyle(
-                              fontFamily: 'NanumJungHagSaeng',
-                              fontSize: 39,
-                              height: 36 / 39),
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+                      const Expanded(child: SizedBox()),
+                      const TitleUnderline(titleText: "받은 편지함"),
                       QueryBuilder(
                         query: retrieveMyCharacterQuery,
                         builder: (context, state) {
                           if (state.data != null) {
-                            return GestureDetector(
-                              onTap: () => context.push('/mails/my-character'),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(14),
-                                child: Image.network(
-                                  state.data![0].default_image,
-                                  height: 35,
-                                ),
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              CharacterTheme characterTheme =
+                                  state.data![0].theme!;
+                              ref.read(characterThemeProvider.notifier).state =
+                                  characterTheme;
+                            });
+                            return Expanded(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () =>
+                                        context.push('/mails/my-character'),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(14),
+                                      child: Image.network(
+                                        state.data![0].default_image,
+                                        height: 35,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             );
                           }

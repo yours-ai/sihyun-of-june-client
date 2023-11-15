@@ -4,8 +4,8 @@ part 'CharacterColors.g.dart';
 
 @JsonSerializable()
 class CharacterColors {
-  String? primary;
-  String? secondary;
+  int? primary;
+  int? secondary;
 
   CharacterColors({this.primary, this.secondary});
 

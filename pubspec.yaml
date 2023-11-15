@@ -104,6 +104,9 @@ flutter:
     - family: NanumNoRyeogHaNeunDongHee
       fonts:
         - asset: assets/fonts/NanumNoRyeogHaNeunDongHee.ttf
+    - family: NanumDdarEGeEomMaGa
+      fonts:
+        - asset: assets/fonts/NanumDdarEGeEomMaGa.ttf
 
 
 

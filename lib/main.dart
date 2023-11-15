@@ -8,6 +8,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:moment_dart/moment_dart.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -75,6 +77,14 @@ void main() async {
 
 final topPaddingProvider = StateProvider<double?>((ref) => null);
 
+final characterThemeProvider = StateProvider<CharacterTheme>((ref) {
+  final CharacterTheme defaultTheme = CharacterTheme(
+    colors: CharacterColors(primary: 4294923379, secondary: 4294932624),
+    font: "NanumNoRyeogHaNeunDongHee",
+  );
+  return defaultTheme;
+});
+
 class ProjectJuneApp extends ConsumerStatefulWidget {
   const ProjectJuneApp({super.key});
 
@@ -88,7 +98,7 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
     super.initState();
     initServerErrorSnackbar(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final topPadding = MediaQuery.of(context).padding.top;
+      var topPadding = MediaQuery.of(context).padding.top;
       ref.read(topPaddingProvider.notifier).state = topPadding;
     });
   }
@@ -131,7 +141,8 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
             textStyle: const TextStyle(
               fontWeight: FontWeight.w600,
             ),
-            backgroundColor: ColorConstants.pink,
+            backgroundColor:
+                Color(ref.watch(characterThemeProvider).colors!.primary!),
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(
               vertical: 17.0,

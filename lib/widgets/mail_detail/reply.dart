@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/mails/models/Reply.dart';
+import 'package:project_june_client/main.dart';
 
 import '../../constants.dart';
 import 'mail_info.dart';
 
-class ReplyWidget extends StatelessWidget {
+class ReplyWidget extends ConsumerWidget {
   final String toFullName;
   final String byFullName;
   final Reply reply;
@@ -19,7 +21,7 @@ class ReplyWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -36,7 +38,7 @@ class ReplyWidget extends StatelessWidget {
         Text(
           reply.description,
           style: TextStyle(
-            fontFamily: 'NanumDaCaeSaRang',
+            fontFamily: ref.watch(characterThemeProvider).font,
             fontSize: 19,
             fontWeight: FontWeight.w600,
             color: ColorConstants.primary,

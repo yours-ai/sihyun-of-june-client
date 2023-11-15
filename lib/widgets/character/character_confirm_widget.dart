@@ -1,8 +1,10 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 import '../../constants.dart';
@@ -10,7 +12,7 @@ import '../../screens/character_choice_screen.dart';
 import '../../services.dart';
 import '../modal_widget.dart';
 
-class CharacterConfirmWidget extends StatelessWidget {
+class CharacterConfirmWidget extends ConsumerWidget {
   final int testId;
   final String name;
   final void Function(ActiveScreen) onActiveScreen;
@@ -22,7 +24,7 @@ class CharacterConfirmWidget extends StatelessWidget {
       required this.name});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     _showDenyModal() async {
       await showModalBottomSheet<void>(
         context: context,
@@ -45,7 +47,10 @@ class CharacterConfirmWidget extends StatelessWidget {
                   child: Text('됐어요',
                       style: TextStyle(
                         fontSize: 14.0,
-                        color: ColorConstants.lightPink,
+                        color: Color(ref
+                            .watch(characterThemeProvider)
+                            .colors!
+                            .secondary!),
                       )),
                 ),
                 SizedBox(
