@@ -228,14 +228,14 @@ Future<void> withdrawUser(QuitReasonDTO dto) async {
   return;
 }
 
-Future<void> uploadUserProfile(XFile img) async {
-  var imgFile = MultipartFile.fromFileSync(img.path, filename: 'user_profile.jpg');
+Future<void> uploadUserImage(Uint8List img) async {
+  var imgFile = MultipartFile.fromBytes(img, filename: 'user_profile.jpg');
   FormData formData = FormData.fromMap({'image': imgFile});
   await dio.post('/auth/me/image/', data: formData);
   return;
 }
 
-Future<Map<String, dynamic>> getUserProfile() async {
-  var response = await dio.get('/auth/me/image/');
-  return response.data;
+Future<void> deleteUserImage() async {
+  await dio.delete('/auth/me/image/');
+  return;
 }
