@@ -93,7 +93,7 @@ class LoginScreen extends StatelessWidget {
                       },
                       child: Text(
                         '전화번호로 계속하기',
-                        style: TextStyle(color: ColorConstants.lightGray),
+                        style: TextStyle(color: ColorConstants.neutral),
                       ),
                     ),
                   ],
