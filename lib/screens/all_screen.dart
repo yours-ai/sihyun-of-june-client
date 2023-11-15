@@ -25,7 +25,7 @@ class AllScreen extends ConsumerStatefulWidget {
 }
 
 class AllScreenState extends ConsumerState<AllScreen> {
-  void showLogoutModal() async {
+  void _showLogoutModal() async {
     await showModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
@@ -68,7 +68,7 @@ class AllScreenState extends ConsumerState<AllScreen> {
     );
   }
 
-  void showWithdrawModal() async {
+  void _showWithdrawModal() async {
     await showModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
@@ -215,13 +215,13 @@ class AllScreenState extends ConsumerState<AllScreen> {
             MenuWidget(
               title: '로그아웃',
               onPressed: () {
-                showLogoutModal();
+                _showLogoutModal();
               },
             ),
             MenuWidget(
               title: '탈퇴하기',
               onPressed: () {
-                showWithdrawModal();
+                _showWithdrawModal();
               },
             ),
           ],

@@ -12,22 +12,22 @@ import '../actions/auth/queries.dart';
 import '../constants.dart';
 import '../main.dart';
 import '../widgets/modal_widget.dart';
-import 'package:image/image.dart' as img;
+import 'package:image/image.dart' as image;
 
 class UserProfileService {
   final ImagePicker _picker = ImagePicker();
   XFile? _image;
 
-  Future<void> _pickImg() async {
+  Future<void> _pickImage() async {
     _image = await _picker.pickImage(source: ImageSource.gallery);
   }
 
   Future<Uint8List> cropImage(Uint8List imageData, Rect cropRect) async {
     // Uint8List 데이터를 Image 객체로 변환합니다.
-    img.Image originalImage = img.decodeImage(imageData)!;
+    image.Image originalImage = image.decodeImage(imageData)!;
 
     // Image 객체를 잘라냅니다.
-    img.Image croppedImage = img.copyCrop(
+    image.Image croppedImage = image.copyCrop(
       originalImage,
       x: cropRect.left.toInt(),
       y: cropRect.top.toInt(),
@@ -36,7 +36,7 @@ class UserProfileService {
     );
 
     // 잘라낸 이미지를 Uint8List로 다시 변환합니다.
-    return Uint8List.fromList(img.encodeJpg(croppedImage));
+    return Uint8List.fromList(image.encodeJpg(croppedImage));
   }
 
   void showEditImageModal(BuildContext context, WidgetRef ref) async {
@@ -47,7 +47,7 @@ class UserProfileService {
       builder: (BuildContext context) {
         var editorKey = GlobalKey<ExtendedImageEditorState>();
         return Container(
-          margin: EdgeInsets.only(top: ref.watch(topPaddingProvider) ?? 20),
+          margin: EdgeInsets.only(top: ref.watch(topPaddingProvider)!),
           child: Column(
             children: [
               Row(
@@ -141,7 +141,7 @@ class UserProfileService {
               ),
               FilledButton(
                 onPressed: () async {
-                  await _pickImg();
+                  await _pickImage();
                   if (_image != null) {
                     context.pop();
                     showEditImageModal(context, ref);
