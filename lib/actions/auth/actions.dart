@@ -74,7 +74,7 @@ Future<bool> smsVerify(ValidatedAuthCodeDTO dto) async {
         throw detailError;
       }
     }
-    throw error;
+    rethrow;
   }
 }
 
@@ -95,7 +95,7 @@ Future<String> getServerTokenBySMS(ValidatedUserDTO dto) async {
         throw detailError;
       }
     }
-    throw error;
+    rethrow;
   }
 }
 
@@ -114,7 +114,7 @@ Future<String> getServerTokenBySMSLogin(ValidatedAuthCodeDTO dto) async {
         throw detailError;
       }
     }
-    throw error;
+    rethrow;
   }
 }
 

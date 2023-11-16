@@ -200,7 +200,7 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                         query: isNotificationAcceptedQuery,
                         builder: (context, state) {
                           return state.data == false
-                              ? RequestNotificationPermissionWidget()
+                              ? const RequestNotificationPermissionWidget()
                               : const SizedBox.shrink();
                         },
                       ),

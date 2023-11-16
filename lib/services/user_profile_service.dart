@@ -86,7 +86,7 @@ class UserProfileService {
                   ),
                 ],
               ),
-              Container(
+              SizedBox(
                 height: MediaQuery.of(context).size.height *
                     0.7, // 70% of screen height
                 child: ClipRect(

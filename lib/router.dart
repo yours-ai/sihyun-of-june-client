@@ -58,7 +58,7 @@ final router = GoRouter(
     ),
     GoRoute(
         path: '/my-coin',
-        builder: (context, state) => MyCoinScreen(),
+        builder: (context, state) => const MyCoinScreen(),
         routes: [
           GoRoute(path: 'log', builder: (context, state) => const CoinLogScreen()),
           GoRoute(
@@ -126,10 +126,10 @@ final router = GoRouter(
     ),
     GoRoute(
         path: '/character-test',
-        builder: (context, state) => CharacterTestScreen()),
+        builder: (context, state) => const CharacterTestScreen()),
     GoRoute(
       path: '/change-name',
-      builder: (context, state) => NameChangeScreen(),
+      builder: (context, state) => const NameChangeScreen(),
     ),
   ],
 );

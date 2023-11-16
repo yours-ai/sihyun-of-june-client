@@ -10,7 +10,7 @@ class CharacterTestScreen extends StatefulWidget {
   const CharacterTestScreen({super.key});
 
   @override
-  _CharacterTestScreenState createState() => _CharacterTestScreenState();
+  State<CharacterTestScreen> createState() => _CharacterTestScreenState();
 }
 
 class _CharacterTestScreenState extends State<CharacterTestScreen> {

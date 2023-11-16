@@ -37,7 +37,7 @@ class AlertWidget extends StatelessWidget {
       content: content,
       buttonPadding: const EdgeInsets.only(bottom: 20),
       actions: [
-        Container(
+        SizedBox(
           width: double.infinity,
           child: FilledButton(
             style: ButtonStyle(
