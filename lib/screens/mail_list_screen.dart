@@ -174,7 +174,12 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                         context.push('/mails/my-character'),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(14),
-                                      child: Image.network(
+                                      child: ExtendedImage.network(
+                                        timeLimit: ref
+                                            .watch(imageCacheDurationProvider),
+                                        cacheKey:
+                                            UniqueCacheKeyService.makeUniqueKey(
+                                                state.data![0].default_image),
                                         state.data![0].default_image,
                                         height: 35,
                                       ),

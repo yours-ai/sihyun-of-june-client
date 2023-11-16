@@ -74,6 +74,9 @@ void main() async {
     appRunner: _appRunner,
   );
 }
+final imageCacheDurationProvider = Provider<Duration>((ref) {
+  return const Duration(minutes: 50);
+});
 
 final topPaddingProvider = StateProvider<double?>((ref) => null);
 

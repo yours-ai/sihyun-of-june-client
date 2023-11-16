@@ -1,6 +1,8 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/main.dart';
+import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 import '../../constants.dart';
 import '../../services.dart';
@@ -29,14 +31,9 @@ class MailInfoWidget extends ConsumerWidget {
         if (byImage != null) ...[
           ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: Image.network(
-              loadingBuilder: (context, child, loadingProgress) {
-                return SizedBox(
-                  height: 46,
-                  width: 46,
-                  child: child,
-                );
-              },
+            child: ExtendedImage.network(
+              timeLimit: ref.watch(imageCacheDurationProvider),
+              cacheKey: UniqueCacheKeyService.makeUniqueKey(byImage!),
               byImage!,
               height: 46,
             ),
