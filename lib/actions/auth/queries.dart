@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 
 import 'actions.dart';
@@ -30,7 +29,7 @@ Mutation<void, void> getLoginAsAppleMutation({
     queryFn: (void _) async {
       final appleCredentials = await getAppleLoginCredential();
       final serverToken =
-      await getServerTokenByAppleCredential(appleCredentials);
+          await getServerTokenByAppleCredential(appleCredentials);
       await login(serverToken);
     },
     onSuccess: onSuccess,
@@ -130,7 +129,7 @@ Mutation<void, void> getDeleteUserImage({
 }) {
   return Mutation<void, void>(
     refetchQueries: ['retrieve-me'],
-    queryFn: (void _) async{
+    queryFn: (void _) async {
       await deleteUserImage();
     },
     onSuccess: onSuccess,

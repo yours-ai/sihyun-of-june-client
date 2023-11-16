@@ -1,14 +1,14 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/profile_widget.dart';
 
 import '../../screens/character_choice_screen.dart';
 
-class CharacterDetailWidget extends StatelessWidget {
+class CharacterDetailWidget extends ConsumerWidget {
   final void Function(ActiveScreen) onActiveScreen;
   final void Function(int) onTestId;
   final void Function(String) onName;
@@ -20,14 +20,19 @@ class CharacterDetailWidget extends StatelessWidget {
       required this.onName});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final query = getPendingTestQuery();
     return QueryBuilder(
       query: query,
       builder: (context, state) {
+        Character? character;
         if (state.data == null) {
           return const SizedBox.shrink();
         }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ref.read(characterThemeProvider.notifier).state = character!.theme!;
+        });
+        character = Character.fromJson(state.data!['character']);
         return Scaffold(
           body: SafeArea(
             child: Column(
@@ -44,16 +49,10 @@ class CharacterDetailWidget extends StatelessWidget {
                     ),
                     children: [
                       ProfileWidget(
-                        name: state.data!['character']['name'],
-                        age: (state.data!['character']['age']),
-                        one_line_description: state.data!['character']
-                            ['one_line_description'],
-                        description: state.data!['character']['description'],
-                        imageList: state.data!['character']['images']
-                            .where((image) =>
-                                image !=
-                                state.data!['character']['default_image'])
-                            .toList(),
+                        name: character.name!,
+                        defaultImage: character.default_image,
+                        characterInfo: character.character_info!,
+                        primaryColor: Color(character.theme!.colors!.primary!),
                       ),
                     ],
                   ),
@@ -65,7 +64,7 @@ class CharacterDetailWidget extends StatelessWidget {
                     onPressed: () {
                       onActiveScreen(ActiveScreen.confirm);
                       onTestId(state.data!['test_id']);
-                      onName(state.data!['character']['name'].substring(1));
+                      onName(character!.name!.substring(1));
                     },
                     child: const Text('다음'),
                   ),

@@ -1,9 +1,10 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/controllers/auth/name_form_controller.dart';
@@ -12,14 +13,14 @@ import 'package:project_june_client/widgets/name_form_widget.dart';
 import '../constants.dart';
 import '../widgets/modal_widget.dart';
 
-class NameChangeScreen extends StatefulWidget {
-  NameChangeScreen({Key? key}) : super(key: key);
+class NameChangeScreen extends ConsumerStatefulWidget {
+  const NameChangeScreen({Key? key}) : super(key: key);
 
   @override
-  State<NameChangeScreen> createState() => _NameChangeScreenState();
+  NameChangeScreenState createState() => NameChangeScreenState();
 }
 
-class _NameChangeScreenState extends State<NameChangeScreen> {
+class NameChangeScreenState extends ConsumerState<NameChangeScreen> {
   final NameFormController formController = NameFormController();
   bool isSubmitClicked = false;
   bool isValid = true;
@@ -74,7 +75,11 @@ class _NameChangeScreenState extends State<NameChangeScreen> {
                   child: Text(
                     '아니요',
                     style: TextStyle(
-                        fontSize: 14.0, color: ColorConstants.lightPink),
+                        fontSize: 14.0,
+                        color: Color(ref
+                            .watch(characterThemeProvider)
+                            .colors!
+                            .secondary!)),
                   ),
                 ),
                 FilledButton(
@@ -105,7 +110,7 @@ class _NameChangeScreenState extends State<NameChangeScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: BackAppbar(),
+        appBar: const BackAppbar(),
         body: SafeArea(
           child: TitleLayout(
               withAppBar: true,

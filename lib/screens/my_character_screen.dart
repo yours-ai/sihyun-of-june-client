@@ -1,11 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:go_router/go_router.dart';
-import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/character/view_others.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
-import 'package:project_june_client/widgets/common/dotted_underline.dart';
 import '../actions/character/queries.dart';
 import '../widgets/profile_widget.dart';
 
@@ -29,14 +25,10 @@ class MyCharacterScreen extends StatelessWidget {
                 children: [
                   ProfileWidget(
                     name: state.data!.first.name,
-                    age: state.data!.first.age,
-                    one_line_description:
-                        state.data!.first.one_line_description,
-                    description: state.data!.first.description,
-                    imageList: state.data!.first.images!
-                        .where(
-                            (image) => image != state.data!.first.default_image)
-                        .toList(),
+                    characterInfo: state.data!.first.character_info!,
+                    defaultImage: state.data!.first.default_image,
+                    primaryColor:
+                        Color(state.data!.first.theme!.colors!.primary!),
                   ),
                   ViewOthersWidget(excludeId: state.data!.first.id),
                 ],

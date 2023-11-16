@@ -5,7 +5,7 @@ class ModalWidget extends StatelessWidget {
   final String title;
   final Widget description, choiceColumn;
 
-  ModalWidget({
+  const ModalWidget({
     Key? key,
     required this.title,
     this.description = const SizedBox(),

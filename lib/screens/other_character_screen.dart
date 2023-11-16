@@ -1,12 +1,8 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/profile_widget.dart';
-
-import '../constants.dart';
 
 class OtherCharacterScreen extends StatelessWidget {
   final int id;
@@ -23,7 +19,7 @@ class OtherCharacterScreen extends StatelessWidget {
           return const SizedBox.shrink();
         }
         return Scaffold(
-          appBar: BackAppbar(),
+          appBar: const BackAppbar(),
           body: SafeArea(
             child: ListView(
               padding: const EdgeInsets.symmetric(
@@ -33,12 +29,9 @@ class OtherCharacterScreen extends StatelessWidget {
               children: [
                 ProfileWidget(
                   name: state.data!.name,
-                  age: state.data!.age,
-                  one_line_description: state.data!.one_line_description,
-                  description: state.data!.description,
-                  imageList: state.data!.images!
-                      .where((image) => image != state.data!.default_image)
-                      .toList(),
+                  characterInfo: state.data!.character_info!,
+                  defaultImage: state.data!.default_image,
+                  primaryColor: Color(state.data!.theme!.colors!.primary!),
                 ),
               ],
             ),

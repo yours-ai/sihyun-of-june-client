@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:sprung/sprung.dart';
 
 class NavbarIconWidget extends StatefulWidget {
-  const NavbarIconWidget(
-      {super.key, required this.IMGpath, required this.RotateDirection});
+  const NavbarIconWidget({
+    super.key,
+    required this.RotateDirection,
+    required this.svg,
+  });
 
-  final String IMGpath;
   final String RotateDirection;
+  final Widget svg;
 
   @override
   State<NavbarIconWidget> createState() => _NavbarIconWidgetState();
@@ -31,7 +34,7 @@ class _NavbarIconWidgetState extends State<NavbarIconWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _moveUp();
       _rotate();
     });
@@ -48,6 +51,6 @@ class _NavbarIconWidgetState extends State<NavbarIconWidget> {
             turns: turns,
             curve: Sprung.criticallyDamped,
             duration: const Duration(milliseconds: 600),
-            child: Image.asset(widget.IMGpath, height: 32)));
+            child: widget.svg));
   }
 }

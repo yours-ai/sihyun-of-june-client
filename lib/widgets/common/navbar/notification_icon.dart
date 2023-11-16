@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:project_june_client/constants.dart';
 
 class NotificationIconWidget extends StatelessWidget {
   final bool hasUnread;
+  final Widget svg;
 
   const NotificationIconWidget({
     super.key,
     required this.hasUnread,
+    required this.svg,
   });
 
   @override
@@ -18,10 +19,7 @@ class NotificationIconWidget extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
-              'assets/images/navbar/bell.png',
-              height: 32,
-            ),
+            child: svg,
           ),
           if (hasUnread)
             Positioned(

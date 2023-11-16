@@ -124,10 +124,11 @@ class _InTestWidget extends State<InTestWidget> {
                                 questionList!.length - 1) {
                               widget.onActiveScreen(ActiveScreen.result);
                               widget.responses(answerList);
-                            } else
+                            } else {
                               setState(() {
                                 _currentQuestionIndex++;
                               });
+                            }
                           },
                           child: Text(questionList![_currentQuestionIndex]
                               .choice_1_text),

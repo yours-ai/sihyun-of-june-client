@@ -1,32 +1,34 @@
-import 'dart:ui';
-
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_june_client/actions/character/models/CharacterInfo.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/screens/profile_details_screen.dart';
-import 'package:project_june_client/widgets/common/dotted_underline.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:project_june_client/services/unique_cachekey_service.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends ConsumerWidget {
   final String? name;
-  final num? age;
-  final String? one_line_description;
-  final String? description;
-  final List<String> imageList;
+  final CharacterInfo characterInfo;
+  final Color primaryColor;
+  final String defaultImage;
 
   const ProfileWidget({
     super.key,
     required this.name,
-    required this.age,
-    required this.one_line_description,
-    required this.description,
-    required this.imageList,
+    required this.characterInfo,
+    required this.primaryColor,
+    required this.defaultImage,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final stackedImageList =
-        imageList.length > 3 ? imageList.sublist(0, 3) : imageList;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final otherImageList =
+        characterInfo.images!.where((image) => image != defaultImage).toList();
+
+    final stackedImageList = otherImageList.length > 3
+        ? otherImageList.sublist(0, 3)
+        : otherImageList;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -42,7 +44,8 @@ class ProfileWidget extends StatelessWidget {
                 showModalBottomSheet(
                     isScrollControlled: true,
                     context: context,
-                    builder: (context) => ProfileDetailsScreen(imageList));
+                    builder: (context) =>
+                        ProfileDetailsScreen(otherImageList.reversed.toList()));
               },
               child: Transform.rotate(
                 angle: angle,
@@ -51,10 +54,11 @@ class ProfileWidget extends StatelessWidget {
                   child: SizedBox(
                     width: 320,
                     height: 480,
-                    child: FadeInImage.memoryNetwork(
-                      fadeInDuration: const Duration(milliseconds: 200),
-                      placeholder: kTransparentImage,
-                      image: stackedImageList[index],
+                    child: ExtendedImage.network(
+                      timeLimit: ref.watch(imageCacheDurationProvider),
+                      cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                          stackedImageList[index]),
+                      stackedImageList[index],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -66,36 +70,36 @@ class ProfileWidget extends StatelessWidget {
         const SizedBox(height: 36),
         Center(
           child: Text(
-            '$name($age)',
+            '$name(${characterInfo.age})',
             style: TextStyle(
-              color: ColorConstants.pink,
+              color: primaryColor,
               fontFamily: 'NanumJungHagSaeng',
               fontSize: 54,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeightConstants.semiBold,
               letterSpacing: 2,
             ),
           ),
         ),
         Center(
           child: Text(
-            '$one_line_description',
+            '${characterInfo.one_line_description}',
             style: TextStyle(
               color: ColorConstants.primary,
               fontFamily: 'NanumJungHagSaeng',
               fontSize: 32,
               height: 28 / 32,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeightConstants.semiBold,
               letterSpacing: 2,
             ),
           ),
         ),
         const SizedBox(height: 10),
         Text(
-          description ?? '',
+          characterInfo.description,
           style: TextStyle(
             fontSize: 17,
             color: ColorConstants.neutral,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeightConstants.semiBold,
             letterSpacing: 1.5,
           ),
         ),

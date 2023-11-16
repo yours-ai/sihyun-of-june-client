@@ -135,7 +135,11 @@ class UserProfileService {
                   child: Text(
                     '기본 이미지 설정',
                     style: TextStyle(
-                        fontSize: 14.0, color: ColorConstants.lightPink),
+                        fontSize: 14.0,
+                        color: Color(ref
+                            .watch(characterThemeProvider)
+                            .colors!
+                            .secondary!)),
                   ),
                 ),
               ),

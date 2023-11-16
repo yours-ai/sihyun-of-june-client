@@ -1,15 +1,18 @@
 import 'dart:ui';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/main.dart';
+import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
-class ViewOthersWidget extends StatelessWidget {
+class ViewOthersWidget extends ConsumerWidget {
   final num excludeId;
 
   const ViewOthersWidget({super.key, required this.excludeId});
@@ -32,7 +35,7 @@ class ViewOthersWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final query = getAllCharactersQuery();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -44,7 +47,7 @@ class ViewOthersWidget extends StatelessWidget {
             '다른 상대도 살펴볼까요?',
             style: TextStyle(
               color: ColorConstants.neutral,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeightConstants.semiBold,
               fontSize: 18,
             ),
             textAlign: TextAlign.center,
@@ -71,7 +74,11 @@ class ViewOthersWidget extends StatelessWidget {
                             Positioned.fill(
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.network(
+                                child: ExtendedImage.network(
+                                  timeLimit:
+                                      ref.watch(imageCacheDurationProvider),
+                                  cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                                      character.default_image),
                                   character.default_image,
                                   color: Colors.black45,
                                   colorBlendMode: BlendMode.darken,
@@ -107,7 +114,14 @@ class ViewOthersWidget extends StatelessWidget {
                               Positioned.fill(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(character.default_image),
+                                  child: ExtendedImage.network(
+                                    character.default_image,
+                                    timeLimit:
+                                        ref.watch(imageCacheDurationProvider),
+                                    cacheKey:
+                                        UniqueCacheKeyService.makeUniqueKey(
+                                            character.default_image),
+                                  ),
                                 ),
                               ),
                               addBlur(character.is_blurred!),

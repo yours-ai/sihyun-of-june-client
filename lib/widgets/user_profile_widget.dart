@@ -1,7 +1,10 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/main.dart';
+import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 import '../actions/auth/queries.dart';
 import '../actions/character/queries.dart';
@@ -28,13 +31,23 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
               builder: (context, state) {
                 if (state.data != null) {
                   return Center(
-                    child: ClipRRect(
-                      clipBehavior: Clip.hardEdge,
-                      borderRadius: BorderRadius.circular(66),
-                      child: SizedBox(
-                        width: 132,
-                        height: 132,
-                        child: Image.network(state.data!.first.default_image),
+                    child: GestureDetector(
+                      onTap: () {
+                        context.push('/mails/my-character');
+                      },
+                      child: ClipRRect(
+                        clipBehavior: Clip.hardEdge,
+                        borderRadius: BorderRadius.circular(66),
+                        child: SizedBox(
+                          width: 132,
+                          height: 132,
+                          child: ExtendedImage.network(
+                            state.data!.first.default_image,
+                            timeLimit: ref.watch(imageCacheDurationProvider),
+                            cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                                state.data!.first.default_image),
+                          ),
+                        ),
                       ),
                     ),
                   );
@@ -69,19 +82,30 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
               builder: (context, state) => state.data == null
                   ? const SizedBox.shrink()
                   : Center(
-                      child: ClipRRect(
-                        clipBehavior: Clip.hardEdge,
-                        borderRadius: BorderRadius.circular(66),
-                        child: SizedBox(
+                      child: GestureDetector(
+                        onTap: () {
+                          userProfileService.showChangeImageModal(context, ref);
+                        },
+                        child: ClipRRect(
+                          clipBehavior: Clip.hardEdge,
+                          borderRadius: BorderRadius.circular(66),
+                          child: SizedBox(
                             width: 132,
                             height: 132,
                             child: state.data!.image == null
                                 ? Image.asset(
                                     'assets/images/default_user_image.png')
-                                : Image.network(
+                                : ExtendedImage.network(
                                     state.data!.image!,
+                                    timeLimit:
+                                        ref.watch(imageCacheDurationProvider),
+                                    cacheKey:
+                                        UniqueCacheKeyService.makeUniqueKey(
+                                            state.data!.image!),
                                     fit: BoxFit.cover,
-                                  )),
+                                  ),
+                          ),
+                        ),
                       ),
                     ),
             ),

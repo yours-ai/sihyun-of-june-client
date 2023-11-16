@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 
 @immutable
 class GoogleVerificationDTO {
@@ -7,7 +6,7 @@ class GoogleVerificationDTO {
   final String productId;
   final String purchaseToken;
 
-  GoogleVerificationDTO({
+  const GoogleVerificationDTO({
     required this.orderId,
     required this.productId,
     required this.purchaseToken,

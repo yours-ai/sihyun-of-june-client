@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/user_profile_widget.dart';
@@ -46,7 +45,10 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 child: Text(
                   '아니요',
                   style: TextStyle(
-                      fontSize: 14.0, color: ColorConstants.lightPink),
+                    fontSize: 14.0,
+                    color: Color(
+                        ref.watch(characterThemeProvider).colors!.secondary!),
+                  ),
                 ),
               ),
               FilledButton(
@@ -82,27 +84,33 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 text: TextSpan(
                   style: TextStyle(
                     height: 1.6,
-                    color: ColorConstants.lightPink,
+                    color: Color(
+                        ref.watch(characterThemeProvider).colors!.secondary!),
                     fontFamily: 'MaruBuri',
                     fontSize: 16.0,
                   ),
-                  children: const [
-                    TextSpan(
+                  children: [
+                    const TextSpan(
                       text: '탈퇴하기 신청을 하면 이런 내용이 전부 삭제되어요.\n',
                     ),
                     TextSpan(
                       text: '- 시현이 또는 우빈이와 함께 나누었던 ',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                       children: [
                         TextSpan(
                           text: '편지\n',
                           style: TextStyle(
-                            color: Color(0xffFF7389),
+                            color: Color(
+                              ref
+                                  .watch(characterThemeProvider)
+                                  .colors!
+                                  .primary!,
+                            ),
                           ),
                         ),
-                        TextSpan(
+                        const TextSpan(
                           text: '- 앞으로 새로운 친구들을 만나볼 기회',
                         ),
                       ],
@@ -122,7 +130,10 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 child: Text(
                   '아니요',
                   style: TextStyle(
-                      fontSize: 14.0, color: ColorConstants.lightPink),
+                    fontSize: 14.0,
+                    color: Color(
+                        ref.watch(characterThemeProvider).colors!.secondary!),
+                  ),
                 ),
               ),
               FilledButton(
@@ -155,36 +166,38 @@ class AllScreenState extends ConsumerState<AllScreen> {
         ),
         body: ListView(
           children: [
-            UserProfileWidget(),
+            const UserProfileWidget(),
             QueryBuilder(
               query: getRetrieveMeQuery(),
               builder: (context, state) {
                 return MenuWidget(
                   title: '내 코인',
                   onPressed: () => context.push('/my-coin'),
-                  suffix: Row(children: [
-                    Text(
-                      state.data?.coin != null
-                          ? transactionService.currencyFormatter
-                              .format(state.data?.coin)
-                          : '',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: ColorConstants.primary,
-                        fontWeight: FontWeight.w600,
+                  suffix: Row(
+                    children: [
+                      Text(
+                        state.data?.coin != null
+                            ? transactionService.currencyFormatter
+                                .format(state.data?.coin)
+                            : '',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: ColorConstants.primary,
+                          fontWeight: FontWeightConstants.semiBold,
+                        ),
                       ),
-                    ),
-                    Icon(
-                      PhosphorIcons.coin_vertical,
-                      color: ColorConstants.primary,
-                      size: 24,
-                    ),
-                    Icon(
-                      PhosphorIcons.caret_right_bold,
-                      color: ColorConstants.primary,
-                      size: 24,
-                    ),
-                  ]),
+                      Icon(
+                        PhosphorIcons.coin_vertical,
+                        color: ColorConstants.primary,
+                        size: 24,
+                      ),
+                      Icon(
+                        PhosphorIcons.caret_right_bold,
+                        color: ColorConstants.primary,
+                        size: 24,
+                      ),
+                    ],
+                  ),
                 );
               },
             ),

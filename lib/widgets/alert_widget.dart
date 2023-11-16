@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../constants.dart';
-
 class AlertWidget extends StatelessWidget {
   final String? title;
   final Widget? content;

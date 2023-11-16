@@ -24,19 +24,24 @@ class TitleLayout extends StatelessWidget {
         withAppBar ? const SizedBox(height: 10) : const SizedBox(height: 40),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: titleText != '' ? Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                child: Text(
-                  titleText,
-                  style: const TextStyle(fontFamily: 'NanumJungHagSaeng', fontSize: 39, height: 36/39),
-                  softWrap: true,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ) : title,
+          child: titleText != ''
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        titleText,
+                        style: const TextStyle(
+                            fontFamily: 'NanumJungHagSaeng',
+                            fontSize: 39,
+                            height: 36 / 39),
+                        softWrap: true,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                )
+              : title,
         ),
         const SizedBox(height: 20),
         Expanded(

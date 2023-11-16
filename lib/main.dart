@@ -1,13 +1,14 @@
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
-import 'package:amplitude_flutter/identify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:moment_dart/moment_dart.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -73,7 +74,19 @@ void main() async {
   );
 }
 
+final imageCacheDurationProvider = Provider<Duration>((ref) {
+  return const Duration(minutes: 50);
+});
+
 final topPaddingProvider = StateProvider<double?>((ref) => null);
+
+final characterThemeProvider = StateProvider<CharacterTheme>((ref) {
+  final CharacterTheme defaultTheme = CharacterTheme(
+    colors: CharacterColors(primary: 4294923379, secondary: 4294932624),
+    font: "NanumNoRyeogHaNeunDongHee",
+  );
+  return defaultTheme;
+});
 
 class ProjectJuneApp extends ConsumerStatefulWidget {
   const ProjectJuneApp({super.key});
@@ -128,10 +141,11 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
         ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.w600,
+            textStyle: TextStyle(
+              fontWeight: FontWeightConstants.semiBold,
             ),
-            backgroundColor: ColorConstants.pink,
+            backgroundColor:
+                Color(ref.watch(characterThemeProvider).colors!.primary!),
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(
               vertical: 17.0,

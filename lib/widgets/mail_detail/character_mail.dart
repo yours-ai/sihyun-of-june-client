@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_june_client/main.dart';
 
 import '../../actions/mails/models/Mail.dart';
 import '../../constants.dart';
-import '../../services.dart';
 import 'mail_info.dart';
 
-class CharacterMailWidget extends StatelessWidget {
+class CharacterMailWidget extends ConsumerWidget {
   final Mail mail;
 
   const CharacterMailWidget({Key? key, required this.mail}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,9 +29,9 @@ class CharacterMailWidget extends StatelessWidget {
         Text(
           mail.description,
           style: TextStyle(
-            fontFamily: 'NanumNoRyeogHaNeunDongHee',
+            fontFamily: ref.watch(characterThemeProvider).font,
             fontSize: 19,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeightConstants.semiBold,
             color: ColorConstants.primary,
             letterSpacing: 1.5,
           ),

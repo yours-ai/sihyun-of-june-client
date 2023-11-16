@@ -5,9 +5,7 @@ import '../../constants.dart';
 class DottedUnderline extends StatelessWidget {
   final double margin;
 
-  const DottedUnderline(
-    this.margin, {super.key}
-  );
+  const DottedUnderline(this.margin, {super.key});
 
   @override
   Widget build(BuildContext context) {

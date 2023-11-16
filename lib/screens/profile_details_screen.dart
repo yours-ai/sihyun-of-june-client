@@ -1,11 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/main.dart';
-import 'package:project_june_client/screens/starting_screen.dart';
+import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 class ProfileDetailsScreen extends ConsumerStatefulWidget {
   final List<String> imageList;
@@ -75,6 +74,9 @@ class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
                       fit: BoxFit.fitWidth,
                       mode: ExtendedImageMode.gesture,
                       enableSlideOutPage: true,
+                      timeLimit: ref.watch(imageCacheDurationProvider),
+                      cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                          widget.imageList[index]),
                       initGestureConfigHandler: (state) {
                         return GestureConfig(
                           minScale: 1.0,
