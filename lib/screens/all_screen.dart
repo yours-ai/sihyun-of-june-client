@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
@@ -44,12 +42,14 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 onPressed: () {
                   context.pop();
                 },
-                child: Text('아니요',
-                    style: TextStyle(
-                      fontSize: 14.0,
-                      color: Color(
-                          ref.watch(characterThemeProvider).colors!.secondary!),
-                    )),
+                child: Text(
+                  '아니요',
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    color: Color(
+                        ref.watch(characterThemeProvider).colors!.secondary!),
+                  ),
+                ),
               ),
               FilledButton(
                 onPressed: () {
@@ -166,36 +166,38 @@ class AllScreenState extends ConsumerState<AllScreen> {
         ),
         body: ListView(
           children: [
-            UserProfileWidget(),
+            const UserProfileWidget(),
             QueryBuilder(
               query: getRetrieveMeQuery(),
               builder: (context, state) {
                 return MenuWidget(
                   title: '내 코인',
                   onPressed: () => context.push('/my-coin'),
-                  suffix: Row(children: [
-                    Text(
-                      state.data?.coin != null
-                          ? transactionService.currencyFormatter
-                              .format(state.data?.coin)
-                          : '',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: ColorConstants.primary,
-                        fontWeight: FontWeight.w600,
+                  suffix: Row(
+                    children: [
+                      Text(
+                        state.data?.coin != null
+                            ? transactionService.currencyFormatter
+                                .format(state.data?.coin)
+                            : '',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: ColorConstants.primary,
+                          fontWeight: FontWeightConstants.semiBold,
+                        ),
                       ),
-                    ),
-                    Icon(
-                      PhosphorIcons.coin_vertical,
-                      color: ColorConstants.primary,
-                      size: 24,
-                    ),
-                    Icon(
-                      PhosphorIcons.caret_right_bold,
-                      color: ColorConstants.primary,
-                      size: 24,
-                    ),
-                  ]),
+                      Icon(
+                        PhosphorIcons.coin_vertical,
+                        color: ColorConstants.primary,
+                        size: 24,
+                      ),
+                      Icon(
+                        PhosphorIcons.caret_right_bold,
+                        color: ColorConstants.primary,
+                        size: 24,
+                      ),
+                    ],
+                  ),
                 );
               },
             ),

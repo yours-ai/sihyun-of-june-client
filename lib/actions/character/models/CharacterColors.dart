@@ -9,7 +9,8 @@ class CharacterColors {
 
   CharacterColors({this.primary, this.secondary});
 
-  factory CharacterColors.fromJson(Map<String, dynamic> json) => _$CharacterColorsFromJson(json);
+  factory CharacterColors.fromJson(Map<String, dynamic> json) =>
+      _$CharacterColorsFromJson(json);
 
   Map<String, dynamic> toJson() => _$CharacterColorsToJson(this);
 }

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 abstract final class ColorConstants {
@@ -29,11 +27,16 @@ abstract final class Urls {
   static String privacy = "https://pygmalion.app/policy/privacy";
   static String terms = "https://pygmalion.app/policy/terms";
   static String ask = "https://pf.kakao.com/_YYxoqG/chat";
-  static String appstore = 'https://apps.apple.com/kr/app/%EC%9C%A0%EC%9B%94%EC%9D%98-%EC%8B%9C%ED%98%84%EC%9D%B4/id6463772803';
+  static String appstore =
+      'https://apps.apple.com/kr/app/%EC%9C%A0%EC%9B%94%EC%9D%98-%EC%8B%9C%ED%98%84%EC%9D%B4/id6463772803';
   static String appleWithdraw = 'https://support.apple.com/ko-kr/HT210426';
 }
 
 abstract final class ProjectConstants {
   static TimeOfDay mailReceiveTime = const TimeOfDay(hour: 21, minute: 0);
   static TimeOfDay mailSendDueTime = const TimeOfDay(hour: 9, minute: 0);
+}
+
+abstract final class FontWeightConstants {
+  static FontWeight semiBold = FontWeight.w600;
 }

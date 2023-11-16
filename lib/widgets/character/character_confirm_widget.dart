@@ -53,7 +53,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
                             .secondary!),
                       )),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 MutationBuilder(

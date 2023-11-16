@@ -25,7 +25,8 @@ class MailService {
   }
 
   int getMailDateDiff(DateTime targetDate, DateTime firstMailDate) {
-    DateTime normalizedDt = DateTime(targetDate.year, targetDate.month, targetDate.day);
+    DateTime normalizedDt =
+        DateTime(targetDate.year, targetDate.month, targetDate.day);
     DateTime normalizedFirstMailDate =
         DateTime(firstMailDate.year, firstMailDate.month, firstMailDate.day);
     return normalizedDt.difference(normalizedFirstMailDate).inDays;
@@ -42,23 +43,32 @@ class MailService {
     return DateFormat('yyyy.MM.dd').format(dt);
   }
 
-  List<Widget> emptyCellsForWeekDay(DateTime firstDate){
+  List<Widget> emptyCellsForWeekDay(DateTime firstDate) {
     return List.generate(
-      (firstDate.weekday - DateTime.sunday) % 7,
-          (index) => const SizedBox());
+        (firstDate.weekday - DateTime.sunday) % 7, (index) => const SizedBox());
   }
 
   Widget calendarWeekday() {
-    final List<String> weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    final List<String> weekdays = [
+      'Sun',
+      'Mon',
+      'Tue',
+      'Wed',
+      'Thu',
+      'Fri',
+      'Sat'
+    ];
     return Row(
-      mainAxisAlignment:
-      MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         for (var day in weekdays)
-          Text(day,
-              style: TextStyle(
-                  color: ColorConstants.gray,
-                  fontWeight: FontWeight.w600)),
+          Text(
+            day,
+            style: TextStyle(
+              color: ColorConstants.gray,
+              fontWeight: FontWeightConstants.semiBold,
+            ),
+          ),
       ],
     );
   }

@@ -1,5 +1,3 @@
-import 'package:dotted_decoration/dotted_decoration.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:project_june_client/services.dart';
@@ -26,7 +24,7 @@ class CoinLogWidget extends StatelessWidget {
                 coinLog.description,
                 style: TextStyle(
                   color: ColorConstants.primary,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeightConstants.semiBold,
                 ),
               ),
             ),
@@ -52,7 +50,7 @@ class CoinLogWidget extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         color: ColorConstants.primary,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeightConstants.semiBold,
                       ),
                     ),
                     Icon(

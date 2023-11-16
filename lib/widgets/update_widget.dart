@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:new_version_plus/new_version_plus.dart';
-import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/modal_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 

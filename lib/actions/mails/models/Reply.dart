@@ -15,8 +15,7 @@ class Reply {
       required this.created,
       required this.modified});
 
-  factory Reply.fromJson(Map<String, dynamic> json) =>
-      _$ReplyFromJson(json);
+  factory Reply.fromJson(Map<String, dynamic> json) => _$ReplyFromJson(json);
 
   Map<String, dynamic> toJson() => _$ReplyToJson(this);
 }

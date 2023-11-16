@@ -34,7 +34,7 @@ class _NavbarIconWidgetState extends State<NavbarIconWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _moveUp();
       _rotate();
     });

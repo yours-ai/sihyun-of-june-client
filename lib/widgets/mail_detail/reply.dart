@@ -40,7 +40,7 @@ class ReplyWidget extends ConsumerWidget {
           style: TextStyle(
             fontFamily: ref.watch(characterThemeProvider).font,
             fontSize: 19,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeightConstants.semiBold,
             color: ColorConstants.primary,
             letterSpacing: 1.5,
           ),

@@ -7,7 +7,6 @@ import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/notification_widget.dart';
 
 import '../actions/notification/queries.dart';
-import '../constants.dart';
 
 class NotificationListScreen extends ConsumerWidget {
   const NotificationListScreen({super.key});
@@ -38,7 +37,10 @@ class NotificationListScreen extends ConsumerWidget {
                             "아직 도착한 알림이 없습니다.",
                             style: TextStyle(
                               fontSize: 14,
-                              color: Color(ref.watch(characterThemeProvider).colors!.primary!),
+                              color: Color(ref
+                                  .watch(characterThemeProvider)
+                                  .colors!
+                                  .primary!),
                             ),
                           ),
                         ),

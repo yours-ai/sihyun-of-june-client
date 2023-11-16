@@ -14,9 +14,17 @@ class Character {
   CharacterInfo? character_info;
   CharacterTheme? theme;
 
-  Character({required this.id, required this.is_active, required this.name, required this.default_image, this.is_blurred, required this.character_info, required this.theme});
+  Character(
+      {required this.id,
+      required this.is_active,
+      required this.name,
+      required this.default_image,
+      this.is_blurred,
+      required this.character_info,
+      required this.theme});
 
-  factory Character.fromJson(Map<String, dynamic> json) => _$CharacterFromJson(json);
+  factory Character.fromJson(Map<String, dynamic> json) =>
+      _$CharacterFromJson(json);
 
   Map<String, dynamic> toJson() => _$CharacterToJson(this);
 }

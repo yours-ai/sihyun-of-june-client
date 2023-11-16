@@ -34,7 +34,7 @@ class _PhoneTabWidgetState extends State<PhoneTabWidget> {
   late Timer _timer;
 
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (seconds > 0) {
         setState(() {
           seconds--;

@@ -1,12 +1,8 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
-import 'package:project_june_client/actions/character/models/CharacterInfo.dart';
-import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/profile_widget.dart';
 

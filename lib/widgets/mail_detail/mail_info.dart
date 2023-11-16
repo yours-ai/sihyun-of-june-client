@@ -69,7 +69,7 @@ class MailInfoWidget extends ConsumerWidget {
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeightConstants.semiBold,
                       color: ColorConstants.gray,
                     ),
                   ),
@@ -79,7 +79,7 @@ class MailInfoWidget extends ConsumerWidget {
                     style: TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: 12,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeightConstants.semiBold,
                       color: Color(
                           ref.watch(characterThemeProvider).colors!.primary!),
                     ),
@@ -91,7 +91,7 @@ class MailInfoWidget extends ConsumerWidget {
                 style: TextStyle(
                   fontFamily: 'Pretendard',
                   fontSize: 12,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeightConstants.semiBold,
                   color: ColorConstants.gray,
                 ),
               ),

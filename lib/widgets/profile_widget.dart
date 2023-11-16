@@ -1,16 +1,11 @@
-import 'dart:ui';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/CharacterInfo.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/main.dart';
 import 'package:project_june_client/screens/profile_details_screen.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
-import 'package:project_june_client/widgets/common/dotted_underline.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class ProfileWidget extends ConsumerWidget {
   final String? name;
@@ -80,7 +75,7 @@ class ProfileWidget extends ConsumerWidget {
               color: primaryColor,
               fontFamily: 'NanumJungHagSaeng',
               fontSize: 54,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeightConstants.semiBold,
               letterSpacing: 2,
             ),
           ),
@@ -93,18 +88,18 @@ class ProfileWidget extends ConsumerWidget {
               fontFamily: 'NanumJungHagSaeng',
               fontSize: 32,
               height: 28 / 32,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeightConstants.semiBold,
               letterSpacing: 2,
             ),
           ),
         ),
         const SizedBox(height: 10),
         Text(
-          characterInfo.description ?? '',
+          characterInfo.description,
           style: TextStyle(
             fontSize: 17,
             color: ColorConstants.neutral,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeightConstants.semiBold,
             letterSpacing: 1.5,
           ),
         ),

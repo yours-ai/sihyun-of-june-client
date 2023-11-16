@@ -1,4 +1,3 @@
-import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:moment_dart/moment_dart.dart';
@@ -48,7 +47,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                         fontSize: 16,
                         color: ColorConstants.primary,
                         fontWeight: widget.notification.is_read == false
-                            ? FontWeight.w600
+                            ? FontWeightConstants.semiBold
                             : FontWeight.normal,
                       ),
                     ),
@@ -66,7 +65,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                             color: ColorConstants.primary,
                             fontSize: 12,
                             fontWeight: widget.notification.is_read == false
-                                ? FontWeight.w600
+                                ? FontWeightConstants.semiBold
                                 : FontWeight.normal),
                       ),
                       Icon(

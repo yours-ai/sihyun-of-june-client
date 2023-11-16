@@ -4,7 +4,6 @@ import 'package:project_june_client/main.dart';
 
 import '../../actions/mails/models/Mail.dart';
 import '../../constants.dart';
-import '../../services.dart';
 import 'mail_info.dart';
 
 class CharacterMailWidget extends ConsumerWidget {
@@ -32,7 +31,7 @@ class CharacterMailWidget extends ConsumerWidget {
           style: TextStyle(
             fontFamily: ref.watch(characterThemeProvider).font,
             fontSize: 19,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeightConstants.semiBold,
             color: ColorConstants.primary,
             letterSpacing: 1.5,
           ),

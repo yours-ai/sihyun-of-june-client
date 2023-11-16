@@ -10,7 +10,8 @@ class CharacterTheme {
 
   CharacterTheme({this.colors, this.font});
 
-  factory CharacterTheme.fromJson(Map<String, dynamic> json) => _$CharacterThemeFromJson(json);
+  factory CharacterTheme.fromJson(Map<String, dynamic> json) =>
+      _$CharacterThemeFromJson(json);
 
   Map<String, dynamic> toJson() => _$CharacterThemeToJson(this);
 }

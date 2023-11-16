@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -48,7 +47,7 @@ class ViewOthersWidget extends ConsumerWidget {
             '다른 상대도 살펴볼까요?',
             style: TextStyle(
               color: ColorConstants.neutral,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeightConstants.semiBold,
               fontSize: 18,
             ),
             textAlign: TextAlign.center,
@@ -119,7 +118,9 @@ class ViewOthersWidget extends ConsumerWidget {
                                     character.default_image,
                                     timeLimit:
                                         ref.watch(imageCacheDurationProvider),
-                                    cacheKey: UniqueCacheKeyService.makeUniqueKey(character.default_image),
+                                    cacheKey:
+                                        UniqueCacheKeyService.makeUniqueKey(
+                                            character.default_image),
                                   ),
                                 ),
                               ),

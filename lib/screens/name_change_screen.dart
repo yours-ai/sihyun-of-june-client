@@ -1,6 +1,5 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
@@ -15,7 +14,7 @@ import '../constants.dart';
 import '../widgets/modal_widget.dart';
 
 class NameChangeScreen extends ConsumerStatefulWidget {
-  NameChangeScreen({Key? key}) : super(key: key);
+  const NameChangeScreen({Key? key}) : super(key: key);
 
   @override
   NameChangeScreenState createState() => NameChangeScreenState();
@@ -111,7 +110,7 @@ class NameChangeScreenState extends ConsumerState<NameChangeScreen> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: BackAppbar(),
+        appBar: const BackAppbar(),
         body: SafeArea(
           child: TitleLayout(
               withAppBar: true,

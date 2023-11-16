@@ -1,7 +1,6 @@
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
-import 'package:amplitude_flutter/identify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -74,6 +73,7 @@ void main() async {
     appRunner: _appRunner,
   );
 }
+
 final imageCacheDurationProvider = Provider<Duration>((ref) {
   return const Duration(minutes: 50);
 });
@@ -101,7 +101,7 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
     super.initState();
     initServerErrorSnackbar(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      var topPadding = MediaQuery.of(context).padding.top;
+      final topPadding = MediaQuery.of(context).padding.top;
       ref.read(topPaddingProvider.notifier).state = topPadding;
     });
   }
@@ -141,8 +141,8 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
         ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.w600,
+            textStyle: TextStyle(
+              fontWeight: FontWeightConstants.semiBold,
             ),
             backgroundColor:
                 Color(ref.watch(characterThemeProvider).colors!.primary!),

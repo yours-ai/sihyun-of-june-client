@@ -40,7 +40,7 @@ final List<TestResultData> tabList = [
 class TestResultWidget extends StatefulWidget {
   final AnswerDTOList responses;
 
-  TestResultWidget({super.key, required this.responses});
+  const TestResultWidget({super.key, required this.responses});
 
   @override
   State<StatefulWidget> createState() {

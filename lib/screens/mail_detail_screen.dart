@@ -1,9 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 import 'package:project_june_client/widgets/mail_detail/character_mail.dart';
@@ -51,7 +48,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
     );
 
     if (mutation == null) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return MutationBuilder(
@@ -67,7 +64,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                   return GestureDetector(
                     onTap: () => FocusScope.of(context).unfocus(),
                     child: Scaffold(
-                      appBar: BackAppbar(),
+                      appBar: const BackAppbar(),
                       body: SafeArea(
                         child: SingleChildScrollView(
                           reverse: MediaQuery.of(context).viewInsets.bottom > 0

@@ -11,7 +11,6 @@ import '../../actions/mails/dtos.dart';
 import '../../actions/mails/models/Mail.dart';
 import '../../actions/mails/queries.dart';
 import '../../constants.dart';
-import '../../services.dart';
 
 class ReplyFormWidget extends ConsumerStatefulWidget {
   final Mail mail;
@@ -140,7 +139,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                     fontFamily: ref.watch(characterThemeProvider).font,
                     fontSize: 19,
                     color: ColorConstants.neutral,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeightConstants.semiBold,
                     letterSpacing: 1.5,
                   ),
                   border: InputBorder.none,
@@ -149,7 +148,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   fontFamily: ref.watch(characterThemeProvider).font,
                   fontSize: 19,
                   color: ColorConstants.primary,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeightConstants.semiBold,
                   height: 1.5,
                   letterSpacing: 1.5,
                 ),

@@ -76,7 +76,7 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertWidget(
-            content: Container(
+            content: SizedBox(
               width: 300,
               child: GridView.builder(
                 shrinkWrap: true,

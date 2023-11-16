@@ -1,15 +1,12 @@
 import 'dart:io';
 
-import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:intl/intl.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
 import '../services.dart';
-import '../services/transaction_service.dart';
 
 class ProductWidget extends StatefulWidget {
   final List<ProductDetails> products;
@@ -75,7 +72,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                               style: TextStyle(
                                 fontSize: 18,
                                 color: ColorConstants.primary,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeightConstants.semiBold,
                               ),
                             ),
                           ),
@@ -88,7 +85,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                               style: TextStyle(
                                 fontSize: 18,
                                 color: ColorConstants.primary,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeightConstants.semiBold,
                               ),
                             ),
                           ),

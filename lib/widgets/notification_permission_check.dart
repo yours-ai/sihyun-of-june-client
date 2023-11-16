@@ -7,6 +7,8 @@ import '../constants.dart';
 import 'modal_widget.dart';
 
 class RequestNotificationPermissionWidget extends StatefulWidget {
+  const RequestNotificationPermissionWidget({super.key});
+
   @override
   State<RequestNotificationPermissionWidget> createState() =>
       _RequestNotificationPermissionWidgetState();

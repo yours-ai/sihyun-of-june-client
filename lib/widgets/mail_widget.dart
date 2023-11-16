@@ -1,12 +1,7 @@
-import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/mails/queries.dart';
-import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/main.dart';
 import 'package:project_june_client/services.dart';
 
@@ -17,7 +12,7 @@ class MailWidget extends ConsumerWidget {
   final int? mailNumber;
   final DateTime? firstMailDate;
 
-  MailWidget({super.key, this.mail, this.mailNumber = 0, this.firstMailDate});
+  const MailWidget({super.key, this.mail, this.mailNumber = 0, this.firstMailDate});
 
   Widget letterIcon(
       String mailState, String primaryColor, String secondaryColor) {
@@ -57,11 +52,11 @@ class MailWidget extends ConsumerWidget {
                       "#${ref.watch(characterThemeProvider).colors!.secondary!.toRadixString(16).toString().substring(
                             2,
                           )}"),
-                  SizedBox(height: 1),
+                  const SizedBox(height: 1),
                   Text(
                     mailService.getMailReceiveDateStr(
                         mail!.available_at, (mailNumber!) % 30 == 0),
-                    style: TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
+                    style: const TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
                   )
                 ],
               ),
@@ -76,12 +71,12 @@ class MailWidget extends ConsumerWidget {
                     "#${ref.watch(characterThemeProvider).colors!.secondary!.toRadixString(16).toString().substring(
                           2,
                         )}"),
-                SizedBox(height: 1),
+                const SizedBox(height: 1),
                 Text(
                   mailService.getMailReceiveDateStr(
                       firstMailDate!.add(Duration(days: mailNumber!)),
                       (mailNumber!) % 30 == 0),
-                  style: TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
+                  style: const TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
                 ),
               ],
             ),
