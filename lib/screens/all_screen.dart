@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/user_profile_widget.dart';

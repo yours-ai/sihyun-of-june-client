@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_june_client/main.dart';
 
-class WithDrawReasonWidget extends StatefulWidget {
+class WithDrawReasonWidget extends ConsumerStatefulWidget {
   bool isChecked;
   final String reasonKeyword;
   final String reasonText;
@@ -14,13 +16,15 @@ class WithDrawReasonWidget extends StatefulWidget {
       required this.isChecked});
 
   @override
-  State<WithDrawReasonWidget> createState() => _WithDrawReasonWidgetState();
+  WithDrawReasonWidgetState createState() => WithDrawReasonWidgetState();
 }
 
-class _WithDrawReasonWidgetState extends State<WithDrawReasonWidget> {
+class WithDrawReasonWidgetState extends ConsumerState<WithDrawReasonWidget> {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
+      activeColor: Color(ref.watch(characterThemeProvider).colors!.secondary!),
+
         visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
         contentPadding: const EdgeInsets.all(0),
         controlAffinity: ListTileControlAffinity.leading,

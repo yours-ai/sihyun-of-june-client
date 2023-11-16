@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
+import 'package:project_june_client/actions/character/models/CharacterInfo.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
@@ -28,13 +29,14 @@ class CharacterDetailWidget extends ConsumerWidget {
     return QueryBuilder(
       query: query,
       builder: (context, state) {
+        Character? character;
         if (state.data == null) {
           return const SizedBox.shrink();
         }
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          CharacterTheme characterTheme = state.data!['character']['theme'];
-          ref.read(characterThemeProvider.notifier).state = characterTheme;
+          ref.read(characterThemeProvider.notifier).state = character!.theme!;
         });
+        character = Character.fromJson(state.data!['character']);
         return Scaffold(
           body: SafeArea(
             child: Column(
@@ -51,10 +53,10 @@ class CharacterDetailWidget extends ConsumerWidget {
                     ),
                     children: [
                       ProfileWidget(
-                        name: state.data!['character']['name'],
-                        defaultImage: state.data!['character']['default_image'],
-                        characterInfo: state.data!['character']
-                            ['character_info'],
+                        name: character.name!,
+                        defaultImage: character.default_image,
+                        characterInfo: character.character_info!,
+                        primaryColor: Color(character.theme!.colors!.primary!),
                       ),
                     ],
                   ),
@@ -66,7 +68,7 @@ class CharacterDetailWidget extends ConsumerWidget {
                     onPressed: () {
                       onActiveScreen(ActiveScreen.confirm);
                       onTestId(state.data!['test_id']);
-                      onName(state.data!['character']['name'].substring(1));
+                      onName(character!.name!.substring(1));
                     },
                     child: const Text('다음'),
                   ),

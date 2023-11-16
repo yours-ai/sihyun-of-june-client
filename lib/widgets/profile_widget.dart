@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,28 +8,32 @@ import 'package:project_june_client/actions/character/models/CharacterInfo.dart'
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/main.dart';
 import 'package:project_june_client/screens/profile_details_screen.dart';
+import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProfileWidget extends ConsumerWidget {
   final String? name;
   final CharacterInfo characterInfo;
+  final Color primaryColor;
   final String defaultImage;
 
   const ProfileWidget({
     super.key,
     required this.name,
     required this.characterInfo,
+    required this.primaryColor,
     required this.defaultImage,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final OtherImageList = characterInfo.images!
-        .where((image) => image != defaultImage)
-        .toList();
-    final stackedImageList =
-    OtherImageList.length > 3 ? OtherImageList.sublist(0, 3) : OtherImageList;
+    final otherImageList =
+        characterInfo.images!.where((image) => image != defaultImage).toList();
+
+    final stackedImageList = otherImageList.length > 3
+        ? otherImageList.sublist(0, 3)
+        : otherImageList;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -44,7 +49,8 @@ class ProfileWidget extends ConsumerWidget {
                 showModalBottomSheet(
                     isScrollControlled: true,
                     context: context,
-                    builder: (context) => ProfileDetailsScreen(OtherImageList));
+                    builder: (context) =>
+                        ProfileDetailsScreen(otherImageList.reversed.toList()));
               },
               child: Transform.rotate(
                 angle: angle,
@@ -53,10 +59,11 @@ class ProfileWidget extends ConsumerWidget {
                   child: SizedBox(
                     width: 320,
                     height: 480,
-                    child: FadeInImage.memoryNetwork(
-                      fadeInDuration: const Duration(milliseconds: 200),
-                      placeholder: kTransparentImage,
-                      image: stackedImageList[index],
+                    child: ExtendedImage.network(
+                      timeLimit: ref.watch(imageCacheDurationProvider),
+                      cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                          stackedImageList[index]),
+                      stackedImageList[index],
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -70,7 +77,7 @@ class ProfileWidget extends ConsumerWidget {
           child: Text(
             '$name(${characterInfo.age})',
             style: TextStyle(
-              color: Color(ref.watch(characterThemeProvider).colors!.primary!),
+              color: primaryColor,
               fontFamily: 'NanumJungHagSaeng',
               fontSize: 54,
               fontWeight: FontWeight.w600,
