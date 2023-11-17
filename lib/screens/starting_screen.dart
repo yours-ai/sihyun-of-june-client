@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -19,6 +20,8 @@ class StartingScreen extends StatefulWidget {
 }
 
 class _StartingScreen extends State<StartingScreen> {
+  AppsflyerSdk? appsflyerSdk;
+
   _checkAuthAndLand() async {
     final isLogined = await loadIsLogined();
     FlutterNativeSplash.remove();
@@ -26,6 +29,24 @@ class _StartingScreen extends State<StartingScreen> {
 
     await _initializeNotificationHandlerIfAccepted();
     await _checkUpdateAvailable();
+
+    appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
+      switch (dp.status) {
+        case Status.FOUND:
+          print(dp.deepLink?.toString());
+          context.go('${dp.deepLink?.deepLinkValue}');
+          break;
+        case Status.NOT_FOUND:
+          print("deep link not found");
+          break;
+        case Status.ERROR:
+          print("deep link error: ${dp.error}");
+          break;
+        case Status.PARSE_ERROR:
+          print("deep link status parsing error");
+          break;
+      }
+    });
 
     if (isLogined == false) {
       context.go('/landing');
@@ -48,6 +69,21 @@ class _StartingScreen extends State<StartingScreen> {
         context.go('/character-test');
       }
     }
+  }
+
+  _appsFlyerInit() async {
+    AppsFlyerOptions appsFlyerOptions = AppsFlyerOptions(
+      afDevKey: 'frxewKANsNPxG3KRKnqtF5',
+      appId:
+          Platform.isIOS ? '6463772803' : 'team.pygmalion.project_june_client',
+      showDebug: true,
+    );
+    appsflyerSdk = AppsflyerSdk(appsFlyerOptions);
+    appsflyerSdk!.initSdk(
+      registerConversionDataCallback: true,
+      registerOnAppOpenAttributionCallback: true,
+      registerOnDeepLinkingCallback: true,
+    );
   }
 
   _checkUpdateAvailable() async {
@@ -77,7 +113,7 @@ class _StartingScreen extends State<StartingScreen> {
   @override
   void initState() {
     super.initState();
-
+    _appsFlyerInit();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _checkAuthAndLand();
     });
