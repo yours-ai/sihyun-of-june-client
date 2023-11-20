@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
@@ -8,7 +9,7 @@ import 'package:project_june_client/actions/auth/dtos.dart';
 
 import '../common/title_layout.dart';
 
-class VerifyTabWidget extends StatefulWidget {
+class VerifyTabWidget extends ConsumerStatefulWidget {
   final ValidatedPhoneDTO dto;
   final void Function(ValidatedAuthCodeDTO dto) onSmsVerify;
 
@@ -19,10 +20,10 @@ class VerifyTabWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<VerifyTabWidget> createState() => _VerifyTabWidgetState();
+  VerifyTabWidgetState createState() => VerifyTabWidgetState();
 }
 
-class _VerifyTabWidgetState extends State<VerifyTabWidget> {
+class VerifyTabWidgetState extends ConsumerState<VerifyTabWidget> {
   final _formKey = GlobalKey<FormState>();
   final authController = TextEditingController();
   int? authCode;
