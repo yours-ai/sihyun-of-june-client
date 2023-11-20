@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
@@ -59,6 +61,13 @@ class CharacterConfirmWidget extends ConsumerWidget {
                 MutationBuilder(
                   mutation: getDenyChoiceMutation(
                     onSuccess: (res, arg) {
+                      CharacterTheme defaultTheme = CharacterTheme(
+                        colors: CharacterColors(
+                            primary: 4294923379, secondary: 4294932624),
+                        font: "NanumNoRyeogHaNeunDongHee",
+                      );
+                      ref.read(characterThemeProvider.notifier).state =
+                          defaultTheme;
                       context.pop();
                       context.go('/character-test');
                     },
@@ -103,8 +112,12 @@ class CharacterConfirmWidget extends ConsumerWidget {
       body: SafeArea(
         child: TitleLayout(
           withAppBar: true,
-          titleText:
-              '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 편지가 올 거에요.',
+          title: Text(
+            '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
+                '편지가 올 거에요.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           actions: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

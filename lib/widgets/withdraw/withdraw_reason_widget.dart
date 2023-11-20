@@ -23,7 +23,7 @@ class WithDrawReasonWidgetState extends ConsumerState<WithDrawReasonWidget> {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
-      activeColor: Color(ref.watch(characterThemeProvider).colors!.secondary!),
+      activeColor: Color(ref.watch(characterThemeProvider).colors!.primary!),
 
         visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
         contentPadding: const EdgeInsets.all(0),

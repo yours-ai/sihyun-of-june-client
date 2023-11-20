@@ -38,7 +38,7 @@ class ReplyWidget extends ConsumerWidget {
         Text(
           reply.description,
           style: TextStyle(
-            fontFamily: ref.watch(characterThemeProvider).font,
+            fontFamily: 'NanumDaCaeSaRang',
             fontSize: 19,
             fontWeight: FontWeightConstants.semiBold,
             color: ColorConstants.primary,

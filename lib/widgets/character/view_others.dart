@@ -82,6 +82,7 @@ class ViewOthersWidget extends ConsumerWidget {
                                   character.default_image,
                                   color: Colors.black45,
                                   colorBlendMode: BlendMode.darken,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),
@@ -121,6 +122,7 @@ class ViewOthersWidget extends ConsumerWidget {
                                     cacheKey:
                                         UniqueCacheKeyService.makeUniqueKey(
                                             character.default_image),
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
