@@ -10,7 +10,7 @@ class OnelinkService {
       afDevKey: 'frxewKANsNPxG3KRKnqtF5',
       appId:
           Platform.isIOS ? '6463772803' : 'team.pygmalion.project_june_client',
-      showDebug: true,
+      showDebug: false,
     );
     appsflyerSdk = AppsflyerSdk(appsFlyerOptions);
     await appsflyerSdk!.initSdk(
