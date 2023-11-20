@@ -53,7 +53,7 @@ Future<void> getOrCreateUserDevice(String token) async {
     }
   } catch (e) {
     if (e is DioException) {
-      return;  // unique constraint error
+      return; // unique constraint error
     } else {
       rethrow;
     }

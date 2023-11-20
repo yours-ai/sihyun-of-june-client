@@ -12,7 +12,8 @@ Query<List<Mail>> getListMailQuery({OnQueryErrorCallback? onError}) {
   );
 }
 
-Query<Mail> getRetrieveMailQuery({OnQueryErrorCallback? onError, required int id}) {
+Query<Mail> getRetrieveMailQuery(
+    {OnQueryErrorCallback? onError, required int id}) {
   return Query<Mail>(
     key: 'character-sent-mail/$id',
     queryFn: () => fetchMailById(id),

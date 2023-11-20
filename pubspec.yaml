@@ -44,6 +44,13 @@ dependencies:
   in_app_update: ^4.2.2
   new_version_plus: ^0.0.11
   appsflyer_sdk: ^6.12.2
+  sprung: ^3.0.1
+  word_break_text: ^0.1.0
+  dotted_decoration: ^2.0.0
+  extended_image: ^8.1.1
+  flutter_svg: ^2.0.9
+  image_picker: ^1.0.4
+  image: ^4.1.3
 
 dev_dependencies:
   flutter_test:
@@ -62,18 +69,36 @@ flutter:
     - assets/images/landing/
     - assets/lotties/
   fonts:
-    - family: MaruBuri
+    - family: GowunDodum
       fonts:
-        - asset: assets/fonts/MaruBuri-ExtraLight.otf
-          weight: 200
-        - asset: assets/fonts/MaruBuri-Light.otf
+        - asset: assets/fonts/GowunDodum-Regular.ttf
+    - family: NanumJungHagSaeng
+      fonts:
+        - asset: assets/fonts/NanumJungHagSaeng.ttf
+    - family: Pretendard
+      fonts:
+        - asset: assets/fonts/Pretendard-Light.ttf
           weight: 300
-        - asset: assets/fonts/MaruBuri-Regular.otf
+        - asset: assets/fonts/Pretendard-Regular.ttf
           weight: 400
-        - asset: assets/fonts/MaruBuri-SemiBold.otf
+        - asset: assets/fonts/Pretendard-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Pretendard-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/MaruBuri-Bold.otf
+        - asset: assets/fonts/Pretendard-Bold.ttf
           weight: 700
+    - family: NanumDaCaeSaRang
+      fonts:
+        - asset: assets/fonts/NanumDaCaeSaRang.ttf
+    - family: NanumNoRyeogHaNeunDongHee
+      fonts:
+        - asset: assets/fonts/NanumNoRyeogHaNeunDongHee.ttf
+    - family: NanumDdarEGeEomMaGa
+      fonts:
+        - asset: assets/fonts/NanumDdarEGeEomMaGa.ttf
+
+
+
 
 sentry:
   project: 'sihyun-of-june-flutter'

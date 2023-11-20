@@ -1,23 +1,27 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/mails/models/Reply.dart';
+import 'package:project_june_client/main.dart';
 
 import '../../constants.dart';
 import 'mail_info.dart';
 
-class ReplyWidget extends StatelessWidget {
+class ReplyWidget extends ConsumerWidget {
   final String toFullName;
   final String byFullName;
   final Reply reply;
+  final String? toImage;
 
   const ReplyWidget({
     Key? key,
     required this.reply,
     required this.toFullName,
     required this.byFullName,
+    required this.toImage,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,6 +29,8 @@ class ReplyWidget extends StatelessWidget {
           byFullName: byFullName,
           toFullName: toFullName,
           availableAt: reply.created,
+          byImage: toImage,
+          isMe: true,
         ),
         const SizedBox(
           height: 15,
@@ -32,9 +38,12 @@ class ReplyWidget extends StatelessWidget {
         Text(
           reply.description,
           style: TextStyle(
-            fontFamily: 'MaruBuri',
-            fontSize: 14,
+            fontFamily: 'NanumDaCaeSaRang',
+            fontSize: 19,
+            fontWeight: FontWeightConstants.semiBold,
             color: ColorConstants.primary,
+            height: 1.289,
+            letterSpacing: 1.02,
           ),
         ),
       ],

@@ -1,16 +1,20 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../actions/auth/actions.dart';
 import '../../constants.dart';
 
-class GuideTabWidget extends StatefulWidget {
+class GuideTabWidget extends ConsumerStatefulWidget {
   const GuideTabWidget(
       {super.key, required this.onWithdraw, required this.dto});
 
@@ -18,10 +22,10 @@ class GuideTabWidget extends StatefulWidget {
   final QuitReasonDTO dto;
 
   @override
-  State<GuideTabWidget> createState() => _GuideTabWidgetState();
+  GuideTabWidgetState createState() => GuideTabWidgetState();
 }
 
-class _GuideTabWidgetState extends State<GuideTabWidget> {
+class GuideTabWidgetState extends ConsumerState<GuideTabWidget> {
   @override
   Widget build(BuildContext context) {
     return QueryBuilder(
@@ -29,7 +33,11 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
       builder: (context, state) {
         return TitleLayout(
           withAppBar: true,
-          titleText: '탈퇴 주의사항',
+          title: Text(
+            '탈퇴 주의사항',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 28.0),
             child: Column(
@@ -94,6 +102,12 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
           actions: MutationBuilder(
             mutation: getWithdrawUserMutation(onSuccess: (res, arg) async {
               widget.onWithdraw();
+              CharacterTheme defaultTheme = CharacterTheme(
+                colors:
+                    CharacterColors(primary: 4294923379, secondary: 4294932624),
+                font: "NanumNoRyeogHaNeunDongHee",
+              );
+              ref.read(characterThemeProvider.notifier).state = defaultTheme;
               await Future.delayed(const Duration(seconds: 3));
               logout();
               context.go('/login');
@@ -106,7 +120,6 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                 child: const Text(
                   '탈퇴하기',
                   style: TextStyle(
-                    fontFamily: 'MaruBuri',
                     fontSize: 14,
                   ),
                 ),

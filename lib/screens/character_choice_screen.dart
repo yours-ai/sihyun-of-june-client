@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../widgets/character/character_confirm_widget.dart';
 import '../widgets/character/character_detail_widget.dart';
+
 enum ActiveScreen { detail, confirm }
 
 class CharacterChoiceScreen extends StatefulWidget {
+  const CharacterChoiceScreen({super.key});
+
   @override
   _CharacterChoiceScreen createState() => _CharacterChoiceScreen();
 }
@@ -45,11 +48,15 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
   Widget _getActiveScreenContent() {
     switch (activeScreen) {
       case ActiveScreen.detail:
-        return CharacterDetailWidget(onActiveScreen: handleActiveScreen, onTestId: handleTestId, onName: handleName);
+        return CharacterDetailWidget(
+            onActiveScreen: handleActiveScreen,
+            onTestId: handleTestId,
+            onName: handleName);
       case ActiveScreen.confirm:
-        return CharacterConfirmWidget(onActiveScreen: handleActiveScreen, testId: testId, name: name);
+        return CharacterConfirmWidget(
+            onActiveScreen: handleActiveScreen, testId: testId, name: name);
       default:
-        return Container();  // Default empty container
+        return Container(); // Default empty container
     }
   }
 }

@@ -1,26 +1,31 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
+import 'package:project_june_client/main.dart';
+import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
+import 'package:project_june_client/widgets/user_profile_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../actions/auth/actions.dart';
 import '../actions/auth/queries.dart';
 import '../constants.dart';
-import '../router.dart';
 import '../services.dart';
 import '../widgets/common/title_layout.dart';
 import '../widgets/modal_widget.dart';
 
-class AllScreen extends StatefulWidget {
+class AllScreen extends ConsumerStatefulWidget {
   const AllScreen({super.key});
 
   @override
-  State<AllScreen> createState() => _AllScreenState();
+  AllScreenState createState() => AllScreenState();
 }
 
-class _AllScreenState extends State<AllScreen> {
+class AllScreenState extends ConsumerState<AllScreen> {
   void _showLogoutModal() async {
     await showModalBottomSheet<void>(
       context: context,
@@ -42,12 +47,22 @@ class _AllScreenState extends State<AllScreen> {
                 child: Text(
                   '아니요',
                   style: TextStyle(
-                      fontSize: 14.0, color: ColorConstants.secondary),
+                    fontSize: 14.0,
+                    color: Color(
+                        ref.watch(characterThemeProvider).colors!.secondary!),
+                  ),
                 ),
               ),
               FilledButton(
                 onPressed: () {
                   logout();
+                  CharacterTheme defaultTheme = CharacterTheme(
+                    colors: CharacterColors(
+                        primary: 4294923379, secondary: 4294932624),
+                    font: "NanumNoRyeogHaNeunDongHee",
+                  );
+                  ref.read(characterThemeProvider.notifier).state =
+                      defaultTheme;
                   context.go('/login');
                 },
                 child: const Text(
@@ -78,27 +93,32 @@ class _AllScreenState extends State<AllScreen> {
                 text: TextSpan(
                   style: TextStyle(
                     height: 1.6,
-                    color: ColorConstants.secondary,
-                    fontFamily: 'MaruBuri',
+                    color: Color(
+                        ref.watch(characterThemeProvider).colors!.secondary!),
                     fontSize: 16.0,
                   ),
-                  children: const [
-                    TextSpan(
+                  children: [
+                    const TextSpan(
                       text: '탈퇴하기 신청을 하면 이런 내용이 전부 삭제되어요.\n',
                     ),
                     TextSpan(
                       text: '- 시현이 또는 우빈이와 함께 나누었던 ',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                       children: [
                         TextSpan(
                           text: '편지\n',
                           style: TextStyle(
-                            color: Color(0xffFF7389),
+                            color: Color(
+                              ref
+                                  .watch(characterThemeProvider)
+                                  .colors!
+                                  .primary!,
+                            ),
                           ),
                         ),
-                        TextSpan(
+                        const TextSpan(
                           text: '- 앞으로 새로운 친구들을 만나볼 기회',
                         ),
                       ],
@@ -106,7 +126,7 @@ class _AllScreenState extends State<AllScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               FilledButton(
                 style: ButtonStyle(
                   backgroundColor:
@@ -118,7 +138,10 @@ class _AllScreenState extends State<AllScreen> {
                 child: Text(
                   '아니요',
                   style: TextStyle(
-                      fontSize: 14.0, color: ColorConstants.secondary),
+                    fontSize: 14.0,
+                    color: Color(
+                        ref.watch(characterThemeProvider).colors!.secondary!),
+                  ),
                 ),
               ),
               FilledButton(
@@ -144,9 +167,14 @@ class _AllScreenState extends State<AllScreen> {
   Widget build(context) {
     return SafeArea(
       child: TitleLayout(
-        titleText: '전체',
+        title: const Center(
+          child: TitleUnderline(
+            titleText: '전체',
+          ),
+        ),
         body: ListView(
           children: [
+            const UserProfileWidget(),
             QueryBuilder(
               query: getRetrieveMeQuery(),
               builder: (context, state) {
@@ -156,17 +184,27 @@ class _AllScreenState extends State<AllScreen> {
                   suffix: Row(
                     children: [
                       Text(
-                        state.data?.coin != null? transactionService.currencyFormatter.format(state.data?.coin) : '',
+                        state.data?.coin != null
+                            ? transactionService.currencyFormatter
+                                .format(state.data?.coin)
+                            : '',
                         style: TextStyle(
-                            fontSize: 18,
-                            color: ColorConstants.neutral,
-                            fontWeight: FontWeight.normal),
+                          fontSize: 16,
+                          color: ColorConstants.primary,
+                          fontWeight: FontWeightConstants.semiBold,
+                        ),
                       ),
                       Icon(
                         PhosphorIcons.coin_vertical,
-                        color: ColorConstants.neutral,
-                        size: 18,)
-                    ]
+                        color: ColorConstants.primary,
+                        size: 24,
+                      ),
+                      Icon(
+                        PhosphorIcons.caret_right_bold,
+                        color: ColorConstants.primary,
+                        size: 24,
+                      ),
+                    ],
                   ),
                 );
               },

@@ -9,8 +9,6 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/main.dart';
-import 'package:project_june_client/services.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../actions/analytics/queries.dart';
 import '../widgets/auth/KakaoLoginButton.dart';
@@ -30,7 +28,7 @@ class LoginScreen extends ConsumerWidget {
               child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   double totalHeight = constraints.maxHeight;
-                  double targetPosition = (2 / 5) * totalHeight;
+                  double targetPosition = (3 / 10) * totalHeight;
 
                   return Stack(
                     children: [
@@ -40,7 +38,7 @@ class LoginScreen extends ConsumerWidget {
                         right: 0,
                         child: Image.asset(
                           'assets/images/logo.png',
-                          height: 75,
+                          height: 220,
                         ),
                       ),
                     ],
@@ -76,13 +74,19 @@ class LoginScreen extends ConsumerWidget {
                         ),
                         builder: (context, state, mutate) {
                           return FilledButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  ColorConstants.black),
+                            ),
                             onPressed: () => mutate(null),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.apple),
                                 SizedBox(width: 8),
-                                Text('Apple로 계속하기')
+                                Text(
+                                  'APPLE로 계속하기',
+                                )
                               ],
                             ),
                           );
@@ -95,7 +99,10 @@ class LoginScreen extends ConsumerWidget {
                       onPressed: () {
                         context.go('/login/by-phone');
                       },
-                      child: const Text('전화번호로 계속하기'),
+                      child: Text(
+                        '전화번호로 계속하기',
+                        style: TextStyle(color: ColorConstants.neutral),
+                      ),
                     ),
                   ],
                 ),

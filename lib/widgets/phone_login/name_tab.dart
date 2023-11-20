@@ -8,7 +8,7 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/controllers/auth/name_form_controller.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
-import 'package:project_june_client/widgets/name_widget.dart';
+import 'package:project_june_client/widgets/name_form_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../actions/analytics/queries.dart';
@@ -26,6 +26,14 @@ class NameTabWidget extends ConsumerStatefulWidget {
 
 class NameTabWidgetState extends ConsumerState<NameTabWidget> {
   final NameFormController formController = NameFormController();
+  bool isSubmitClicked = false;
+  bool isValid = false;
+
+  void handleError(bool hasError) {
+    setState(() {
+      isValid = !hasError;
+    });
+  }
 
   ValidatedUserDTO getValidatedData() {
     return ValidatedUserDTO(
@@ -64,7 +72,6 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
               child: RichText(
                 text: TextSpan(
                     style: TextStyle(
-                        fontFamily: 'MaruBuri',
                         fontSize: 15,
                         color: ColorConstants.black),
                     children: [
@@ -90,7 +97,7 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
             choiceColumn: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FilledButton(
+                OutlinedButton(
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(ColorConstants.background),
@@ -99,17 +106,18 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
                     context.pop();
                   },
                   child: Text(
-                    '취소',
+                    '취소하기',
                     style: TextStyle(
-                        fontSize: 14.0, color: ColorConstants.secondary),
+                        fontSize: 16.0, color: ColorConstants.neutral),
                   ),
                 ),
+                const SizedBox(height: 8.0),
                 FilledButton(
                   onPressed: () => mutate(dto),
                   child: const Text(
                     '동의하고 시작하기',
                     style: TextStyle(
-                      fontSize: 14.0,
+                      fontSize: 16.0,
                     ),
                   ),
                 ),
@@ -131,14 +139,27 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
   Widget build(BuildContext context) {
     String? funnel = ref.watch(deepLinkProvider.notifier).state?.mediaSource;
     return TitleLayout(
-      titleText: '이름을 알려주세요.',
-      body: Form(
-          child: NameFormWidget(
-        formController: formController,
-      )),
-      actions: OutlinedButton(
+      withAppBar: true,
+      title: Text(
+        '이름을 알려주세요.',
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          NameFormWidget(
+            formController: formController,
+            isSubmitClicked: isSubmitClicked,
+            onError: handleError,
+          ),
+        ],
+      ),
+      actions: FilledButton(
         onPressed: () {
-          if (formController.validate()) {
+          setState(() {
+            isSubmitClicked = true;
+          });
+          if (isValid) {
             _showSignInModal(getValidatedData(), funnel);
           }
         },

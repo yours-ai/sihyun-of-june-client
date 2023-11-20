@@ -2,13 +2,14 @@ import 'package:amplitude_flutter/amplitude.dart';
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
-import 'package:amplitude_flutter/identify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:moment_dart/moment_dart.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -75,19 +76,36 @@ void main() async {
 }
 
 final deepLinkProvider = StateProvider<DeepLink?>((ref) => null);
+final imageCacheDurationProvider = Provider<Duration>((ref) {
+  return const Duration(minutes: 50);
+});
 
-class ProjectJuneApp extends StatefulWidget {
+final topPaddingProvider = StateProvider<double?>((ref) => null);
+
+final characterThemeProvider = StateProvider.autoDispose<CharacterTheme>((ref) {
+  final CharacterTheme defaultTheme = CharacterTheme(
+    colors: CharacterColors(primary: 4294923379, secondary: 4294932624),
+    font: "NanumNoRyeogHaNeunDongHee",
+  );
+  return defaultTheme;
+});
+
+class ProjectJuneApp extends ConsumerStatefulWidget {
   const ProjectJuneApp({super.key});
 
   @override
-  State<StatefulWidget> createState() => _ProjectJuneApp();
+  ProjectJuneAppState createState() => ProjectJuneAppState();
 }
 
-class _ProjectJuneApp extends State<ProjectJuneApp> {
+class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
   @override
   void initState() {
     super.initState();
     initServerErrorSnackbar(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final topPadding = MediaQuery.of(context).padding.top;
+      ref.read(topPaddingProvider.notifier).state = topPadding;
+    });
   }
 
   @override
@@ -98,32 +116,38 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
       routerConfig: router,
       scaffoldMessengerKey: scaffoldMessengerKey,
       theme: ThemeData(
-        fontFamily: 'MaruBuri',
+        fontFamily: 'Pretendard',
         scaffoldBackgroundColor: ColorConstants.background,
         colorScheme: ColorScheme(
           brightness: Brightness.light,
           primary: ColorConstants.primary,
-          onPrimary: ColorConstants.white,
-          secondary: ColorConstants.secondary,
+          onPrimary: ColorConstants.background,
+          secondary: ColorConstants.lightPink,
           onSecondary: ColorConstants.white,
           error: ColorConstants.alert,
           onError: ColorConstants.white,
           background: ColorConstants.background,
-          onBackground: ColorConstants.primary,
+          onBackground: ColorConstants.neutral,
           surface: ColorConstants.background,
-          onSurface: ColorConstants.primary,
+          onSurface: ColorConstants.neutral,
         ),
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         splashFactory: NoSplash.splashFactory,
-        textTheme: const TextTheme(
+        textTheme: TextTheme(
           titleLarge: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
+              fontFamily: 'NanumJungHagSaeng',
+              fontSize: 39,
+              height: 36 / 39,
+              color: ColorConstants.primary),
         ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
+            textStyle: TextStyle(
+              fontWeight: FontWeightConstants.semiBold,
+            ),
+            backgroundColor:
+                Color(ref.watch(characterThemeProvider).colors!.primary!),
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(
               vertical: 17.0,
@@ -171,6 +195,24 @@ class _ProjectJuneApp extends State<ProjectJuneApp> {
           ),
         ),
       ),
+      scrollBehavior: SplashScrollBehavior(
+          ref.watch(characterThemeProvider).colors!.primary!),
+    );
+  }
+}
+
+class SplashScrollBehavior extends MaterialScrollBehavior {
+  final int splashColor;
+
+  const SplashScrollBehavior(this.splashColor);
+
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return GlowingOverscrollIndicator(
+      axisDirection: details.direction,
+      color: Color(splashColor),
+      child: child,
     );
   }
 }
