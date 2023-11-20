@@ -158,13 +158,7 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                       QueryBuilder(
                         query: retrieveMyCharacterQuery,
                         builder: (context, state) {
-                          if (state.data != null) {
-                            WidgetsBinding.instance.addPostFrameCallback((_) {
-                              CharacterTheme characterTheme =
-                                  state.data![0].theme!;
-                              ref.read(characterThemeProvider.notifier).state =
-                                  characterTheme;
-                            });
+                          if (state.data != null && state.data!.isNotEmpty) {
                             return Expanded(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,

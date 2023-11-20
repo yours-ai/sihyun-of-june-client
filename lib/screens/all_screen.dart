@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
@@ -54,6 +56,13 @@ class AllScreenState extends ConsumerState<AllScreen> {
               FilledButton(
                 onPressed: () {
                   logout();
+                  CharacterTheme defaultTheme = CharacterTheme(
+                    colors: CharacterColors(
+                        primary: 4294923379, secondary: 4294932624),
+                    font: "NanumNoRyeogHaNeunDongHee",
+                  );
+                  ref.read(characterThemeProvider.notifier).state =
+                      defaultTheme;
                   context.go('/login');
                 },
                 child: const Text(
