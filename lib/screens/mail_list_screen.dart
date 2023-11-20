@@ -173,15 +173,19 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                     onTap: () =>
                                         context.push('/mails/my-character'),
                                     child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(14),
-                                      child: ExtendedImage.network(
-                                        timeLimit: ref
-                                            .watch(imageCacheDurationProvider),
-                                        cacheKey:
-                                            UniqueCacheKeyService.makeUniqueKey(
-                                                state.data![0].default_image),
-                                        state.data![0].default_image,
-                                        height: 35,
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: SizedBox(
+                                        height: 40,
+                                        width: 40,
+                                        child: ExtendedImage.network(
+                                          timeLimit: ref
+                                              .watch(imageCacheDurationProvider),
+                                          cacheKey:
+                                              UniqueCacheKeyService.makeUniqueKey(
+                                                  state.data![0].default_image),
+                                          state.data![0].default_image,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   ),

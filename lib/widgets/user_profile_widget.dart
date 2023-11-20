@@ -46,6 +46,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                             timeLimit: ref.watch(imageCacheDurationProvider),
                             cacheKey: UniqueCacheKeyService.makeUniqueKey(
                                 state.data!.first.default_image),
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
