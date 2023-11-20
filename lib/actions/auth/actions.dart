@@ -74,7 +74,7 @@ Future<bool> smsVerify(ValidatedAuthCodeDTO dto) async {
         throw detailError;
       }
     }
-    throw error;
+    rethrow;
   }
 }
 
@@ -95,7 +95,7 @@ Future<String> getServerTokenBySMS(ValidatedUserDTO dto) async {
         throw detailError;
       }
     }
-    throw error;
+    rethrow;
   }
 }
 
@@ -114,7 +114,7 @@ Future<String> getServerTokenBySMSLogin(ValidatedAuthCodeDTO dto) async {
         throw detailError;
       }
     }
-    throw error;
+    rethrow;
   }
 }
 
@@ -224,5 +224,17 @@ Future<void> deleteUser() async {
 Future<void> withdrawUser(QuitReasonDTO dto) async {
   await sendQuitResponse(dto);
   await deleteUser();
+  return;
+}
+
+Future<void> uploadUserImage(Uint8List img) async {
+  var imgFile = MultipartFile.fromBytes(img, filename: 'user_profile.jpg');
+  FormData formData = FormData.fromMap({'image': imgFile});
+  await dio.post('/auth/me/image/', data: formData);
+  return;
+}
+
+Future<void> deleteUserImage() async {
+  await dio.delete('/auth/me/image/');
   return;
 }

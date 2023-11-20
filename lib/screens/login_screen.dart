@@ -2,11 +2,9 @@ import 'dart:io';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../widgets/auth/KakaoLoginButton.dart';
 
@@ -24,7 +22,7 @@ class LoginScreen extends StatelessWidget {
               child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   double totalHeight = constraints.maxHeight;
-                  double targetPosition = (2 / 5) * totalHeight;
+                  double targetPosition = (3 / 10) * totalHeight;
 
                   return Stack(
                     children: [
@@ -34,7 +32,7 @@ class LoginScreen extends StatelessWidget {
                         right: 0,
                         child: Image.asset(
                           'assets/images/logo.png',
-                          height: 75,
+                          height: 220,
                         ),
                       ),
                     ],
@@ -68,13 +66,19 @@ class LoginScreen extends StatelessWidget {
                         ),
                         builder: (context, state, mutate) {
                           return FilledButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  ColorConstants.black),
+                            ),
                             onPressed: () => mutate(null),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.apple),
                                 SizedBox(width: 8),
-                                Text('Apple로 계속하기')
+                                Text(
+                                  'APPLE로 계속하기',
+                                )
                               ],
                             ),
                           );
@@ -87,7 +91,10 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () {
                         context.go('/login/by-phone');
                       },
-                      child: const Text('전화번호로 계속하기'),
+                      child: Text(
+                        '전화번호로 계속하기',
+                        style: TextStyle(color: ColorConstants.neutral),
+                      ),
                     ),
                   ],
                 ),
@@ -99,4 +106,3 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
-

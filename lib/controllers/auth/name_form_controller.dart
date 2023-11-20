@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 
 class NameFormController {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
 
@@ -15,10 +14,6 @@ class NameFormController {
       return '이름을 입력해주세요.';
     }
     return null;
-  }
-
-  bool validate() {
-    return formKey.currentState?.validate() ?? false;
   }
 
   UserNameDTO getFormData() {

@@ -10,12 +10,12 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 class TestResultData {
-  final String title;
+  final String titleText;
   final Widget body;
   final String button;
 
   const TestResultData({
-    required this.title,
+    required this.titleText,
     this.body = const SizedBox(),
     required this.button,
   });
@@ -23,19 +23,24 @@ class TestResultData {
 
 final List<TestResultData> tabList = [
   TestResultData(
-      title: '테스트가 완료됐어요!\n상대를 정하는 중이에요...',
-      body: Lottie.asset('assets/lotties/waitingResultLottie.json'),
-      button: '두근두근...'),
-  TestResultData(title: '상대가 정해졌어요!\n확인해보실래요?',
-      body: Lottie.asset('assets/lotties/testResultLottie.json'),
-      button: '확인해보기'),
-  const TestResultData(title: '오류가 발생했어요', button: '다시 하기'),
+    titleText: '테스트가 완료됐어요!\n상대를 정하는 중이에요...',
+    body: Lottie.asset('assets/lotties/waitingResultLottie.json'),
+    button: '두근두근...',
+  ),
+  const TestResultData(
+    titleText: '상대가 정해졌어요!\n확인해보시겠어요?',
+    button: '확인해보기',
+  ),
+  const TestResultData(
+    titleText: '오류가 발생했어요',
+    button: '다시 하기',
+  ),
 ];
 
 class TestResultWidget extends StatefulWidget {
   final AnswerDTOList responses;
 
-  TestResultWidget({super.key, required this.responses});
+  const TestResultWidget({super.key, required this.responses});
 
   @override
   State<StatefulWidget> createState() {
@@ -49,7 +54,8 @@ class _TestResultWidget extends State<TestResultWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _switchPageAfterDelay();
-    });  }
+    });
+  }
 
   Future<void> _switchPageAfterDelay() async {
     await Future.delayed(const Duration(seconds: 4));
@@ -63,25 +69,14 @@ class _TestResultWidget extends State<TestResultWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(4.0),
-        child: AppBar(
-          backgroundColor: ColorConstants.background,
-          elevation: 0,
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1.0),
-            child: LinearProgressIndicator(
-              value: 1,
-              backgroundColor: ColorConstants.background,
-              valueColor:
-                  AlwaysStoppedAnimation<Color>(ColorConstants.secondary),
-            ),
-          ),
-        ),
-      ),
       body: SafeArea(
         child: TitleLayout(
-          titleText: tabList[_tab].title,
+          title: Text(
+            tabList[_tab].titleText,
+            style: Theme.of(context).textTheme.titleLarge,
+            softWrap: true,
+            textAlign: TextAlign.center,
+          ),
           body: Builder(
             builder: (context) {
               return Center(
@@ -115,8 +110,9 @@ class _TestResultWidget extends State<TestResultWidget> {
                         },
                       ),
                       builder: (context, state, mutate) => FilledButton(
-                            onPressed: () => {mutate(widget.responses.toJsonList())},
-                            child: Text(tabList[_tab].button)),
+                          onPressed: () =>
+                              {mutate(widget.responses.toJsonList())},
+                          child: Text(tabList[_tab].button)),
                     )
                   : FilledButton(
                       onPressed: () {

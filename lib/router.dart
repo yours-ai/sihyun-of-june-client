@@ -45,11 +45,11 @@ final router = GoRouter(
         ]),
     GoRoute(
       path: '/character-choice',
-      builder: (context, state) => CharacterChoiceScreen(),
+      builder: (context, state) => const CharacterChoiceScreen(),
     ),
     GoRoute(
       path: '/withdraw',
-      builder: (context, state) => WithdrawScreen(),
+      builder: (context, state) => const WithdrawScreen(),
     ),
     GoRoute(
       path: '/other-character/:id',
@@ -58,11 +58,11 @@ final router = GoRouter(
     ),
     GoRoute(
         path: '/my-coin',
-        builder: (context, state) => MyCoinScreen(),
+        builder: (context, state) => const MyCoinScreen(),
         routes: [
-          GoRoute(path: 'log', builder: (context, state) => CoinLogScreen()),
+          GoRoute(path: 'log', builder: (context, state) => const CoinLogScreen()),
           GoRoute(
-              path: 'charge', builder: (context, state) => CoinChargeScreen()),
+              path: 'charge', builder: (context, state) => const CoinChargeScreen()),
         ]),
     ShellRoute(
       navigatorKey: shellNavigatorKey,
@@ -126,10 +126,10 @@ final router = GoRouter(
     ),
     GoRoute(
         path: '/character-test',
-        builder: (context, state) => CharacterTestScreen()),
+        builder: (context, state) => const CharacterTestScreen()),
     GoRoute(
       path: '/change-name',
-      builder: (context, state) => NameChangeScreen(),
+      builder: (context, state) => const NameChangeScreen(),
     ),
   ],
 );

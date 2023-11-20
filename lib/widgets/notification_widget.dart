@@ -4,6 +4,7 @@ import 'package:moment_dart/moment_dart.dart';
 import 'package:project_june_client/actions/notification/models/AppNotification.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
+import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
 class NotificationWidget extends StatefulWidget {
   final AppNotification notification;
@@ -20,62 +21,66 @@ class NotificationWidget extends StatefulWidget {
 class _NotificationWidgetState extends State<NotificationWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: widget.notification.is_read == false
-          ? const Color.fromRGBO(236, 236, 236, 0.4)
-          : ColorConstants.background,
-      child: TextButton(
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.zero,
-          splashFactory: NoSplash.splashFactory,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return GestureDetector(
+      onTap: () {
+        notificationService.handleClickNotification(
+          widget.notification,
+        );
+      },
+      child: Container(
+        color: widget.notification.is_read == false
+            ? ColorConstants.lightGray
+            : ColorConstants.background,
+        child: Column(
           children: [
-            Expanded(
-              child: Container(
-                height: 83,
-                padding: const EdgeInsets.symmetric(horizontal: 22),
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  widget.notification.body,
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: ColorConstants.secondary,
-                      fontWeight: widget.notification.is_read == false
-                          ? FontWeight.bold
-                          : FontWeight.normal),
-                ),
-              ),
-            ),
-            Container(
-              height: 20,
-              padding: const EdgeInsets.only(right: 22),
-              child: Row(
-                children: [
-                  Text(
-                    Moment(widget.notification.created).fromNow(),
-                    style: TextStyle(
-                        color: ColorConstants.neutral,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 81,
+                    padding: const EdgeInsets.only(left: 22),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      widget.notification.body,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: ColorConstants.primary,
                         fontWeight: widget.notification.is_read == false
-                            ? FontWeight.bold
-                            : FontWeight.normal),
+                            ? FontWeightConstants.semiBold
+                            : FontWeight.normal,
+                      ),
+                    ),
                   ),
-                  Icon(
-                    PhosphorIcons.caret_right,
-                    size: 20,
-                    color: ColorConstants.neutral,
+                ),
+                Container(
+                  width: 100,
+                  padding: const EdgeInsets.only(right: 22),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        Moment(widget.notification.created).fromNow(),
+                        style: TextStyle(
+                            color: ColorConstants.primary,
+                            fontSize: 12,
+                            fontWeight: widget.notification.is_read == false
+                                ? FontWeightConstants.semiBold
+                                : FontWeight.normal),
+                      ),
+                      Icon(
+                        PhosphorIcons.caret_right,
+                        size: 24,
+                        color: ColorConstants.primary,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+            const DottedUnderline(22),
           ],
         ),
-        onPressed: () {
-          notificationService.handleClickNotification(
-            widget.notification,
-          );
-        },
       ),
     );
   }

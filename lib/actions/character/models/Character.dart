@@ -1,25 +1,27 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:project_june_client/actions/character/models/CharacterInfo.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 
 part 'Character.g.dart';
 
 @JsonSerializable()
 class Character {
-  int id;
+  num id;
   bool is_active;
   String? name;
-  int? age;
-  String? MBTI;
-  String? description;
-  String image;
+  String default_image;
+  bool? is_blurred;
+  CharacterInfo? character_info;
+  CharacterTheme? theme;
 
   Character(
       {required this.id,
       required this.is_active,
       required this.name,
-      required this.age,
-      required this.MBTI,
-      required this.description,
-      required this.image});
+      required this.default_image,
+      this.is_blurred,
+      required this.character_info,
+      required this.theme});
 
   factory Character.fromJson(Map<String, dynamic> json) =>
       _$CharacterFromJson(json);

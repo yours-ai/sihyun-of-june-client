@@ -37,7 +37,11 @@ class _ReasonTabWidgetState extends State<ReasonTabWidget> {
       key: _formKey,
       child: TitleLayout(
         withAppBar: true,
-        titleText: '탈퇴 사유를 알려주세요',
+        title: Text(
+          '탈퇴 사유를 알려주세요',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: SingleChildScrollView(

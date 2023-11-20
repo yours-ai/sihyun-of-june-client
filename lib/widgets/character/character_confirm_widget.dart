@@ -1,8 +1,12 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 import '../../constants.dart';
@@ -10,7 +14,7 @@ import '../../screens/character_choice_screen.dart';
 import '../../services.dart';
 import '../modal_widget.dart';
 
-class CharacterConfirmWidget extends StatelessWidget {
+class CharacterConfirmWidget extends ConsumerWidget {
   final int testId;
   final String name;
   final void Function(ActiveScreen) onActiveScreen;
@@ -22,7 +26,7 @@ class CharacterConfirmWidget extends StatelessWidget {
       required this.name});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     _showDenyModal() async {
       await showModalBottomSheet<void>(
         context: context,
@@ -33,7 +37,7 @@ class CharacterConfirmWidget extends StatelessWidget {
             choiceColumn: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FilledButton(
+                OutlinedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                       ColorConstants.background,
@@ -42,18 +46,28 @@ class CharacterConfirmWidget extends StatelessWidget {
                   onPressed: () {
                     context.pop();
                   },
-                  child: Text('됐어요',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: ColorConstants.secondary,
-                      )),
+                  child: Text(
+                    '됐어요',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: ColorConstants.neutral,
+                      fontWeight: FontWeightConstants.semiBold,
+                    ),
+                  ),
                 ),
-                SizedBox(
-                  height: 12,
+                const SizedBox(
+                  height: 8,
                 ),
                 MutationBuilder(
                   mutation: getDenyChoiceMutation(
                     onSuccess: (res, arg) {
+                      CharacterTheme defaultTheme = CharacterTheme(
+                        colors: CharacterColors(
+                            primary: 4294923379, secondary: 4294932624),
+                        font: "NanumNoRyeogHaNeunDongHee",
+                      );
+                      ref.read(characterThemeProvider.notifier).state =
+                          defaultTheme;
                       context.pop();
                       context.go('/character-test');
                     },
@@ -62,10 +76,11 @@ class CharacterConfirmWidget extends StatelessWidget {
                     onPressed: () {
                       mutate(testId);
                     },
-                    child: const Text(
+                    child: Text(
                       '네',
                       style: TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 16,
+                        fontWeight: FontWeightConstants.semiBold,
                       ),
                     ),
                   ),
@@ -89,7 +104,7 @@ class CharacterConfirmWidget extends StatelessWidget {
             padding: const EdgeInsets.only(left: 23),
             child: Icon(
               PhosphorIcons.arrow_left,
-              color: ColorConstants.black,
+              color: ColorConstants.gray,
               size: 32,
             ),
           ),
@@ -98,8 +113,12 @@ class CharacterConfirmWidget extends StatelessWidget {
       body: SafeArea(
         child: TitleLayout(
           withAppBar: true,
-          titleText:
-              '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 편지가 올 거에요.',
+          title: Text(
+            '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
+            '편지가 올 거에요.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           actions: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

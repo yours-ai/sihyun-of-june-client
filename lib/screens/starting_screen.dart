@@ -3,22 +3,25 @@ import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/character/actions.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/main.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/notification/actions.dart';
 
-class StartingScreen extends StatefulWidget {
+class StartingScreen extends ConsumerStatefulWidget {
   const StartingScreen({super.key});
 
   @override
-  State createState() => _StartingScreen();
+  StartingScreenState createState() => StartingScreenState();
 }
 
-class _StartingScreen extends State<StartingScreen> {
+class StartingScreenState extends ConsumerState<StartingScreen> {
   _checkAuthAndLand() async {
     final isLogined = await loadIsLogined();
     FlutterNativeSplash.remove();
@@ -36,8 +39,10 @@ class _StartingScreen extends State<StartingScreen> {
       notificationService.handleFCMMessageTap(push);
       return;
     }
-    final character = await fetchMyCharacter();
-    if (character.isNotEmpty) {
+    final character = await getRetrieveMyCharacterQuery().result;
+    if (character.data!.isNotEmpty) {
+      CharacterTheme characterTheme = character.data![0].theme!;
+      ref.read(characterThemeProvider.notifier).state = characterTheme;
       context.go('/mails');
       return;
     } else {
