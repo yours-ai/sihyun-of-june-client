@@ -67,6 +67,9 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                       appBar: const BackAppbar(),
                       body: SafeArea(
                         child: SingleChildScrollView(
+                          reverse: MediaQuery.of(context).viewInsets.bottom > 0
+                              ? true
+                              : false,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 36.0,

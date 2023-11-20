@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
@@ -41,7 +42,7 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
     }, onDone: () {
       _subscription.cancel();
     });
-    handlePastTransactions();
+    if(Platform.isIOS) handlePastTransactions();
     super.initState();
   }
 
