@@ -1,4 +1,5 @@
 import 'package:amplitude_flutter/amplitude.dart';
+import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
 import 'package:amplitude_flutter/identify.dart';
@@ -72,6 +73,8 @@ void main() async {
     appRunner: _appRunner,
   );
 }
+
+final deepLinkProvider = StateProvider<DeepLink?>((ref) => null);
 
 class ProjectJuneApp extends StatefulWidget {
   const ProjectJuneApp({super.key});

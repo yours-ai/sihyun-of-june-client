@@ -4,6 +4,7 @@ import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/character/actions.dart';
@@ -11,17 +12,16 @@ import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/notification/actions.dart';
+import '../main.dart';
 
-class StartingScreen extends StatefulWidget {
+class StartingScreen extends ConsumerStatefulWidget {
   const StartingScreen({super.key});
 
   @override
-  State createState() => _StartingScreen();
+  StartingScreenState createState() => StartingScreenState();
 }
 
-class _StartingScreen extends State<StartingScreen> {
-  AppsflyerSdk? appsflyerSdk;
-
+class StartingScreenState extends ConsumerState<StartingScreen> {
   _checkAuthAndLand() async {
     final isLogined = await loadIsLogined();
     FlutterNativeSplash.remove();
@@ -29,24 +29,6 @@ class _StartingScreen extends State<StartingScreen> {
 
     await _initializeNotificationHandlerIfAccepted();
     await _checkUpdateAvailable();
-
-    appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
-      switch (dp.status) {
-        case Status.FOUND:
-          context.go('${dp.deepLink?.deepLinkValue}');
-          print(dp.deepLink?.deepLinkValue ?? '');
-          break;
-        case Status.NOT_FOUND:
-          print("deep link not found");
-          break;
-        case Status.ERROR:
-          print("deep link error: ${dp.error}");
-          break;
-        case Status.PARSE_ERROR:
-          print("deep link status parsing error");
-          break;
-      }
-    });
 
     if (isLogined == false) {
       context.go('/landing');
@@ -69,21 +51,6 @@ class _StartingScreen extends State<StartingScreen> {
         context.go('/character-test');
       }
     }
-  }
-
-  _appsFlyerInit() async {
-    AppsFlyerOptions appsFlyerOptions = AppsFlyerOptions(
-      afDevKey: 'frxewKANsNPxG3KRKnqtF5',
-      appId:
-          Platform.isIOS ? '6463772803' : 'team.pygmalion.project_june_client',
-      showDebug: true,
-    );
-    appsflyerSdk = AppsflyerSdk(appsFlyerOptions);
-    appsflyerSdk!.initSdk(
-      registerConversionDataCallback: true,
-      registerOnAppOpenAttributionCallback: true,
-      registerOnDeepLinkingCallback: true,
-    );
   }
 
   _checkUpdateAvailable() async {
@@ -113,9 +80,16 @@ class _StartingScreen extends State<StartingScreen> {
   @override
   void initState() {
     super.initState();
-    _appsFlyerInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _checkAuthAndLand();
+    onelinkService.appsFlyerInit();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
+        if (dp.status == Status.FOUND) {
+          ref.read(deepLinkProvider.notifier)?.state = dp.deepLink;
+          if(dp.deepLink?.deepLinkValue == null || dp.deepLink?.deepLinkValue == '') return;
+          context.go('${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
+        }
+      });
+      _checkAuthAndLand();
     });
   }
 
