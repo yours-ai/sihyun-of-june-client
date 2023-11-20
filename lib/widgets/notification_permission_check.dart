@@ -54,8 +54,9 @@ class _RequestNotificationPermissionWidgetState
                     },
                     child: Text('취소',
                         style: TextStyle(
-                          fontSize: 14.0,
+                          fontSize: 16,
                           color: ColorConstants.neutral,
+                          fontWeight: FontWeightConstants.semiBold,
                         )),
                   ),
                   const SizedBox(
