@@ -151,7 +151,7 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
               vertical: 17.0,
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
             ),
           ),
         ),
@@ -173,7 +173,7 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
               vertical: 17.0,
             ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
             ),
           ),
         ),

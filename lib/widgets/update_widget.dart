@@ -18,12 +18,20 @@ class UpdateWidget extends ConsumerWidget {
       title: '업데이트가 필요해요!',
       description: Padding(
         padding: const EdgeInsets.only(top: 20),
-        child: Text(releaseNotes ?? ''),
+        child: Text(
+          releaseNotes ?? '',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: ColorConstants.gray,
+            fontSize: 16,
+            height: 1.5,
+          ),
+        ),
       ),
       choiceColumn: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          FilledButton(
+          OutlinedButton(
             style: ButtonStyle(
               backgroundColor:
                   MaterialStateProperty.all(ColorConstants.background),
@@ -32,22 +40,28 @@ class UpdateWidget extends ConsumerWidget {
               context.pop();
             },
             child: Text(
-              '나중에 할게요.',
+              '나중에 할게요',
               style: TextStyle(
-                fontSize: 14.0,
-                color:
-                    Color(ref.watch(characterThemeProvider).colors!.primary!),
+                fontSize: 16,
+                color: ColorConstants.neutral,
+                fontWeight: FontWeightConstants.semiBold,
               ),
               // 모달은 alert로 바꾸면 dark가 안 중요해짐
             ),
+          ),
+          const SizedBox(
+            height: 8,
           ),
           FilledButton(
             onPressed: () {
               launchUrl(Uri.parse(Urls.appstore));
             },
-            child: const Text(
+            child: Text(
               '업데이트 하기',
-              style: TextStyle(fontSize: 14.0),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeightConstants.semiBold,
+              ),
             ),
           ),
         ],

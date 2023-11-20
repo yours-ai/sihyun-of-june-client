@@ -57,14 +57,22 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
         builder: (BuildContext context) {
           return ModalWidget(
             title: '정말 이대로 보내시겠어요?',
-            description: const Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Text('답장을 보내면 수정이 불가능해요.🥲'),
+            description: Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Text(
+                '답장을 보내면 수정이 불가능해요.🥲',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: ColorConstants.gray,
+                  fontSize: 16,
+                  height: 1.5,
+                ),
+              ),
             ),
             choiceColumn: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FilledButton(
+                OutlinedButton(
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(ColorConstants.background),
@@ -75,20 +83,24 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   child: Text(
                     '아니요',
                     style: TextStyle(
-                      fontSize: 14.0,
-                      color: Color(
-                          ref.watch(characterThemeProvider).colors!.secondary!),
+                      fontSize: 16,
+                      color: ColorConstants.neutral,
+                      fontWeight: FontWeightConstants.semiBold,
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 8,
                 ),
                 MutationBuilder(
                   mutation: mutation,
                   builder: (context, state, mutate) => FilledButton(
                     onPressed: () => mutate(getReplyDTO()),
-                    child: const Text(
+                    child: Text(
                       '네',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 16,
+                        fontWeight: FontWeightConstants.semiBold,
                       ),
                     ),
                   ),
@@ -151,7 +163,6 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   height: 1.289,
                   letterSpacing: 1.02,
                 ),
-
               ),
               const SizedBox(height: 10),
               Padding(

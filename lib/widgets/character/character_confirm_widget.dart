@@ -37,7 +37,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
             choiceColumn: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FilledButton(
+                OutlinedButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                       ColorConstants.background,
@@ -46,17 +46,17 @@ class CharacterConfirmWidget extends ConsumerWidget {
                   onPressed: () {
                     context.pop();
                   },
-                  child: Text('됐어요',
-                      style: TextStyle(
-                        fontSize: 14.0,
-                        color: Color(ref
-                            .watch(characterThemeProvider)
-                            .colors!
-                            .secondary!),
-                      )),
+                  child: Text(
+                    '됐어요',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: ColorConstants.neutral,
+                      fontWeight: FontWeightConstants.semiBold,
+                    ),
+                  ),
                 ),
                 const SizedBox(
-                  height: 12,
+                  height: 8,
                 ),
                 MutationBuilder(
                   mutation: getDenyChoiceMutation(
@@ -76,10 +76,11 @@ class CharacterConfirmWidget extends ConsumerWidget {
                     onPressed: () {
                       mutate(testId);
                     },
-                    child: const Text(
+                    child: Text(
                       '네',
                       style: TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 16,
+                        fontWeight: FontWeightConstants.semiBold,
                       ),
                     ),
                   ),
@@ -114,7 +115,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
           withAppBar: true,
           title: Text(
             '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
-                '편지가 올 거에요.',
+            '편지가 올 거에요.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge,
           ),
