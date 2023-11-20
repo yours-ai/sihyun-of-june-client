@@ -80,7 +80,7 @@ final imageCacheDurationProvider = Provider<Duration>((ref) {
 
 final topPaddingProvider = StateProvider<double?>((ref) => null);
 
-final characterThemeProvider = StateProvider<CharacterTheme>((ref) {
+final characterThemeProvider = StateProvider.autoDispose<CharacterTheme>((ref) {
   final CharacterTheme defaultTheme = CharacterTheme(
     colors: CharacterColors(primary: 4294923379, secondary: 4294932624),
     font: "NanumNoRyeogHaNeunDongHee",
