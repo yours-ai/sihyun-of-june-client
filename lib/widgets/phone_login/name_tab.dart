@@ -67,7 +67,6 @@ class _NameTabWidgetState extends State<NameTabWidget> {
               child: RichText(
                 text: TextSpan(
                     style: TextStyle(
-                        fontFamily: 'MaruBuri',
                         fontSize: 15,
                         color: ColorConstants.black),
                     children: [

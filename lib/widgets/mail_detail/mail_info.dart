@@ -31,11 +31,15 @@ class MailInfoWidget extends ConsumerWidget {
         if (byImage != null) ...[
           ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: ExtendedImage.network(
-              timeLimit: ref.watch(imageCacheDurationProvider),
-              cacheKey: UniqueCacheKeyService.makeUniqueKey(byImage!),
-              byImage!,
+            child: SizedBox(
+              width: 46,
               height: 46,
+              child: ExtendedImage.network(
+                timeLimit: ref.watch(imageCacheDurationProvider),
+                cacheKey: UniqueCacheKeyService.makeUniqueKey(byImage!),
+                byImage!,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           const SizedBox(

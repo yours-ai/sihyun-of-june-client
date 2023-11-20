@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class TitleLayout extends StatelessWidget {
-  final String titleText;
   final Widget title;
   final Widget body;
   final Widget? actions;
@@ -9,7 +8,6 @@ class TitleLayout extends StatelessWidget {
 
   const TitleLayout({
     Key? key,
-    this.titleText = '',
     this.title = const SizedBox.shrink(),
     required this.body,
     this.actions,
@@ -24,24 +22,7 @@ class TitleLayout extends StatelessWidget {
         withAppBar ? const SizedBox(height: 10) : const SizedBox(height: 40),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: titleText != ''
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        titleText,
-                        style: const TextStyle(
-                            fontFamily: 'NanumJungHagSaeng',
-                            fontSize: 39,
-                            height: 36 / 39),
-                        softWrap: true,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                )
-              : title,
+          child: title,
         ),
         const SizedBox(height: 20),
         Expanded(

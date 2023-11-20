@@ -42,8 +42,8 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   Widget build(BuildContext context) {
     final mutation = getSendMailReplyMutation(
       refetchQueries: ['character-sent-mail/${widget.mail.id}'],
-      onSuccess: (res, arg) {
-        ScaffoldMessenger.of(context).showSnackBar(
+      onSuccess: (res, arg) async {
+        await ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('답장을 보냈습니다.'),
           ),
@@ -88,7 +88,6 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                     child: const Text(
                       '네',
                       style: TextStyle(
-                        fontFamily: 'MaruBuri',
                         fontSize: 14,
                       ),
                     ),
@@ -136,7 +135,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                       : '',
                   hintText: '답장을 입력해주세요...',
                   hintStyle: TextStyle(
-                    fontFamily: ref.watch(characterThemeProvider).font,
+                    fontFamily: 'NanumDaCaeSaRang',
                     fontSize: 19,
                     color: ColorConstants.neutral,
                     fontWeight: FontWeightConstants.semiBold,
@@ -145,16 +144,14 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   border: InputBorder.none,
                 ),
                 style: TextStyle(
-                  fontFamily: ref.watch(characterThemeProvider).font,
+                  fontFamily: 'NanumDaCaeSaRang',
                   fontSize: 19,
                   color: ColorConstants.primary,
                   fontWeight: FontWeightConstants.semiBold,
                   height: 1.5,
                   letterSpacing: 1.5,
                 ),
-                onChanged: (text) {
-                  setState(() {});
-                },
+
               ),
               const SizedBox(height: 10),
               Padding(

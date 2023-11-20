@@ -1,3 +1,4 @@
+
 import 'dart:async';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
@@ -31,7 +32,7 @@ class _PhoneTabWidgetState extends State<PhoneTabWidget> {
   int? authCode;
 
   int seconds = 300;
-  late Timer _timer;
+  Timer? _timer;
 
   void startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -40,7 +41,7 @@ class _PhoneTabWidgetState extends State<PhoneTabWidget> {
           seconds--;
         });
       } else {
-        _timer.cancel();
+        _timer!.cancel();
       }
     });
   }
@@ -92,7 +93,10 @@ class _PhoneTabWidgetState extends State<PhoneTabWidget> {
   @override
   void dispose() {
     authController.dispose();
-    _timer.cancel();
+    if(_timer != null){
+      _timer!.cancel();
+    }
+
     super.dispose();
   }
 

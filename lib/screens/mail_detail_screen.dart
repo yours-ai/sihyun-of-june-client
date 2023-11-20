@@ -62,14 +62,11 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                     return const Scaffold();
                   }
                   return GestureDetector(
-                    onTap: () => FocusScope.of(context).unfocus(),
+                    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                     child: Scaffold(
                       appBar: const BackAppbar(),
                       body: SafeArea(
                         child: SingleChildScrollView(
-                          reverse: MediaQuery.of(context).viewInsets.bottom > 0
-                              ? true
-                              : false,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 36.0,
@@ -122,12 +119,15 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                       '답장 가능한 시간이 지났어요.🥲\n최근 편지에만 답장이 가능해요.',
                                       style: TextStyle(
                                         height: 1.5,
-                                        fontSize: 19,
+                                        fontSize: 16,
                                         color: ColorConstants.neutral,
+                                        fontWeight:
+                                            FontWeightConstants.semiBold,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
-                                  )
+                                  ),
+                                  const SizedBox(height: 40),
                                 ],
                               ],
                             ),

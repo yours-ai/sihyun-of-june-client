@@ -62,11 +62,14 @@ class MailService {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         for (var day in weekdays)
-          Text(
-            day,
-            style: TextStyle(
-              color: ColorConstants.gray,
-              fontWeight: FontWeightConstants.semiBold,
+          Expanded(
+            child: Text(
+              day,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: ColorConstants.gray,
+                fontWeight: FontWeightConstants.semiBold,
+              ),
             ),
           ),
       ],

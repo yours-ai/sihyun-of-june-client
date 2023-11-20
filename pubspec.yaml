@@ -68,18 +68,6 @@ flutter:
     - assets/images/landing/
     - assets/lotties/
   fonts:
-    - family: MaruBuri
-      fonts:
-        - asset: assets/fonts/MaruBuri-ExtraLight.otf
-          weight: 200
-        - asset: assets/fonts/MaruBuri-Light.otf
-          weight: 300
-        - asset: assets/fonts/MaruBuri-Regular.otf
-          weight: 400
-        - asset: assets/fonts/MaruBuri-SemiBold.otf
-          weight: 600
-        - asset: assets/fonts/MaruBuri-Bold.otf
-          weight: 700
     - family: GowunDodum
       fonts:
         - asset: assets/fonts/GowunDodum-Regular.ttf
