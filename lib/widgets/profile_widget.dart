@@ -24,8 +24,11 @@ class ProfileWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final stackedImageList = characterInfo.images!.length > 3
-        ? characterInfo.images!.sublist(characterInfo.images!.length - 3)
-        : characterInfo.images!;
+        ? characterInfo.images!
+            .sublist(characterInfo.images!.length - 3)
+            .reversed
+            .toList()
+        : characterInfo.images!.reversed.toList();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -39,10 +42,11 @@ class ProfileWidget extends ConsumerWidget {
             return GestureDetector(
               onTap: () {
                 showModalBottomSheet(
-                    isScrollControlled: true,
-                    context: context,
-                    builder: (context) => ProfileDetailsScreen(
-                        characterInfo.images!.reversed.toList()));
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) =>
+                      ProfileDetailsScreen(characterInfo.images!),
+                );
               },
               child: Transform.rotate(
                 angle: angle,

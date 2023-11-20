@@ -18,10 +18,10 @@ class StartingScreen extends ConsumerStatefulWidget {
   const StartingScreen({super.key});
 
   @override
-  tartingScreen createState() => tartingScreen();
+  StartingScreenState createState() => StartingScreenState();
 }
 
-class tartingScreen extends ConsumerState<StartingScreen> {
+class StartingScreenState extends ConsumerState<StartingScreen> {
   _checkAuthAndLand() async {
     final isLogined = await loadIsLogined();
     FlutterNativeSplash.remove();

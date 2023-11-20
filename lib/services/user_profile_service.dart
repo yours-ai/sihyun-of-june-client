@@ -123,7 +123,7 @@ class UserProfileService {
             children: [
               MutationBuilder(
                 mutation: getDeleteUserImage(),
-                builder: (context, state, mutate) => FilledButton(
+                builder: (context, state, mutate) => OutlinedButton(
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(ColorConstants.background),
@@ -135,13 +135,15 @@ class UserProfileService {
                   child: Text(
                     '기본 이미지 설정',
                     style: TextStyle(
-                        fontSize: 14.0,
-                        color: Color(ref
-                            .watch(characterThemeProvider)
-                            .colors!
-                            .secondary!)),
+                      fontSize: 16,
+                      color: ColorConstants.neutral,
+                      fontWeight: FontWeightConstants.semiBold,
+                    ),
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 8,
               ),
               FilledButton(
                 onPressed: () async {
@@ -151,10 +153,11 @@ class UserProfileService {
                     showEditImageModal(context, ref);
                   }
                 },
-                child: const Text(
+                child: Text(
                   '앨범에서 사진 선택하기',
                   style: TextStyle(
-                    fontSize: 14.0,
+                    fontSize: 16,
+                    fontWeight: FontWeightConstants.semiBold,
                   ),
                 ),
               ),

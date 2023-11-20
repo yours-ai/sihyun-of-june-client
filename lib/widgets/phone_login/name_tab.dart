@@ -65,10 +65,13 @@ class _NameTabWidgetState extends State<NameTabWidget> {
             description: Padding(
               padding: const EdgeInsets.only(top: 26),
               child: RichText(
+                textAlign: TextAlign.center,
                 text: TextSpan(
                     style: TextStyle(
-                        fontSize: 15,
-                        color: ColorConstants.black),
+                      color: ColorConstants.gray,
+                      fontSize: 16,
+                      height: 1.5,
+                    ),
                     children: [
                       TextSpan(
                           style: const TextStyle(
@@ -103,16 +106,20 @@ class _NameTabWidgetState extends State<NameTabWidget> {
                   child: Text(
                     '취소하기',
                     style: TextStyle(
-                        fontSize: 16.0, color: ColorConstants.neutral),
+                      fontSize: 16,
+                      color: ColorConstants.neutral,
+                      fontWeight: FontWeightConstants.semiBold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8.0),
                 FilledButton(
                   onPressed: () => mutate(dto),
-                  child: const Text(
+                  child: Text(
                     '동의하고 시작하기',
                     style: TextStyle(
-                      fontSize: 16.0,
+                      fontSize: 16,
+                      fontWeight: FontWeightConstants.semiBold,
                     ),
                   ),
                 ),
