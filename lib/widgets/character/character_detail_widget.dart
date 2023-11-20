@@ -29,10 +29,10 @@ class CharacterDetailWidget extends ConsumerWidget {
         if (state.data == null) {
           return const SizedBox.shrink();
         }
+        character = Character.fromJson(state.data!['character']);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           ref.read(characterThemeProvider.notifier).state = character!.theme!;
         });
-        character = Character.fromJson(state.data!['character']);
         return Scaffold(
           body: SafeArea(
             child: Column(

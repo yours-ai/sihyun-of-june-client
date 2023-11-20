@@ -23,12 +23,9 @@ class ProfileWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final otherImageList =
-        characterInfo.images!.where((image) => image != defaultImage).toList();
-
-    final stackedImageList = otherImageList.length > 3
-        ? otherImageList.sublist(0, 3)
-        : otherImageList;
+    final stackedImageList = characterInfo.images!.length > 3
+        ? characterInfo.images!.sublist(characterInfo.images!.length - 3)
+        : characterInfo.images!;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -44,8 +41,8 @@ class ProfileWidget extends ConsumerWidget {
                 showModalBottomSheet(
                     isScrollControlled: true,
                     context: context,
-                    builder: (context) =>
-                        ProfileDetailsScreen(otherImageList.reversed.toList()));
+                    builder: (context) => ProfileDetailsScreen(
+                        characterInfo.images!.reversed.toList()));
               },
               child: Transform.rotate(
                 angle: angle,

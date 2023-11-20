@@ -187,7 +187,7 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                               ),
                             );
                           }
-                          return const SizedBox.shrink();
+                          return const Expanded(child: SizedBox());
                         },
                       ),
                     ],
@@ -205,20 +205,28 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                       Positioned.fill(
                         child: listMailState.data?.isEmpty == true
                             ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const SizedBox(height: 50),
-                                  const Text(
-                                    '🍂',
-                                    style: TextStyle(fontSize: 100),
-                                  ),
-                                  const SizedBox(height: 20),
                                   Text(
-                                    '아직 도착한 편지가 없어요. \n ${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요.',
+                                    '아직 도착한 편지가 없어요!',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        color: ColorConstants.neutral,
-                                        fontSize: 15,
-                                        height: 1.5),
+                                      color: ColorConstants.primary,
+                                      fontSize: 21,
+                                      height: 1,
+                                      fontWeight: FontWeightConstants.semiBold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 14),
+                                  Text(
+                                    '${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요. \n 조금만 기다려 주세요 :)',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: ColorConstants.neutral,
+                                      fontSize: 16,
+                                      height: 22 / 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   )
                                 ],
                               )
