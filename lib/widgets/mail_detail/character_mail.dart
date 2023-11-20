@@ -1,12 +1,9 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/main.dart';
 
 import '../../actions/mails/models/Mail.dart';
 import '../../constants.dart';
-import '../common/outlined_text.dart';
 import 'mail_info.dart';
 
 class CharacterMailWidget extends ConsumerWidget {
@@ -35,7 +32,7 @@ class CharacterMailWidget extends ConsumerWidget {
             fontFamily: ref.watch(characterThemeProvider).font,
             fontSize: 19,
             fontWeight: FontWeight.bold,
-            color: ColorConstants.lightPrimary,
+            color: ColorConstants.primary,
             height: 1.289,
             letterSpacing: 1.02,
           ),

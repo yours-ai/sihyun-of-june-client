@@ -38,10 +38,7 @@ class NotificationListScreen extends ConsumerWidget {
                             "아직 도착한 알림이 없습니다.",
                             style: TextStyle(
                               fontSize: 16,
-                              color: Color(ref
-                                  .watch(characterThemeProvider)
-                                  .colors!
-                                  .primary!),
+                              color: ColorConstants.neutral,
                               fontWeight: FontWeightConstants.semiBold,
                             ),
                           ),
