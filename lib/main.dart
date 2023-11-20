@@ -193,6 +193,24 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
           ),
         ),
       ),
+      scrollBehavior: SplashScrollBehavior(
+          ref.watch(characterThemeProvider).colors!.primary!),
+    );
+  }
+}
+
+class SplashScrollBehavior extends MaterialScrollBehavior {
+  final int splashColor;
+
+  const SplashScrollBehavior(this.splashColor);
+
+  @override
+  Widget buildOverscrollIndicator(
+      BuildContext context, Widget child, ScrollableDetails details) {
+    return GlowingOverscrollIndicator(
+      axisDirection: details.direction,
+      color: Color(splashColor),
+      child: child,
     );
   }
 }
