@@ -86,7 +86,6 @@ class AllScreenState extends ConsumerState<AllScreen> {
                     height: 1.6,
                     color: Color(
                         ref.watch(characterThemeProvider).colors!.secondary!),
-                    fontFamily: 'MaruBuri',
                     fontSize: 16.0,
                   ),
                   children: [

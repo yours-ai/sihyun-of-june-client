@@ -94,6 +94,12 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
           actions: MutationBuilder(
             mutation: getWithdrawUserMutation(onSuccess: (res, arg) async {
               widget.onWithdraw();
+              CharacterTheme defaultTheme = CharacterTheme(
+                colors:
+                    CharacterColors(primary: 4294923379, secondary: 4294932624),
+                font: "NanumNoRyeogHaNeunDongHee",
+              );
+              ref.read(characterThemeProvider.notifier).state = defaultTheme;
               await Future.delayed(const Duration(seconds: 3));
               logout();
               context.go('/login');
@@ -106,7 +112,6 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                 child: const Text(
                   '탈퇴하기',
                   style: TextStyle(
-                    fontFamily: 'MaruBuri',
                     fontSize: 14,
                   ),
                 ),
