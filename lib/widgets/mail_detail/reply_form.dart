@@ -147,9 +147,9 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   fontFamily: 'NanumDaCaeSaRang',
                   fontSize: 19,
                   color: ColorConstants.primary,
-                  fontWeight: FontWeightConstants.semiBold,
-                  height: 1.5,
-                  letterSpacing: 1.5,
+                  fontWeight: FontWeight.bold,
+                  height: 1.289,
+                  letterSpacing: 1.02,
                 ),
 
               ),

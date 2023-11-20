@@ -194,7 +194,7 @@ class _PhoneTabWidgetState extends State<PhoneTabWidget> {
                           hintStyle: TextStyle(
                               fontSize: 17, color: ColorConstants.neutral),
                         ),
-                        style: const TextStyle(fontSize: 17),
+                        style: const TextStyle(fontSize: 17, height: 1.2),
                       ),
                     )
                   : Container(),

@@ -96,6 +96,7 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                       ),
                       style: const TextStyle(
                         fontSize: 17,
+                        height: 1.2,
                       ),
                     ),
                   ),

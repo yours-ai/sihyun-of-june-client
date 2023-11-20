@@ -123,6 +123,7 @@ class _NameFormWidgetState extends State<NameFormWidget> {
                 ),
                 style: const TextStyle(
                   fontSize: 17,
+                  height: 1.2
                 ),
               ),
               const SizedBox(height: 10.0),
@@ -153,6 +154,7 @@ class _NameFormWidgetState extends State<NameFormWidget> {
                 ),
                 style: const TextStyle(
                   fontSize: 17,
+                  height: 1.2
                 ),
               ),
             ],
