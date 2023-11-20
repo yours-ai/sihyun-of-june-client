@@ -12,6 +12,8 @@ abstract final class ColorConstants {
   static Color lightGray = const Color(0xffF6F6F6);
   static Color white = const Color(0xfffbfbfb);
   static Color black = const Color(0xff1a1a1a);
+
+  static Color lightPrimary = const Color(0xff867e77);
 }
 
 abstract final class TabRoutePaths {
