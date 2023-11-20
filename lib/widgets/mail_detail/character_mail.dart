@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/main.dart';
 
@@ -31,9 +31,10 @@ class CharacterMailWidget extends ConsumerWidget {
           style: TextStyle(
             fontFamily: ref.watch(characterThemeProvider).font,
             fontSize: 19,
-            fontWeight: FontWeightConstants.semiBold,
-            color: ColorConstants.primary,
-            letterSpacing: 1.5,
+            fontWeight: FontWeight.w500,
+            color: ColorConstants.black,
+            height: 1.289,
+            letterSpacing: 1.02,
           ),
         ),
       ],
