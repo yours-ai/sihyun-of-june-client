@@ -1,9 +1,8 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/services.dart';
+import 'package:project_june_client/widgets/common/back_appbar.dart';
+import 'package:project_june_client/widgets/common/dotted_underline.dart';
 import 'package:project_june_client/widgets/mail_detail/character_mail.dart';
 import 'package:project_june_client/widgets/mail_detail/reply.dart';
 import 'package:project_june_client/widgets/mail_detail/reply_form.dart';
@@ -49,7 +48,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
     );
 
     if (mutation == null) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return MutationBuilder(
@@ -63,23 +62,9 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                     return const Scaffold();
                   }
                   return GestureDetector(
-                    onTap: () => FocusScope.of(context).unfocus(),
+                    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                     child: Scaffold(
-                      appBar: AppBar(
-                        backgroundColor: ColorConstants.background,
-                        elevation: 0,
-                        leading: IconButton(
-                          onPressed: () => context.pop(),
-                          icon: Container(
-                            padding: const EdgeInsets.only(left: 23),
-                            child: Icon(
-                              PhosphorIcons.arrow_left,
-                              color: ColorConstants.black,
-                              size: 32,
-                            ),
-                          ),
-                        ),
-                      ),
+                      appBar: const BackAppbar(),
                       body: SafeArea(
                         child: SingleChildScrollView(
                           reverse: MediaQuery.of(context).viewInsets.bottom > 0
@@ -87,7 +72,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                               : false,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 30.0,
+                              horizontal: 36.0,
                               vertical: 10.0,
                             ),
                             child: Column(
@@ -100,12 +85,14 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 30),
                                     height: 1,
-                                    color: ColorConstants.light,
+                                    color: ColorConstants.lightGray,
+                                    child: const DottedUnderline(0),
                                   ),
                                   ReplyWidget(
                                     reply: mailState.data!.replies!.first,
-                                    toFullName: mailState.data!.by_full_name,
-                                    byFullName: mailState.data!.to_full_name,
+                                    toFullName: mailState.data!.by_first_name,
+                                    byFullName: mailState.data!.to_first_name,
+                                    toImage: mailState.data!.to_image,
                                   )
                                 ],
                                 if (mailState.data!.replies!.isEmpty &&
@@ -114,7 +101,8 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 30),
                                     height: 1,
-                                    color: ColorConstants.light,
+                                    color: ColorConstants.lightGray,
+                                    child: const DottedUnderline(0),
                                   ),
                                   ReplyFormWidget(
                                     mail: mailState.data!,
@@ -126,19 +114,23 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                     margin: const EdgeInsets.only(
                                         top: 30, bottom: 45),
                                     height: 1,
-                                    color: ColorConstants.light,
+                                    color: ColorConstants.lightGray,
+                                    child: const DottedUnderline(0),
                                   ),
                                   Center(
                                     child: Text(
                                       '답장 가능한 시간이 지났어요.🥲\n최근 편지에만 답장이 가능해요.',
                                       style: TextStyle(
                                         height: 1.5,
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         color: ColorConstants.neutral,
+                                        fontWeight:
+                                            FontWeightConstants.semiBold,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
-                                  )
+                                  ),
+                                  const SizedBox(height: 40),
                                 ],
                               ],
                             ),

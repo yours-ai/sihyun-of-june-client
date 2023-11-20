@@ -7,7 +7,6 @@ import '../widgets/update_widget.dart';
 class UpdateService {
   const UpdateService();
 
-
   Future<void> checkAndUpdateAndroidApp() async {
     try {
       final info = await InAppUpdate.checkForUpdate();
@@ -24,14 +23,13 @@ class UpdateService {
     }
   }
 
-
   Future<void> checkAndUpdateIOSApp(BuildContext context) async {
     try {
       final newVersionPlus = await NewVersionPlus(
           iOSId: 'team.pygmalion.projectJune',
           androidId: 'team.pygmalion.project_june_client');
       final status = await newVersionPlus.getVersionStatus();
-      if (status != null && status!.canUpdate == true) {
+      if (status != null && status.canUpdate == true) {
         await showModalBottomSheet(
             context: context,
             builder: (BuildContext context) =>

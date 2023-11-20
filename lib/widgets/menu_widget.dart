@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
 class MenuWidget extends StatelessWidget {
   final String title;
@@ -17,30 +18,32 @@ class MenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ColorConstants.background,
-      child: TextButton(
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.zero,
-          splashFactory: NoSplash.splashFactory,
-        ),
-        onPressed: onPressed,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        color: ColorConstants.lightGray,
+        child: Column(
           children: [
-            Container(
-              height: 83,
-              padding: const EdgeInsets.only(left: 28),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                title,
-                style: TextStyle(
-                    fontSize: 18,
-                    color: ColorConstants.black,
-                    fontWeight: FontWeight.normal),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  height: 66,
+                  padding: const EdgeInsets.only(left: 28),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: ColorConstants.primary,
+                      fontWeight: FontWeightConstants.semiBold,
+                    ),
+                  ),
+                ),
+                Container(padding: const EdgeInsets.only(right: 28), child: suffix),
+              ],
             ),
-            Container(padding: EdgeInsets.only(right: 28), child: suffix),
+            const DottedUnderline(28),
           ],
         ),
       ),

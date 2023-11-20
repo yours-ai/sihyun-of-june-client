@@ -7,8 +7,10 @@ import 'package:project_june_client/widgets/test/test_result_widget.dart';
 enum ActiveScreen { start, inTest, result }
 
 class CharacterTestScreen extends StatefulWidget {
+  const CharacterTestScreen({super.key});
+
   @override
-  _CharacterTestScreenState createState() => _CharacterTestScreenState();
+  State<CharacterTestScreen> createState() => _CharacterTestScreenState();
 }
 
 class _CharacterTestScreenState extends State<CharacterTestScreen> {

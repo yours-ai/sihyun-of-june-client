@@ -13,4 +13,3 @@ class Token {
 
   Map<String, dynamic> toJson() => _$TokenToJson(this);
 }
-

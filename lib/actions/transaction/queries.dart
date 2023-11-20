@@ -5,7 +5,6 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
 
 import '../../services.dart';
-import '../../services/transaction_service.dart';
 import 'actions.dart';
 import 'models/CoinLog.dart';
 
@@ -27,7 +26,6 @@ Mutation<void, PurchaseDetails> verifyPurchaseMutation({
           ),
         );
       }
-      ;
     },
     onSuccess: onSuccess,
     onError: onError,
