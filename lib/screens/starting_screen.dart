@@ -33,8 +33,8 @@ class _StartingScreen extends State<StartingScreen> {
     appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
       switch (dp.status) {
         case Status.FOUND:
-          print(dp.deepLink?.toString());
           context.go('${dp.deepLink?.deepLinkValue}');
+          print(dp.deepLink?.deepLinkValue ?? '');
           break;
         case Status.NOT_FOUND:
           print("deep link not found");

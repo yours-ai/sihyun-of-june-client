@@ -4,7 +4,6 @@
 	<dict>
 	    <key>NSAdvertisingAttributionReportEndpoint</key>
         <string>https://appsflyer-skadnetwork.com/</string>
-
 		<key>KAKAO_NATIVE_APP_KEY</key>
 		<string>$(KAKAO_NATIVE_APP_KEY)</string>
 		<key>FirebaseMessagingAutoInitEnabled</key>
@@ -13,10 +12,6 @@
 		<false/>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
-		<key>com.apple.developer.associated-domains</key>
-                <array>
-                    <string>sihyunofjuneapp.onelink.me</string>
-                </array>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
@@ -37,6 +32,14 @@
 		<string>????</string>
 		<key>CFBundleURLTypes</key>
 		<array>
+		    <dict>
+                <key>CFBundleURLName</key>
+                <string>sihyunofjuneapp</string>
+                <key>CFBundleURLSchemes</key>
+                <array>
+                    <string>sihyunofjuneapp</string>
+                </array>
+            </dict>
 			<dict>
 				<key>CFBundleTypeRole</key>
 				<string>Editor</string>
