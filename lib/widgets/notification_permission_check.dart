@@ -52,18 +52,11 @@ class _RequestNotificationPermissionWidgetState
                     onPressed: () {
                       context.pop();
                     },
-                    child: Text(
-                      '취소',
-                      style: TextStyle(
-<<<<<<< Updated upstream
-                        fontSize: 14.0, color: ColorConstants.neutral)
-=======
-                        fontSize: 16,
-                        color: ColorConstants.neutral,
-                        fontWeight: FontWeightConstants.semiBold,
-                      ),
->>>>>>> Stashed changes
-                    ),
+                    child: Text('취소',
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: ColorConstants.neutral,
+                        )),
                   ),
                   const SizedBox(
                     height: 8,
