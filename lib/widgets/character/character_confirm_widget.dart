@@ -112,8 +112,12 @@ class CharacterConfirmWidget extends ConsumerWidget {
       body: SafeArea(
         child: TitleLayout(
           withAppBar: true,
-          titleText:
-              '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 편지가 올 거에요.',
+          title: Text(
+            '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
+                '편지가 올 거에요.',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           actions: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

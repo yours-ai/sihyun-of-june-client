@@ -114,7 +114,11 @@ class NameChangeScreenState extends ConsumerState<NameChangeScreen> {
         body: SafeArea(
           child: TitleLayout(
               withAppBar: true,
-              titleText: "어떻게\n불러드릴까요?",
+              title: Text(
+                '어떻게\n불러드릴까요?',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               body: QueryBuilder(
                 query: getRetrieveMeQuery(),
                 builder: (context, state) {
