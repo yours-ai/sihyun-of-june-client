@@ -14,6 +14,11 @@ abstract final class ColorConstants {
   static Color black = const Color(0xff1a1a1a);
 }
 
+abstract final class AppID {
+  static String ios = '6463772803';
+  static String android = 'team.pygmalion.project_june_client';
+}
+
 abstract final class TabRoutePaths {
   static String mailList = '/mails';
   static String notificationList = '/notifications';
