@@ -44,7 +44,7 @@ class _RequestNotificationPermissionWidgetState
               choiceColumn: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  FilledButton(
+                  OutlinedButton(
                     style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(ColorConstants.background),
@@ -52,18 +52,23 @@ class _RequestNotificationPermissionWidgetState
                     onPressed: () {
                       context.pop();
                     },
-                    child: Text(
-                      '취소',
-                      style: TextStyle(
-                        fontSize: 14.0, color: ColorConstants.neutral)
-                    ),
+                    child: Text('취소',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: ColorConstants.neutral,
+                          fontWeight: FontWeightConstants.semiBold,
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 8,
                   ),
                   FilledButton(
                     onPressed: () => mutate(null),
-                    child: const Text(
+                    child: Text(
                       '동의하기',
                       style: TextStyle(
-                        fontSize: 14.0,
+                        fontSize: 16,
+                        fontWeight: FontWeightConstants.semiBold,
                       ),
                     ),
                   ),

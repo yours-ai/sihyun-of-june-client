@@ -57,14 +57,22 @@ class NameChangeScreenState extends ConsumerState<NameChangeScreen> {
           ),
           builder: (context, state, mutate) => ModalWidget(
             title: '이렇게 불러드릴까요?',
-            description: const Padding(
+            description: Padding(
               padding: EdgeInsets.only(top: 8.0),
-              child: Text('이름을 바꾸신 다음 날부터 편지에 적용되어요!'),
+              child: Text(
+                '이름을 바꾸신 다음 날부터 편지에 적용되어요!',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: ColorConstants.gray,
+                  fontSize: 16,
+                  height: 1.5,
+                ),
+              ),
             ),
             choiceColumn: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                FilledButton(
+                OutlinedButton(
                   style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(ColorConstants.background),
@@ -75,19 +83,22 @@ class NameChangeScreenState extends ConsumerState<NameChangeScreen> {
                   child: Text(
                     '아니요',
                     style: TextStyle(
-                        fontSize: 14.0,
-                        color: Color(ref
-                            .watch(characterThemeProvider)
-                            .colors!
-                            .secondary!)),
+                      fontSize: 16,
+                      color: ColorConstants.neutral,
+                      fontWeight: FontWeightConstants.semiBold,
+                    ),
                   ),
+                ),
+                const SizedBox(
+                  height: 8,
                 ),
                 FilledButton(
                   onPressed: () => mutate(dto),
-                  child: const Text(
+                  child: Text(
                     '네',
                     style: TextStyle(
-                      fontSize: 14.0,
+                      fontSize: 16,
+                      fontWeight: FontWeightConstants.semiBold,
                     ),
                   ),
                 ),

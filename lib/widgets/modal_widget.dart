@@ -24,11 +24,15 @@ class ModalWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Text(
                   title,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 21,
+                    height: 28/21,
+                    fontWeight: FontWeight.bold,
+                    color: ColorConstants.primary,
+                  ),
                 )),
             description,
             const SizedBox(

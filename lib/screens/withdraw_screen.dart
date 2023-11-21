@@ -44,8 +44,16 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
         return const ModalWidget(
             title: '탈퇴가 완료되었어요.',
             description: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              child: Text('유월의 시현이에 관심 가져주셔서 감사했어요.'),
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                '유월의 시현이에 관심 가져주셔서 감사했어요.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: ColorConstants.gray,
+                  fontSize: 16,
+                  height: 1.5,
+                ),
+              ),
             ));
       },
     );

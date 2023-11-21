@@ -36,7 +36,7 @@ class AllScreenState extends ConsumerState<AllScreen> {
           choiceColumn: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              FilledButton(
+              OutlinedButton(
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(ColorConstants.background),
@@ -47,11 +47,14 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 child: Text(
                   '아니요',
                   style: TextStyle(
-                    fontSize: 14.0,
-                    color: Color(
-                        ref.watch(characterThemeProvider).colors!.secondary!),
+                    fontSize: 16,
+                    color: ColorConstants.neutral,
+                    fontWeight: FontWeightConstants.semiBold,
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 8,
               ),
               FilledButton(
                 onPressed: () {
@@ -65,10 +68,11 @@ class AllScreenState extends ConsumerState<AllScreen> {
                       defaultTheme;
                   context.go('/login');
                 },
-                child: const Text(
+                child: Text(
                   '네',
                   style: TextStyle(
-                    fontSize: 14.0,
+                    fontSize: 16,
+                    fontWeight: FontWeightConstants.semiBold,
                   ),
                 ),
               ),
@@ -93,8 +97,7 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 text: TextSpan(
                   style: TextStyle(
                     height: 1.6,
-                    color: Color(
-                        ref.watch(characterThemeProvider).colors!.secondary!),
+                    color: ColorConstants.gray,
                     fontSize: 16.0,
                   ),
                   children: [
@@ -103,19 +106,12 @@ class AllScreenState extends ConsumerState<AllScreen> {
                     ),
                     TextSpan(
                       text: '- 시현이 또는 우빈이와 함께 나누었던 ',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
                       children: [
                         TextSpan(
                           text: '편지\n',
                           style: TextStyle(
-                            color: Color(
-                              ref
-                                  .watch(characterThemeProvider)
-                                  .colors!
-                                  .primary!,
-                            ),
+                            color: ColorConstants.gray,
+                            fontWeight: FontWeightConstants.semiBold,
                           ),
                         ),
                         const TextSpan(
@@ -127,7 +123,7 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              FilledButton(
+              OutlinedButton(
                 style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all(ColorConstants.background),
@@ -138,21 +134,25 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 child: Text(
                   '아니요',
                   style: TextStyle(
-                    fontSize: 14.0,
-                    color: Color(
-                        ref.watch(characterThemeProvider).colors!.secondary!),
+                    fontSize: 16,
+                    color: ColorConstants.neutral,
+                    fontWeight: FontWeightConstants.semiBold,
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 8,
               ),
               FilledButton(
                 onPressed: () {
                   context.push('/withdraw');
                   context.pop();
                 },
-                child: const Text(
+                child: Text(
                   '네',
                   style: TextStyle(
-                    fontSize: 14.0,
+                    fontSize: 16,
+                    fontWeight: FontWeightConstants.semiBold,
                   ),
                 ),
               ),

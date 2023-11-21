@@ -110,7 +110,6 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                       ),
                     ),
             ),
-            const SizedBox(height: 10),
             TextButton(
               onPressed: () {
                 userProfileService.showChangeImageModal(context, ref);
