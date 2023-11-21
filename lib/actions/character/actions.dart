@@ -32,7 +32,7 @@ Future<void> confirmChoice(int id) async {
 }
 
 Future<List<Character>> fetchCharacters() async {
-  final response = await dio.get('/character/characters/');
+  final response = await dio.get('/character/v2/characters/');
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }
 
@@ -42,11 +42,11 @@ Future<void> denyChoice(int id) async {
 }
 
 Future<List<Character>> fetchMyCharacter() async {
-  final response = await dio.get('/character/me/characters/');
+  final response = await dio.get('/character/v2/me/characters/');
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }
 
 Future<Character> fetchCharacterById(int id) async {
-  final response = await dio.get('/character/characters/$id/');
+  final response = await dio.get('/character/v2/characters/$id/');
   return Character.fromJson(response.data);
 }
