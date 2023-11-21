@@ -18,7 +18,7 @@ Future<Mail> fetchMailById(int id) async {
 
 Future<void> replyMailById(ReplyMailDTO dto) async {
   await dio.post(
-    '/mail/v2/character-sent-mails/${dto.id}/reply/',
+    '/mail/character-sent-mails/${dto.id}/reply/',
     data: {'description': dto.description},
   );
   return;
@@ -26,7 +26,7 @@ Future<void> replyMailById(ReplyMailDTO dto) async {
 
 Future<void> readMailById(int id) async {
   await dio.post(
-    '/mail/v2/character-sent-mails/$id/read/',
+    '/mail/character-sent-mails/$id/read/',
   );
   return;
 }
