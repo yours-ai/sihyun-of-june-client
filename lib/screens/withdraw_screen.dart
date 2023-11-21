@@ -41,7 +41,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       isDismissible: false,
       enableDrag: false,
       builder: (BuildContext context) {
-        return const ModalWidget(
+        return ModalWidget(
             title: '탈퇴가 완료되었어요.',
             description: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
