@@ -172,10 +172,10 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                         height: 40,
                                         width: 40,
                                         child: ExtendedImage.network(
-                                          timeLimit: ref
-                                              .watch(imageCacheDurationProvider),
-                                          cacheKey:
-                                              UniqueCacheKeyService.makeUniqueKey(
+                                          timeLimit: ref.watch(
+                                              imageCacheDurationProvider),
+                                          cacheKey: UniqueCacheKeyService
+                                              .makeUniqueKey(
                                                   state.data![0].default_image),
                                           state.data![0].default_image,
                                           fit: BoxFit.cover,
@@ -245,10 +245,12 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                                 Text(
                                                   mailService.kMonthData(
                                                       selectedMonth! + 1),
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     fontSize: 32,
                                                     fontFamily:
                                                         'NanumJungHagSaeng',
+                                                    color:
+                                                        ColorConstants.primary,
                                                   ),
                                                 ),
                                                 const Padding(
