@@ -4,14 +4,14 @@ import 'package:project_june_client/actions/mails/models/Mail.dart';
 
 Future<List<Mail>> fetchMailList() async {
   final response = await dio.get(
-    '/mail/character-sent-mails/',
+    '/mail/v2/character-sent-mails/',
   );
   return response.data.map<Mail>((json) => Mail.fromJson(json)).toList();
 }
 
 Future<Mail> fetchMailById(int id) async {
   final response = await dio.get(
-    '/mail/character-sent-mails/$id/',
+    '/mail/v2/character-sent-mails/$id/',
   );
   return Mail.fromJson(response.data);
 }

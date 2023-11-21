@@ -27,6 +27,7 @@ class ModalWidget extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   title,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 21,
                     height: 28/21,
