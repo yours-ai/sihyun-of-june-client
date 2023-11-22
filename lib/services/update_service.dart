@@ -48,13 +48,8 @@ class UpdateService {
     }
   }
 
-  Future<void> forceUpdateByRemoteConfig(BuildContext context) async {
-    final remoteConfig = await FirebaseRemoteConfig.instance;
-    await remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: Duration(seconds: 10),
-      minimumFetchInterval: Duration.zero,
-    ));
-    await remoteConfig.fetchAndActivate();
+  Future<void> forceUpdateByRemoteConfig(
+      BuildContext context, FirebaseRemoteConfig remoteConfig) async {
     if (remoteConfig.getBool('force_update') == false) {
       return;
     }

@@ -5,12 +5,14 @@ class AlertWidget extends StatelessWidget {
   final String? title;
   final Widget? content;
   final String confirmText;
+  final bool isButtonPresent;
 
   const AlertWidget(
       {super.key,
       this.title,
-      required this.content,
-      required this.confirmText});
+      this.content,
+      this.confirmText = '확인',
+      this.isButtonPresent = true});
 
   @override
   Widget build(BuildContext context) {
@@ -37,20 +39,22 @@ class AlertWidget extends StatelessWidget {
       content: content,
       buttonPadding: const EdgeInsets.only(bottom: 20),
       actions: [
-        SizedBox(
-          width: double.infinity,
-          child: FilledButton(
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0),
+        isButtonPresent
+            ? SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                    ),
+                  ),
+                  onPressed: () => context.pop(),
+                  child: Text(confirmText),
                 ),
-              ),
-            ),
-            onPressed: () => context.pop(),
-            child: Text(confirmText),
-          ),
-        ),
+              )
+            : SizedBox.shrink(),
       ],
     );
   }
