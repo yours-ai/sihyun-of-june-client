@@ -8,11 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_june_client/providers/common_provider.dart';
-import 'package:project_june_client/widgets/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 
 import '../actions/auth/queries.dart';
 import '../constants.dart';
-import '../widgets/modal/modal_widget.dart';
 import 'package:image/image.dart' as image;
 
 class UserProfileService {

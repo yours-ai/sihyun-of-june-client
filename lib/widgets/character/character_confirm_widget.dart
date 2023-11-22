@@ -7,13 +7,13 @@ import 'package:project_june_client/actions/character/models/CharacterColors.dar
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
-import 'package:project_june_client/widgets/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 
 import '../../constants.dart';
 import '../../screens/character_choice_screen.dart';
 import '../../services.dart';
-import '../modal/modal_widget.dart';
 
 class CharacterConfirmWidget extends ConsumerWidget {
   final int testId;

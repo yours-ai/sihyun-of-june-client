@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/widgets/modal/modal_choice_widget.dart';
-import 'package:project_june_client/widgets/modal/modal_description_widget.dart';
-import 'package:project_june_client/widgets/modal/modal_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';

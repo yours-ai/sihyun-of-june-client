@@ -5,13 +5,13 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/controllers/auth/name_form_controller.dart';
-import 'package:project_june_client/widgets/modal/modal_choice_widget.dart';
-import 'package:project_june_client/widgets/modal/modal_description_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/name_form_widget.dart';
 
-import '../widgets/modal/modal_widget.dart';
 
 class NameChangeScreen extends ConsumerStatefulWidget {
   const NameChangeScreen({Key? key}) : super(key: key);

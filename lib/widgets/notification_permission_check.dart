@@ -2,9 +2,9 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
-import 'package:project_june_client/widgets/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 
-import 'modal/modal_widget.dart';
 
 class RequestNotificationPermissionWidget extends StatefulWidget {
   const RequestNotificationPermissionWidget({super.key});
