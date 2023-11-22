@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:project_june_client/constants.dart';
 
 class ModalChoiceWidget extends StatelessWidget {
-  final String submitText, cancelText;
-  final VoidCallback onSubmit, onCancel;
+  final String? submitText, cancelText;
+  final VoidCallback? onSubmit, onCancel;
 
   const ModalChoiceWidget({
     super.key,
-    required this.submitText,
-    required this.cancelText,
-    required this.onSubmit,
-    required this.onCancel,
+    this.submitText,
+    this.cancelText,
+    this.onSubmit,
+    this.onCancel,
   });
 
   @override
@@ -18,6 +18,9 @@ class ModalChoiceWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        (cancelText == null || onCancel == null)
+            ? const SizedBox.shrink()
+            :
         OutlinedButton(
           style: ButtonStyle(
             backgroundColor:
@@ -25,7 +28,7 @@ class ModalChoiceWidget extends StatelessWidget {
           ),
           onPressed: onCancel,
           child: Text(
-            cancelText,
+            cancelText!,
             style: TextStyle(
               fontSize: 16,
               color: ColorConstants.neutral,
@@ -36,10 +39,13 @@ class ModalChoiceWidget extends StatelessWidget {
         const SizedBox(
           height: 8,
         ),
+        (submitText == null || onSubmit == null)
+            ? const SizedBox.shrink()
+            :
         FilledButton(
           onPressed: onSubmit,
           child: Text(
-            submitText,
+            submitText!,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeightConstants.semiBold,
