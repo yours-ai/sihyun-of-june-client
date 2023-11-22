@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:new_version_plus/new_version_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../widgets/update_widget.dart';
 
@@ -25,7 +29,7 @@ class UpdateService {
 
   Future<void> checkAndUpdateIOSApp(BuildContext context) async {
     try {
-      final newVersionPlus = await NewVersionPlus(
+      final newVersionPlus = NewVersionPlus(
           iOSId: 'team.pygmalion.projectJune',
           androidId: 'team.pygmalion.project_june_client');
       final status = await newVersionPlus.getVersionStatus();
@@ -42,5 +46,35 @@ class UpdateService {
             ),
           );
     }
+  }
+
+  Future<void> forceUpdateByRemoteConfig(BuildContext context) async {
+    final remoteConfig = await FirebaseRemoteConfig.instance;
+    await remoteConfig.setConfigSettings(RemoteConfigSettings(
+      fetchTimeout: Duration(seconds: 10),
+      minimumFetchInterval: Duration.zero,
+    ));
+    await remoteConfig.fetchAndActivate();
+    if (remoteConfig.getBool('force_update') == false) {
+      return;
+    }
+    String latestVersion = Platform.isIOS
+        ? remoteConfig.getString('ios_version')
+        : remoteConfig.getString('android_version');
+    PackageInfo _packageInfo = await PackageInfo.fromPlatform();
+    String currentVersion = _packageInfo.version;
+    if (latestVersion == currentVersion) {
+      return;
+    }
+    await showModalBottomSheet(
+      context: context,
+      useRootNavigator: true,
+      isDismissible: false,
+      enableDrag: false,
+      builder: (BuildContext context) => UpdateWidget(
+        releaseNotes: remoteConfig.getString('description'),
+        isForceUpdate: true,
+      ),
+    );
   }
 }

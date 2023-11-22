@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -9,8 +11,11 @@ import '../constants.dart';
 
 class UpdateWidget extends ConsumerWidget {
   final String? releaseNotes;
+  final bool isForceUpdate;
 
-  const UpdateWidget({Key? key, required this.releaseNotes}) : super(key: key);
+  const UpdateWidget(
+      {Key? key, required this.releaseNotes, this.isForceUpdate = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,30 +36,32 @@ class UpdateWidget extends ConsumerWidget {
       choiceColumn: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          OutlinedButton(
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all(ColorConstants.background),
-            ),
-            onPressed: () {
-              context.pop();
-            },
-            child: Text(
-              '나중에 할게요',
-              style: TextStyle(
-                fontSize: 16,
-                color: ColorConstants.neutral,
-                fontWeight: FontWeightConstants.semiBold,
-              ),
-              // 모달은 alert로 바꾸면 dark가 안 중요해짐
-            ),
-          ),
+          isForceUpdate
+              ? SizedBox.shrink()
+              : OutlinedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorConstants.background),
+                  ),
+                  onPressed: () {
+                    context.pop();
+                  },
+                  child: Text(
+                    '나중에 할게요',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: ColorConstants.neutral,
+                      fontWeight: FontWeightConstants.semiBold,
+                    ),
+                    // 모달은 alert로 바꾸면 dark가 안 중요해짐
+                  ),
+                ),
           const SizedBox(
             height: 8,
           ),
           FilledButton(
             onPressed: () {
-              launchUrl(Uri.parse(Urls.appstore));
+              launchUrl(Uri.parse(Platform.isIOS ? Urls.appstore : Urls.googlePlay));
             },
             child: Text(
               '업데이트 하기',

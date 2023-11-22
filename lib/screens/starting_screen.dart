@@ -58,6 +58,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
   }
 
   _checkUpdateAvailable() async {
+    await updateService.forceUpdateByRemoteConfig(context);
     if (Platform.isAndroid) {
       updateService.checkAndUpdateAndroidApp();
     }
