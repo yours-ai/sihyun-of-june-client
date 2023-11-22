@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -59,7 +61,7 @@ class UpdateWidget extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () {
-              launchUrl(Uri.parse(Urls.appstore));
+              launchUrl(Uri.parse(Platform.isIOS ? Urls.appstore : Urls.googlePlay));
             },
             child: Text(
               '업데이트 하기',
