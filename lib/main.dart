@@ -1,4 +1,5 @@
 import 'package:amplitude_flutter/amplitude.dart';
+import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,8 @@ void main() async {
     appRunner: _appRunner,
   );
 }
+
+final deepLinkProvider = StateProvider<DeepLink?>((ref) => null);
 
 final imageCacheDurationProvider = Provider<Duration>((ref) {
   return const Duration(minutes: 50);

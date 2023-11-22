@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -13,6 +14,7 @@ import 'package:project_june_client/main.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/notification/actions.dart';
+import '../main.dart';
 
 class StartingScreen extends ConsumerStatefulWidget {
   const StartingScreen({super.key});
@@ -82,9 +84,16 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _checkAuthAndLand();
+    onelinkService.appsFlyerInit();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
+        if (dp.status == Status.FOUND) {
+          ref.read(deepLinkProvider.notifier)?.state = dp.deepLink;
+          if(dp.deepLink?.deepLinkValue == null || dp.deepLink?.deepLinkValue == '') return;
+          context.go('${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
+        }
+      });
+      _checkAuthAndLand();
     });
   }
 

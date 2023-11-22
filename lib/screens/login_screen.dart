@@ -1,18 +1,24 @@
 import 'dart:io';
 
+import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/main.dart';
 
+import '../actions/analytics/queries.dart';
 import '../widgets/auth/KakaoLoginButton.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(context) {
+  Widget build(context, WidgetRef ref) {
+    String? funnel = ref.watch(deepLinkProvider.notifier).state?.mediaSource;
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -52,7 +58,9 @@ class LoginScreen extends StatelessWidget {
                       MutationBuilder(
                         mutation: getLoginAsAppleMutation(
                           onSuccess: (res, arg) {
-                            context.go('/');
+                            getUserFunnelMutation(onSuccess: (res, arg) {
+                              context.go('/');
+                            }).mutate(funnel);
                           },
                           onError: (arg, error, callback) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -85,7 +93,7 @@ class LoginScreen extends StatelessWidget {
                         },
                       ),
                     const SizedBox(height: 10),
-                    const KakaoLoginButton(),
+                    KakaoLoginButton(),
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {

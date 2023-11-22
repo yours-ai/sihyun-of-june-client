@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
@@ -10,18 +11,20 @@ import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/name_form_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../actions/analytics/queries.dart';
+import '../../main.dart';
 import '../modal_widget.dart';
 
-class NameTabWidget extends StatefulWidget {
+class NameTabWidget extends ConsumerStatefulWidget {
   final ValidatedAuthCodeDTO dto;
 
   const NameTabWidget({Key? key, required this.dto}) : super(key: key);
 
   @override
-  State<NameTabWidget> createState() => _NameTabWidgetState();
+  NameTabWidgetState createState() => NameTabWidgetState();
 }
 
-class _NameTabWidgetState extends State<NameTabWidget> {
+class NameTabWidgetState extends ConsumerState<NameTabWidget> {
   final NameFormController formController = NameFormController();
   bool isSubmitClicked = false;
   bool isValid = false;
@@ -42,7 +45,7 @@ class _NameTabWidgetState extends State<NameTabWidget> {
     );
   }
 
-  void _showSignInModal(ValidatedUserDTO dto) async {
+  void _showSignInModal(ValidatedUserDTO dto, String? funnel) async {
     await showModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
@@ -50,7 +53,9 @@ class _NameTabWidgetState extends State<NameTabWidget> {
         return MutationBuilder(
           mutation: getSmsTokenMutation(
             onSuccess: (res, arg) {
-              context.go('/');
+              getUserFunnelMutation(onSuccess: (res, arg) {
+                context.go('/');
+              }).mutate(funnel);
             },
             onError: (arg, error, fallback) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -139,6 +144,7 @@ class _NameTabWidgetState extends State<NameTabWidget> {
 
   @override
   Widget build(BuildContext context) {
+    String? funnel = ref.watch(deepLinkProvider.notifier).state?.mediaSource;
     return TitleLayout(
       withAppBar: true,
       title: Text(
@@ -161,7 +167,7 @@ class _NameTabWidgetState extends State<NameTabWidget> {
             isSubmitClicked = true;
           });
           if (isValid) {
-            _showSignInModal(getValidatedData());
+            _showSignInModal(getValidatedData(), funnel);
           }
         },
         style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(16.0)),

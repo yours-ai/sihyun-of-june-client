@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
@@ -11,18 +12,20 @@ import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/widgets/alert_widget.dart';
 import 'package:project_june_client/widgets/phone_login/number_input_widget.dart';
 
+import '../../actions/analytics/queries.dart';
+import '../../main.dart';
 import '../common/title_layout.dart';
 
-class PhoneTabWidget extends StatefulWidget {
+class PhoneTabWidget extends ConsumerStatefulWidget {
   final void Function(ValidatedAuthCodeDTO dto) onSmsVerify;
 
   const PhoneTabWidget({Key? key, required this.onSmsVerify}) : super(key: key);
 
   @override
-  State<PhoneTabWidget> createState() => _PhoneTabWidgetState();
+  PhoneTabWidgetState createState() => PhoneTabWidgetState();
 }
 
-class _PhoneTabWidgetState extends State<PhoneTabWidget> {
+class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
   final _formKey = GlobalKey<FormState>();
   final phoneController = TextEditingController();
   final authController = TextEditingController();
@@ -102,9 +105,12 @@ class _PhoneTabWidgetState extends State<PhoneTabWidget> {
 
   @override
   Widget build(BuildContext context) {
+    String? funnel = ref.watch(deepLinkProvider.notifier).state?.mediaSource;
     var tokenMutation = getSmsTokenMutation(
       onSuccess: (res, arg) {
-        context.go('/');
+        getUserFunnelMutation(onSuccess: (res, arg) {
+          context.go('/');
+        }).mutate(funnel);
       },
       onError: (arg, error, fallback) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -46,6 +46,12 @@
                 <data android:host="kakaolink"
                       android:scheme="kakao${KAKAO_NATIVE_APP_KEY}" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="sihyunofjuneapp" />
+            </intent-filter>
         </activity>
         <meta-data
                 android:name="firebase_messaging_auto_init_enabled"
