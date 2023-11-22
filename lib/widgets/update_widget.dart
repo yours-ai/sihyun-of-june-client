@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/modal_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 

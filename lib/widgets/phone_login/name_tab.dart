@@ -7,12 +7,12 @@ import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/controllers/auth/name_form_controller.dart';
+import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/name_form_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../actions/analytics/queries.dart';
-import '../../main.dart';
 import '../modal_widget.dart';
 
 class NameTabWidget extends ConsumerStatefulWidget {

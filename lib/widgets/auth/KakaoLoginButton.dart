@@ -4,11 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../actions/analytics/queries.dart';
 import '../../actions/auth/queries.dart';
-import '../../main.dart';
 
 class KakaoLoginButton extends ConsumerWidget {
   const KakaoLoginButton({

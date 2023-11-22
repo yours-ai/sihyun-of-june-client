@@ -1,5 +1,4 @@
 import 'package:amplitude_flutter/amplitude.dart';
-import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
 import 'package:flutter/material.dart';
@@ -8,10 +7,10 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:moment_dart/moment_dart.dart';
-import 'package:project_june_client/actions/character/models/CharacterColors.dart';
-import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/providers/common_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'firebase_options.dart';
 
@@ -74,22 +73,6 @@ void main() async {
     appRunner: _appRunner,
   );
 }
-
-final deepLinkProvider = StateProvider<DeepLink?>((ref) => null);
-
-final imageCacheDurationProvider = Provider<Duration>((ref) {
-  return const Duration(minutes: 50);
-});
-
-final topPaddingProvider = StateProvider<double?>((ref) => null);
-
-final characterThemeProvider = StateProvider.autoDispose<CharacterTheme>((ref) {
-  final CharacterTheme defaultTheme = CharacterTheme(
-    colors: CharacterColors(primary: 4294923379, secondary: 4294932624),
-    font: "NanumNoRyeogHaNeunDongHee",
-  );
-  return defaultTheme;
-});
 
 class ProjectJuneApp extends ConsumerStatefulWidget {
   const ProjectJuneApp({super.key});

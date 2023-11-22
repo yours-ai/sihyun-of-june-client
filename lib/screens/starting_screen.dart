@@ -7,14 +7,13 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
-import 'package:project_june_client/actions/character/actions.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/main.dart';
+import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/notification/actions.dart';
-import '../main.dart';
 
 class StartingScreen extends ConsumerStatefulWidget {
   const StartingScreen({super.key});
@@ -89,7 +88,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
         if (dp.status == Status.FOUND) {
-          ref.read(deepLinkProvider.notifier)?.state = dp.deepLink;
+          ref.read(deepLinkProvider.notifier).state = dp.deepLink;
           if(dp.deepLink?.deepLinkValue == null || dp.deepLink?.deepLinkValue == '') return;
           context.go('${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
         }

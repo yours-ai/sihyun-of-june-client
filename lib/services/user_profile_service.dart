@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:project_june_client/providers/common_provider.dart';
 
 import '../actions/auth/queries.dart';
 import '../constants.dart';
-import '../main.dart';
 import '../widgets/modal_widget.dart';
 import 'package:image/image.dart' as image;
 
