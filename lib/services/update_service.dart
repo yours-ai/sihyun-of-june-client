@@ -72,7 +72,7 @@ class UpdateService {
       isDismissible: false,
       enableDrag: false,
       builder: (BuildContext context) => UpdateWidget(
-        releaseNotes: remoteConfig.getString('description'),
+        releaseNotes: remoteConfig.getString('release_notes'),
         isForceUpdate: true,
       ),
     );
