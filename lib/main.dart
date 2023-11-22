@@ -120,10 +120,16 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
         splashFactory: NoSplash.splashFactory,
         textTheme: TextTheme(
           titleLarge: TextStyle(
-              fontFamily: 'NanumJungHagSaeng',
-              fontSize: 39,
-              height: 36 / 39,
-              color: ColorConstants.primary),
+            fontFamily: 'NanumJungHagSaeng',
+            fontSize: 39,
+            height: 36 / 39,
+            color: ColorConstants.primary,
+          ),
+          bodySmall: TextStyle(
+            color: ColorConstants.gray,
+            fontSize: 16,
+            height: 1.5,
+          ),
         ),
         filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(

@@ -8,6 +8,8 @@ import 'package:project_june_client/actions/character/models/CharacterTheme.dart
 import 'package:project_june_client/providers/character_theme_provider.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
+import 'package:project_june_client/widgets/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/user_profile_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,7 +18,7 @@ import '../actions/auth/queries.dart';
 import '../constants.dart';
 import '../services.dart';
 import '../widgets/common/title_layout.dart';
-import '../widgets/modal_widget.dart';
+import '../widgets/modal/modal_widget.dart';
 
 class AllScreen extends ConsumerStatefulWidget {
   const AllScreen({super.key});
@@ -33,50 +35,20 @@ class AllScreenState extends ConsumerState<AllScreen> {
       builder: (BuildContext context) {
         return ModalWidget(
           title: '정말 로그아웃하시겠어요?',
-          choiceColumn: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              OutlinedButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(ColorConstants.background),
-                ),
-                onPressed: () {
-                  context.pop();
-                },
-                child: Text(
-                  '아니요',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: ColorConstants.neutral,
-                    fontWeight: FontWeightConstants.semiBold,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              FilledButton(
-                onPressed: () {
-                  logout();
-                  CharacterTheme defaultTheme = CharacterTheme(
-                    colors: CharacterColors(
-                        primary: 4294923379, secondary: 4294932624),
-                    font: "NanumNoRyeogHaNeunDongHee",
-                  );
-                  ref.read(characterThemeProvider.notifier).state =
-                      defaultTheme;
-                  context.go('/login');
-                },
-                child: Text(
-                  '네',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeightConstants.semiBold,
-                  ),
-                ),
-              ),
-            ],
+          choiceColumn: ModalChoiceWidget(
+            submitText: '네',
+            onSubmit: () {
+              logout();
+              CharacterTheme defaultTheme = CharacterTheme(
+                colors:
+                    CharacterColors(primary: 4294923379, secondary: 4294932624),
+                font: "NanumNoRyeogHaNeunDongHee",
+              );
+              ref.read(characterThemeProvider.notifier).state = defaultTheme;
+              context.go('/login');
+            },
+            cancelText: '아니요',
+            onCancel: () => context.pop(),
           ),
         );
       },
@@ -90,73 +62,41 @@ class AllScreenState extends ConsumerState<AllScreen> {
       builder: (BuildContext context) {
         return ModalWidget(
           title: '정말 탈퇴하시겠어요?',
-          choiceColumn: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    height: 1.6,
-                    color: ColorConstants.gray,
-                    fontSize: 16.0,
+          description: ModalDescriptionWidget(
+            descriptionWidget: RichText(
+              text: TextSpan(
+                style: Theme.of(context).textTheme.bodySmall,
+                children: [
+                  const TextSpan(
+                    text: '탈퇴하기 신청을 하면 이런 내용이 전부 삭제되어요.\n',
                   ),
-                  children: [
-                    const TextSpan(
-                      text: '탈퇴하기 신청을 하면 이런 내용이 전부 삭제되어요.\n',
-                    ),
-                    TextSpan(
-                      text: '- 시현이 또는 우빈이와 함께 나누었던 ',
-                      children: [
-                        TextSpan(
-                          text: '편지\n',
-                          style: TextStyle(
-                            color: ColorConstants.gray,
-                            fontWeight: FontWeightConstants.semiBold,
-                          ),
+                  TextSpan(
+                    text: '- 시현이 또는 우빈이와 함께 나누었던 ',
+                    children: [
+                      TextSpan(
+                        text: '편지\n',
+                        style: TextStyle(
+                          color: ColorConstants.gray,
+                          fontWeight: FontWeightConstants.semiBold,
                         ),
-                        const TextSpan(
-                          text: '- 앞으로 새로운 친구들을 만나볼 기회',
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              OutlinedButton(
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(ColorConstants.background),
-                ),
-                onPressed: () {
-                  context.pop();
-                },
-                child: Text(
-                  '아니요',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: ColorConstants.neutral,
-                    fontWeight: FontWeightConstants.semiBold,
+                      ),
+                      const TextSpan(
+                        text: '- 앞으로 새로운 친구들을 만나볼 기회',
+                      ),
+                    ],
                   ),
-                ),
+                ],
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              FilledButton(
-                onPressed: () {
-                  context.push('/withdraw');
-                  context.pop();
-                },
-                child: Text(
-                  '네',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeightConstants.semiBold,
-                  ),
-                ),
-              ),
-            ],
+            ),
+          ),
+          choiceColumn: ModalChoiceWidget(
+            submitText: '네',
+            onSubmit: () {
+              context.push('/withdraw');
+              context.pop();
+            },
+            cancelText: '아니요',
+            onCancel: () => context.pop(),
           ),
         );
       },

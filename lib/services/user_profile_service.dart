@@ -8,10 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_june_client/providers/common_provider.dart';
+import 'package:project_june_client/widgets/modal/modal_choice_widget.dart';
 
 import '../actions/auth/queries.dart';
 import '../constants.dart';
-import '../widgets/modal_widget.dart';
+import '../widgets/modal/modal_widget.dart';
 import 'package:image/image.dart' as image;
 
 class UserProfileService {
@@ -116,52 +117,25 @@ class UserProfileService {
       context: context,
       useRootNavigator: true,
       builder: (BuildContext context) {
-        return ModalWidget(
-          title: '프로필 이미지 선택',
-          choiceColumn: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              MutationBuilder(
-                mutation: getDeleteUserImage(),
-                builder: (context, state, mutate) => OutlinedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(ColorConstants.background),
-                  ),
-                  onPressed: () {
-                    mutate(null);
-                    context.pop();
-                  },
-                  child: Text(
-                    '기본 이미지 설정',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: ColorConstants.neutral,
-                      fontWeight: FontWeightConstants.semiBold,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              FilledButton(
-                onPressed: () async {
-                  await _pickImage();
-                  if (_image != null) {
-                    context.pop();
-                    showEditImageModal(context, ref);
-                  }
-                },
-                child: Text(
-                  '앨범에서 사진 선택하기',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeightConstants.semiBold,
-                  ),
-                ),
-              ),
-            ],
+        return MutationBuilder(
+          mutation: getDeleteUserImage(),
+          builder: (context, state, mutate) => ModalWidget(
+            title: '프로필 이미지 선택',
+            choiceColumn: ModalChoiceWidget(
+              submitText: '앨범에서 사진 선택하기',
+              onSubmit: () => () async {
+                await _pickImage();
+                if (_image != null) {
+                  context.pop();
+                  showEditImageModal(context, ref);
+                }
+              },
+              cancelText: '기본 이미지 설정',
+              onCancel: () {
+                mutate(null);
+                context.pop();
+              },
+            ),
           ),
         );
       },

@@ -9,11 +9,13 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/controllers/auth/name_form_controller.dart';
 import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
+import 'package:project_june_client/widgets/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/name_form_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../actions/analytics/queries.dart';
-import '../modal_widget.dart';
+import '../modal/modal_widget.dart';
 
 class NameTabWidget extends ConsumerStatefulWidget {
   final ValidatedAuthCodeDTO dto;
@@ -67,68 +69,37 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
           ),
           builder: (context, state, mutate) => ModalWidget(
             title: '시작하려면 동의해주세요',
-            description: Padding(
-              padding: const EdgeInsets.only(top: 26),
-              child: RichText(
+            description: ModalDescriptionWidget(
+              descriptionWidget: RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                    style: TextStyle(
-                      color: ColorConstants.gray,
-                      fontSize: 16,
-                      height: 1.5,
-                    ),
-                    children: [
-                      TextSpan(
-                          style: const TextStyle(
-                            decoration: TextDecoration.underline,
-                          ),
-                          text: '이용약관',
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => launchUrl(Uri.parse(Urls.terms))),
-                      const TextSpan(text: ' 및 '),
-                      TextSpan(
-                          style: const TextStyle(
-                            decoration: TextDecoration.underline,
-                          ),
-                          text: '개인정보처리방침',
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => launchUrl(Uri.parse(Urls.privacy))),
-                      const TextSpan(text: '에 동의해야 시작할 수 있어요.'),
-                    ]),
+                  style: Theme.of(context).textTheme.bodySmall,
+                  children: [
+                    TextSpan(
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                        ),
+                        text: '이용약관',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => launchUrl(Uri.parse(Urls.terms))),
+                    const TextSpan(text: ' 및 '),
+                    TextSpan(
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                        ),
+                        text: '개인정보처리방침',
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => launchUrl(Uri.parse(Urls.privacy))),
+                    const TextSpan(text: '에 동의해야 시작할 수 있어요.'),
+                  ],
+                ),
               ),
             ),
-            choiceColumn: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                OutlinedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(ColorConstants.background),
-                  ),
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: Text(
-                    '취소하기',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: ColorConstants.neutral,
-                      fontWeight: FontWeightConstants.semiBold,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                FilledButton(
-                  onPressed: () => mutate(dto),
-                  child: Text(
-                    '동의하고 시작하기',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeightConstants.semiBold,
-                    ),
-                  ),
-                ),
-              ],
+            choiceColumn: ModalChoiceWidget(
+              submitText: '동의하고 시작하기',
+              onSubmit: () => mutate(dto),
+              cancelText: '취소하기',
+              onCancel: () => context.pop(),
             ),
           ),
         );

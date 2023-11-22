@@ -8,11 +8,12 @@ import 'package:project_june_client/actions/character/models/CharacterTheme.dart
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_theme_provider.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
+import 'package:project_june_client/widgets/modal/modal_choice_widget.dart';
 
 import '../../constants.dart';
 import '../../screens/character_choice_screen.dart';
 import '../../services.dart';
-import '../modal_widget.dart';
+import '../modal/modal_widget.dart';
 
 class CharacterConfirmWidget extends ConsumerWidget {
   final int testId;
@@ -32,60 +33,27 @@ class CharacterConfirmWidget extends ConsumerWidget {
         context: context,
         useRootNavigator: true,
         builder: (BuildContext context) {
-          return ModalWidget(
-            title: '정말 다른 상대로 정해드릴까요?',
-            choiceColumn: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                OutlinedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      ColorConstants.background,
-                    ),
-                  ),
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: Text(
-                    '됐어요',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: ColorConstants.neutral,
-                      fontWeight: FontWeightConstants.semiBold,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                MutationBuilder(
-                  mutation: getDenyChoiceMutation(
-                    onSuccess: (res, arg) {
-                      CharacterTheme defaultTheme = CharacterTheme(
-                        colors: CharacterColors(
-                            primary: 4294923379, secondary: 4294932624),
-                        font: "NanumNoRyeogHaNeunDongHee",
-                      );
-                      ref.read(characterThemeProvider.notifier).state =
-                          defaultTheme;
-                      context.pop();
-                      context.go('/character-test');
-                    },
-                  ),
-                  builder: (context, state, mutate) => FilledButton(
-                    onPressed: () {
-                      mutate(testId);
-                    },
-                    child: Text(
-                      '네',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeightConstants.semiBold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+          return MutationBuilder(
+            mutation: getDenyChoiceMutation(
+              onSuccess: (res, arg) {
+                CharacterTheme defaultTheme = CharacterTheme(
+                  colors: CharacterColors(
+                      primary: 4294923379, secondary: 4294932624),
+                  font: "NanumNoRyeogHaNeunDongHee",
+                );
+                ref.read(characterThemeProvider.notifier).state = defaultTheme;
+                context.pop();
+                context.go('/character-test');
+              },
+            ),
+            builder: (context, state, mutate) => ModalWidget(
+              title: '정말 다른 상대로 정해드릴까요?',
+              choiceColumn: ModalChoiceWidget(
+                submitText: '네',
+                onSubmit: () => mutate(testId),
+                cancelText: '됐어요',
+                onCancel: () => context.pop(),
+              ),
             ),
           );
         },

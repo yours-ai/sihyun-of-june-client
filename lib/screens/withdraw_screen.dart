@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
+import 'package:project_june_client/widgets/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/withdraw/guide_tab.dart';
 import 'package:project_june_client/widgets/withdraw/reason_tab.dart';
 
 import '../constants.dart';
-import '../widgets/modal_widget.dart';
+import '../widgets/modal/modal_widget.dart';
 
 class WithdrawScreen extends StatefulWidget {
   const WithdrawScreen({super.key});
@@ -41,20 +42,11 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       isDismissible: false,
       enableDrag: false,
       builder: (BuildContext context) {
-        return ModalWidget(
-            title: '탈퇴가 완료되었어요.',
-            description: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Text(
-                '유월의 시현이에 관심 가져주셔서 감사했어요.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: ColorConstants.gray,
-                  fontSize: 16,
-                  height: 1.5,
-                ),
-              ),
-            ));
+        return const ModalWidget(
+          title: '탈퇴가 완료되었어요.',
+          description:
+              ModalDescriptionWidget(description: '유월의 시현이에 관심 가져주셔서 감사했어요.'),
+        );
       },
     );
   }
