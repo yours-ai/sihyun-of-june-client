@@ -10,8 +10,8 @@ class BuildTimeEnvironments {
       const String.fromEnvironment('SENTRY_ENVIRONMENT'); // Not required
   static String amplitudeApiKey =
       const String.fromEnvironment('AMPLITUDE_API_KEY');
-  static String appsFlyerKey =
-      const String.fromEnvironment('APPSFLYER_KEY'); // Not required
+  static String appsFlyerDevKey =
+      const String.fromEnvironment('APPSFLYER_DEV_KEY'); // Not required
 }
 
 final REQUIRED_VARIABLES = {

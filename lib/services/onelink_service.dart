@@ -9,7 +9,7 @@ class OnelinkService {
 
   Future<void> appsFlyerInit() async {
     AppsFlyerOptions appsFlyerOptions = AppsFlyerOptions(
-      afDevKey: BuildTimeEnvironments.appsFlyerKey,
+      afDevKey: BuildTimeEnvironments.appsFlyerDevKey,
       appId:
           Platform.isIOS ? AppID.ios : AppID.android,
       showDebug: false,
