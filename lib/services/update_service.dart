@@ -66,9 +66,12 @@ class UpdateService {
       useRootNavigator: true,
       isDismissible: false,
       enableDrag: false,
-      builder: (BuildContext context) => UpdateWidget(
-        releaseNotes: remoteConfig.getString('release_notes'),
-        isForceUpdate: true,
+      builder: (BuildContext context) => WillPopScope(
+        onWillPop: () async => false,
+        child: UpdateWidget(
+          releaseNotes: remoteConfig.getString('release_notes'),
+          isForceUpdate: true,
+        ),
       ),
     );
   }

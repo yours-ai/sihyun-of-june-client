@@ -69,20 +69,23 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          return AlertWidget(
-            title: remoteConfig.getString('app_disable_title'),
-            content: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Text(
-                remoteConfig.getString('app_disable_description'),
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w300,
-                    color: ColorConstants.gray),
-                textAlign: TextAlign.center,
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertWidget(
+              title: remoteConfig.getString('app_disable_title'),
+              content: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: Text(
+                  remoteConfig.getString('app_disable_description'),
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w300,
+                      color: ColorConstants.gray),
+                  textAlign: TextAlign.center,
+                ),
               ),
+              isButtonPresent: false,
             ),
-            isButtonPresent: false,
           );
         },
       );
