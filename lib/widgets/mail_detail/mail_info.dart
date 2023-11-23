@@ -1,7 +1,8 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_june_client/main.dart';
+import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 import '../../constants.dart';
