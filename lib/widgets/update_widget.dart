@@ -12,10 +12,9 @@ import '../constants.dart';
 
 class UpdateWidget extends ConsumerWidget {
   final String? releaseNotes;
-  final bool isForceUpdate;
 
   const UpdateWidget(
-      {Key? key, required this.releaseNotes, this.isForceUpdate = false})
+      {Key? key, required this.releaseNotes})
       : super(key: key);
 
   @override
@@ -26,8 +25,8 @@ class UpdateWidget extends ConsumerWidget {
       choiceColumn: ModalChoiceWidget(
         submitText: '업데이트 하기',
         onSubmit: () => launchUrl(Uri.parse(Urls.appstore)),
-        cancelText: isForceUpdate ? null : '나중에 할게요',
-        onCancel: isForceUpdate ? null : () => context.pop(),
+        cancelText: '나중에 할게요',
+        onCancel: () => context.pop(),
       ),
     );
   }

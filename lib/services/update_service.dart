@@ -73,7 +73,6 @@ class UpdateService {
       enableDrag: false,
       builder: (BuildContext context) => UpdateWidget(
         releaseNotes: remoteConfig.getString('description'),
-        isForceUpdate: true,
       ),
     );
   }
