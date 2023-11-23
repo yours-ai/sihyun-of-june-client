@@ -7,7 +7,7 @@ import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/CharacterColors.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
-import 'package:project_june_client/main.dart';
+import 'package:project_june_client/providers/character_theme_provider.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:url_launcher/url_launcher.dart';
 

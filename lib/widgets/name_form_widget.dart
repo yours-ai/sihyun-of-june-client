@@ -83,6 +83,29 @@ class _NameFormWidgetState extends State<NameFormWidget> {
     return;
   }
 
+  InputDecoration getDecoration(String hintText, Color borderColor) {
+    return InputDecoration(
+      contentPadding: const EdgeInsets.only(left: 10),
+      errorStyle: const TextStyle(fontSize: 0, height: 0),
+      hintText: hintText,
+      hintStyle: TextStyle(fontSize: 17, color: ColorConstants.neutral),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(6.0),
+        borderSide: BorderSide(
+          width: 1.0,
+          color: borderColor,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(6.0),
+        borderSide: BorderSide(
+          width: 1.0,
+          color: borderColor,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -100,31 +123,7 @@ class _NameFormWidgetState extends State<NameFormWidget> {
                 onChanged: (value) {
                   validate(value, widget.formController.lastNameController);
                 },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(left: 10),
-                  errorStyle: const TextStyle(fontSize: 0, height: 0),
-                  hintText: '홍',
-                  hintStyle:
-                      TextStyle(fontSize: 17, color: ColorConstants.neutral),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                    borderSide: BorderSide(
-                      width: 1.0,
-                      color: lastNameFieldColor,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                    borderSide: BorderSide(
-                      width: 1.0,
-                      color: lastNameFieldColor,
-                    ),
-                  ),
-                ),
-                style: const TextStyle(
-                  fontSize: 17,
-                  height: 1.2
-                ),
+                decoration: getDecoration('홍', lastNameFieldColor),
               ),
               const SizedBox(height: 10.0),
               TextField(
@@ -133,25 +132,7 @@ class _NameFormWidgetState extends State<NameFormWidget> {
                 onChanged: (value) {
                   validate(value, widget.formController.lastNameController);
                 },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(left: 10),
-                  errorStyle: const TextStyle(
-                    fontSize: 10,
-                  ),
-                  hintText: '길동',
-                  hintStyle:
-                      TextStyle(fontSize: 17, color: ColorConstants.neutral),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                    borderSide: BorderSide(
-                      width: 1.0,
-                      color: firstNameFieldColor,
-                    ),
-                  ),
-                ),
+                decoration: getDecoration('길동', firstNameFieldColor),
                 style: const TextStyle(
                   fontSize: 17,
                   height: 1.2

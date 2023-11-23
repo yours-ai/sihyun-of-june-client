@@ -1,14 +1,12 @@
 import 'dart:io';
 
-import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/main.dart';
+import 'package:project_june_client/providers/deep_link_provider.dart';
 
 import '../actions/analytics/queries.dart';
 import '../widgets/auth/KakaoLoginButton.dart';

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
@@ -9,11 +8,11 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
+import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/widgets/alert_widget.dart';
 import 'package:project_june_client/widgets/phone_login/number_input_widget.dart';
 
 import '../../actions/analytics/queries.dart';
-import '../../main.dart';
 import '../common/title_layout.dart';
 
 class PhoneTabWidget extends ConsumerStatefulWidget {

@@ -4,14 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
-import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/controllers/auth/name_form_controller.dart';
+import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/name_form_widget.dart';
 
-import '../constants.dart';
-import '../widgets/modal_widget.dart';
 
 class NameChangeScreen extends ConsumerStatefulWidget {
   const NameChangeScreen({Key? key}) : super(key: key);
@@ -57,52 +57,12 @@ class NameChangeScreenState extends ConsumerState<NameChangeScreen> {
           ),
           builder: (context, state, mutate) => ModalWidget(
             title: '이렇게 불러드릴까요?',
-            description: Padding(
-              padding: EdgeInsets.only(top: 8.0),
-              child: Text(
-                '이름을 바꾸신 다음 날부터 편지에 적용되어요!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: ColorConstants.gray,
-                  fontSize: 16,
-                  height: 1.5,
-                ),
-              ),
-            ),
-            choiceColumn: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                OutlinedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(ColorConstants.background),
-                  ),
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: Text(
-                    '아니요',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: ColorConstants.neutral,
-                      fontWeight: FontWeightConstants.semiBold,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                FilledButton(
-                  onPressed: () => mutate(dto),
-                  child: Text(
-                    '네',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeightConstants.semiBold,
-                    ),
-                  ),
-                ),
-              ],
+            description: const ModalDescriptionWidget(description: '이름을 바꾸신 다음 날부터 편지에 적용되어요!'),
+            choiceColumn: ModalChoiceWidget(
+              submitText: '네',
+              onSubmit: () => mutate(dto),
+              cancelText: '아니요',
+              onCancel: () => context.pop(),
             ),
           ),
         );
