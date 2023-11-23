@@ -17,9 +17,9 @@ import 'package:project_june_client/services.dart';
 import '../actions/notification/actions.dart';
 import '../constants.dart';
 import '../main.dart';
-import '../widgets/alert_widget.dart';
+import '../widgets/common/alert/alert_description_widget.dart';
+import '../widgets/common/alert/alert_widget.dart';
 import '../widgets/update_widget.dart';
-
 
 class StartingScreen extends ConsumerStatefulWidget {
   const StartingScreen({super.key});
@@ -74,18 +74,9 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
             onWillPop: () async => false,
             child: AlertWidget(
               title: remoteConfig.getString('app_disable_title'),
-              content: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Text(
-                  remoteConfig.getString('app_disable_description'),
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w300,
-                      color: ColorConstants.gray),
-                  textAlign: TextAlign.center,
-                ),
+              content: AlertDescriptionWidget(
+                description: remoteConfig.getString('app_disable_description'),
               ),
-              isButtonPresent: false,
             ),
           );
         },
@@ -127,8 +118,10 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
         if (dp.status == Status.FOUND) {
           ref.read(deepLinkProvider.notifier).state = dp.deepLink;
-          if(dp.deepLink?.deepLinkValue == null || dp.deepLink?.deepLinkValue == '') return;
-          context.go('${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
+          if (dp.deepLink?.deepLinkValue == null ||
+              dp.deepLink?.deepLinkValue == '') return;
+          context.go(
+              '${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
         }
       });
       _checkAuthAndLand();

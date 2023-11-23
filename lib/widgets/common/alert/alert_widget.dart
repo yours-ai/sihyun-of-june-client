@@ -4,17 +4,11 @@ import 'package:go_router/go_router.dart';
 class AlertWidget extends StatelessWidget {
   final String? title;
   final Widget? content;
-  final String confirmText;
-  final bool isButtonPresent;
+  final String? confirmText;
   void Function()? onConfirm;
 
   AlertWidget(
-      {super.key,
-      this.title,
-      this.content,
-      this.confirmText = '확인',
-      this.isButtonPresent = true,
-      this.onConfirm});
+      {super.key, this.title, this.content, this.confirmText, this.onConfirm});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +35,7 @@ class AlertWidget extends StatelessWidget {
       content: content,
       buttonPadding: const EdgeInsets.only(bottom: 20),
       actions: [
-        isButtonPresent
+        confirmText != null
             ? SizedBox(
                 width: double.infinity,
                 child: FilledButton(
@@ -53,7 +47,7 @@ class AlertWidget extends StatelessWidget {
                     ),
                   ),
                   onPressed: onConfirm ?? () => context.pop(),
-                  child: Text(confirmText),
+                  child: Text(confirmText!),
                 ),
               )
             : SizedBox.shrink(),

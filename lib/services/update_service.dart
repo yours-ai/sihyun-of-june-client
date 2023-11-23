@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:project_june_client/widgets/common/alert/alert_description_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:word_break_text/word_break_text.dart';
 
 import '../constants.dart';
-import '../widgets/alert_widget.dart';
+import '../widgets/common/alert/alert_widget.dart';
 import '../widgets/update_widget.dart';
 
 class UpdateService {
@@ -73,18 +74,8 @@ class UpdateService {
           onWillPop: () async => false,
           child: AlertWidget(
               title: '새로운 버전이 출시되었어요!',
-              content: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: WordBreakText(
-                  remoteConfig.getString('release_notes'),
-                  spacingByWrap: true,
-                  spacing: 4,
-                  wrapAlignment: WrapAlignment.center,
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w300,
-                      color: ColorConstants.gray),
-                ),
+              content: AlertDescriptionWidget(
+                description: remoteConfig.getString('release_notes'),
               ),
               confirmText: '업데이트',
               onConfirm: () {
