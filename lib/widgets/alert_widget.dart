@@ -6,13 +6,15 @@ class AlertWidget extends StatelessWidget {
   final Widget? content;
   final String confirmText;
   final bool isButtonPresent;
+  void Function()? onConfirm;
 
-  const AlertWidget(
+  AlertWidget(
       {super.key,
       this.title,
       this.content,
       this.confirmText = '확인',
-      this.isButtonPresent = true});
+      this.isButtonPresent = true,
+      this.onConfirm});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +52,7 @@ class AlertWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onPressed: () => context.pop(),
+                  onPressed: onConfirm ?? () => context.pop(),
                   child: Text(confirmText),
                 ),
               )

@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:word_break_text/word_break_text.dart';
 
+import '../constants.dart';
+import '../widgets/alert_widget.dart';
 import '../widgets/update_widget.dart';
 
 class UpdateService {
@@ -61,18 +65,34 @@ class UpdateService {
     if (latestVersion == currentVersion) {
       return;
     }
-    await showModalBottomSheet(
+    await showDialog(
+      barrierDismissible: false,
       context: context,
-      useRootNavigator: true,
-      isDismissible: false,
-      enableDrag: false,
-      builder: (BuildContext context) => WillPopScope(
-        onWillPop: () async => false,
-        child: UpdateWidget(
-          releaseNotes: remoteConfig.getString('release_notes'),
-          isForceUpdate: true,
-        ),
-      ),
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertWidget(
+              title: '새로운 버전이 출시되었어요!',
+              content: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: WordBreakText(
+                  remoteConfig.getString('release_notes'),
+                  spacingByWrap: true,
+                  spacing: 4,
+                  wrapAlignment: WrapAlignment.center,
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w300,
+                      color: ColorConstants.gray),
+                ),
+              ),
+              confirmText: '업데이트',
+              onConfirm: () {
+                launchUrl(Uri.parse(
+                    Platform.isIOS ? Urls.appstore : Urls.googlePlay));
+              }),
+        );
+      },
     );
   }
 }
