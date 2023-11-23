@@ -1,11 +1,13 @@
 #!/bin/sh
 
 # init flutter icons
-if [[ -n "$IS_LIVE" ]]; then
-    dart run flutter_launcher_icons -f flutter_launch_icon_live.yaml
-else
-    dart run flutter_launcher_icons -f flutter_launch_icon_dev.yaml
-fi
+#if [[ -n "$IS_LIVE" ]]; then
+#    dart run flutter_launcher_icons -f flutter_launch_icon_live.yaml
+#else
+#    dart run flutter_launcher_icons -f flutter_launch_icon_dev.yaml
+#    dart run flutter_launcher_icons -f flutter_launch_sihyun_icon_dev.yaml
+#    dart run flutter_launcher_icons -f flutter_launch_woobin_icon_dev.yaml
+#fi
 
 # init flutter splashs
 dart run flutter_native_splash:create

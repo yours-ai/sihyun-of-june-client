@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:launcher_icon_switcher/launcher_icon_switcher.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_theme_provider.dart';
@@ -32,6 +33,17 @@ class CharacterDetailWidget extends ConsumerWidget {
         character = Character.fromJson(state.data!['character']);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           ref.read(characterThemeProvider.notifier).state = character!.theme!;
+          print("왜그럼?");
+          if (state.status == QueryStatus.success) {
+            switch (character.name!) {
+              case "류시현":
+                LauncherIconSwitcher().setIcon('LauncherSihyun');
+                break;
+              case "남우빈":
+                LauncherIconSwitcher().setIcon('LauncherWoobin');
+                break;
+            }
+          }
         });
         return Scaffold(
           body: SafeArea(

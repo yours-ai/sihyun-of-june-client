@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:launcher_icon_switcher/launcher_icon_switcher.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
@@ -57,7 +59,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
   }
 
   _checkUpdateAvailable() async {
-    await updateService.forceUpdateByRemoteConfig(context);
+    // await updateService.forceUpdateByRemoteConfig(context);
     if (Platform.isAndroid) {
       updateService.checkAndUpdateAndroidApp();
     }
@@ -86,6 +88,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     super.initState();
     onelinkService.appsFlyerInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      LauncherIconSwitcher().initialize(['LauncherDefault', 'LauncherSihyun', 'LauncherWoobin'], 'LauncherDefault');
       onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
         if (dp.status == Status.FOUND) {
           ref.read(deepLinkProvider.notifier).state = dp.deepLink;

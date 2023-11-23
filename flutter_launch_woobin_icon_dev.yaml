@@ -1,0 +1,7 @@
+flutter_launcher_icons:
+  android: "launcher_woobin"
+  ios: "LauncherWoobin"
+  image_path: "assets/images/LauncherWoobinDev.png"
+  adaptive_icon_foreground: "assets/images/LauncherAdptiveWoobinDev.png"
+  adaptive_icon_background: "#FBFAF9"
+  remove_alpha_ios: true
