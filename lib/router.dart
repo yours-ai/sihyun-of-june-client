@@ -11,6 +11,7 @@ import 'package:project_june_client/screens/notification_list_screen.dart';
 import 'package:project_june_client/screens/phone_login_screen.dart';
 import 'package:project_june_client/screens/other_character_screen.dart';
 import 'package:project_june_client/screens/my_character_screen.dart';
+import 'package:project_june_client/screens/policy_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
 import 'package:project_june_client/screens/character_choice_screen.dart';
 import 'package:project_june_client/screens/test_screen.dart';
@@ -57,12 +58,18 @@ final router = GoRouter(
           OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)!),
     ),
     GoRoute(
+      path: '/policy',
+      builder: (context, state) => const PolicyScreen(),
+    ),
+    GoRoute(
         path: '/my-coin',
         builder: (context, state) => const MyCoinScreen(),
         routes: [
-          GoRoute(path: 'log', builder: (context, state) => const CoinLogScreen()),
           GoRoute(
-              path: 'charge', builder: (context, state) => const CoinChargeScreen()),
+              path: 'log', builder: (context, state) => const CoinLogScreen()),
+          GoRoute(
+              path: 'charge',
+              builder: (context, state) => const CoinChargeScreen()),
         ]),
     ShellRoute(
       navigatorKey: shellNavigatorKey,
