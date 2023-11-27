@@ -18,7 +18,7 @@ import '../actions/mails/queries.dart';
 import '../actions/notification/queries.dart';
 import '../constants.dart';
 import '../services.dart';
-import '../widgets/alert_widget.dart';
+import '../widgets/common/alert/alert_widget.dart';
 
 class MailListScreen extends ConsumerStatefulWidget {
   const MailListScreen({super.key});

@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:project_june_client/widgets/common/alert/alert_description_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:word_break_text/word_break_text.dart';
 
+import '../constants.dart';
+import '../widgets/common/alert/alert_widget.dart';
 import '../widgets/update_widget.dart';
 
 class UpdateService {
@@ -48,13 +53,8 @@ class UpdateService {
     }
   }
 
-  Future<void> forceUpdateByRemoteConfig(BuildContext context) async {
-    final remoteConfig = await FirebaseRemoteConfig.instance;
-    await remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: Duration(seconds: 10),
-      minimumFetchInterval: Duration.zero,
-    ));
-    await remoteConfig.fetchAndActivate();
+  Future<void> forceUpdateByRemoteConfig(
+      BuildContext context, FirebaseRemoteConfig remoteConfig) async {
     if (remoteConfig.getBool('force_update') == false) {
       return;
     }
@@ -66,14 +66,24 @@ class UpdateService {
     if (latestVersion == currentVersion) {
       return;
     }
-    await showModalBottomSheet(
+    await showDialog(
+      barrierDismissible: false,
       context: context,
-      useRootNavigator: true,
-      isDismissible: false,
-      enableDrag: false,
-      builder: (BuildContext context) => UpdateWidget(
-        releaseNotes: remoteConfig.getString('release_notes'),
-      ),
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertWidget(
+              title: '새로운 버전이 출시되었어요!',
+              content: AlertDescriptionWidget(
+                description: remoteConfig.getString('release_notes'),
+              ),
+              confirmText: '업데이트',
+              onConfirm: () {
+                launchUrl(Uri.parse(
+                    Platform.isIOS ? Urls.appstore : Urls.googlePlay));
+              }),
+        );
+      },
     );
   }
 }

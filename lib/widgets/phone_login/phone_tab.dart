@@ -9,7 +9,8 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/providers/deep_link_provider.dart';
-import 'package:project_june_client/widgets/alert_widget.dart';
+import 'package:project_june_client/widgets/common/alert/alert_description_widget.dart';
+import 'package:project_june_client/widgets/common/alert/alert_widget.dart';
 import 'package:project_june_client/widgets/phone_login/number_input_widget.dart';
 
 import '../../actions/analytics/queries.dart';
@@ -71,17 +72,7 @@ class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
         builder: (BuildContext context) {
           return AlertWidget(
               title: '인증번호 발송',
-              content: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Text(
-                  '인증번호가 발송되었습니다.',
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w300,
-                      color: ColorConstants.gray),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              content: AlertDescriptionWidget(description: '인증번호가 발송되었습니다.'),
               confirmText: '확인');
         });
   }
@@ -95,7 +86,7 @@ class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
   @override
   void dispose() {
     authController.dispose();
-    if(_timer != null){
+    if (_timer != null) {
       _timer!.cancel();
     }
 

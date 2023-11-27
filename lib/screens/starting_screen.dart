@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +15,11 @@ import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/notification/actions.dart';
+import '../constants.dart';
+import '../main.dart';
+import '../widgets/common/alert/alert_description_widget.dart';
+import '../widgets/common/alert/alert_widget.dart';
+import '../widgets/update_widget.dart';
 
 class StartingScreen extends ConsumerStatefulWidget {
   const StartingScreen({super.key});
@@ -29,7 +35,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     if (!context.mounted) return;
 
     await _initializeNotificationHandlerIfAccepted();
-    await _checkUpdateAvailable();
+    await _checkAppAvailability();
 
     if (isLogined == false) {
       context.go('/landing');
@@ -56,8 +62,31 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     }
   }
 
+  _checkAppAvailability() async {
+    FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.fetchAndActivate();
+    if (remoteConfig.getBool('app_available') == false) {
+      return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: AlertWidget(
+              title: remoteConfig.getString('app_disable_title'),
+              content: AlertDescriptionWidget(
+                description: remoteConfig.getString('app_disable_description'),
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      await updateService.forceUpdateByRemoteConfig(context, remoteConfig);
+    }
+  }
+
   _checkUpdateAvailable() async {
-    await updateService.forceUpdateByRemoteConfig(context);
     if (Platform.isAndroid) {
       updateService.checkAndUpdateAndroidApp();
     }
@@ -89,8 +118,10 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
         if (dp.status == Status.FOUND) {
           ref.read(deepLinkProvider.notifier).state = dp.deepLink;
-          if(dp.deepLink?.deepLinkValue == null || dp.deepLink?.deepLinkValue == '') return;
-          context.go('${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
+          if (dp.deepLink?.deepLinkValue == null ||
+              dp.deepLink?.deepLinkValue == '') return;
+          context.go(
+              '${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
         }
       });
       _checkAuthAndLand();
