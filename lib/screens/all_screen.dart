@@ -153,14 +153,6 @@ class AllScreenState extends ConsumerState<AllScreen> {
               title: '공지',
               onPressed: () => launchUrl(Uri.parse(Urls.notice)),
             ),
-            MenuWidget(
-              title: '자주 묻는 질문',
-              onPressed: () => launchUrl(Uri.parse(Urls.faq)),
-            ),
-            MenuWidget(
-              title: '문의하기',
-              onPressed: () => launchUrl(Uri.parse(Urls.ask)),
-            ),
             QueryBuilder(
               query: getRefferalCodeQuery(),
               builder: (context, state) {
@@ -179,12 +171,12 @@ class AllScreenState extends ConsumerState<AllScreen> {
               onPressed: () => context.push('/change-name'),
             ),
             MenuWidget(
-              title: '이용약관',
-              onPressed: () => launchUrl(Uri.parse(Urls.terms)),
+              title: '고객센터',
+              onPressed: () => launchUrl(Uri.parse(Urls.ask)),
             ),
             MenuWidget(
-              title: '개인정보 처리방침',
-              onPressed: () => launchUrl(Uri.parse(Urls.privacy)),
+              title: '약관 및 정책',
+              onPressed: () => context.push('/policy'),
             ),
             MenuWidget(
               title: '로그아웃',
