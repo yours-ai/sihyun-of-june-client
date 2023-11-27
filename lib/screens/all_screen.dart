@@ -161,6 +161,19 @@ class AllScreenState extends ConsumerState<AllScreen> {
               title: '문의하기',
               onPressed: () => launchUrl(Uri.parse(Urls.ask)),
             ),
+            QueryBuilder(
+              query: getRefferalCodeQuery(),
+              builder: (context, state) {
+                return MenuWidget(
+                  title: '의견 남기기',
+                  onPressed: () {
+                    print(state.data);
+                    launchUrl(Uri.parse(
+                        'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
+                  },
+                );
+              },
+            ),
             MenuWidget(
               title: '이름 변경하기',
               onPressed: () => context.push('/change-name'),

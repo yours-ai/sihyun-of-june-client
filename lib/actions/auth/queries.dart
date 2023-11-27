@@ -136,3 +136,13 @@ Mutation<void, void> getDeleteUserImage({
     onError: onError,
   );
 }
+
+Query<String> getRefferalCodeQuery({
+  OnQuerySuccessCallback<String>? onSuccess,
+}) {
+  return Query(
+    queryFn: getRefferalCode,
+    key: 'refferal-code',
+    onSuccess: onSuccess,
+  );
+}
