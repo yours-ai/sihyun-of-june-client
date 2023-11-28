@@ -42,7 +42,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   @override
   Widget build(BuildContext context) {
     final mutation = getSendMailReplyMutation(
-      refetchQueries: ['character-sent-mail/${widget.mail.id}'],
+      refetchQueries: ['character-sent-mail/${widget.mail.id}', 'character-sent-mail-list'],
       onSuccess: (res, arg) async {
         await ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

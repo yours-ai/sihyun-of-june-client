@@ -27,7 +27,6 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         mutation = getReadMailMutation(
-          refetchQueries: ['character-sent-mail-list'],
           onError: (arr, err, fallback) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(

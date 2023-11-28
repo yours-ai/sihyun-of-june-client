@@ -143,8 +143,8 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
         query: listMailQuery,
         builder: (context, listMailState) {
           if (listMailState.data != null && listMailState.data!.isNotEmpty) {
+            updateAllMailList(listMailState.data!);
             if (selectedMonth == null) {
-              updateAllMailList(listMailState.data!);
               selectedMonth = mailReceivedMonth! - 1;
             }
           }
