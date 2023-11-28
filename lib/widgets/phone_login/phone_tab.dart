@@ -1,28 +1,31 @@
-
 import 'dart:async';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
-import 'package:project_june_client/widgets/alert_widget.dart';
+import 'package:project_june_client/providers/deep_link_provider.dart';
+import 'package:project_june_client/widgets/common/alert/alert_description_widget.dart';
+import 'package:project_june_client/widgets/common/alert/alert_widget.dart';
 import 'package:project_june_client/widgets/phone_login/number_input_widget.dart';
 
+import '../../actions/analytics/queries.dart';
 import '../common/title_layout.dart';
 
-class PhoneTabWidget extends StatefulWidget {
+class PhoneTabWidget extends ConsumerStatefulWidget {
   final void Function(ValidatedAuthCodeDTO dto) onSmsVerify;
 
   const PhoneTabWidget({Key? key, required this.onSmsVerify}) : super(key: key);
 
   @override
-  State<PhoneTabWidget> createState() => _PhoneTabWidgetState();
+  PhoneTabWidgetState createState() => PhoneTabWidgetState();
 }
 
-class _PhoneTabWidgetState extends State<PhoneTabWidget> {
+class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
   final _formKey = GlobalKey<FormState>();
   final phoneController = TextEditingController();
   final authController = TextEditingController();
@@ -69,17 +72,7 @@ class _PhoneTabWidgetState extends State<PhoneTabWidget> {
         builder: (BuildContext context) {
           return AlertWidget(
               title: '인증번호 발송',
-              content: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Text(
-                  '인증번호가 발송되었습니다.',
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w300,
-                      color: ColorConstants.gray),
-                  textAlign: TextAlign.center,
-                ),
-              ),
+              content: AlertDescriptionWidget(description: '인증번호가 발송되었습니다.'),
               confirmText: '확인');
         });
   }
@@ -93,7 +86,7 @@ class _PhoneTabWidgetState extends State<PhoneTabWidget> {
   @override
   void dispose() {
     authController.dispose();
-    if(_timer != null){
+    if (_timer != null) {
       _timer!.cancel();
     }
 
@@ -102,9 +95,12 @@ class _PhoneTabWidgetState extends State<PhoneTabWidget> {
 
   @override
   Widget build(BuildContext context) {
+    String? funnel = ref.watch(deepLinkProvider.notifier).state?.mediaSource;
     var tokenMutation = getSmsTokenMutation(
       onSuccess: (res, arg) {
-        context.go('/');
+        getUserFunnelMutation(onSuccess: (res, arg) {
+          context.go('/');
+        }).mutate(funnel);
       },
       onError: (arg, error, fallback) {
         ScaffoldMessenger.of(context).showSnackBar(

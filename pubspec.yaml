@@ -43,6 +43,7 @@ dependencies:
   in_app_purchase_platform_interface: ^1.3.5
   in_app_update: ^4.2.2
   new_version_plus: ^0.0.11
+  appsflyer_sdk: ^6.12.2
   sprung: ^3.0.1
   word_break_text: ^0.1.0
   dotted_decoration: ^2.0.0
@@ -50,6 +51,8 @@ dependencies:
   flutter_svg: ^2.0.9
   image_picker: ^1.0.4
   image: ^4.1.3
+  firebase_remote_config: ^4.3.4
+  package_info_plus: ^4.2.0
 
 dev_dependencies:
   flutter_test:

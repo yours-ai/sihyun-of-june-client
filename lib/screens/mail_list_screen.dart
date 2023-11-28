@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/main.dart';
+import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/mail_widget.dart';
@@ -18,7 +18,7 @@ import '../actions/mails/queries.dart';
 import '../actions/notification/queries.dart';
 import '../constants.dart';
 import '../services.dart';
-import '../widgets/alert_widget.dart';
+import '../widgets/common/alert/alert_widget.dart';
 
 class MailListScreen extends ConsumerStatefulWidget {
   const MailListScreen({super.key});
@@ -143,8 +143,8 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
         query: listMailQuery,
         builder: (context, listMailState) {
           if (listMailState.data != null && listMailState.data!.isNotEmpty) {
+            updateAllMailList(listMailState.data!);
             if (selectedMonth == null) {
-              updateAllMailList(listMailState.data!);
               selectedMonth = mailReceivedMonth! - 1;
             }
           }

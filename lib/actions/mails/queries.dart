@@ -22,12 +22,10 @@ Query<Mail> getRetrieveMailQuery(
 }
 
 Mutation<void, int> getReadMailMutation({
-  List<String> refetchQueries = const [],
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, int>(
-    refetchQueries: refetchQueries,
     queryFn: readMailById,
     onSuccess: onSuccess,
     onError: onError,

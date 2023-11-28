@@ -1,23 +1,29 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
+import '../../actions/analytics/queries.dart';
 import '../../actions/auth/queries.dart';
 
-class KakaoLoginButton extends StatelessWidget {
+class KakaoLoginButton extends ConsumerWidget {
   const KakaoLoginButton({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    String? funnel = ref.watch(deepLinkProvider.notifier).state?.mediaSource;
     return MutationBuilder(
       mutation: getLoginAsKakaoMutation(
         onSuccess: (res, arg) {
-          context.go('/');
+          getUserFunnelMutation(onSuccess: (res, arg) {
+            context.go('/');
+          }).mutate(funnel);
         },
         onError: (arg, error, callback) {
           if (error is PlatformException && error.code == "CANCELED") {

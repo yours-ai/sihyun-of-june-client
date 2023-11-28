@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/main.dart';
+import 'package:project_june_client/providers/character_theme_provider.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/mails/models/Mail.dart';

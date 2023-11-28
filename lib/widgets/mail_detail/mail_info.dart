@@ -1,7 +1,9 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_june_client/main.dart';
+import 'package:go_router/go_router.dart';
+import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 import '../../constants.dart';
@@ -29,16 +31,20 @@ class MailInfoWidget extends ConsumerWidget {
       textDirection: isMe ? TextDirection.rtl : TextDirection.ltr,
       children: [
         if (byImage != null) ...[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: SizedBox(
-              width: 46,
-              height: 46,
-              child: ExtendedImage.network(
-                timeLimit: ref.watch(imageCacheDurationProvider),
-                cacheKey: UniqueCacheKeyService.makeUniqueKey(byImage!),
-                byImage!,
-                fit: BoxFit.cover,
+          GestureDetector(
+            onTap: () =>
+                context.push('/mails/my-character'),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: SizedBox(
+                width: 46,
+                height: 46,
+                child: ExtendedImage.network(
+                  timeLimit: ref.watch(imageCacheDurationProvider),
+                  cacheKey: UniqueCacheKeyService.makeUniqueKey(byImage!),
+                  byImage!,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),

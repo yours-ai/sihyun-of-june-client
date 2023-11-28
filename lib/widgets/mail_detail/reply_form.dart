@@ -3,9 +3,10 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/main.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
-import 'package:project_june_client/widgets/modal_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 
 import '../../actions/mails/dtos.dart';
 import '../../actions/mails/models/Mail.dart';
@@ -41,7 +42,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   @override
   Widget build(BuildContext context) {
     final mutation = getSendMailReplyMutation(
-      refetchQueries: ['character-sent-mail/${widget.mail.id}'],
+      refetchQueries: ['character-sent-mail/${widget.mail.id}', 'character-sent-mail-list'],
       onSuccess: (res, arg) async {
         await ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -55,57 +56,18 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
       await showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          return ModalWidget(
-            title: '정말 이대로 보내시겠어요?',
-            description: Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Text(
-                '답장을 보내면 수정이 불가능해요.🥲',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: ColorConstants.gray,
-                  fontSize: 16,
-                  height: 1.5,
-                ),
+          return MutationBuilder(
+            mutation: mutation,
+            builder: (context, state, mutate) => ModalWidget(
+              title: '정말 이대로 보내시겠어요?',
+              description: const ModalDescriptionWidget(
+                  description: '답장을 보내면 수정이 불가능해요.🥲'),
+              choiceColumn: ModalChoiceWidget(
+                submitText: '네',
+                onSubmit: () => mutate(getReplyDTO()),
+                cancelText: '아니요',
+                onCancel: () => context.pop(),
               ),
-            ),
-            choiceColumn: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                OutlinedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(ColorConstants.background),
-                  ),
-                  onPressed: () {
-                    context.pop();
-                  },
-                  child: Text(
-                    '아니요',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: ColorConstants.neutral,
-                      fontWeight: FontWeightConstants.semiBold,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                MutationBuilder(
-                  mutation: mutation,
-                  builder: (context, state, mutate) => FilledButton(
-                    onPressed: () => mutate(getReplyDTO()),
-                    child: Text(
-                      '네',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeightConstants.semiBold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
             ),
           );
         },
