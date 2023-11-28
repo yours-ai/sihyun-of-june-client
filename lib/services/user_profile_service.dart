@@ -123,7 +123,7 @@ class UserProfileService {
             title: '프로필 이미지 선택',
             choiceColumn: ModalChoiceWidget(
               submitText: '앨범에서 사진 선택하기',
-              onSubmit: () => () async {
+              onSubmit: () async {
                 await _pickImage();
                 if (_image != null) {
                   context.pop();
