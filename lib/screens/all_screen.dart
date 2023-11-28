@@ -12,6 +12,7 @@ import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/user_profile_widget.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../actions/auth/actions.dart';
@@ -156,13 +157,24 @@ class AllScreenState extends ConsumerState<AllScreen> {
             QueryBuilder(
               query: getRefferalCodeQuery(),
               builder: (context, state) {
-                return MenuWidget(
-                  title: '의견 남기기',
-                  onPressed: () {
-                    print(state.data);
-                    launchUrl(Uri.parse(
-                        'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
-                  },
+                return Column(
+                  children: [
+                    MenuWidget(
+                      title: '친구에게 공유하고 50코인 받기',
+                      onPressed: () {
+                        Share.share('https://sihyunofjuneapp.onelink.me/i6rb/ielenera?af_sub1=${state.data}',
+                            subject: '유월의 시현이 공유하기');
+                      },
+                    ),
+                    MenuWidget(
+                      title: '의견 남기기',
+                      onPressed: () {
+                        print(state.data);
+                        launchUrl(Uri.parse(
+                            'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
+                      },
+                    ),
+                  ],
                 );
               },
             ),
