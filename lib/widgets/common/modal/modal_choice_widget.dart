@@ -25,7 +25,7 @@ class ModalChoiceWidget extends StatelessWidget {
           ),
           onPressed: onCancel,
           child: Text(
-            cancelText!,
+            cancelText,
             style: TextStyle(
               fontSize: 16,
               color: ColorConstants.neutral,
@@ -39,7 +39,7 @@ class ModalChoiceWidget extends StatelessWidget {
         FilledButton(
           onPressed: onSubmit,
           child: Text(
-            submitText!,
+            submitText,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeightConstants.semiBold,
