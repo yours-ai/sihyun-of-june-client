@@ -41,15 +41,15 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       context.go('/landing');
       return;
     }
-    final push = await getPushIfPushClicked();
-    if (push != null) {
-      notificationService.handleFCMMessageTap(push);
-      return;
-    }
     final character = await getRetrieveMyCharacterQuery().result;
     if (character.data!.isNotEmpty) {
       CharacterTheme characterTheme = character.data![0].theme!;
       ref.read(characterThemeProvider.notifier).state = characterTheme;
+      final push = await getPushIfPushClicked();
+      if (push != null) {
+        notificationService.handleFCMMessageTap(push);
+        return;
+      }
       context.go('/mails');
       return;
     } else {
@@ -120,7 +120,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
           ref.read(deepLinkProvider.notifier).state = dp.deepLink;
           if (dp.deepLink?.deepLinkValue == null ||
               dp.deepLink?.deepLinkValue == '') return;
-          context.go(
+          context.go( //ToDo 로그인이 필요한 작업시에 characterTheme을 설정해줘야 함
               '${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
         }
       });
