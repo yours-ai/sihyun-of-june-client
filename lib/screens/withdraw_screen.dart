@@ -57,6 +57,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
+          scrolledUnderElevation: 0,
           backgroundColor: ColorConstants.background,
           elevation: 0,
           leading: IconButton(
