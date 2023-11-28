@@ -34,13 +34,14 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     FlutterNativeSplash.remove();
     if (!context.mounted) return;
 
-    await _initializeNotificationHandlerIfAccepted();
     await _checkAppAvailability();
 
     if (isLogined == false) {
       context.go('/landing');
       return;
     }
+    await _initializeNotificationHandlerIfAccepted();
+
     final character = await getRetrieveMyCharacterQuery().result;
     if (character.data!.isNotEmpty) {
       CharacterTheme characterTheme = character.data![0].theme!;
