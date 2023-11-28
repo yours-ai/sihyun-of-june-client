@@ -36,11 +36,12 @@ class MenuWidget extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       color: ColorConstants.primary,
-                      fontWeight: FontWeightConstants.semiBold,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
-                Container(padding: const EdgeInsets.only(right: 28), child: suffix),
+                Container(
+                    padding: const EdgeInsets.only(right: 28), child: suffix),
               ],
             ),
             const DottedUnderline(28),

@@ -64,6 +64,10 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
 
   _checkAppAvailability() async {
     FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.setConfigSettings(RemoteConfigSettings(
+      fetchTimeout: const Duration(seconds: 10),
+      minimumFetchInterval: const Duration(minutes: 10),
+    ));
     await remoteConfig.fetchAndActivate();
     if (remoteConfig.getBool('app_available') == false) {
       return showDialog(

@@ -238,3 +238,8 @@ Future<void> deleteUserImage() async {
   await dio.delete('/auth/me/image/');
   return;
 }
+
+Future<String> getRefferalCode() async {
+  var response = await dio.get('/auth/me/referral-code/');
+  return response.data['referral_code'];
+}
