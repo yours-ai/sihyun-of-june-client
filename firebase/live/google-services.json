@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "938800695164",
+    "project_id": "project-june-firebase",
+    "storage_bucket": "project-june-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938800695164:android:6bca75ae19568c04a546f9",
+        "android_client_info": {
+          "package_name": "team.pygmalion.project_june_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938800695164-oceu10u65ec4u5i451mg1dika339vgio.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpSwXqvGihCTt5seGbgc8PJlV_bBVGurQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938800695164-oceu10u65ec4u5i451mg1dika339vgio.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "938800695164-8pn9mrgngp21r7gev7rp6fnk37t7or24.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "team.pygmalion.projectJune",
+                "app_store_id": "6463772803"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
