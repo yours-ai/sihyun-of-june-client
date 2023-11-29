@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import '../../actions/transaction/queries.dart';
-import '../../widgets/coin_log_widget.dart';
+import '../../widgets/transaction_log_widget.dart';
 import '../../widgets/common/title_layout.dart';
 
 class PointLogScreen extends StatefulWidget {
@@ -27,14 +27,15 @@ class _PointLogScreenState extends State<PointLogScreen> {
             ),
           ),
           body: QueryBuilder(
-              query: getCoinLogsQuery(),//TODO - pointlog로
+              query: getPointLogsQuery(),
               builder: (context, state) {
                 return state.data != null
                     ? state.data!.isNotEmpty
                         ? ListView(
                             children: state.data
-                                    ?.map<Widget>((coinLog) =>
-                                        CoinLogWidget(coinLog: coinLog)) //TODO - pointlog로
+                                    ?.map<Widget>((pointLog) =>
+                                        TransactionLogWidget(
+                                            transactionLog: pointLog))
                                     .toList() ??
                                 [],
                           )

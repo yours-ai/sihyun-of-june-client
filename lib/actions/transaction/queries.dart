@@ -6,7 +6,7 @@ import 'package:project_june_client/actions/transaction/dtos.dart';
 
 import '../../services.dart';
 import 'actions.dart';
-import 'models/CoinLog.dart';
+import 'models/TransactionLog.dart';
 
 Mutation<void, PurchaseDetails> verifyPurchaseMutation({
   OnSuccessCallback? onSuccess,
@@ -32,10 +32,18 @@ Mutation<void, PurchaseDetails> verifyPurchaseMutation({
   );
 }
 
-Query<List<CoinLog>> getCoinLogsQuery({OnQueryErrorCallback? onError}) {
-  return Query<List<CoinLog>>(
+Query<List<TransactionLog>> getCoinLogsQuery({OnQueryErrorCallback? onError}) {
+  return Query<List<TransactionLog>>(
     key: 'coin-logs',
     queryFn: getCoinLogs,
+    onError: onError,
+  );
+}
+
+Query<List<TransactionLog>> getPointLogsQuery({OnQueryErrorCallback? onError}) {
+  return Query<List<TransactionLog>>(
+    key: 'point-logs',
+    queryFn: getPointLogs,
     onError: onError,
   );
 }
@@ -59,6 +67,21 @@ Query<List<Map<String, dynamic>>> getStoreInfoQuery({
               (details) => transactionService.productDetailsToJson(details))
           .toList();
     },
+    onError: onError,
+  );
+}
+
+Mutation<void, int> exchangeCoinToPointMutation({
+  refetchQueries = const [],
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, int>(
+    refetchQueries: refetchQueries,
+    queryFn: (coinAmount) async {
+      await exchangeCoinToPoint(coinAmount);
+    },
+    onSuccess: onSuccess,
     onError: onError,
   );
 }

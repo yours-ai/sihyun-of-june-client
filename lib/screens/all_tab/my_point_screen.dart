@@ -1,6 +1,5 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
@@ -34,9 +33,9 @@ class MyPointScreen extends StatelessWidget {
                             children: [
                               const TitleUnderline(titleText: '내 포인트'),
                               const SizedBox(height: 14),
-                              Text( //TODO: 포인트로 변경
-                                transactionService.currencyFormatter
-                                    .format(state.data!.coin) + ' 포인트',
+                              Text(
+                                '${transactionService.currencyFormatter
+                                        .format(state.data!.point)} 포인트',
                                 style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,

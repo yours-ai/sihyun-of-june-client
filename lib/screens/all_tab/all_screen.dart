@@ -125,10 +125,11 @@ class AllScreenState extends ConsumerState<AllScreen> {
                       onPressed: () => context.push('/my-point'),
                       suffix: Row(
                         children: [
-                          Text( //Todo 포인트로 변경
+                          Text(
                             state.data?.coin != null
                                 ? transactionService.currencyFormatter
-                                    .format(state.data?.coin) + ' 포인트'
+                                        .format(state.data?.point) +
+                                    ' 포인트'
                                 : '',
                             style: TextStyle(
                               fontSize: 16,
@@ -151,7 +152,8 @@ class AllScreenState extends ConsumerState<AllScreen> {
                           Text(
                             state.data?.coin != null
                                 ? transactionService.currencyFormatter
-                                .format(state.data?.coin) + ' 코인'
+                                        .format(state.data?.coin) +
+                                    ' 코인'
                                 : '',
                             style: TextStyle(
                               fontSize: 16,

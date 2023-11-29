@@ -2,7 +2,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
 
 import '../client.dart';
-import 'models/CoinLog.dart';
+import 'models/TransactionLog.dart';
 
 Future<void> appleTransactionVerify(String purchaseID) async {
   await dio.post('/transaction/apple/transaction/', data: {
@@ -27,7 +27,23 @@ Future<List<ProductDetails>> initStoreInfo(
   return response.productDetails.toList();
 }
 
-Future<List<CoinLog>> getCoinLogs() async {
+Future<List<TransactionLog>> getCoinLogs() async {
   final response = await dio.get('/transaction/coin/logs/');
-  return response.data.map<CoinLog>((json) => CoinLog.fromJson(json)).toList();
+  return response.data
+      .map<TransactionLog>((json) => TransactionLog.fromJson(json))
+      .toList();
+}
+
+Future<List<TransactionLog>> getPointLogs() async {
+  final response = await dio.get('/transaction/point/logs/');
+  return response.data
+      .map<TransactionLog>((json) => TransactionLog.fromJson(json))
+      .toList();
+}
+
+Future<void> exchangeCoinToPoint(int coinAmount) async {
+  await dio.post('/transaction/point/exchange/', data: {
+    'coin_amount': coinAmount,
+  });
+  return;
 }
