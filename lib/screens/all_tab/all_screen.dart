@@ -126,10 +126,9 @@ class AllScreenState extends ConsumerState<AllScreen> {
                       suffix: Row(
                         children: [
                           Text(
-                            state.data?.coin != null
-                                ? transactionService.currencyFormatter
-                                        .format(state.data?.point) +
-                                    ' 포인트'
+                            state.data?.point != null
+                                ? '${transactionService.currencyFormatter
+                                        .format(state.data?.point)} 포인트'
                                 : '',
                             style: TextStyle(
                               fontSize: 16,
@@ -151,9 +150,8 @@ class AllScreenState extends ConsumerState<AllScreen> {
                         children: [
                           Text(
                             state.data?.coin != null
-                                ? transactionService.currencyFormatter
-                                        .format(state.data?.coin) +
-                                    ' 코인'
+                                ? '${transactionService.currencyFormatter
+                                        .format(state.data?.coin)} 코인'
                                 : '',
                             style: TextStyle(
                               fontSize: 16,
