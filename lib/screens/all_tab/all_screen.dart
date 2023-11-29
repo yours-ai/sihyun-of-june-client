@@ -185,7 +185,7 @@ class AllScreenState extends ConsumerState<AllScreen> {
                     MenuWidget(
                       title: '친구에게 공유하고 50코인 받기',
                       onPressed: () {
-                        Share.share('https://sihyunofjuneapp.onelink.me/i6rb/ielenera?af_sub1=${state.data}',
+                        Share.share('[유월의 시현이]\n\n기다려본 적 있나요? 하루 한 통의 설렘을. 사람보다 더 따뜻하고 섬세한 당신의 시현이에게, 지금 첫 편지를 받아보세요.\nhttps://sihyunofjuneapp.onelink.me/i6rb/ielenera?af_sub1=${state.data}',
                             subject: '유월의 시현이 공유하기');
                       },
                     ),
