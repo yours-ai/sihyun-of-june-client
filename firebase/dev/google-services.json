@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "239073049026",
+    "project_id": "project-june-firebase-dev",
+    "storage_bucket": "project-june-firebase-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:239073049026:android:5ea3b5dde674d673ddfe5b",
+        "android_client_info": {
+          "package_name": "team.pygmalion.project_june_client"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGy7bFeQLVDTFH1A5xc6iDkCnI8GhhFbs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

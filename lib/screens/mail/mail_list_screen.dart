@@ -13,12 +13,12 @@ import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/notification_permission_check.dart';
 
-import '../actions/mails/models/Mail.dart';
-import '../actions/mails/queries.dart';
-import '../actions/notification/queries.dart';
-import '../constants.dart';
-import '../services.dart';
-import '../widgets/common/alert/alert_widget.dart';
+import '../../actions/mails/models/Mail.dart';
+import '../../actions/mails/queries.dart';
+import '../../actions/notification/queries.dart';
+import '../../constants.dart';
+import '../../services.dart';
+import '../../widgets/common/alert/alert_widget.dart';
 
 class MailListScreen extends ConsumerStatefulWidget {
   const MailListScreen({super.key});
