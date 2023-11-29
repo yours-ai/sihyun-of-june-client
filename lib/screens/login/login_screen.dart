@@ -8,8 +8,8 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/deep_link_provider.dart';
 
-import '../actions/analytics/queries.dart';
-import '../widgets/auth/KakaoLoginButton.dart';
+import '../../actions/analytics/queries.dart';
+import '../../widgets/auth/KakaoLoginButton.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});

@@ -12,7 +12,7 @@ import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 
 import '../../constants.dart';
-import '../../screens/character_choice_screen.dart';
+import '../../screens/character_test/character_choice_screen.dart';
 import '../../services.dart';
 
 class CharacterConfirmWidget extends ConsumerWidget {
