@@ -11,9 +11,9 @@ import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/product_widget.dart';
 
-import '../actions/auth/queries.dart';
-import '../constants.dart';
-import '../services.dart';
+import '../../actions/auth/queries.dart';
+import '../../constants.dart';
+import '../../services.dart';
 
 class CoinChargeScreen extends StatefulWidget {
   const CoinChargeScreen({Key? key}) : super(key: key);
@@ -80,24 +80,14 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
                             children: [
                               const TitleUnderline(titleText: '충전하기'),
                               const SizedBox(height: 14),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    transactionService.currencyFormatter
-                                        .format(state.data!.coin),
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: ColorConstants.primary,
-                                    ),
-                                  ),
-                                  Icon(
-                                    PhosphorIcons.coin_vertical,
-                                    color: ColorConstants.primary,
-                                    size: 36,
-                                  ),
-                                ],
+                              Text(
+                                '${transactionService.currencyFormatter
+                                    .format(state.data!.coin)} 코인',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstants.primary,
+                                ),
                               ),
                             ],
                           ),

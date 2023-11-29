@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'CoinLog.g.dart';
+part 'TransactionLog.g.dart';
 
 @JsonSerializable()
-class CoinLog {
+class TransactionLog {
   num id;
   String user;
   String transaction_type;
@@ -12,7 +12,7 @@ class CoinLog {
   num balance;
   String created;
 
-  CoinLog(
+  TransactionLog(
       {required this.id,
       required this.user,
       required this.transaction_type,
@@ -21,8 +21,8 @@ class CoinLog {
       required this.balance,
       required this.created});
 
-  factory CoinLog.fromJson(Map<String, dynamic> json) =>
-      _$CoinLogFromJson(json);
+  factory TransactionLog.fromJson(Map<String, dynamic> json) =>
+      _$TransactionLogFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CoinLogToJson(this);
+  Map<String, dynamic> toJson() => _$TransactionLogToJson(this);
 }

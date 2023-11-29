@@ -4,7 +4,7 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 import '../../constants.dart';
-import '../../screens/test_screen.dart';
+import '../../screens/character_test/test_screen.dart';
 
 class TestInfoTabData {
   final String titleText;

@@ -15,11 +15,11 @@ import 'package:project_june_client/widgets/user_profile_widget.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../actions/auth/actions.dart';
-import '../actions/auth/queries.dart';
-import '../constants.dart';
-import '../services.dart';
-import '../widgets/common/title_layout.dart';
+import '../../actions/auth/actions.dart';
+import '../../actions/auth/queries.dart';
+import '../../constants.dart';
+import '../../services.dart';
+import '../../widgets/common/title_layout.dart';
 
 class AllScreen extends ConsumerStatefulWidget {
   const AllScreen({super.key});
@@ -119,34 +119,57 @@ class AllScreenState extends ConsumerState<AllScreen> {
             QueryBuilder(
               query: getRetrieveMeQuery(),
               builder: (context, state) {
-                return MenuWidget(
-                  title: '내 코인',
-                  onPressed: () => context.push('/my-coin'),
-                  suffix: Row(
-                    children: [
-                      Text(
-                        state.data?.coin != null
-                            ? transactionService.currencyFormatter
-                                .format(state.data?.coin)
-                            : '',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: ColorConstants.primary,
-                          fontWeight: FontWeightConstants.semiBold,
-                        ),
+                return Column(
+                  children: [
+                    MenuWidget(
+                      title: '내 포인트',
+                      onPressed: () => context.push('/my-point'),
+                      suffix: Row(
+                        children: [
+                          Text(
+                            state.data?.coin != null
+                                ? transactionService.currencyFormatter
+                                        .format(state.data?.point) +
+                                    ' 포인트'
+                                : '',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: ColorConstants.primary,
+                            ),
+                          ),
+                          Icon(
+                            PhosphorIcons.caret_right_bold,
+                            color: ColorConstants.primary,
+                            size: 24,
+                          ),
+                        ],
                       ),
-                      Icon(
-                        PhosphorIcons.coin_vertical,
-                        color: ColorConstants.primary,
-                        size: 24,
+                    ),
+                    MenuWidget(
+                      title: '내 코인',
+                      onPressed: () => context.push('/my-coin'),
+                      suffix: Row(
+                        children: [
+                          Text(
+                            state.data?.coin != null
+                                ? transactionService.currencyFormatter
+                                        .format(state.data?.coin) +
+                                    ' 코인'
+                                : '',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: ColorConstants.primary,
+                            ),
+                          ),
+                          Icon(
+                            PhosphorIcons.caret_right_bold,
+                            color: ColorConstants.primary,
+                            size: 24,
+                          ),
+                        ],
                       ),
-                      Icon(
-                        PhosphorIcons.caret_right_bold,
-                        color: ColorConstants.primary,
-                        size: 24,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               },
             ),

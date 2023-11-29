@@ -34,6 +34,7 @@ class AlertWidget extends StatelessWidget {
           : null,
       content: content,
       buttonPadding: const EdgeInsets.only(bottom: 20),
+      actionsPadding: const EdgeInsets.all(0),
       actions: [
         confirmText != null
             ? SizedBox(

@@ -3,13 +3,13 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
-import '../actions/transaction/models/CoinLog.dart';
+import '../actions/transaction/models/TransactionLog.dart';
 import '../constants.dart';
 
-class CoinLogWidget extends StatelessWidget {
-  final CoinLog coinLog;
+class TransactionLogWidget extends StatelessWidget {
+  final TransactionLog transactionLog;
 
-  const CoinLogWidget({Key? key, required this.coinLog}) : super(key: key);
+  const TransactionLogWidget({Key? key, required this.transactionLog}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class CoinLogWidget extends StatelessWidget {
             title: Padding(
               padding: const EdgeInsets.only(bottom: 5),
               child: Text(
-                coinLog.description,
+                transactionLog.description,
                 style: TextStyle(
                   color: ColorConstants.primary,
                   fontWeight: FontWeightConstants.semiBold,
@@ -29,7 +29,7 @@ class CoinLogWidget extends StatelessWidget {
               ),
             ),
             subtitle: Text(
-              coinLog.created.toString().substring(2, 10),
+              transactionLog.created.toString().substring(2, 10),
               style: TextStyle(
                 fontSize: 14,
                 color: ColorConstants.primary,
@@ -45,7 +45,7 @@ class CoinLogWidget extends StatelessWidget {
                   children: [
                     Text(
                       transactionService.currencyFormatter
-                          .format(coinLog.amount)
+                          .format(transactionLog.amount)
                           .toString(),
                       style: TextStyle(
                         fontSize: 18,
@@ -66,7 +66,7 @@ class CoinLogWidget extends StatelessWidget {
                   children: [
                     Text(
                       transactionService.currencyFormatter
-                          .format(coinLog.balance)
+                          .format(transactionLog.balance)
                           .toString(),
                       style: TextStyle(
                         color: ColorConstants.primary,
