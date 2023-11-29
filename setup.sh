@@ -6,7 +6,6 @@ if [[ -n "$IS_LIVE" ]]; then
     cp ./firebase/live/google-services.json ./android/app/
     cp ./firebase/live/GoogleService-Info.plist ./ios/Runner/
     cp ./firebase/live/firebase_options.dart ./lib/
-
 else
     dart run flutter_launcher_icons -f flutter_launch_icon_dev.yaml
     cp ./firebase/dev/google-services.json ./android/app/
