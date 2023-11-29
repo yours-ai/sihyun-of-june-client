@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/screens/all_tab/all_screen.dart';
 import 'package:project_june_client/screens/all_tab/coin_charge_screen.dart';
 import 'package:project_june_client/screens/all_tab/coin_log_screen.dart';
+import 'package:project_june_client/screens/all_tab/my_point_screen.dart';
+import 'package:project_june_client/screens/all_tab/point_change_screen.dart';
+import 'package:project_june_client/screens/all_tab/point_log_screen.dart';
 import 'package:project_june_client/screens/mail/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail/mail_detail_screen.dart';
 import 'package:project_june_client/screens/all_tab/name_change_screen.dart';
@@ -70,6 +73,16 @@ final router = GoRouter(
           GoRoute(
               path: 'charge',
               builder: (context, state) => const CoinChargeScreen()),
+        ]),
+    GoRoute(
+        path: '/my-point',
+        builder: (context, state) => const MyPointScreen(),
+        routes: [
+          GoRoute(
+              path: 'log', builder: (context, state) => const PointLogScreen()),
+          GoRoute(
+              path: 'charge',
+              builder: (context, state) => const PointChangeScreen()),
         ]),
     ShellRoute(
       navigatorKey: shellNavigatorKey,

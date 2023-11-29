@@ -80,24 +80,14 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
                             children: [
                               const TitleUnderline(titleText: '충전하기'),
                               const SizedBox(height: 14),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    transactionService.currencyFormatter
-                                        .format(state.data!.coin),
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: ColorConstants.primary,
-                                    ),
-                                  ),
-                                  Icon(
-                                    PhosphorIcons.coin_vertical,
-                                    color: ColorConstants.primary,
-                                    size: 36,
-                                  ),
-                                ],
+                              Text(
+                                '${transactionService.currencyFormatter
+                                    .format(state.data!.coin)} 코인',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstants.primary,
+                                ),
                               ),
                             ],
                           ),

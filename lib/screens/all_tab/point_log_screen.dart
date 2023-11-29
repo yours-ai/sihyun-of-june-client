@@ -6,14 +6,14 @@ import '../../actions/transaction/queries.dart';
 import '../../widgets/transaction_log_widget.dart';
 import '../../widgets/common/title_layout.dart';
 
-class CoinLogScreen extends StatefulWidget {
-  const CoinLogScreen({super.key});
+class PointLogScreen extends StatefulWidget {
+  const PointLogScreen({super.key});
 
   @override
-  State<CoinLogScreen> createState() => _CoinLogScreenState();
+  State<PointLogScreen> createState() => _PointLogScreenState();
 }
 
-class _CoinLogScreenState extends State<CoinLogScreen> {
+class _PointLogScreenState extends State<PointLogScreen> {
   @override
   Widget build(context) {
     return Scaffold(
@@ -23,26 +23,26 @@ class _CoinLogScreenState extends State<CoinLogScreen> {
           withAppBar: true,
           title: const Center(
             child: TitleUnderline(
-              titleText: '코인 내역',
+              titleText: '포인트 내역',
             ),
           ),
           body: QueryBuilder(
-              query: getCoinLogsQuery(),
+              query: getPointLogsQuery(),
               builder: (context, state) {
-                return state.data != null
+                return state.data != null && state.status == QueryStatus.success
                     ? state.data!.isNotEmpty
                         ? ListView(
                             children: state.data
-                                    ?.map<Widget>((coinLog) =>
+                                    ?.map<Widget>((pointLog) =>
                                         TransactionLogWidget(
-                                            transactionLog: coinLog))
+                                            transactionLog: pointLog))
                                     .toList() ??
                                 [],
                           )
                         : const Column(
                             children: [
                               SizedBox(height: 16),
-                              Text('구매 내역이 없습니다.'),
+                              Text('포인트 내역이 없습니다.'),
                             ],
                           )
                     : const SizedBox.shrink();
