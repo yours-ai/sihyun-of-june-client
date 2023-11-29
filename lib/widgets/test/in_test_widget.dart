@@ -8,7 +8,7 @@ import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:word_break_text/word_break_text.dart';
-import '../../screens/test_screen.dart';
+import '../../screens/character_test/test_screen.dart';
 
 class InTestWidget extends StatefulWidget {
   const InTestWidget(

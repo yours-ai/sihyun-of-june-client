@@ -14,11 +14,11 @@ import 'package:project_june_client/widgets/common/modal/modal_description_widge
 import 'package:project_june_client/widgets/user_profile_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../actions/auth/actions.dart';
-import '../actions/auth/queries.dart';
-import '../constants.dart';
-import '../services.dart';
-import '../widgets/common/title_layout.dart';
+import '../../actions/auth/actions.dart';
+import '../../actions/auth/queries.dart';
+import '../../constants.dart';
+import '../../services.dart';
+import '../../widgets/common/title_layout.dart';
 
 class AllScreen extends ConsumerStatefulWidget {
   const AllScreen({super.key});

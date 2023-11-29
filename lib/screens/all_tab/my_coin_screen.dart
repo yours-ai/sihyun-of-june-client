@@ -7,9 +7,9 @@ import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 
-import '../actions/auth/queries.dart';
-import '../constants.dart';
-import '../services.dart';
+import '../../actions/auth/queries.dart';
+import '../../constants.dart';
+import '../../services.dart';
 
 class MyCoinScreen extends StatelessWidget {
   const MyCoinScreen({Key? key}) : super(key: key);

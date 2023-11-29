@@ -2,8 +2,8 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:project_june_client/widgets/character/view_others.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
-import '../actions/character/queries.dart';
-import '../widgets/profile_widget.dart';
+import '../../actions/character/queries.dart';
+import '../../widgets/profile_widget.dart';
 
 class MyCharacterScreen extends StatelessWidget {
   const MyCharacterScreen({super.key});

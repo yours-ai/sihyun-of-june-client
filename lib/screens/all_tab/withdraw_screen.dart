@@ -7,7 +7,7 @@ import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/withdraw/guide_tab.dart';
 import 'package:project_june_client/widgets/withdraw/reason_tab.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 
 class WithdrawScreen extends StatefulWidget {
   const WithdrawScreen({super.key});
