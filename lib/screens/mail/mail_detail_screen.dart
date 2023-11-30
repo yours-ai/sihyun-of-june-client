@@ -7,7 +7,7 @@ import 'package:project_june_client/widgets/mail_detail/character_mail.dart';
 import 'package:project_june_client/widgets/mail_detail/reply.dart';
 import 'package:project_june_client/widgets/mail_detail/reply_form.dart';
 
-import '../actions/mails/queries.dart';
+import '../../actions/mails/queries.dart';
 
 class MailDetailScreen extends StatefulWidget {
   final int id;

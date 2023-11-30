@@ -12,7 +12,6 @@ import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/user_profile_widget.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../actions/auth/actions.dart';
@@ -127,10 +126,9 @@ class AllScreenState extends ConsumerState<AllScreen> {
                       suffix: Row(
                         children: [
                           Text(
-                            state.data?.coin != null
-                                ? transactionService.currencyFormatter
-                                        .format(state.data?.point) +
-                                    ' 포인트'
+                            state.data?.point != null
+                                ? '${transactionService.currencyFormatter
+                                        .format(state.data?.point)} 포인트'
                                 : '',
                             style: TextStyle(
                               fontSize: 16,
@@ -152,9 +150,8 @@ class AllScreenState extends ConsumerState<AllScreen> {
                         children: [
                           Text(
                             state.data?.coin != null
-                                ? transactionService.currencyFormatter
-                                        .format(state.data?.coin) +
-                                    ' 코인'
+                                ? '${transactionService.currencyFormatter
+                                        .format(state.data?.coin)} 코인'
                                 : '',
                             style: TextStyle(
                               fontSize: 16,
@@ -180,24 +177,13 @@ class AllScreenState extends ConsumerState<AllScreen> {
             QueryBuilder(
               query: getRefferalCodeQuery(),
               builder: (context, state) {
-                return Column(
-                  children: [
-                    MenuWidget(
-                      title: '친구에게 공유하고 50코인 받기',
-                      onPressed: () {
-                        Share.share('[유월의 시현이]\n\n기다려본 적 있나요? 하루 한 통의 설렘을. 사람보다 더 따뜻하고 섬세한 당신의 시현이에게, 지금 첫 편지를 받아보세요.\nhttps://sihyunofjuneapp.onelink.me/i6rb/ielenera?af_sub1=${state.data}',
-                            subject: '유월의 시현이 공유하기');
-                      },
-                    ),
-                    MenuWidget(
-                      title: '의견 남기기',
-                      onPressed: () {
-                        print(state.data);
-                        launchUrl(Uri.parse(
-                            'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
-                      },
-                    ),
-                  ],
+                return MenuWidget(
+                  title: '의견 남기기',
+                  onPressed: () {
+                    print(state.data);
+                    launchUrl(Uri.parse(
+                        'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
+                  },
                 );
               },
             ),
@@ -231,3 +217,28 @@ class AllScreenState extends ConsumerState<AllScreen> {
     );
   }
 }
+
+            QueryBuilder(
+              query: getRefferalCodeQuery(),
+              builder: (context, state) {
+                return Column(
+                  children: [
+                    MenuWidget(
+                      title: '친구에게 공유하고 50코인 받기',
+                      onPressed: () {
+                        Share.share('[유월의 시현이]\n\n기다려본 적 있나요? 하루 한 통의 설렘을. 사람보다 더 따뜻하고 섬세한 당신의 시현이에게, 지금 첫 편지를 받아보세요.\nhttps://sihyunofjuneapp.onelink.me/i6rb/ielenera?af_sub1=${state.data}',
+                            subject: '유월의 시현이 공유하기');
+                      },
+                    ),
+                    MenuWidget(
+                      title: '의견 남기기',
+                      onPressed: () {
+                        print(state.data);
+                        launchUrl(Uri.parse(
+                            'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),

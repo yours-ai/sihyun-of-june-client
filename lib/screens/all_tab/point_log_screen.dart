@@ -29,7 +29,7 @@ class _PointLogScreenState extends State<PointLogScreen> {
           body: QueryBuilder(
               query: getPointLogsQuery(),
               builder: (context, state) {
-                return state.data != null
+                return state.data != null && state.status == QueryStatus.success
                     ? state.data!.isNotEmpty
                         ? ListView(
                             children: state.data
