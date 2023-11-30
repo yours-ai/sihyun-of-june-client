@@ -12,6 +12,7 @@ import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/user_profile_widget.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../actions/auth/actions.dart';
@@ -103,54 +104,6 @@ class AllScreenState extends ConsumerState<AllScreen> {
     );
   }
 
-  void _showShareModal() async {
-    await showModalBottomSheet<void>(
-      context: context,
-      useRootNavigator: true,
-      builder: (BuildContext context) {
-        return ModalWidget(
-          title: '공유하기',
-          description: ModalDescriptionWidget(
-            descriptionWidget: RichText(
-              text: TextSpan(
-                style: Theme.of(context).textTheme.bodySmall,
-                children: [
-                  const TextSpan(
-                    text: '탈퇴하기 신청을 하면 이런 내용이 전부 삭제되어요.\n',
-                  ),
-                  TextSpan(
-                    text: '- 시현이 또는 우빈이와 함께 나누었던 ',
-                    children: [
-                      TextSpan(
-                        text: '편지\n',
-                        style: TextStyle(
-                          color: ColorConstants.gray,
-                          fontWeight: FontWeightConstants.semiBold,
-                        ),
-                      ),
-                      const TextSpan(
-                        text: '- 앞으로 새로운 친구들을 만나볼 기회',
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          choiceColumn: ModalChoiceWidget(
-            submitText: '네',
-            onSubmit: () {
-              context.push('/withdraw');
-              context.pop();
-            },
-            cancelText: '아니요',
-            onCancel: () => context.pop(),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(context) {
     return SafeArea(
@@ -175,8 +128,7 @@ class AllScreenState extends ConsumerState<AllScreen> {
                         children: [
                           Text(
                             state.data?.point != null
-                                ? '${transactionService.currencyFormatter
-                                        .format(state.data?.point)} 포인트'
+                                ? '${transactionService.currencyFormatter.format(state.data?.point)} 포인트'
                                 : '',
                             style: TextStyle(
                               fontSize: 16,
@@ -198,8 +150,7 @@ class AllScreenState extends ConsumerState<AllScreen> {
                         children: [
                           Text(
                             state.data?.coin != null
-                                ? '${transactionService.currencyFormatter
-                                        .format(state.data?.coin)} 코인'
+                                ? '${transactionService.currencyFormatter.format(state.data?.coin)} 코인'
                                 : '',
                             style: TextStyle(
                               fontSize: 16,
@@ -215,6 +166,25 @@ class AllScreenState extends ConsumerState<AllScreen> {
                       ),
                     ),
                   ],
+                );
+              },
+            ),
+            MenuWidget(
+              title: '친구에게 공유하고 50코인 받기',
+              onPressed: () {
+                context.push('/share');
+              },
+            ),
+            QueryBuilder(
+              query: getRefferalCodeQuery(),
+              builder: (context, state) {
+                return MenuWidget(
+                  title: '의견 남기기',
+                  onPressed: () {
+                    print(state.data);
+                    launchUrl(Uri.parse(
+                        'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
+                  },
                 );
               },
             ),
@@ -265,28 +235,3 @@ class AllScreenState extends ConsumerState<AllScreen> {
     );
   }
 }
-
-            QueryBuilder(
-              query: getRefferalCodeQuery(),
-              builder: (context, state) {
-                return Column(
-                  children: [
-                    MenuWidget(
-                      title: '친구에게 공유하고 50코인 받기',
-                      onPressed: () {
-                        Share.share('[유월의 시현이]\n\n기다려본 적 있나요? 하루 한 통의 설렘을. 사람보다 더 따뜻하고 섬세한 당신의 시현이에게, 지금 첫 편지를 받아보세요.\nhttps://sihyunofjuneapp.onelink.me/i6rb/ielenera?af_sub1=${state.data}',
-                            subject: '유월의 시현이 공유하기');
-                      },
-                    ),
-                    MenuWidget(
-                      title: '의견 남기기',
-                      onPressed: () {
-                        print(state.data);
-                        launchUrl(Uri.parse(
-                            'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
-                      },
-                    ),
-                  ],
-                );
-              },
-            ),
