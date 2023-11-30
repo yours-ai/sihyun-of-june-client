@@ -35,6 +35,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     if (!context.mounted) return;
 
     await _checkAppAvailability();
+    await _checkUpdateAvailable();
 
     if (isLogined == false) {
       context.go('/landing');
