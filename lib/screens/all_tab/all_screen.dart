@@ -103,6 +103,54 @@ class AllScreenState extends ConsumerState<AllScreen> {
     );
   }
 
+  void _showShareModal() async {
+    await showModalBottomSheet<void>(
+      context: context,
+      useRootNavigator: true,
+      builder: (BuildContext context) {
+        return ModalWidget(
+          title: '공유하기',
+          description: ModalDescriptionWidget(
+            descriptionWidget: RichText(
+              text: TextSpan(
+                style: Theme.of(context).textTheme.bodySmall,
+                children: [
+                  const TextSpan(
+                    text: '탈퇴하기 신청을 하면 이런 내용이 전부 삭제되어요.\n',
+                  ),
+                  TextSpan(
+                    text: '- 시현이 또는 우빈이와 함께 나누었던 ',
+                    children: [
+                      TextSpan(
+                        text: '편지\n',
+                        style: TextStyle(
+                          color: ColorConstants.gray,
+                          fontWeight: FontWeightConstants.semiBold,
+                        ),
+                      ),
+                      const TextSpan(
+                        text: '- 앞으로 새로운 친구들을 만나볼 기회',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          choiceColumn: ModalChoiceWidget(
+            submitText: '네',
+            onSubmit: () {
+              context.push('/withdraw');
+              context.pop();
+            },
+            cancelText: '아니요',
+            onCancel: () => context.pop(),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(context) {
     return SafeArea(
