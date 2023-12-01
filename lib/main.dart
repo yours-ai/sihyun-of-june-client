@@ -1,6 +1,7 @@
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -11,6 +12,8 @@ import 'package:project_june_client/actions/client.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project_june_client/providers/character_theme_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
+import 'package:project_june_client/services.dart';
+import 'package:project_june_client/services/notification_service.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'firebase_options.dart';
 
@@ -57,9 +60,17 @@ Future<void> _initialize() async {
     print("amplitude api key가 제공되지 않아, amplitude를 init하지 않습니다.");
   }
 }
-
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(
+    RemoteMessage message) async {
+  await Firebase.initializeApp();
+  if (message.notification != null) { // 백그라운드에서 앱을 수신받았을때
+    notificationService.handleNewNotification();
+  }
+}
 void main() async {
   await _initialize();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   if (BuildTimeEnvironments.sentryDsn.isEmpty) {
     print("sentry dsn이 제공되지 않아, sentry를 init하지 않습니다.");
     return _appRunner();

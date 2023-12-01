@@ -31,3 +31,17 @@ Query<List<AppNotification>> getListAppNotificationQuery({
     onError: onError,
   );
 }
+
+Mutation<void, int> readNotificationMutation({
+  List<String> refetchQueries = const [],
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, int>(
+    refetchQueries: refetchQueries,
+    queryFn: readNotification,
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+

@@ -24,7 +24,8 @@ class _NotificationWidgetState extends State<NotificationWidget> {
     return GestureDetector(
       onTap: () {
         notificationService.handleClickNotification(
-          widget.notification,
+          widget.notification.link,
+          widget.notification.id,
         );
       },
       child: Container(
@@ -54,7 +55,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
                   ),
                 ),
                 Container(
-                  width: 100,
+                  width: 110,
                   padding: const EdgeInsets.only(right: 22),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
