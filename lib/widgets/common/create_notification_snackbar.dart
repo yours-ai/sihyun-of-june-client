@@ -28,7 +28,7 @@ SnackBar createNotificationSnackbar({
       onPressed: () {
         // id의 유무는 전체에게 보내면 id가 없고, 개인에게 보내면 id가 있음.
         if (notificationId == null || notificationId.isNaN) {
-          router.push("/notifications"); // 전체에게 보낼때
+          router.go("/notifications", extra: redirectLink);
           return;
         } else {
           final mutation = readNotificationMutation(

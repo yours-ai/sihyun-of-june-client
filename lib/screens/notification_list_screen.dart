@@ -65,11 +65,6 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
                         MutationBuilder(
                           mutation: readAllNotificationMutation(
                             refetchQueries: ["list-app-notifications"],
-                            onSuccess: (arg, data) {
-                              setState(() {
-                                isAllRead = true;
-                              });
-                            },
                             onError: (arg, error, fallback) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

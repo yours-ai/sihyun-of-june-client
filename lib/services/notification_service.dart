@@ -46,17 +46,14 @@ class NotificationService {
     int? notificationId = await int.tryParse(remoteMessage.data['id'] ?? '');
     // id의 유무는 전체에게 보내면 id가 없고, 개인에게 보내면 id가 있음.
     if (notificationId == null || notificationId.isNaN) {
-      routeRedirectLink(redirectLink); // id가 없고, link가 있는 경우. 예) 공지사항
-      router.go("/notifications"); // 전체에게 보냈는데, link가 없는 경우. 예) 죄송합니다 메세지
+      router.go("/notifications",
+          extra: redirectLink);
       return;
     } else {
       final mutation = readNotificationMutation(
         onSuccess: (res, arg) {
           router.go("/notifications",
-              extra: redirectLink); // 개인한테 보냈는데, link가 있는 경우. 예) 캐릭터가 보낸 메일
-          if (redirectLink == null || redirectLink.isEmpty) {
-            router.go("/notifications"); // 개인한테 보냈는데, link가 없는 경우. 예) 포인트 쌓임
-          }
+              extra: redirectLink);
         },
       );
       mutation.mutate(notificationId);
