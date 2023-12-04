@@ -34,8 +34,7 @@ class MyPointScreen extends StatelessWidget {
                               const TitleUnderline(titleText: '내 포인트'),
                               const SizedBox(height: 14),
                               Text(
-                                '${transactionService.currencyFormatter
-                                        .format(state.data!.point)} 포인트',
+                                '${transactionService.currencyFormatter.format(state.data!.point)} P',
                                 style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,

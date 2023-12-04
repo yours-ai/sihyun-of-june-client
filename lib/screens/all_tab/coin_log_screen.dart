@@ -33,9 +33,11 @@ class _CoinLogScreenState extends State<CoinLogScreen> {
                     ? state.data!.isNotEmpty
                         ? ListView(
                             children: state.data
-                                    ?.map<Widget>((coinLog) =>
-                                        TransactionLogWidget(
-                                            transactionLog: coinLog))
+                                    ?.map<Widget>(
+                                        (coinLog) => TransactionLogWidget(
+                                              transactionLog: coinLog,
+                                              type: '코인',
+                                            ))
                                     .toList() ??
                                 [],
                           )

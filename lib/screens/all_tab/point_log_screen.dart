@@ -33,9 +33,11 @@ class _PointLogScreenState extends State<PointLogScreen> {
                     ? state.data!.isNotEmpty
                         ? ListView(
                             children: state.data
-                                    ?.map<Widget>((pointLog) =>
-                                        TransactionLogWidget(
-                                            transactionLog: pointLog))
+                                    ?.map<Widget>(
+                                        (pointLog) => TransactionLogWidget(
+                                              transactionLog: pointLog,
+                                              type: '포인트',
+                                            ))
                                     .toList() ??
                                 [],
                           )
