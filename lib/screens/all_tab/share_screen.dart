@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
@@ -17,6 +18,27 @@ import '../../services.dart';
 class ShareScreen extends ConsumerWidget {
   const ShareScreen({Key? key}) : super(key: key);
 
+  void kakaoShare(String? refCode) async {
+    int templateId = 101441;
+    Map<String, String> templateArgs = {
+      'ref': refCode ?? 'refCode',
+    };
+
+    bool isKakaoTalkSharingAvailable =
+        await ShareClient.instance.isKakaoTalkSharingAvailable();
+
+    if (isKakaoTalkSharingAvailable) {
+      Uri uri = await ShareClient.instance
+          .shareCustom(templateId: templateId, templateArgs: templateArgs);
+      await ShareClient.instance.launchKakaoTalk(uri);
+      print('카카오톡 공유 완료');
+    } else {
+      Uri shareUrl = await WebSharerClient.instance
+          .makeCustomUrl(templateId: templateId, templateArgs: templateArgs);
+      await launchBrowserTab(shareUrl, popupOpen: true);
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -27,7 +49,7 @@ class ShareScreen extends ConsumerWidget {
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Center(child: TitleUnderline(titleText: '공유하기')),
+              const Center(child: TitleUnderline(titleText: '초대하기')),
               const SizedBox(height: 70),
               RichText(
                 text: TextSpan(
@@ -67,41 +89,46 @@ class ShareScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 60),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          height: 54,
-                          padding: const EdgeInsets.all(10),
-                          color: const Color(0xFFFFE500),
-                          child: Image.asset(
-                            'assets/images/kakao_icon.png',
+              QueryBuilder(
+                query: getRefferalCodeQuery(),
+                builder: (context, state) => Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        kakaoShare(state.data);
+                      },
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              height: 54,
+                              padding: const EdgeInsets.all(10),
+                              color: const Color(0xFFFFE500),
+                              child: Image.asset(
+                                'assets/images/kakao_icon.png',
+                              ),
+                            ),
                           ),
-                        ),
+                          const SizedBox(height: 10),
+                          Text(
+                            '카카오톡으로\n공유하기',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: ColorConstants.gray,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 10),
-                      Text(
-                        '카카오톡으로\n공유하기',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: ColorConstants.gray,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 50),
-                  QueryBuilder(
-                    query: getRefferalCodeQuery(),
-                    builder: (context, state) => GestureDetector(
+                    ),
+                    const SizedBox(width: 50),
+                    GestureDetector(
                       onTap: () {
                         Share.share(
-                            '[유월의 시현이]\n\n기다려본 적 있나요? 하루 한 통의 설렘을. 사람보다 더 따뜻하고 섬세한 당신의 시현이에게, 지금 첫 편지를 받아보세요.\nhttps://sihyunofjuneapp.onelink.me/i6rb/ielenera?af_sub1=${state.data}',
+                            '[유월의 시현이 - AI 친구와의 편지]\n\n사람보다 더 따뜻하고 섬세한 당신의 시현이에게, 지금 첫 편지를 받아보세요.\nhttps://sihyunofjuneapp.onelink.me/i6rb/1m6u5hyx?af_sub1=${state.data}',
                             subject: '유월의 시현이 공유하기');
                       },
                       child: Column(
@@ -134,9 +161,9 @@ class ShareScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
-                  ),
-                ],
-              )
+                  ],
+                ),
+              ),
             ],
           ),
         ),
