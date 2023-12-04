@@ -1,9 +1,11 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
+import 'package:project_june_client/services/share_service.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
@@ -17,26 +19,6 @@ import '../../services.dart';
 
 class ShareScreen extends ConsumerWidget {
   const ShareScreen({Key? key}) : super(key: key);
-
-  void kakaoShare(String? refCode) async {
-    int templateId = 101441;
-    Map<String, String> templateArgs = {
-      'ref': refCode ?? 'refCode',
-    };
-
-    bool isKakaoTalkSharingAvailable =
-        await ShareClient.instance.isKakaoTalkSharingAvailable();
-
-    if (isKakaoTalkSharingAvailable) {
-      Uri uri = await ShareClient.instance
-          .shareCustom(templateId: templateId, templateArgs: templateArgs);
-      await ShareClient.instance.launchKakaoTalk(uri);
-    } else {
-      Uri shareUrl = await WebSharerClient.instance
-          .makeCustomUrl(templateId: templateId, templateArgs: templateArgs);
-      await launchBrowserTab(shareUrl, popupOpen: true);
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,7 +34,7 @@ class ShareScreen extends ConsumerWidget {
               const SizedBox(height: 70),
               RichText(
                 text: TextSpan(
-                  text: '50코인',
+                  text: '300포인트',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -61,7 +43,7 @@ class ShareScreen extends ConsumerWidget {
                   ),
                   children: <TextSpan>[
                     TextSpan(
-                      text: '을 드려요!',
+                      text: '를 드려요!',
                       style: TextStyle(
                         fontSize: 20,
                         color: ColorConstants.primary,
@@ -72,15 +54,16 @@ class ShareScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 30),
               Text(
-                '초대받은 친구가 가입하면\n코인을 받으실 수 있어요.',
+                '초대받은 친구가 가입하면\n보상을 받으실 수 있어요.',
                 style: TextStyle(
                   fontSize: 16,
                   color: ColorConstants.gray,
                 ),
+                textAlign: TextAlign.center,
               ),
               const SizedBox(height: 30),
               Text(
-                '(링크로 친구 가입 완료시 50코인 지급)',
+                '(나에게 300포인트, 친구에게 200포인트)',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -96,7 +79,7 @@ class ShareScreen extends ConsumerWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        kakaoShare(state.data);
+                        shareService.kakaoShare(state.data);
                       },
                       child: Column(
                         children: [
@@ -127,7 +110,9 @@ class ShareScreen extends ConsumerWidget {
                     GestureDetector(
                       onTap: () {
                         Share.share(
-                            '[유월의 시현이 - AI 친구와의 편지]\n\n사람보다 더 따뜻하고 섬세한 당신의 시현이에게, 지금 첫 편지를 받아보세요.\nhttps://sihyunofjuneapp.onelink.me/i6rb/1m6u5hyx?af_sub1=${state.data}',
+                            '${FirebaseRemoteConfig.instance
+                                    .getString('referral_text')
+                                    .replaceAll("\\n", "\n")}https://sihyunofjuneapp.onelink.me/i6rb/1m6u5hyx?af_sub1=${state.data}',
                             subject: '유월의 시현이 공유하기');
                       },
                       child: Column(
