@@ -6,3 +6,10 @@ Future<void> sendUserFunnel(String? funnel) async {
   });
   return;
 }
+
+Future<void> sendUserRefCode(String? refCode) async {
+  await dio.post('/analytics/referral/', data: {
+    'referral_code': refCode,
+  });
+  return;
+}
