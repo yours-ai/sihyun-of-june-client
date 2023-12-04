@@ -45,9 +45,8 @@ class TransactionLogWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  transactionService.currencyFormatter
-                      .format(transactionLog.amount)
-                      .toString() + type,
+                  '${transactionService.currencyFormatter
+                      .format(transactionLog.amount)} $type',
                   style: TextStyle(
                     fontSize: 16,
                     color: ColorConstants.primary,
@@ -56,9 +55,8 @@ class TransactionLogWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  transactionService.currencyFormatter
-                      .format(transactionLog.balance)
-                      .toString() + type,
+                  '${transactionService.currencyFormatter
+                          .format(transactionLog.balance)} $type',
                   style: TextStyle(
                     color: ColorConstants.primary,
                     fontSize: 14,
