@@ -176,7 +176,7 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 context.push('/share');
               },
             ),
-            MenuTitleWidget(title: '내 정보'),
+            const MenuTitleWidget(title: '내 정보'),
             MenuWidget(
               title: '이름 변경하기',
               onPressed: () => context.push('/change-name'),
@@ -199,7 +199,6 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 return MenuWidget(
                   title: '의견 남기기',
                   onPressed: () {
-                    print(state.data);
                     launchUrl(Uri.parse(
                         'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
                   },
@@ -221,7 +220,6 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 return MenuWidget(
                   title: '의견 남기기',
                   onPressed: () {
-                    print(state.data);
                     launchUrl(Uri.parse(
                         'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
                   },

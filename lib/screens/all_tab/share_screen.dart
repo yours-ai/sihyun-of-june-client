@@ -31,7 +31,6 @@ class ShareScreen extends ConsumerWidget {
       Uri uri = await ShareClient.instance
           .shareCustom(templateId: templateId, templateArgs: templateArgs);
       await ShareClient.instance.launchKakaoTalk(uri);
-      print('카카오톡 공유 완료');
     } else {
       Uri shareUrl = await WebSharerClient.instance
           .makeCustomUrl(templateId: templateId, templateArgs: templateArgs);
