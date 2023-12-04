@@ -31,7 +31,8 @@ class NotificationService {
 
   void handleClickNotification(String? redirectLink, int notificationId) {
     final mutation = readNotificationMutation(
-        onSuccess: (res, arg) => routeRedirectLink(redirectLink));
+      onSuccess: (res, arg) => routeRedirectLink(redirectLink),
+    );
     mutation.mutate(notificationId);
   }
 
@@ -49,13 +50,15 @@ class NotificationService {
       router.go("/notifications"); // 전체에게 보냈는데, link가 없는 경우. 예) 죄송합니다 메세지
       return;
     } else {
-      final mutation = readNotificationMutation(onSuccess: (res, arg) {
-        router.go("/notifications",
-            extra: redirectLink); // 개인한테 보냈는데, link가 있는 경우. 예) 캐릭터가 보낸 메일
-        if (redirectLink == null || redirectLink.isEmpty) {
-          router.go("/notifications"); // 개인한테 보냈는데, link가 없는 경우. 예) 포인트 쌓임
-        }
-      });
+      final mutation = readNotificationMutation(
+        onSuccess: (res, arg) {
+          router.go("/notifications",
+              extra: redirectLink); // 개인한테 보냈는데, link가 있는 경우. 예) 캐릭터가 보낸 메일
+          if (redirectLink == null || redirectLink.isEmpty) {
+            router.go("/notifications"); // 개인한테 보냈는데, link가 없는 경우. 예) 포인트 쌓임
+          }
+        },
+      );
       mutation.mutate(notificationId);
     }
   }
@@ -68,6 +71,7 @@ class NotificationService {
         .listen((token) => getOrCreateUserDevice(token));
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       // 포그라운드
+      handleNewNotification();
       String snackBarText = message.notification?.body ?? message.data['body'];
       scaffoldMessengerKey.currentState?.showSnackBar(
         createNotificationSnackbar(

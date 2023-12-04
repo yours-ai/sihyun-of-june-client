@@ -45,3 +45,16 @@ Mutation<void, int> readNotificationMutation({
   );
 }
 
+Mutation<void, void> readAllNotificationMutation({
+  List<String> refetchQueries = const [],
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, void>(
+    refetchQueries: refetchQueries,
+    queryFn: (void _) => readAllNotification(),
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+

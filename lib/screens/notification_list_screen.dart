@@ -1,5 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
@@ -19,6 +20,8 @@ class NotificationListScreen extends StatefulWidget {
 }
 
 class _NotificationListScreenState extends State<NotificationListScreen> {
+  bool isAllRead = true;
+
   @override
   void initState() {
     super.initState();
@@ -38,12 +41,63 @@ class _NotificationListScreenState extends State<NotificationListScreen> {
           if (state.data == null) {
             return const SizedBox.shrink();
           }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (state.data!.isNotEmpty) {
+              setState(() {
+                isAllRead =
+                    state.data!.every((notification) => notification.is_read!);
+              });
+            }
+          });
           return SafeArea(
             child: TitleLayout(
-              title: const Center(
-                child: TitleUnderline(
-                  titleText: "알림",
-                ),
+              title: Row(
+                children: [
+                  const Expanded(flex: 1, child: SizedBox()),
+                  const TitleUnderline(
+                    titleText: "알림",
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        MutationBuilder(
+                          mutation: readAllNotificationMutation(
+                            refetchQueries: ["list-app-notifications"],
+                            onSuccess: (arg, data) {
+                              setState(() {
+                                isAllRead = true;
+                              });
+                            },
+                            onError: (arg, error, fallback) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(error.toString()),
+                                ),
+                              );
+                            },
+                          ),
+                          builder: (context, state, mutate) => IconButton(
+                            onPressed: () {
+                              if (isAllRead) {
+                                return;
+                              }
+                              mutate(null);
+                            },
+                            icon: Icon(
+                              PhosphorIcons.list_checks,
+                              color: isAllRead
+                                  ? ColorConstants.neutral
+                                  : ColorConstants.primary,
+                              size: 32,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               body: state.data!.isEmpty
                   ? Column(

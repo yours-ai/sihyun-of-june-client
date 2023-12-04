@@ -69,3 +69,7 @@ Future<List<AppNotification>> listAppNotifications() async {
 Future<void> readNotification(int id) async {
   await dio.post('/notification/notifications/$id/read/');
 }
+
+Future<void> readAllNotification() async {
+  await dio.post('/notification/notifications/read-all/');
+}
