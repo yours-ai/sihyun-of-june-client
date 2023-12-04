@@ -198,6 +198,10 @@ class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
           ),
           actions: isSubmitted == true
               ? FilledButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorConstants.pink),
+                  ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       authCode = int.tryParse(authController.text);
