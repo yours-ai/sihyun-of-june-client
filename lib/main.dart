@@ -13,7 +13,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:project_june_client/providers/character_theme_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services.dart';
-import 'package:project_june_client/services/notification_service.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'firebase_options.dart';
 

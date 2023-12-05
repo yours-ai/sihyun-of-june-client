@@ -1,11 +1,8 @@
 import 'dart:async';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:project_june_client/actions/character/models/CharacterColors.dart';
-import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/notification/actions.dart';
 import 'package:project_june_client/actions/notification/models/AppNotification.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
@@ -32,6 +29,7 @@ class NotificationService {
   void handleClickNotification(String? redirectLink, int notificationId) {
     final mutation = readNotificationMutation(
       onSuccess: (res, arg) => routeRedirectLink(redirectLink),
+      refetchQueries: ["list-app-notifications"],
     );
     mutation.mutate(notificationId);
   }
@@ -46,14 +44,12 @@ class NotificationService {
     int? notificationId = await int.tryParse(remoteMessage.data['id'] ?? '');
     // id의 유무는 전체에게 보내면 id가 없고, 개인에게 보내면 id가 있음.
     if (notificationId == null || notificationId.isNaN) {
-      router.go("/notifications",
-          extra: redirectLink);
+      router.go("/notifications", extra: redirectLink);
       return;
     } else {
       final mutation = readNotificationMutation(
         onSuccess: (res, arg) {
-          router.go("/notifications",
-              extra: redirectLink);
+          router.go("/notifications", extra: redirectLink);
         },
       );
       mutation.mutate(notificationId);

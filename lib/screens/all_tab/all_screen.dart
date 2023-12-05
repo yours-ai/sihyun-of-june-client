@@ -1,11 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/character/models/CharacterColors.dart';
-import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
-import 'package:project_june_client/providers/character_theme_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_title_widget.dart';
@@ -13,7 +9,6 @@ import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/user_profile_widget.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../actions/auth/actions.dart';

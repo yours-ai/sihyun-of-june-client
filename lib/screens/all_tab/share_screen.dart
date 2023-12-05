@@ -3,14 +3,9 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
 import 'package:project_june_client/actions/analytics/queries.dart';
-import 'package:project_june_client/services/share_service.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
-import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
-import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../actions/auth/queries.dart';

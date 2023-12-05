@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:project_june_client/services.dart';
 
 import '../client.dart';
 import 'models/AppNotification.dart';
