@@ -165,7 +165,7 @@ class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
                                   style: TextStyle(
                                       color: ColorConstants.pink,
                                       fontSize: 17,
-                                      fontWeight: FontWeight.w500),
+                                      fontWeight: FontWeight.normal),
                                 ),
                               ],
                             ),

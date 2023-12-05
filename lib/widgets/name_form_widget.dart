@@ -157,7 +157,7 @@ class _NameFormWidgetState extends State<NameFormWidget> {
             style: TextStyle(
                 color: ColorConstants.neutral,
                 fontSize: 13,
-                fontWeight: FontWeight.w500),
+                fontWeight: FontWeight.normal),
           )
         ],
       ),

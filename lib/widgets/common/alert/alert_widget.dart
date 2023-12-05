@@ -27,7 +27,7 @@ class AlertWidget extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Pretendard',
                   fontSize: 18,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.normal,
                   color: ColorConstants.primary,
                 ),
                 textAlign: TextAlign.center,

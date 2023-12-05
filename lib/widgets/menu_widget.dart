@@ -39,7 +39,7 @@ class MenuWidget extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 18,
                           color: ColorConstants.primary,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                 ),

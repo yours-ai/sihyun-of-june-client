@@ -128,7 +128,7 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                           },
                           child: const Text('인증요청',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w500)),
+                                  fontSize: 16, fontWeight: FontWeight.normal)),
                         )
                       : TextButton(
                           child: Container(
