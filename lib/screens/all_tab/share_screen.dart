@@ -29,7 +29,6 @@ class ShareScreen extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28.0),
           child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Center(child: TitleUnderline(titleText: '초대하기')),
               const SizedBox(height: 70),
@@ -80,19 +79,19 @@ class ShareScreen extends ConsumerWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        shareService.kakaoShare(state.data);
+                        shareService.kakaoShare(state.data!);
                       },
                       child: Column(
                         children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              height: 54,
-                              padding: const EdgeInsets.all(10),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
                               color: const Color(0xFFFFE500),
-                              child: Image.asset(
-                                'assets/images/kakao_icon.png',
-                              ),
+                            ),
+                            height: 54,
+                            padding: const EdgeInsets.all(10),
+                            child: Image.asset(
+                              'assets/images/kakao_icon.png',
                             ),
                           ),
                           const SizedBox(height: 10),
@@ -122,20 +121,17 @@ class ShareScreen extends ConsumerWidget {
                           },
                           child: Column(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: ColorConstants.primary,
-                                    ),
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: ColorConstants.primary,
                                   ),
-                                  child: const Icon(
-                                    PhosphorIcons.share_network_fill,
-                                    size: 32,
-                                  ),
+                                ),
+                                child: const Icon(
+                                  PhosphorIcons.share_network_fill,
+                                  size: 32,
                                 ),
                               ),
                               const SizedBox(height: 10),

@@ -123,7 +123,6 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
         if (dp.status == Status.FOUND) {
           ref.read(deepLinkProvider.notifier).state = dp.deepLink;
-          print(dp.deepLink?.afSub1);
           if (dp.deepLink?.deepLinkValue == null ||
               dp.deepLink?.deepLinkValue == '') return;
           context.go(//ToDo 로그인이 필요한 작업시에 characterTheme을 설정해줘야 함

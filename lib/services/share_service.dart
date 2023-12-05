@@ -4,10 +4,10 @@ import 'package:project_june_client/environments.dart';
 class ShareService {
   const ShareService();
 
-  void kakaoShare(String? refCode) async {
+  void kakaoShare(String refCode) async {
     int templateId = int.parse(BuildTimeEnvironments.kakaoTemplateId);
     Map<String, String> templateArgs = {
-      'ref': refCode ?? 'refCode',
+      'ref': refCode,
     };
 
     bool isKakaoTalkSharingAvailable =

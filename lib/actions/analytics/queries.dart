@@ -11,7 +11,7 @@ Mutation<void, UserFunnelDTO> getUserFunnelMutation({
     queryFn: (dto) async {
       await sendUserFunnel(dto.funnel);
       if(dto.refCode != null) {
-        await sendUserRefCode(dto.refCode);
+        await sendUserRefCode(dto.refCode!);
       }
     },
     onSuccess: onSuccess,

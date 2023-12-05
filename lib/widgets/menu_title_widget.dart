@@ -10,8 +10,6 @@ class MenuTitleWidget extends StatelessWidget {
     required this.title,
   }) : super(key: key);
 
-  static void defaultOnPressed() {}
-
   @override
   Widget build(BuildContext context) {
     return Container(
