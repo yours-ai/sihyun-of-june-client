@@ -7,9 +7,15 @@ class AlertWidget extends StatelessWidget {
   final Widget? content;
   final String? confirmText;
   final void Function()? onConfirm;
+  final Color? backgroundColor;
 
   const AlertWidget(
-      {super.key, this.title, this.content, this.confirmText, this.onConfirm});
+      {super.key,
+      this.title,
+      this.content,
+      this.confirmText,
+      this.onConfirm,
+      this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +49,7 @@ class AlertWidget extends StatelessWidget {
                 width: double.infinity,
                 child: FilledButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                      ColorConstants.pink,
-                    ), // pink라는거 주의. 현재는 인증번호에서만 쓰여서 핑크로 함
+                    backgroundColor: MaterialStateProperty.all(backgroundColor),
                     shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(0),
