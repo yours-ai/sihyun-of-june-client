@@ -96,11 +96,42 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
                 ),
               ),
             ),
-            choiceColumn: ModalChoiceWidget(
-              submitText: '동의하고 시작하기',
-              onSubmit: () => mutate(dto),
-              cancelText: '취소하기',
-              onCancel: () => context.pop(),
+            choiceColumn: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                OutlinedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorConstants.background),
+                  ),
+                  onPressed: () => context.pop(),
+                  child: Text(
+                    '취소하기',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: ColorConstants.neutral,
+                      fontWeight: FontWeightConstants.semiBold,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                FilledButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorConstants.pink),
+                  ),
+                  onPressed: () => mutate(dto),
+                  child: Text(
+                    '동의하고 시작하기',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeightConstants.semiBold,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         );

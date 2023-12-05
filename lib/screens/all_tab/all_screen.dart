@@ -22,14 +22,14 @@ import '../../constants.dart';
 import '../../services.dart';
 import '../../widgets/common/title_layout.dart';
 
-class AllScreen extends ConsumerStatefulWidget {
+class AllScreen extends StatefulWidget {
   const AllScreen({super.key});
 
   @override
-  AllScreenState createState() => AllScreenState();
+  _AllScreenState createState() => _AllScreenState();
 }
 
-class AllScreenState extends ConsumerState<AllScreen> {
+class _AllScreenState extends State<AllScreen> {
   void _showLogoutModal() async {
     await showModalBottomSheet<void>(
       context: context,
@@ -41,12 +41,6 @@ class AllScreenState extends ConsumerState<AllScreen> {
             submitText: '네',
             onSubmit: () {
               logout();
-              CharacterTheme defaultTheme = CharacterTheme(
-                colors:
-                    CharacterColors(primary: 4294923379, secondary: 4294932624),
-                font: "NanumNoRyeogHaNeunDongHee",
-              );
-              ref.read(characterThemeProvider.notifier).state = defaultTheme;
               context.go('/login');
             },
             cancelText: '아니요',

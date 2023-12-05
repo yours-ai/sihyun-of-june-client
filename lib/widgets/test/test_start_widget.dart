@@ -103,6 +103,11 @@ class _TestStartWidget extends State<TestStartWidget> {
                 );
               }),
               actions: FilledButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    ColorConstants.pink,
+                  ),
+                ),
                 onPressed: () {
                   _tab == 0
                       ? setState(() {

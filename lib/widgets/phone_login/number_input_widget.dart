@@ -62,7 +62,6 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                 children: [
                   Expanded(
                     child: TextFormField(
-                      enabled: widget.isSubmitted == false,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return '전화번호를 입력해주세요.';
@@ -85,18 +84,19 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6.0),
                           borderSide: BorderSide(
-                            width: 1.0,
-                            color: ColorConstants.neutral,
+                            color: widget.isSubmitted
+                                ? ColorConstants.neutral
+                                : ColorConstants.primary,
                           ),
-                        ), //enabledBorder 에서 width를 조정하기 위해 설정.
+                        ),
                       ),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 17,
                         height: 1.2,
+                        color: widget.isSubmitted
+                            ? ColorConstants.neutral
+                            : ColorConstants.primary,
                       ),
                     ),
                   ),
@@ -104,6 +104,8 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                   widget.isSubmitted == false
                       ? FilledButton(
                           style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(ColorConstants.pink),
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6.0),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/constants.dart';
 
 class AlertWidget extends StatelessWidget {
   final String? title;
@@ -41,6 +42,9 @@ class AlertWidget extends StatelessWidget {
                 width: double.infinity,
                 child: FilledButton(
                   style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      ColorConstants.pink,
+                    ), // pink라는거 주의. 현재는 인증번호에서만 쓰여서 핑크로 함
                     shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(0),

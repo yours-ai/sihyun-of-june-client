@@ -106,6 +106,10 @@ class _LandingScreen extends State<LandingScreen> {
               ),
               _tab == tabList.length - 1
                   ? FilledButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(ColorConstants.pink),
+                      ),
                       onPressed: () {
                         context.go('/login');
                       },
@@ -114,6 +118,10 @@ class _LandingScreen extends State<LandingScreen> {
                       ),
                     )
                   : FilledButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(ColorConstants.pink),
+                      ),
                       onPressed: () {
                         _controller.nextPage(curve: Curves.easeInOut);
                       },

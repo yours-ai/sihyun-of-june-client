@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_theme_provider.dart';
 
 class WithDrawReasonWidget extends ConsumerStatefulWidget {
@@ -24,16 +25,19 @@ class WithDrawReasonWidgetState extends ConsumerState<WithDrawReasonWidget> {
   Widget build(BuildContext context) {
     return CheckboxListTile(
       activeColor: Color(ref.watch(characterThemeProvider).colors!.primary!),
-
-        visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
-        contentPadding: const EdgeInsets.all(0),
-        controlAffinity: ListTileControlAffinity.leading,
-        value: widget.isChecked,
-        onChanged: (bool? value) {
-          setState(() {
-            widget.onQuitResponse(widget.reasonKeyword);
-          });
-        },
-        title: Text(widget.reasonText));
+      visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
+      contentPadding: const EdgeInsets.all(0),
+      controlAffinity: ListTileControlAffinity.leading,
+      value: widget.isChecked,
+      onChanged: (bool? value) {
+        setState(() {
+          widget.onQuitResponse(widget.reasonKeyword);
+        });
+      },
+      title: Text(
+        widget.reasonText,
+        style: TextStyle(color: ColorConstants.primary),
+      ),
+    );
   }
 }
