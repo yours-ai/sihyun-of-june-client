@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_break_text/word_break_text.dart';
 
-import '../../../constants.dart';
-
 class AlertDescriptionWidget extends StatelessWidget {
   final String description;
 

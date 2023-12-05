@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,9 +11,7 @@ import '../constants.dart';
 class UpdateWidget extends ConsumerWidget {
   final String? releaseNotes;
 
-  const UpdateWidget(
-      {Key? key, required this.releaseNotes})
-      : super(key: key);
+  const UpdateWidget({Key? key, required this.releaseNotes}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

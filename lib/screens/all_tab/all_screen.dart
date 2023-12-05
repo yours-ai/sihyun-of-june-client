@@ -180,7 +180,6 @@ class AllScreenState extends ConsumerState<AllScreen> {
                 return MenuWidget(
                   title: '의견 남기기',
                   onPressed: () {
-                    print(state.data);
                     launchUrl(Uri.parse(
                         'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
                   },
