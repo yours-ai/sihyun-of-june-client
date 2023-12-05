@@ -1,21 +1,24 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
+import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 
 
-class RequestNotificationPermissionWidget extends StatefulWidget {
+class RequestNotificationPermissionWidget extends ConsumerStatefulWidget {
   const RequestNotificationPermissionWidget({super.key});
 
   @override
-  State<RequestNotificationPermissionWidget> createState() =>
-      _RequestNotificationPermissionWidgetState();
+  RequestNotificationPermissionWidgetState createState() =>
+      RequestNotificationPermissionWidgetState();
 }
 
-class _RequestNotificationPermissionWidgetState
-    extends State<RequestNotificationPermissionWidget> {
+class RequestNotificationPermissionWidgetState
+    extends ConsumerState<RequestNotificationPermissionWidget> {
   @override
   void initState() {
     super.initState();
@@ -27,6 +30,7 @@ class _RequestNotificationPermissionWidgetState
           builder: (BuildContext context) {
             final mutation = getRequestNotificationPermissionMutation(
               onSuccess: (res, arg) {
+                notificationService.initializeNotificationHandlers(ref.watch(characterThemeProvider).colors!);
                 context.pop();
               },
               onError: (arg, err, fallback) {

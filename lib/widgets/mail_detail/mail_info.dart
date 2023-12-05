@@ -32,8 +32,11 @@ class MailInfoWidget extends ConsumerWidget {
       children: [
         if (byImage != null) ...[
           GestureDetector(
-            onTap: () =>
-                context.push('/mails/my-character'),
+            onTap: () {
+              if (!isMe) {
+                context.push('/mails/my-character');
+              }
+            },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(50),
               child: SizedBox(

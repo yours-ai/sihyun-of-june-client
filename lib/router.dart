@@ -121,11 +121,12 @@ final router = GoRouter(
         GoRoute(
           path: TabRoutePaths.notificationList,
           pageBuilder: (context, state) {
+            final redirectLink = state.extra as String?;
             return NoTransitionPage(
               key: state.pageKey,
               child: NavbarLayout(
                 routePath: state.matchedLocation,
-                child: const NotificationListScreen(),
+                child: NotificationListScreen(redirectLink),
               ),
             );
           },
