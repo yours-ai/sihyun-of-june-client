@@ -62,6 +62,7 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      enabled: widget.isSubmitted == false,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return '전화번호를 입력해주세요.';
@@ -85,18 +86,20 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6.0),
                           borderSide: BorderSide(
-                            color: widget.isSubmitted
-                                ? ColorConstants.neutral
-                                : ColorConstants.primary,
+                            color: ColorConstants.neutral,
+                          ),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                          borderSide: BorderSide(
+                            color: ColorConstants.neutral,
                           ),
                         ),
                       ),
                       style: TextStyle(
                         fontSize: 17,
                         height: 1.2,
-                        color: widget.isSubmitted
-                            ? ColorConstants.neutral
-                            : ColorConstants.primary,
+                        color: widget.isSubmitted ? ColorConstants.neutral : ColorConstants.primary,
                       ),
                     ),
                   ),
@@ -137,10 +140,9 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                                 ),
                               ),
                             ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
-                            padding: const EdgeInsets.all(0),
                             child: Text('인증번호 재발송',
                                 style: TextStyle(
-                                    color: ColorConstants.gray, height: 0.7)),
+                                    color: ColorConstants.gray, height: 1.0)),
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {

@@ -174,21 +174,17 @@ class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(6.0),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(6.0),
-                            borderSide: BorderSide(
-                              width: 1.0,
-                              color: ColorConstants.neutral,
-                            ),
-                          ),
                           hintText: '인증번호 입력',
                           hintStyle: TextStyle(
                               fontSize: 17, color: ColorConstants.neutral),
                         ),
-                        style: const TextStyle(fontSize: 17, height: 1.2),
+                        style: TextStyle(
+                            fontSize: 17,
+                            height: 1.2,
+                            color: ColorConstants.primary),
                       ),
                     )
-                  : Container(),
+                  : const SizedBox.shrink(),
             ],
           ),
           actions: isSubmitted == true
