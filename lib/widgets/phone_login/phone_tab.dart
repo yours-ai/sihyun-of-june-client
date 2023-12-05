@@ -66,13 +66,16 @@ class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
 
   Future showSMSSentDialog() {
     return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertWidget(
-              title: '인증번호 발송',
-              content: AlertDescriptionWidget(description: '인증번호가 발송되었습니다.'),
-              confirmText: '확인');
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertWidget(
+          title: '인증번호 발송',
+          content: const AlertDescriptionWidget(description: '인증번호가 발송되었습니다.'),
+          confirmText: '확인',
+          backgroundColor: ColorConstants.pink,
+        );
+      },
+    );
   }
 
   String timeFormatter(int seconds) {
