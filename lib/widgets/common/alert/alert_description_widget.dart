@@ -11,13 +11,12 @@ class AlertDescriptionWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: (description == null || description!.isEmpty)
-          ? SizedBox.shrink()
-          :
-      WordBreakText(description!,
-          spacingByWrap: true,
-          spacing: 4,
-          wrapAlignment: WrapAlignment.center,
-          style: Theme.of(context).textTheme.bodySmall),
+          ? const SizedBox.shrink()
+          : WordBreakText(description!,
+              spacingByWrap: true,
+              spacing: 4,
+              wrapAlignment: WrapAlignment.center,
+              style: Theme.of(context).textTheme.bodySmall),
     );
   }
 }

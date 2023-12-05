@@ -59,14 +59,16 @@ Future<void> _initialize() async {
     print("amplitude api key가 제공되지 않아, amplitude를 init하지 않습니다.");
   }
 }
+
 @pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(
-    RemoteMessage message) async {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  if (message.notification != null) { // 백그라운드에서 앱을 수신받았을때
+  if (message.notification != null) {
+    // 백그라운드에서 앱을 수신받았을때
     notificationService.handleNewNotification();
   }
 }
+
 void main() async {
   await _initialize();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -136,7 +138,7 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
             color: ColorConstants.primary,
           ),
           bodySmall: TextStyle(
-            color: ColorConstants.gray,
+            color: ColorConstants.primary,
             fontSize: 16,
             height: 1.5,
           ),
