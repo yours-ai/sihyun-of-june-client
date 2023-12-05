@@ -225,7 +225,7 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                       color: ColorConstants.neutral,
                                       fontSize: 16,
                                       height: 22 / 16,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.normal,
                                     ),
                                   )
                                 ],

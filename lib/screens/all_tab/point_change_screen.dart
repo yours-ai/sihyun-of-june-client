@@ -133,7 +133,7 @@ class PointChangeScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16,
                               color: ColorConstants.primary,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                           Padding(
@@ -149,7 +149,7 @@ class PointChangeScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 16,
                               color: ColorConstants.primary,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                         ],
