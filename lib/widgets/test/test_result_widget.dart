@@ -115,6 +115,11 @@ class _TestResultWidget extends State<TestResultWidget> {
                           child: Text(tabList[_tab].button)),
                     )
                   : FilledButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          ColorConstants.pink,
+                        ),
+                      ),
                       onPressed: () {
                         setState(() {
                           _tab = 0;

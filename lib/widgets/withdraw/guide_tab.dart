@@ -48,7 +48,10 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                     ? state.data!.env == 'apple'
                         ? Column(
                             children: [
-                              const Text('애플 계정 연결 해제를 위해 아래 링크를 따라 주세요.'),
+                              Text(
+                                '애플 계정 연결 해제를 위해 아래 링크를 따라 주세요.',
+                                style: TextStyle(color: ColorConstants.primary),
+                              ),
                               const SizedBox(height: 20),
                               TextButton(
                                   onPressed: () =>
@@ -59,11 +62,16 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   TextButton(
-                                      onPressed: () {
-                                        Clipboard.setData(ClipboardData(
-                                            text: Urls.appleWithdraw));
-                                      },
-                                      child: const Text('링크 복사하기')),
+                                    onPressed: () {
+                                      Clipboard.setData(ClipboardData(
+                                          text: Urls.appleWithdraw));
+                                    },
+                                    child: Text(
+                                      '링크 복사하기',
+                                      style: TextStyle(
+                                          color: ColorConstants.primary),
+                                    ),
+                                  ),
                                 ],
                               )
                             ],
@@ -72,27 +80,43 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               state.data!.env == 'sms'
-                                  ? const Text('카카오톡으로 가입하셨다면,',
+                                  ? Text(
+                                      '카카오톡으로 가입하셨다면,',
                                       style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold))
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: ColorConstants.primary,
+                                      ),
+                                    )
                                   : const SizedBox.shrink(),
-                              const Text(
+                              Text(
                                 '계정 연결 해제를 위해 다음의 단계를 따라 주세요.',
                                 style: TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.bold),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstants.primary,
+                                ),
                               ),
                               const SizedBox(height: 20),
-                              const Text(
-                                  '카카오톡 설정 > 카카오 계정 > 연결된 서비스 관리 > ‘유월의 시현이’ 선택 > 연결 끊기',
-                                  style: TextStyle(fontSize: 17)),
-                              const SizedBox(height: 30),
-                              const Text(
-                                '상세 안내',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              Text(
+                                '카카오톡 설정 > 카카오 계정 > 연결된 서비스 관리 > ‘유월의 시현이’ 선택 > 연결 끊기',
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  color: ColorConstants.primary,
+                                ),
                               ),
-                              const Text(
-                                  "1. 카카오톡을 실행하여 전체 설정으로 들어갑니다.\n2. 설정에서 '카카오 계정'을 선택해주시고 \n'연결된 서비스 관리'를 선택해주세요.\n3. '유월의 시현이'를 선택하여 '연결 끊기'를 눌러주세요."),
+                              const SizedBox(height: 30),
+                              Text(
+                                '상세 안내',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstants.primary,
+                                ),
+                              ),
+                              Text(
+                                "1. 카카오톡을 실행하여 전체 설정으로 들어갑니다.\n2. 설정에서 '카카오 계정'을 선택해주시고 \n'연결된 서비스 관리'를 선택해주세요.\n3. '유월의 시현이'를 선택하여 '연결 끊기'를 눌러주세요.",
+                                style: TextStyle(color: ColorConstants.primary),
+                              ),
                             ],
                           )
                     : const SizedBox.shrink()
@@ -111,10 +135,11 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                 onPressed: () {
                   mutate(widget.dto);
                 },
-                child: const Text(
+                child: Text(
                   '탈퇴하기',
                   style: TextStyle(
                     fontSize: 14,
+                    color: ColorConstants.primary,
                   ),
                 ),
               );
