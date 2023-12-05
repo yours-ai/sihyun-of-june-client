@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAGy7bFeQLVDTFH1A5xc6iDkCnI8GhhFbs',
-    appId: '1:239073049026:android:5ea3b5dde674d673ddfe5b',
-    messagingSenderId: '239073049026',
-    projectId: 'project-june-firebase-dev',
-    storageBucket: 'project-june-firebase-dev.appspot.com',
+    apiKey: 'AIzaSyDpSwXqvGihCTt5seGbgc8PJlV_bBVGurQ',
+    appId: '1:938800695164:android:6bca75ae19568c04a546f9',
+    messagingSenderId: '938800695164',
+    projectId: 'project-june-firebase',
+    storageBucket: 'project-june-firebase.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAspbiUvDMtxbIVyttgqWiCT8H55PkjvNk',
-    appId: '1:239073049026:ios:703be102bf296de2ddfe5b',
-    messagingSenderId: '239073049026',
-    projectId: 'project-june-firebase-dev',
-    storageBucket: 'project-june-firebase-dev.appspot.com',
+    apiKey: 'AIzaSyC64JtTAvDuqo8mQX36hYEFNWdU9kliVRs',
+    appId: '1:938800695164:ios:5973d31442a4e595a546f9',
+    messagingSenderId: '938800695164',
+    projectId: 'project-june-firebase',
+    storageBucket: 'project-june-firebase.appspot.com',
+    iosClientId: '938800695164-8pn9mrgngp21r7gev7rp6fnk37t7or24.apps.googleusercontent.com',
     iosBundleId: 'team.pygmalion.projectJune',
   );
 }

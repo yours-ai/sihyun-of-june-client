@@ -6,7 +6,7 @@ import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_theme_provider.dart';
 import 'package:project_june_client/widgets/profile_widget.dart';
 
-import '../../screens/character_choice_screen.dart';
+import '../../screens/character_test/character_choice_screen.dart';
 
 class CharacterDetailWidget extends ConsumerWidget {
   final void Function(ActiveScreen) onActiveScreen;

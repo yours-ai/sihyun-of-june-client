@@ -8,6 +8,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_theme_provider.dart';
@@ -15,11 +16,8 @@ import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/notification/actions.dart';
-import '../constants.dart';
-import '../main.dart';
 import '../widgets/common/alert/alert_description_widget.dart';
 import '../widgets/common/alert/alert_widget.dart';
-import '../widgets/update_widget.dart';
 
 class StartingScreen extends ConsumerStatefulWidget {
   const StartingScreen({super.key});
@@ -35,17 +33,18 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     if (!context.mounted) return;
 
     await _checkAppAvailability();
+    await _checkUpdateAvailable();
 
     if (isLogined == false) {
       context.go('/landing');
       return;
     }
-    await _initializeNotificationHandlerIfAccepted();
 
     final character = await getRetrieveMyCharacterQuery().result;
     if (character.data!.isNotEmpty) {
       CharacterTheme characterTheme = character.data![0].theme!;
       ref.read(characterThemeProvider.notifier).state = characterTheme;
+      await _initializeNotificationHandlerIfAccepted(characterTheme.colors!);
       final push = await getPushIfPushClicked();
       if (push != null) {
         notificationService.handleFCMMessageTap(push);
@@ -75,8 +74,8 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          return WillPopScope(
-            onWillPop: () async => false,
+          return PopScope(
+            canPop: false,
             child: AlertWidget(
               title: remoteConfig.getString('app_disable_title'),
               content: AlertDescriptionWidget(
@@ -108,10 +107,10 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     return initialMessage;
   }
 
-  _initializeNotificationHandlerIfAccepted() async {
+  _initializeNotificationHandlerIfAccepted(CharacterColors characterColors) async {
     final isAccepted = await getIsNotificationAccepted();
     if (isAccepted == true) {
-      notificationService.initializeNotificationHandlers();
+      notificationService.initializeNotificationHandlers(characterColors);
     }
   }
 
@@ -125,7 +124,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
           ref.read(deepLinkProvider.notifier).state = dp.deepLink;
           if (dp.deepLink?.deepLinkValue == null ||
               dp.deepLink?.deepLinkValue == '') return;
-          context.go( //ToDo 로그인이 필요한 작업시에 characterTheme을 설정해줘야 함
+          context.go(//ToDo 로그인이 필요한 작업시에 characterTheme을 설정해줘야 함
               '${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
         }
       });

@@ -6,3 +6,15 @@ Future<void> sendUserFunnel(String? funnel) async {
   });
   return;
 }
+
+Future<void> sendUserRefCode(String refCode) async {
+  await dio.post('/analytics/referral/', data: {
+    'referral_code': refCode,
+  });
+  return;
+}
+
+Future<String> getShorterUrl(String url) async {
+  var response = await dioForShortener.post('/shortener/', data: {'long_url': url});
+  return response.data['url'];
+}

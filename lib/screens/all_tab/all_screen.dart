@@ -1,33 +1,30 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/character/models/CharacterColors.dart';
-import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
-import 'package:project_june_client/providers/character_theme_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
+import 'package:project_june_client/widgets/menu_title_widget.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/user_profile_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../actions/auth/actions.dart';
-import '../actions/auth/queries.dart';
-import '../constants.dart';
-import '../services.dart';
-import '../widgets/common/title_layout.dart';
+import '../../actions/auth/actions.dart';
+import '../../actions/auth/queries.dart';
+import '../../constants.dart';
+import '../../services.dart';
+import '../../widgets/common/title_layout.dart';
 
-class AllScreen extends ConsumerStatefulWidget {
+class AllScreen extends StatefulWidget {
   const AllScreen({super.key});
 
   @override
-  AllScreenState createState() => AllScreenState();
+  _AllScreenState createState() => _AllScreenState();
 }
 
-class AllScreenState extends ConsumerState<AllScreen> {
+class _AllScreenState extends State<AllScreen> {
   void _showLogoutModal() async {
     await showModalBottomSheet<void>(
       context: context,
@@ -39,12 +36,6 @@ class AllScreenState extends ConsumerState<AllScreen> {
             submitText: '네',
             onSubmit: () {
               logout();
-              CharacterTheme defaultTheme = CharacterTheme(
-                colors:
-                    CharacterColors(primary: 4294923379, secondary: 4294932624),
-                font: "NanumNoRyeogHaNeunDongHee",
-              );
-              ref.read(characterThemeProvider.notifier).state = defaultTheme;
               context.go('/login');
             },
             cancelText: '아니요',
@@ -118,65 +109,66 @@ class AllScreenState extends ConsumerState<AllScreen> {
             QueryBuilder(
               query: getRetrieveMeQuery(),
               builder: (context, state) {
-                return MenuWidget(
-                  title: '내 코인',
-                  onPressed: () => context.push('/my-coin'),
-                  suffix: Row(
-                    children: [
-                      Text(
-                        state.data?.coin != null
-                            ? transactionService.currencyFormatter
-                                .format(state.data?.coin)
-                            : '',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: ColorConstants.primary,
-                          fontWeight: FontWeightConstants.semiBold,
-                        ),
+                return Column(
+                  children: [
+                    MenuWidget(
+                      title: '포인트',
+                      onPressed: () => context.push('/my-point'),
+                      suffix: Row(
+                        children: [
+                          Text(
+                            state.data?.point != null
+                                ? '${transactionService.currencyFormatter.format(state.data?.point)} P'
+                                : '',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: ColorConstants.primary,
+                            ),
+                          ),
+                          Icon(
+                            PhosphorIcons.caret_right_bold,
+                            color: ColorConstants.primary,
+                            size: 24,
+                          ),
+                        ],
                       ),
-                      Icon(
-                        PhosphorIcons.coin_vertical,
-                        color: ColorConstants.primary,
-                        size: 24,
+                    ),
+                    MenuWidget(
+                      title: '코인',
+                      onPressed: () => context.push('/my-coin'),
+                      suffix: Row(
+                        children: [
+                          Text(
+                            state.data?.coin != null
+                                ? '${transactionService.currencyFormatter.format(state.data?.coin)} 코인'
+                                : '',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: ColorConstants.primary,
+                            ),
+                          ),
+                          Icon(
+                            PhosphorIcons.caret_right_bold,
+                            color: ColorConstants.primary,
+                            size: 24,
+                          ),
+                        ],
                       ),
-                      Icon(
-                        PhosphorIcons.caret_right_bold,
-                        color: ColorConstants.primary,
-                        size: 24,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               },
             ),
             MenuWidget(
-              title: '공지',
-              onPressed: () => launchUrl(Uri.parse(Urls.notice)),
-            ),
-            QueryBuilder(
-              query: getRefferalCodeQuery(),
-              builder: (context, state) {
-                return MenuWidget(
-                  title: '의견 남기기',
-                  onPressed: () {
-                    print(state.data);
-                    launchUrl(Uri.parse(
-                        'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
-                  },
-                );
+              title: '친구 초대하고 포인트 받기',
+              onPressed: () {
+                context.push('/share');
               },
             ),
+            const MenuTitleWidget(title: '내 정보'),
             MenuWidget(
               title: '이름 변경하기',
               onPressed: () => context.push('/change-name'),
-            ),
-            MenuWidget(
-              title: '고객센터',
-              onPressed: () => launchUrl(Uri.parse(Urls.ask)),
-            ),
-            MenuWidget(
-              title: '약관 및 정책',
-              onPressed: () => context.push('/policy'),
             ),
             MenuWidget(
               title: '로그아웃',
@@ -189,6 +181,43 @@ class AllScreenState extends ConsumerState<AllScreen> {
               onPressed: () {
                 _showWithdrawModal();
               },
+            ),
+            QueryBuilder(
+              query: getRefferalCodeQuery(),
+              builder: (context, state) {
+                return MenuWidget(
+                  title: '의견 남기기',
+                  onPressed: () {
+                    launchUrl(Uri.parse(
+                        'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
+                  },
+                );
+              },
+            ),
+            MenuTitleWidget(title: '고객센터'),
+            MenuWidget(
+              title: '공지',
+              onPressed: () => launchUrl(Uri.parse(Urls.notice)),
+            ),
+            MenuWidget(
+              title: '문의하기',
+              onPressed: () => launchUrl(Uri.parse(Urls.ask)),
+            ),
+            QueryBuilder(
+              query: getRefferalCodeQuery(),
+              builder: (context, state) {
+                return MenuWidget(
+                  title: '의견 남기기',
+                  onPressed: () {
+                    launchUrl(Uri.parse(
+                        'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
+                  },
+                );
+              },
+            ),
+            MenuWidget(
+              title: '약관 및 정책',
+              onPressed: () => context.push('/policy'),
             ),
           ],
         ),

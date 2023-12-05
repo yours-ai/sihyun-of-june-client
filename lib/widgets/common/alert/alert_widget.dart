@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/constants.dart';
 
 class AlertWidget extends StatelessWidget {
   final String? title;
   final Widget? content;
   final String? confirmText;
-  void Function()? onConfirm;
+  final void Function()? onConfirm;
 
-  AlertWidget(
+  const AlertWidget(
       {super.key, this.title, this.content, this.confirmText, this.onConfirm});
 
   @override
@@ -23,10 +24,11 @@ class AlertWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Text(
                 title ?? "",
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: 'Pretendard',
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
+                  color: ColorConstants.primary,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -34,12 +36,16 @@ class AlertWidget extends StatelessWidget {
           : null,
       content: content,
       buttonPadding: const EdgeInsets.only(bottom: 20),
+      actionsPadding: const EdgeInsets.all(0),
       actions: [
         confirmText != null
             ? SizedBox(
                 width: double.infinity,
                 child: FilledButton(
                   style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      ColorConstants.pink,
+                    ), // pink라는거 주의. 현재는 인증번호에서만 쓰여서 핑크로 함
                     shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(0),
@@ -50,7 +56,7 @@ class AlertWidget extends StatelessWidget {
                   child: Text(confirmText!),
                 ),
               )
-            : SizedBox.shrink(),
+            : const SizedBox.shrink(),
       ],
     );
   }

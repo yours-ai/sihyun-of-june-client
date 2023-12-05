@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
 import 'package:project_june_client/actions/notification/actions.dart';
 import 'package:project_june_client/actions/notification/models/AppNotification.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:project_june_client/globals.dart';
+import 'package:project_june_client/widgets/common/create_notification_snackbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../router.dart';
@@ -14,53 +16,67 @@ import '../router.dart';
 class NotificationService {
   const NotificationService();
 
-  @pragma('vm:entry-point')
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    await Firebase.initializeApp();
-
-    if (message.notification != null) {
-      handleNewNotification();
+  void routeRedirectLink(String? redirectLink) {
+    if (redirectLink != null && redirectLink.isNotEmpty) {
+      if (redirectLink.length > 4 && redirectLink.substring(0, 4) == 'http') {
+        launchUrl(Uri.parse(redirectLink));
+      } else {
+        router.push(redirectLink);
+      }
     }
   }
 
-  void handleClickNotification(AppNotification notification) {
-    if (notification.link != null) {
-      if (notification.link!.length > 4 &&
-          notification.link!.substring(0, 4) == 'http') {
-        launchUrl(Uri.parse(notification.link!));
-      } else if (notification.link!.isEmpty == false) {
-        router.push(notification.link!);
-      }
-    }
-    final mutation = Mutation(
-      queryFn: (int id) => readNotification(id),
+  void handleClickNotification(String? redirectLink, int notificationId) {
+    final mutation = readNotificationMutation(
+      onSuccess: (res, arg) => routeRedirectLink(redirectLink),
       refetchQueries: ["list-app-notifications"],
     );
-    mutation.mutate(notification.id);
+    mutation.mutate(notificationId);
   }
 
   void handleNewNotification() {
     CachedQuery.instance.refetchQueries(keys: ["list-app-notifications"]);
   }
 
-  void handleFCMMessageTap(RemoteMessage remoteMessage) {
-    router.push("/notifications");
+  void handleFCMMessageTap(RemoteMessage remoteMessage) async {
+    // 앱 열릴때 실행되는 함수
+    String? redirectLink = await remoteMessage.data['link'];
+    int? notificationId = await int.tryParse(remoteMessage.data['id'] ?? '');
+    // id의 유무는 전체에게 보내면 id가 없고, 개인에게 보내면 id가 있음.
+    if (notificationId == null || notificationId.isNaN) {
+      router.go("/notifications", extra: redirectLink);
+      return;
+    } else {
+      final mutation = readNotificationMutation(
+        onSuccess: (res, arg) {
+          router.go("/notifications", extra: redirectLink);
+        },
+      );
+      mutation.mutate(notificationId);
+    }
   }
 
-  void initializeNotificationHandlers() {
+  void initializeNotificationHandlers(CharacterColors characterColors) {
     FirebaseMessaging.instance
         .getToken()
         .then((token) => token != null ? getOrCreateUserDevice(token) : null);
     FirebaseMessaging.instance.onTokenRefresh
         .listen((token) => getOrCreateUserDevice(token));
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      if (message.notification != null) {
-        handleNewNotification();
-      }
+      // 포그라운드
+      handleNewNotification();
+      String snackBarText = message.notification?.body ?? message.data['body'];
+      scaffoldMessengerKey.currentState?.showSnackBar(
+        createNotificationSnackbar(
+          snackBarText: snackBarText,
+          redirectLink: message.data['link'],
+          notificationId: int.tryParse(message.data['id'] ?? ''),
+          characterColors: characterColors,
+        ),
+      );
     });
-    FirebaseMessaging.onMessageOpenedApp.listen(handleFCMMessageTap);
+    FirebaseMessaging.onMessageOpenedApp
+        .listen(handleFCMMessageTap); //백그라운드 -> 포그라운드
     addBadgeControlListener();
   }
 

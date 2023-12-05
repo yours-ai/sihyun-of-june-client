@@ -44,11 +44,6 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
     final mutation = getSendMailReplyMutation(
       refetchQueries: ['character-sent-mail/${widget.mail.id}', 'character-sent-mail-list'],
       onSuccess: (res, arg) async {
-        await ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('답장을 보냈습니다.'),
-          ),
-        );
         context.pop();
       },
     );

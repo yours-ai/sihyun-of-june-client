@@ -15,6 +15,7 @@ import 'package:project_june_client/widgets/common/modal/modal_description_widge
 import 'package:project_june_client/widgets/name_form_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../actions/analytics/dtos.dart';
 import '../../actions/analytics/queries.dart';
 
 class NameTabWidget extends ConsumerStatefulWidget {
@@ -47,7 +48,7 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
     );
   }
 
-  void _showSignInModal(ValidatedUserDTO dto, String? funnel) async {
+  void _showSignInModal(ValidatedUserDTO dto, UserFunnelDTO funnelDTO) async {
     await showModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
@@ -57,7 +58,7 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
             onSuccess: (res, arg) {
               getUserFunnelMutation(onSuccess: (res, arg) {
                 context.go('/');
-              }).mutate(funnel);
+              }).mutate(funnelDTO);
             },
             onError: (arg, error, fallback) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -95,11 +96,44 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
                 ),
               ),
             ),
-            choiceColumn: ModalChoiceWidget(
-              submitText: '동의하고 시작하기',
-              onSubmit: () => mutate(dto),
-              cancelText: '취소하기',
-              onCancel: () => context.pop(),
+            choiceColumn: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                OutlinedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorConstants.background),
+                  ),
+                  onPressed: () => context.pop(),
+                  child: Text(
+                    '취소하기',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: ColorConstants.neutral,
+                      fontWeight: FontWeightConstants.semiBold,
+                      height: 1.0,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                FilledButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorConstants.pink),
+                  ),
+                  onPressed: () => mutate(dto),
+                  child: Text(
+                    '동의하고 시작하기',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeightConstants.semiBold,
+                      height: 1.0,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         );
@@ -115,7 +149,9 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String? funnel = ref.watch(deepLinkProvider.notifier).state?.mediaSource;
+    UserFunnelDTO funnelDTO = UserFunnelDTO(
+        funnel: ref.watch(deepLinkProvider.notifier).state?.mediaSource,
+        refCode: ref.watch(deepLinkProvider.notifier).state?.afSub1);
     return TitleLayout(
       withAppBar: true,
       title: Text(
@@ -138,10 +174,9 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
             isSubmitClicked = true;
           });
           if (isValid) {
-            _showSignInModal(getValidatedData(), funnel);
+            _showSignInModal(getValidatedData(), funnelDTO);
           }
         },
-        style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
         child: const Text('다음'),
       ),
     );

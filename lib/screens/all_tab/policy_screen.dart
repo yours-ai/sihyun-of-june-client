@@ -5,7 +5,7 @@ import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 
 class PolicyScreen extends StatelessWidget {
   const PolicyScreen({Key? key}) : super(key: key);

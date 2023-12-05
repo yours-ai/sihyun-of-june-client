@@ -85,18 +85,21 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6.0),
                           borderSide: BorderSide(
-                            width: 1.0,
                             color: ColorConstants.neutral,
                           ),
-                        ), //enabledBorder 에서 width를 조정하기 위해 설정.
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                          borderSide: BorderSide(
+                            color: ColorConstants.neutral,
+                          ),
+                        ),
                       ),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 17,
                         height: 1.2,
+                        color: widget.isSubmitted ? ColorConstants.neutral : ColorConstants.primary,
                       ),
                     ),
                   ),
@@ -104,6 +107,8 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                   widget.isSubmitted == false
                       ? FilledButton(
                           style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(ColorConstants.pink),
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6.0),
@@ -135,10 +140,9 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                                 ),
                               ),
                             ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
-                            padding: const EdgeInsets.all(0),
                             child: Text('인증번호 재발송',
                                 style: TextStyle(
-                                    color: ColorConstants.gray, height: 0.7)),
+                                    color: ColorConstants.gray, height: 1.0)),
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {

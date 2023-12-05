@@ -11,6 +11,7 @@ class SihyunOfJuneUser {
   bool is_active;
   bool is_activable;
   int coin;
+  int point;
   String env;
   String? image;
 
@@ -22,6 +23,7 @@ class SihyunOfJuneUser {
     required this.is_active,
     required this.is_activable,
     required this.coin,
+    required this.point,
     required this.env,
     this.image,
   });

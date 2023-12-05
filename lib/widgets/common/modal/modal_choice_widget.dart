@@ -30,6 +30,7 @@ class ModalChoiceWidget extends StatelessWidget {
               fontSize: 16,
               color: ColorConstants.neutral,
               fontWeight: FontWeightConstants.semiBold,
+              height: 1.0,
             ),
           ),
         ),
@@ -43,6 +44,7 @@ class ModalChoiceWidget extends StatelessWidget {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeightConstants.semiBold,
+              height: 1.0,
             ),
           ),
         ),

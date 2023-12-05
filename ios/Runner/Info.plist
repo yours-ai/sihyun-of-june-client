@@ -8,8 +8,8 @@
 		<string></string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string></string>
-	    <key>NSAdvertisingAttributionReportEndpoint</key>
-        <string>https://appsflyer-skadnetwork.com/</string>
+		<key>NSAdvertisingAttributionReportEndpoint</key>
+		<string>https://appsflyer-skadnetwork.com/</string>
 		<key>KAKAO_NATIVE_APP_KEY</key>
 		<string>$(KAKAO_NATIVE_APP_KEY)</string>
 		<key>FirebaseMessagingAutoInitEnabled</key>
@@ -38,14 +38,14 @@
 		<string>????</string>
 		<key>CFBundleURLTypes</key>
 		<array>
-		    <dict>
-                <key>CFBundleURLName</key>
-                <string>sihyunofjuneapp</string>
-                <key>CFBundleURLSchemes</key>
-                <array>
-                    <string>sihyunofjuneapp</string>
-                </array>
-            </dict>
+			<dict>
+				<key>CFBundleURLName</key>
+				<string>sihyunofjuneapp</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>sihyunofjuneapp</string>
+				</array>
+			</dict>
 			<dict>
 				<key>CFBundleTypeRole</key>
 				<string>Editor</string>

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/CharacterInfo.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/common_provider.dart';
-import 'package:project_june_client/screens/profile_details_screen.dart';
+import 'package:project_june_client/screens/character_profile/profile_details_screen.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 class ProfileWidget extends ConsumerWidget {

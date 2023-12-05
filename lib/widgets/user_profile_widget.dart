@@ -71,7 +71,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                 ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
                 padding: const EdgeInsets.all(0),
                 child: Text('프로필 보기',
-                    style: TextStyle(color: ColorConstants.gray, height: 0.7)),
+                    style: TextStyle(color: ColorConstants.gray, height: 1.0)),
               ),
             ),
           ],
@@ -125,7 +125,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                 ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
                 padding: const EdgeInsets.all(0),
                 child: Text('프로필 변경하기',
-                    style: TextStyle(color: ColorConstants.gray, height: 0.7)),
+                    style: TextStyle(color: ColorConstants.gray, height: 1.0)),
               ),
             ),
           ],

@@ -4,19 +4,22 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/analytics/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/deep_link_provider.dart';
 
-import '../actions/analytics/queries.dart';
-import '../widgets/auth/KakaoLoginButton.dart';
+import '../../actions/analytics/queries.dart';
+import '../../widgets/auth/KakaoLoginButton.dart';
 
 class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(context, WidgetRef ref) {
-    String? funnel = ref.watch(deepLinkProvider.notifier).state?.mediaSource;
+    UserFunnelDTO funnelDTO = UserFunnelDTO(
+        funnel: ref.watch(deepLinkProvider.notifier).state?.mediaSource,
+        refCode: ref.watch(deepLinkProvider.notifier).state?.afSub1);
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -58,7 +61,7 @@ class LoginScreen extends ConsumerWidget {
                           onSuccess: (res, arg) {
                             getUserFunnelMutation(onSuccess: (res, arg) {
                               context.go('/');
-                            }).mutate(funnel);
+                            }).mutate(funnelDTO);
                           },
                           onError: (arg, error, callback) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -91,7 +94,7 @@ class LoginScreen extends ConsumerWidget {
                         },
                       ),
                     const SizedBox(height: 10),
-                    KakaoLoginButton(),
+                    const KakaoLoginButton(),
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {

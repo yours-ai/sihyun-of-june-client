@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/withdraw/withdraw_reason_widget.dart';
 
@@ -48,13 +49,14 @@ class _ReasonTabWidgetState extends State<ReasonTabWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
                     '탈퇴 사유를 알려주시면,\n더욱 개선된 서비스로 찾아뵙겠습니다.',
                     style: TextStyle(
                       height: 1.6,
                       fontSize: 14,
+                      color: ColorConstants.primary,
                     ),
                   ),
                 ),
