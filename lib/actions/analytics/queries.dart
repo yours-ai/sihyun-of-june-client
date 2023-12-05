@@ -19,13 +19,13 @@ Mutation<void, UserFunnelDTO> getUserFunnelMutation({
   );
 }
 
-Mutation<String, String> getShortenUrlMutation({
+Mutation<String, String> getShorterUrlMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<String, String>(
     queryFn: (url) async {
-      return await getShortenUrl(url);
+      return await getShorterUrl(url);
     },
     onSuccess: onSuccess,
     onError: onError,

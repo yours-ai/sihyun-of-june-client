@@ -108,9 +108,9 @@ class ShareScreen extends ConsumerWidget {
                     ),
                     const SizedBox(width: 50),
                     MutationBuilder(
-                      mutation: getShortenUrlMutation(onSuccess: (res, arg) {
+                      mutation: getShorterUrlMutation(onSuccess: (res, arg) {
                         Share.share(
-                            '${FirebaseRemoteConfig.instance.getString('referral_text').replaceAll("\\n", "\n")}$res',
+                            '${FirebaseRemoteConfig.instance.getString('referral_text').replaceAll("\\n", "\n")}\n$res',
                             subject: '유월의 시현이 공유하기');
                       }),
                       builder: (context, urlState, mutate) {

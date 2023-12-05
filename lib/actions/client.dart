@@ -6,7 +6,7 @@ import 'package:project_june_client/environments.dart';
 import 'package:project_june_client/globals.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-final Dio dioForURL = Dio(
+final Dio dioForShortener = Dio(
   BaseOptions(
     baseUrl: 'http://pygmalion.im',
   ),
