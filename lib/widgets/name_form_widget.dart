@@ -108,60 +108,58 @@ class _NameFormWidgetState extends State<NameFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: widget.formController.lastNameController,
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {
-                    validate(value, widget.formController.lastNameController);
-                  },
-                  decoration: getDecoration('홍', lastNameFieldColor),
-                  style: TextStyle(
-                    color: ColorConstants.primary,
-                  ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: widget.formController.lastNameController,
+                keyboardType: TextInputType.text,
+                onChanged: (value) {
+                  validate(value, widget.formController.lastNameController);
+                },
+                decoration: getDecoration('홍', lastNameFieldColor),
+                style: TextStyle(
+                  color: ColorConstants.primary,
                 ),
-                const SizedBox(height: 10.0),
-                TextField(
-                  controller: widget.formController.firstNameController,
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {
-                    validate(value, widget.formController.lastNameController);
-                  },
-                  decoration: getDecoration('길동', firstNameFieldColor),
-                  style: TextStyle(
-                    color: ColorConstants.primary,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 5),
-              child: Text(
-                widget.isSubmitClicked == true ? errorMessage : '',
-                textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 10, color: Colors.red),
               ),
+              const SizedBox(height: 10.0),
+              TextField(
+                controller: widget.formController.firstNameController,
+                keyboardType: TextInputType.text,
+                onChanged: (value) {
+                  validate(value, widget.formController.lastNameController);
+                },
+                decoration: getDecoration('길동', firstNameFieldColor),
+                style: TextStyle(
+                  color: ColorConstants.primary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10.0),
+          Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: Text(
+              widget.isSubmitClicked == true ? errorMessage : '',
+              textAlign: TextAlign.left,
+              style: const TextStyle(fontSize: 10, color: Colors.red),
             ),
-            const SizedBox(height: 8),
-            Text(
-              '※ 지금 입력해주신 이름으로 매일 밤 편지를 보내드려요 :)',
-              style: TextStyle(
-                  color: ColorConstants.neutral,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500),
-            )
-          ],
-        ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            '※ 지금 입력해주신 이름으로 매일 밤 편지를 보내드려요 :)',
+            style: TextStyle(
+                color: ColorConstants.neutral,
+                fontSize: 13,
+                fontWeight: FontWeight.w500),
+          )
+        ],
       ),
     );
   }
