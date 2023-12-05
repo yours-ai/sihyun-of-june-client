@@ -6,6 +6,7 @@ import 'package:project_june_client/screens/all_tab/coin_log_screen.dart';
 import 'package:project_june_client/screens/all_tab/my_point_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_change_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_log_screen.dart';
+import 'package:project_june_client/screens/all_tab/share_screen.dart';
 import 'package:project_june_client/screens/mail/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail/mail_detail_screen.dart';
 import 'package:project_june_client/screens/all_tab/name_change_screen.dart';
@@ -151,6 +152,10 @@ final router = GoRouter(
     GoRoute(
       path: '/change-name',
       builder: (context, state) => const NameChangeScreen(),
+    ),
+    GoRoute(
+      path: '/share',
+      builder: (context, state) => const ShareScreen(),
     ),
   ],
 );
