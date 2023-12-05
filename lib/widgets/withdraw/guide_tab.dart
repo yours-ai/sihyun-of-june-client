@@ -14,7 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../actions/auth/actions.dart';
 import '../../constants.dart';
 
-class GuideTabWidget extends ConsumerStatefulWidget {
+class GuideTabWidget extends StatefulWidget {
   const GuideTabWidget(
       {super.key, required this.onWithdraw, required this.dto});
 
@@ -22,10 +22,10 @@ class GuideTabWidget extends ConsumerStatefulWidget {
   final QuitReasonDTO dto;
 
   @override
-  GuideTabWidgetState createState() => GuideTabWidgetState();
+  _GuideTabWidgetState createState() => _GuideTabWidgetState();
 }
 
-class GuideTabWidgetState extends ConsumerState<GuideTabWidget> {
+class _GuideTabWidgetState extends State<GuideTabWidget> {
   @override
   Widget build(BuildContext context) {
     return QueryBuilder(
@@ -102,12 +102,6 @@ class GuideTabWidgetState extends ConsumerState<GuideTabWidget> {
           actions: MutationBuilder(
             mutation: getWithdrawUserMutation(onSuccess: (res, arg) async {
               widget.onWithdraw();
-              CharacterTheme defaultTheme = CharacterTheme(
-                colors:
-                    CharacterColors(primary: 4294923379, secondary: 4294932624),
-                font: "NanumNoRyeogHaNeunDongHee",
-              );
-              ref.read(characterThemeProvider.notifier).state = defaultTheme;
               await Future.delayed(const Duration(seconds: 3));
               logout();
               context.go('/login');
