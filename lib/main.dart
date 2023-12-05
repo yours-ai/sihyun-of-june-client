@@ -163,6 +163,9 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
             padding: const EdgeInsets.symmetric(
               vertical: 17.0,
             ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+            ),
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
