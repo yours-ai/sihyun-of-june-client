@@ -8,6 +8,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_theme_provider.dart';
@@ -32,17 +33,18 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     if (!context.mounted) return;
 
     await _checkAppAvailability();
+    await _checkUpdateAvailable();
 
     if (isLogined == false) {
       context.go('/landing');
       return;
     }
-    await _initializeNotificationHandlerIfAccepted();
 
     final character = await getRetrieveMyCharacterQuery().result;
     if (character.data!.isNotEmpty) {
       CharacterTheme characterTheme = character.data![0].theme!;
       ref.read(characterThemeProvider.notifier).state = characterTheme;
+      await _initializeNotificationHandlerIfAccepted(characterTheme.colors!);
       final push = await getPushIfPushClicked();
       if (push != null) {
         notificationService.handleFCMMessageTap(push);
@@ -105,10 +107,10 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     return initialMessage;
   }
 
-  _initializeNotificationHandlerIfAccepted() async {
+  _initializeNotificationHandlerIfAccepted(CharacterColors characterColors) async {
     final isAccepted = await getIsNotificationAccepted();
     if (isAccepted == true) {
-      notificationService.initializeNotificationHandlers();
+      notificationService.initializeNotificationHandlers(characterColors);
     }
   }
 
@@ -122,7 +124,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
           ref.read(deepLinkProvider.notifier).state = dp.deepLink;
           if (dp.deepLink?.deepLinkValue == null ||
               dp.deepLink?.deepLinkValue == '') return;
-          context.go( //ToDo 로그인이 필요한 작업시에 characterTheme을 설정해줘야 함
+          context.go(//ToDo 로그인이 필요한 작업시에 characterTheme을 설정해줘야 함
               '${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
         }
       });

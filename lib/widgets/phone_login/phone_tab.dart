@@ -8,12 +8,10 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
-import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/widgets/common/alert/alert_description_widget.dart';
 import 'package:project_june_client/widgets/common/alert/alert_widget.dart';
 import 'package:project_june_client/widgets/phone_login/number_input_widget.dart';
 
-import '../../actions/analytics/queries.dart';
 import '../common/title_layout.dart';
 
 class PhoneTabWidget extends ConsumerStatefulWidget {
@@ -95,12 +93,9 @@ class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String? funnel = ref.watch(deepLinkProvider.notifier).state?.mediaSource;
     var tokenMutation = getSmsTokenMutation(
       onSuccess: (res, arg) {
-        getUserFunnelMutation(onSuccess: (res, arg) {
-          context.go('/');
-        }).mutate(funnel);
+        context.go('/');
       },
       onError: (arg, error, fallback) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -8,8 +8,11 @@ import '../constants.dart';
 
 class TransactionLogWidget extends StatelessWidget {
   final TransactionLog transactionLog;
+  final String type;
 
-  const TransactionLogWidget({Key? key, required this.transactionLog}) : super(key: key);
+  const TransactionLogWidget(
+      {Key? key, required this.transactionLog, required this.type})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +28,7 @@ class TransactionLogWidget extends StatelessWidget {
                 style: TextStyle(
                   color: ColorConstants.primary,
                   fontWeight: FontWeightConstants.semiBold,
+                  fontSize: 16,
                 ),
               ),
             ),
@@ -40,46 +44,24 @@ class TransactionLogWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      transactionService.currencyFormatter
-                          .format(transactionLog.amount)
-                          .toString(),
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: ColorConstants.primary,
-                        fontWeight: FontWeightConstants.semiBold,
-                      ),
-                    ),
-                    Icon(
-                      PhosphorIcons.coin_vertical,
-                      color: ColorConstants.primary,
-                      size: 18,
-                    ),
-                  ],
+                Text(
+                  '${transactionService.currencyFormatter
+                      .format(transactionLog.amount)} $type',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: ColorConstants.primary,
+                    fontWeight: FontWeightConstants.semiBold,
+                  ),
                 ),
                 const SizedBox(height: 3),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      transactionService.currencyFormatter
-                          .format(transactionLog.balance)
-                          .toString(),
-                      style: TextStyle(
-                        color: ColorConstants.primary,
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    Icon(
-                      PhosphorIcons.coin_vertical,
-                      color: ColorConstants.primary,
-                      size: 14,
-                    ),
-                  ],
+                Text(
+                  '${transactionService.currencyFormatter
+                          .format(transactionLog.balance)} $type',
+                  style: TextStyle(
+                    color: ColorConstants.primary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
               ],
             ),

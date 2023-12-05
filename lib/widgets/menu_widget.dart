@@ -3,13 +3,15 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
 class MenuWidget extends StatelessWidget {
-  final String title;
+  final String? title;
+  final Widget? titleWidget;
   final VoidCallback onPressed;
   final Widget suffix;
 
   const MenuWidget({
     Key? key,
-    required this.title,
+    this.title,
+    this.titleWidget,
     this.onPressed = defaultOnPressed,
     this.suffix = const SizedBox.shrink(),
   }) : super(key: key);
@@ -31,14 +33,15 @@ class MenuWidget extends StatelessWidget {
                   height: 66,
                   padding: const EdgeInsets.only(left: 28),
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: ColorConstants.primary,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  child: titleWidget ??
+                      Text(
+                        title!,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: ColorConstants.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                 ),
                 Container(
                     padding: const EdgeInsets.only(right: 28), child: suffix),

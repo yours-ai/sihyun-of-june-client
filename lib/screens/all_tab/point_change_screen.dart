@@ -24,14 +24,14 @@ class PointChangeScreen extends StatelessWidget {
         useRootNavigator: true,
         builder: (BuildContext context) {
           return ModalWidget(
-            title: '앗, 코인이 부족해요 🥲',
+            title: '앗, 코인이 부족해요 🥲\n조금 더 구매하시겠어요?',
             choiceColumn: ModalChoiceWidget(
               submitText: '코인 구매하러 가기',
               onSubmit: () {
                 context.push('/my-coin/charge');
                 context.pop();
               },
-              cancelText: '확인',
+              cancelText: '아니요',
               onCancel: () => context.pop(),
             ),
           );
@@ -70,72 +70,94 @@ class PointChangeScreen extends StatelessWidget {
         child: QueryBuilder(
           query: getRetrieveMeQuery(),
           builder: (context, state) {
-            return state.data == null
-                ? const SizedBox.shrink()
-                : TitleLayout(
-                    withAppBar: true,
-                    title: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+            if (state.data == null) {
+              return const SizedBox.shrink();
+            } else {
+              return TitleLayout(
+                withAppBar: true,
+                title: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  const Expanded(child: SizedBox()),
-                                  const TitleUnderline(titleText: '포인트 전환'),
-                                  Expanded(
-                                    child: Text(
-                                      '${transactionService.currencyFormatter.format(state.data!.coin)} 코인\n보유중',
-                                      textAlign: TextAlign.right,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          color: ColorConstants.primary,
-                                          fontWeight:
-                                              FontWeightConstants.semiBold,
-                                          height: 1.2),
-                                    ),
+                              const Expanded(child: SizedBox()),
+                              const TitleUnderline(titleText: '포인트 전환'),
+                              Expanded(
+                                child: Text(
+                                  '${transactionService.currencyFormatter.format(state.data!.coin)} 코인\n보유중',
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: ColorConstants.primary,
+                                    fontWeight: FontWeightConstants.semiBold,
+                                    height: 1.2,
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 14),
-                              Text(
-                                '${transactionService.currencyFormatter.format(state.data!.point)} 포인트',
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorConstants.primary,
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 14),
+                          Text(
+                            '${transactionService.currencyFormatter.format(state.data!.point)} P',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: ColorConstants.primary,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    body: Column(
-                      children: [
-                        const SizedBox(height: 16),
-                        MenuWidget(
-                          onPressed: () {
-                            if (state.data!.coin < 10) {
-                              _showNotEnoughCoinModal();
-                              return;
-                            }
-                            _showChangeCoinToPointModal(10, 50);
-                          },
-                          title: '50포인트',
-                          suffix: Text(
+                  ],
+                ),
+                body: Column(
+                  children: [
+                    const SizedBox(height: 16),
+                    MenuWidget(
+                      onPressed: () {
+                        if (state.data!.coin < 10) {
+                          _showNotEnoughCoinModal();
+                          return;
+                        }
+                        _showChangeCoinToPointModal(10, 50);
+                      },
+                      titleWidget: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
                             '10코인',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: ColorConstants.primary,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Icon(
+                              PhosphorIcons.arrow_circle_right,
+                              color: ColorConstants.primary,
+                              size: 24,
+                            ),
+                          ),
+                          Text(
+                            '50포인트',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: ColorConstants.primary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  );
+                  ],
+                ),
+              );
+            }
           },
         ),
       ),

@@ -15,6 +15,7 @@ import 'package:project_june_client/widgets/common/modal/modal_description_widge
 import 'package:project_june_client/widgets/name_form_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../actions/analytics/dtos.dart';
 import '../../actions/analytics/queries.dart';
 
 class NameTabWidget extends ConsumerStatefulWidget {
@@ -47,7 +48,7 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
     );
   }
 
-  void _showSignInModal(ValidatedUserDTO dto, String? funnel) async {
+  void _showSignInModal(ValidatedUserDTO dto, UserFunnelDTO funnelDTO) async {
     await showModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
@@ -57,7 +58,7 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
             onSuccess: (res, arg) {
               getUserFunnelMutation(onSuccess: (res, arg) {
                 context.go('/');
-              }).mutate(funnel);
+              }).mutate(funnelDTO);
             },
             onError: (arg, error, fallback) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -115,7 +116,9 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String? funnel = ref.watch(deepLinkProvider.notifier).state?.mediaSource;
+    UserFunnelDTO funnelDTO = UserFunnelDTO(
+        funnel: ref.watch(deepLinkProvider.notifier).state?.mediaSource,
+        refCode: ref.watch(deepLinkProvider.notifier).state?.afSub1);
     return TitleLayout(
       withAppBar: true,
       title: Text(
@@ -138,7 +141,7 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
             isSubmitClicked = true;
           });
           if (isValid) {
-            _showSignInModal(getValidatedData(), funnel);
+            _showSignInModal(getValidatedData(), funnelDTO);
           }
         },
         child: const Text('다음'),
