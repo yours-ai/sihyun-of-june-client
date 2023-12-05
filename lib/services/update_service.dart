@@ -7,7 +7,6 @@ import 'package:new_version_plus/new_version_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:project_june_client/widgets/common/alert/alert_description_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:word_break_text/word_break_text.dart';
 
 import '../constants.dart';
 import '../widgets/common/alert/alert_widget.dart';
@@ -70,8 +69,8 @@ class UpdateService {
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => false,
+        return PopScope(
+          canPop: false,
           child: AlertWidget(
               title: '새로운 버전이 출시되었어요!',
               content: AlertDescriptionWidget(
