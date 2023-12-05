@@ -124,6 +124,9 @@ class _NameFormWidgetState extends State<NameFormWidget> {
                   validate(value, widget.formController.lastNameController);
                 },
                 decoration: getDecoration('홍', lastNameFieldColor),
+                style: TextStyle(
+                  color: ColorConstants.primary,
+                ),
               ),
               const SizedBox(height: 10.0),
               TextField(
@@ -133,9 +136,8 @@ class _NameFormWidgetState extends State<NameFormWidget> {
                   validate(value, widget.formController.lastNameController);
                 },
                 decoration: getDecoration('길동', firstNameFieldColor),
-                style: const TextStyle(
-                  fontSize: 17,
-                  height: 1.2
+                style: TextStyle(
+                  color: ColorConstants.primary,
                 ),
               ),
             ],

@@ -5,9 +5,9 @@ class AlertWidget extends StatelessWidget {
   final String? title;
   final Widget? content;
   final String? confirmText;
-  void Function()? onConfirm;
+  final void Function()? onConfirm;
 
-  AlertWidget(
+  const AlertWidget(
       {super.key, this.title, this.content, this.confirmText, this.onConfirm});
 
   @override
@@ -51,7 +51,7 @@ class AlertWidget extends StatelessWidget {
                   child: Text(confirmText!),
                 ),
               )
-            : SizedBox.shrink(),
+            : const SizedBox.shrink(),
       ],
     );
   }

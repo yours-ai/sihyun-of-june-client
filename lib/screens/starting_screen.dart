@@ -16,11 +16,8 @@ import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/notification/actions.dart';
-import '../constants.dart';
-import '../main.dart';
 import '../widgets/common/alert/alert_description_widget.dart';
 import '../widgets/common/alert/alert_widget.dart';
-import '../widgets/update_widget.dart';
 
 class StartingScreen extends ConsumerStatefulWidget {
   const StartingScreen({super.key});
@@ -77,8 +74,8 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
         barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
-          return WillPopScope(
-            onWillPop: () async => false,
+          return PopScope(
+            canPop: false,
             child: AlertWidget(
               title: remoteConfig.getString('app_disable_title'),
               content: AlertDescriptionWidget(

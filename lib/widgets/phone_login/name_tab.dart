@@ -144,7 +144,6 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
             _showSignInModal(getValidatedData(), funnelDTO);
           }
         },
-        style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(16.0)),
         child: const Text('다음'),
       ),
     );
