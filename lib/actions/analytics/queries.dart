@@ -10,7 +10,22 @@ Mutation<void, UserFunnelDTO> getUserFunnelMutation({
   return Mutation<void, UserFunnelDTO>(
     queryFn: (dto) async {
       await sendUserFunnel(dto.funnel);
-      await sendUserRefCode(dto.refCode);
+      if(dto.refCode != null) {
+        await sendUserRefCode(dto.refCode);
+      }
+    },
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Mutation<String, String> getShortenUrlMutation({
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<String, String>(
+    queryFn: (url) async {
+      return await getShortenUrl(url);
     },
     onSuccess: onSuccess,
     onError: onError,

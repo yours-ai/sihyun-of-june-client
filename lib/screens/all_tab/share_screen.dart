@@ -5,6 +5,7 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
+import 'package:project_june_client/actions/analytics/queries.dart';
 import 'package:project_june_client/services/share_service.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
@@ -107,43 +108,49 @@ class ShareScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(width: 50),
-                    GestureDetector(
-                      onTap: () {
+                    MutationBuilder(
+                      mutation: getShortenUrlMutation(onSuccess: (res, arg) {
                         Share.share(
-                            '${FirebaseRemoteConfig.instance
-                                    .getString('referral_text')
-                                    .replaceAll("\\n", "\n")}https://sihyunofjuneapp.onelink.me/i6rb/1m6u5hyx?af_sub1=${state.data}',
+                            '${FirebaseRemoteConfig.instance.getString('referral_text').replaceAll("\\n", "\n")}$res',
                             subject: '유월의 시현이 공유하기');
-                      },
-                      child: Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
+                      }),
+                      builder: (context, urlState, mutate) {
+                        return GestureDetector(
+                          onTap: () {
+                            mutate(
+                                'https://sihyunofjuneapp.onelink.me/i6rb/1m6u5hyx?af_sub1=${state.data}');
+                          },
+                          child: Column(
+                            children: [
+                              ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: ColorConstants.primary,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                      color: ColorConstants.primary,
+                                    ),
+                                  ),
+                                  child: const Icon(
+                                    PhosphorIcons.share_network_fill,
+                                    size: 32,
+                                  ),
                                 ),
                               ),
-                              child: const Icon(
-                                PhosphorIcons.share_network_fill,
-                                size: 32,
+                              const SizedBox(height: 10),
+                              Text(
+                                '링크로\n공유하기',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: ColorConstants.gray,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            '링크로\n공유하기',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: ColorConstants.gray,
-                            ),
-                          ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ],
                 ),
