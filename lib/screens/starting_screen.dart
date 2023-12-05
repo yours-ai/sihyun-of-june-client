@@ -126,7 +126,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
           print(dp.deepLink?.afSub1);
           if (dp.deepLink?.deepLinkValue == null ||
               dp.deepLink?.deepLinkValue == '') return;
-          context.go( //ToDo 로그인이 필요한 작업시에 characterTheme을 설정해줘야 함
+          context.go(//ToDo 로그인이 필요한 작업시에 characterTheme을 설정해줘야 함
               '${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
         }
       });

@@ -5,7 +5,7 @@ class ShareService {
   const ShareService();
 
   void kakaoShare(String? refCode) async {
-    int templateId = BuildTimeEnvironments.kakaoTemplateId;
+    int templateId = int.parse(BuildTimeEnvironments.kakaoTemplateId);
     Map<String, String> templateArgs = {
       'ref': refCode ?? 'refCode',
     };
