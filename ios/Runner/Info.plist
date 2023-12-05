@@ -3,11 +3,11 @@
 <plist version="1.0">
 	<dict>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string></string>
+		<string>This app required NSPhotoLibraryUsageDescription permission</string>
 		<key>NSCameraUsageDescription</key>
-		<string></string>
+		<string>This app required NSCameraUsageDescription permission</string>
 		<key>NSMicrophoneUsageDescription</key>
-		<string></string>
+		<string>This app required NSMicrophoneUsageDescription permission</string>
 		<key>NSAdvertisingAttributionReportEndpoint</key>
 		<string>https://appsflyer-skadnetwork.com/</string>
 		<key>KAKAO_NATIVE_APP_KEY</key>
