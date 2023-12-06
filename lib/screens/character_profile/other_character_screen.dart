@@ -30,7 +30,6 @@ class OtherCharacterScreen extends StatelessWidget {
                 ProfileWidget(
                   name: state.data!.name,
                   characterInfo: state.data!.character_info!,
-                  defaultImage: state.data!.default_image,
                   primaryColor: Color(state.data!.theme!.colors!.primary!),
                 ),
               ],

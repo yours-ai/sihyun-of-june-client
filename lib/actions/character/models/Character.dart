@@ -9,8 +9,6 @@ class Character {
   num id;
   bool is_active;
   String? name;
-  String default_image;
-  bool? is_blurred;
   CharacterInfo? character_info;
   CharacterTheme? theme;
 
@@ -18,8 +16,6 @@ class Character {
       {required this.id,
       required this.is_active,
       required this.name,
-      required this.default_image,
-      this.is_blurred,
       required this.character_info,
       required this.theme});
 

@@ -9,6 +9,7 @@ import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/common_provider.dart';
+import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
@@ -16,23 +17,6 @@ class ViewOthersWidget extends ConsumerWidget {
   final num excludeId;
 
   const ViewOthersWidget({super.key, required this.excludeId});
-
-  Widget addBlur(bool isBlurred) {
-    if (isBlurred == false) {
-      return const SizedBox.shrink();
-    }
-    return Positioned.fill(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -65,6 +49,8 @@ class ViewOthersWidget extends ConsumerWidget {
                 shrinkWrap: true,
                 crossAxisCount: 3,
                 children: filteredCharacters.map((character) {
+                  final mainImageSrc = characterService
+                      .getMainImage(character.character_info!.images!);
                   if (character.is_active == false) {
                     return ClipRRect(
                       child: Padding(
@@ -78,15 +64,15 @@ class ViewOthersWidget extends ConsumerWidget {
                                   timeLimit:
                                       ref.watch(imageCacheDurationProvider),
                                   cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                                      character.default_image),
-                                  character.default_image,
+                                      mainImageSrc),
+                                  mainImageSrc,
                                   color: Colors.black45,
                                   colorBlendMode: BlendMode.darken,
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
-                            addBlur(true),
+                            characterService.addBlur(true),
                             Center(
                               child: Text(
                                 "공개\n예정",
@@ -116,17 +102,16 @@ class ViewOthersWidget extends ConsumerWidget {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
                                   child: ExtendedImage.network(
-                                    character.default_image,
+                                    mainImageSrc,
                                     timeLimit:
                                         ref.watch(imageCacheDurationProvider),
                                     cacheKey:
                                         UniqueCacheKeyService.makeUniqueKey(
-                                            character.default_image),
+                                            mainImageSrc),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
-                              addBlur(character.is_blurred!),
                             ],
                           ),
                         ),

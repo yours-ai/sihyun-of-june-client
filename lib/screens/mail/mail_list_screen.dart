@@ -159,6 +159,8 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                         query: retrieveMyCharacterQuery,
                         builder: (context, state) {
                           if (state.data != null && state.data!.isNotEmpty) {
+                            final mainImageSrc = characterService.getMainImage(
+                                state.data![0].character_info!.images!);
                             return Expanded(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -175,9 +177,8 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                           timeLimit: ref.watch(
                                               imageCacheDurationProvider),
                                           cacheKey: UniqueCacheKeyService
-                                              .makeUniqueKey(
-                                                  state.data![0].default_image),
-                                          state.data![0].default_image,
+                                              .makeUniqueKey(mainImageSrc),
+                                          mainImageSrc,
                                           fit: BoxFit.cover,
                                         ),
                                       ),

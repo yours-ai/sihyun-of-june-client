@@ -26,7 +26,6 @@ class MyCharacterScreen extends StatelessWidget {
                   ProfileWidget(
                     name: state.data!.first.name,
                     characterInfo: state.data!.first.character_info!,
-                    defaultImage: state.data!.first.default_image,
                     primaryColor:
                         Color(state.data!.first.theme!.colors!.primary!),
                   ),

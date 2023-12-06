@@ -5,30 +5,25 @@ import 'package:project_june_client/actions/character/models/CharacterInfo.dart'
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/screens/character_profile/profile_details_screen.dart';
+import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 class ProfileWidget extends ConsumerWidget {
   final String? name;
   final CharacterInfo characterInfo;
   final Color primaryColor;
-  final String defaultImage;
 
   const ProfileWidget({
     super.key,
     required this.name,
     required this.characterInfo,
     required this.primaryColor,
-    required this.defaultImage,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final stackedImageList = characterInfo.images!.length > 3
-        ? characterInfo.images!
-            .sublist(characterInfo.images!.length - 3)
-            .reversed
-            .toList()
-        : characterInfo.images!.reversed.toList();
+    final stackedImageList =
+        characterService.selectStackedImageList(characterInfo.images!);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -36,9 +31,9 @@ class ProfileWidget extends ConsumerWidget {
         Stack(
           alignment: Alignment.center,
           children: List.generate(stackedImageList.length, (index) {
-            // 각 이미지를 2도씩 회전시키기 위한 각도 계산
+            // 각 이미지를 5도씩 회전시키기 위한 각도 계산
             final angle =
-                3 * ((stackedImageList.length - 1) / 2 - index) * 3.14 / 360;
+                -5 * ((stackedImageList.length - 1) / 2 - index) * 3.14 / 360;
             return GestureDetector(
               onTap: () {
                 showModalBottomSheet(
@@ -58,8 +53,8 @@ class ProfileWidget extends ConsumerWidget {
                     child: ExtendedImage.network(
                       timeLimit: ref.watch(imageCacheDurationProvider),
                       cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                          stackedImageList[index]),
-                      stackedImageList[index],
+                          stackedImageList[index].src!),
+                      stackedImageList[index].src!,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -68,7 +63,6 @@ class ProfileWidget extends ConsumerWidget {
             );
           }),
         ),
-        const SizedBox(height: 36),
         Center(
           child: Text(
             '$name(${characterInfo.age})',
@@ -96,7 +90,7 @@ class ProfileWidget extends ConsumerWidget {
         ),
         const SizedBox(height: 10),
         Text(
-          characterInfo.description,
+          characterInfo.description!,
           style: TextStyle(
             fontSize: 17,
             color: ColorConstants.neutral,
