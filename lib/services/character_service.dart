@@ -19,23 +19,30 @@ class CharacterService {
   String getMainImage(List<CharacterImage> imageList) {
     final mainImageList =
         imageList.where((image) => image.is_main == true).toList();
-    return mainImageList.first.src!;
+    return mainImageList.first.src;
   }
 
-  Widget addBlur(bool isBlurred) {
-    if (isBlurred == false) {
-      return const SizedBox.shrink();
-    }
-    return Positioned.fill(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
+  List<Widget> addBlur() {
+    return [
+      Positioned.fill(
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(20.0),
+            color: Colors.black.withOpacity(0.3),
+            borderRadius: BorderRadius.circular(12.0),
           ),
         ),
       ),
-    );
+      Positioned.fill(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+          ),
+        ),
+      ),
+    ];
   }
 }

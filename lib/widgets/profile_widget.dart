@@ -53,8 +53,8 @@ class ProfileWidget extends ConsumerWidget {
                     child: ExtendedImage.network(
                       timeLimit: ref.watch(imageCacheDurationProvider),
                       cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                          stackedImageList[index].src!),
-                      stackedImageList[index].src!,
+                          stackedImageList[index].src),
+                      stackedImageList[index].src,
                       fit: BoxFit.cover,
                     ),
                   ),

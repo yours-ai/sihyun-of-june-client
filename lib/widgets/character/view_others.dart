@@ -13,6 +13,55 @@ import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
+Widget makeViewOthersWidget(
+    BuildContext context, WidgetRef ref, Character character) {
+  final mainImageSrc =
+      characterService.getMainImage(character.character_info!.images!);
+
+  return GestureDetector(
+    onTap: () {
+      if (!character.is_active) {
+        return;
+      }
+      num id = character.id;
+      context.push('/other-character/$id');
+    },
+    child: ClipRRect(
+      child: Padding(
+        padding: const EdgeInsets.all(7.0),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: ExtendedImage.network(
+                  mainImageSrc,
+                  timeLimit: ref.watch(imageCacheDurationProvider),
+                  cacheKey: UniqueCacheKeyService.makeUniqueKey(mainImageSrc),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            if (!character.is_active) ...[
+              ...characterService.addBlur(),
+              Center(
+                child: Text(
+                  "공개\n예정",
+                  style: TextStyle(
+                    color: ColorConstants.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 class ViewOthersWidget extends ConsumerWidget {
   final num excludeId;
 
@@ -48,77 +97,10 @@ class ViewOthersWidget extends ConsumerWidget {
                 mainAxisSpacing: 10.0,
                 shrinkWrap: true,
                 crossAxisCount: 3,
-                children: filteredCharacters.map((character) {
-                  final mainImageSrc = characterService
-                      .getMainImage(character.character_info!.images!);
-                  if (character.is_active == false) {
-                    return ClipRRect(
-                      child: Padding(
-                        padding: const EdgeInsets.all(7.0),
-                        child: Stack(
-                          children: [
-                            Positioned.fill(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: ExtendedImage.network(
-                                  timeLimit:
-                                      ref.watch(imageCacheDurationProvider),
-                                  cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                                      mainImageSrc),
-                                  mainImageSrc,
-                                  color: Colors.black45,
-                                  colorBlendMode: BlendMode.darken,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            characterService.addBlur(true),
-                            Center(
-                              child: Text(
-                                "공개\n예정",
-                                style: TextStyle(
-                                  color: ColorConstants.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  } else {
-                    return GestureDetector(
-                      onTap: () {
-                        num id = character.id;
-                        context.push('/other-character/$id');
-                      },
-                      child: ClipRRect(
-                        child: Padding(
-                          padding: const EdgeInsets.all(7.0),
-                          child: Stack(
-                            children: [
-                              Positioned.fill(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: ExtendedImage.network(
-                                    mainImageSrc,
-                                    timeLimit:
-                                        ref.watch(imageCacheDurationProvider),
-                                    cacheKey:
-                                        UniqueCacheKeyService.makeUniqueKey(
-                                            mainImageSrc),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                }).toList(),
+                children: filteredCharacters
+                    .map((character) =>
+                        makeViewOthersWidget(context, ref, character))
+                    .toList(),
               );
             }
             return const SizedBox.shrink();

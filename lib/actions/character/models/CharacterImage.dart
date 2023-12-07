@@ -4,16 +4,16 @@ part 'CharacterImage.g.dart';
 
 @JsonSerializable()
 class CharacterImage {
-  num? order;
-  String? src, quest_text;
-  bool? is_blurred, is_main;
+  num order;
+  String src, quest_text;
+  bool is_blurred, is_main;
 
   CharacterImage({
-    this.order,
-    this.src,
-    this.quest_text,
-    this.is_blurred,
-    this.is_main,
+    required this.order,
+    required this.src,
+    required this.quest_text,
+    required this.is_blurred,
+    required this.is_main,
   });
 
   factory CharacterImage.fromJson(Map<String, dynamic> json) =>

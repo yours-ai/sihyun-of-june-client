@@ -76,13 +76,13 @@ class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
                         children: [
                           Positioned.fill(
                             child: ExtendedImage.network(
-                              widget.imageList[index].src!,
+                              widget.imageList[index].src,
                               fit: BoxFit.fitWidth,
                               mode: ExtendedImageMode.gesture,
                               enableSlideOutPage: true,
                               timeLimit: ref.watch(imageCacheDurationProvider),
                               cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                                  widget.imageList[index].src!),
+                                  widget.imageList[index].src),
                             ),
                           ),
                           Positioned.fill(
@@ -93,7 +93,7 @@ class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
                           Positioned.fill(
                             child: Center(
                               child: Text(
-                                widget.imageList[index].quest_text!,
+                                widget.imageList[index].quest_text,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
@@ -109,13 +109,13 @@ class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
                       );
                     } else {
                       return ExtendedImage.network(
-                        widget.imageList[index].src!,
+                        widget.imageList[index].src,
                         fit: BoxFit.fitWidth,
                         mode: ExtendedImageMode.gesture,
                         enableSlideOutPage: true,
                         timeLimit: ref.watch(imageCacheDurationProvider),
                         cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                            widget.imageList[index].src!),
+                            widget.imageList[index].src),
                         initGestureConfigHandler: (state) {
                           return GestureConfig(
                             minScale: 1.0,
