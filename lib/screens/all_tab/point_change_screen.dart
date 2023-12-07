@@ -49,7 +49,7 @@ class PointChangeScreen extends StatelessWidget {
             mutation:
                 exchangeCoinToPointMutation(refetchQueries: ['retrieve-me']),
             builder: (context, state, mutate) => ModalWidget(
-              title: '정말 ${coin}코인을 ${point}포인트로 \n전환하시겠어요?',
+              title: '정말 $coin코인을 $point포인트로 \n전환하시겠어요?',
               choiceColumn: ModalChoiceWidget(
                 submitText: '네',
                 onSubmit: () {
