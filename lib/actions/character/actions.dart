@@ -50,3 +50,8 @@ Future<Character> fetchCharacterById(int id) async {
   final response = await dio.get('/character/v3/characters/$id/');
   return Character.fromJson(response.data);
 }
+
+Future<void> readCharacterStory(int id) async {
+  await dio.post('/character/me/story/read/', data: {'character_id': id});
+  return;
+}
