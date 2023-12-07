@@ -4,7 +4,7 @@ part 'CharacterImage.g.dart';
 
 @JsonSerializable()
 class CharacterImage {
-  num order;
+  int order;
   String src, quest_text;
   bool is_blurred, is_main;
 

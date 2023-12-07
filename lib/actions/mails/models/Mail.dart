@@ -6,9 +6,9 @@ part 'Mail.g.dart';
 @JsonSerializable()
 class Mail {
   int id;
-  num to;
+  int to;
   String to_first_name;
-  num by;
+  int by;
   String by_first_name;
   String? by_image;
   String? to_image;

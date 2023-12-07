@@ -6,7 +6,7 @@ part 'Character.g.dart';
 
 @JsonSerializable()
 class Character {
-  num id;
+  int id;
   bool is_active;
   String? name;
   CharacterInfo? character_info;

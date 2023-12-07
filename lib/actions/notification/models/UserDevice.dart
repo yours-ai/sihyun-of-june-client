@@ -4,8 +4,8 @@ part 'UserDevice.g.dart';
 
 @JsonSerializable()
 class UserDevice {
-  num pk;
-  num user;
+  int pk;
+  int user;
   String device_token;
 
   UserDevice(

@@ -4,7 +4,7 @@ part 'Token.g.dart';
 
 @JsonSerializable()
 class Token {
-  num id;
+  int id;
   String token;
 
   Token({required this.id, required this.token});

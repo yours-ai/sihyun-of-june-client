@@ -4,7 +4,7 @@ part 'Reply.g.dart';
 
 @JsonSerializable()
 class Reply {
-  num id;
+  int id;
   String description;
   DateTime created;
   DateTime modified;
