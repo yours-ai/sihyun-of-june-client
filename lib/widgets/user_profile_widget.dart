@@ -30,6 +30,11 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
               query: getRetrieveMyCharacterQuery(),
               builder: (context, state) {
                 if (state.data != null) {
+                  final mainImageSrc = characterService.getMainImage(state
+                      .data!
+                      .first
+                      .character_info!
+                      .images!); //TODO 나중에는 first인 애들 선택한 캐릭터로 바꿔야함
                   return Center(
                     child: GestureDetector(
                       onTap: () {
@@ -42,10 +47,10 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                           width: 132,
                           height: 132,
                           child: ExtendedImage.network(
-                            state.data!.first.default_image,
+                            mainImageSrc,
                             timeLimit: ref.watch(imageCacheDurationProvider),
                             cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                                state.data!.first.default_image),
+                                mainImageSrc),
                             fit: BoxFit.cover,
                           ),
                         ),

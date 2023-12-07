@@ -194,7 +194,7 @@ class _AllScreenState extends State<AllScreen> {
                 );
               },
             ),
-            MenuTitleWidget(title: '고객센터'),
+            const MenuTitleWidget(title: '고객센터'),
             MenuWidget(
               title: '공지',
               onPressed: () => launchUrl(Uri.parse(Urls.notice)),
