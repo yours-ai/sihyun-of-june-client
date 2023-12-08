@@ -86,6 +86,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                   .character_info!
                   .images!); //TODO 나중에는 first인 애들 선택한 캐릭터로 바꿔야함
               return Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Center(
                     child: GestureDetector(
@@ -95,8 +96,9 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                                 isScrollControlled: true,
                                 context: context,
                                 builder: (context) => ProfileDetailsScreen(
-                                  imageList : state.data!.first.character_info!.images!,
-                                  id : state.data!.first.id,
+                                  imageList:
+                                      state.data!.first.character_info!.images!,
+                                  id: state.data!.first.id,
                                   index: mainImageSrc.order - 1,
                                 ),
                               )
@@ -142,11 +144,12 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                       ),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       context.push('/mails/my-character');
                     },
                     child: Container(
+                      margin: const EdgeInsets.fromLTRB(0, 5, 0, 20),
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
@@ -216,11 +219,12 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                       ),
                     ),
             ),
-            TextButton(
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 userProfileService.showChangeImageModal(context, ref);
               },
               child: Container(
+                margin: const EdgeInsets.fromLTRB(0, 5, 0, 20),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
