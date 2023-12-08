@@ -1,12 +1,15 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project_june_client/actions/character/models/CharacterInfo.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/screens/character_profile/profile_details_screen.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileWidget extends ConsumerWidget {
   final String? name;
@@ -88,6 +91,37 @@ class ProfileWidget extends ConsumerWidget {
             ),
           ),
         ),
+        if (characterInfo.sns != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: characterInfo.sns!.map((sns) {
+                if (sns.platform == "etc") {
+                  return IconButton(
+                    onPressed: () {
+                      launchUrl(Uri.parse(sns.link));
+                    },
+                    icon: const Icon(
+                      PhosphorIcons.link_simple,
+                      size: 40,
+                    ),
+                  );
+                } else {
+                  return IconButton(
+                    onPressed: () {
+                      launchUrl(Uri.parse(sns.link));
+                    },
+                    icon: SvgPicture.asset(
+                      'assets/images/sns/${sns.platform}.svg',
+                      width: 40,
+                      height: 40,
+                    ),
+                  );
+                }
+              }).toList(),
+            ),
+          ),
         const SizedBox(height: 10),
         Text(
           characterInfo.description!,
