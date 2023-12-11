@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/providers/common_provider.dart';
@@ -12,6 +13,7 @@ import '../constants.dart';
 import '../providers/character_provider.dart';
 import '../screens/character_profile/profile_details_screen.dart';
 import '../services.dart';
+import 'character_change_modal_widget.dart';
 
 class UserProfileWidget extends ConsumerStatefulWidget {
   const UserProfileWidget({super.key});
@@ -21,55 +23,55 @@ class UserProfileWidget extends ConsumerStatefulWidget {
 }
 
 class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
-  // void _showMultiCharacterModal() {
-  //   showModalBottomSheet(
-  //     backgroundColor: ColorConstants.lightGray,
-  //     context: context,
-  //     showDragHandle: true,
-  //     builder: (context) {
-  //       return Container(
-  //         margin: const EdgeInsets.symmetric(horizontal: 10),
-  //         height: 300,
-  //         decoration: BoxDecoration(
-  //           color: ColorConstants.background,
-  //           borderRadius: BorderRadius.circular(10),
-  //         ),
-  //         child: QueryBuilder( // 이거 두번이나 불러옴. 필요 없을듯
-  //           query: getRetrieveMyCharacterQuery(),
-  //           builder: (context, state) => Column(
-  //             children: [
-  //               ...state.data!
-  //                   .map((character) => CharacterChangeListWidget(
-  //                       character: character, isSelected: false))
-  //                   .toList(),
-  //               Row(
-  //                 children: [
-  //                   Padding(
-  //                       padding: const EdgeInsets.symmetric(
-  //                           horizontal: 16.0, vertical: 8.0),
-  //                       child: Icon(
-  //                         PhosphorIcons.plus_circle_fill,
-  //                         color: ColorConstants.primary,
-  //                         size: 40,
-  //                       )),
-  //                   Expanded(
-  //                     child: Text(
-  //                       '새 친구 만나기',
-  //                       style: TextStyle(
-  //                         fontSize: 17,
-  //                         color: ColorConstants.primary,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ],
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // } //3.0작업
+  void _showMultiCharacterModal() {
+    showModalBottomSheet(
+      backgroundColor: ColorConstants.lightGray,
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          height: 300,
+          decoration: BoxDecoration(
+            color: ColorConstants.background,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: QueryBuilder( // TODO : 쿼리빌더 빼기
+            query: getRetrieveMyCharacterQuery(),
+            builder: (context, state) => Column(
+              children: [
+                ...state.data!
+                    .map((character) => CharacterChangeListWidget(
+                        character: character, isSelected: false))
+                    .toList(),
+                Row(
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
+                        child: Icon(
+                          PhosphorIcons.plus_circle_fill,
+                          color: ColorConstants.primary,
+                          size: 40,
+                        )),
+                    Expanded(
+                      child: Text(
+                        '새 친구 만나기',
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: ColorConstants.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  } //3.0작업
 
   @override
   Widget build(BuildContext context) {
@@ -104,12 +106,12 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               )
                             : context.push('/mails/my-character');
                       },
-                      // onDoubleTap: () {
-                      //   context.push('/character');
-                      // },
-                      // onLongPress: () {
-                      //   _showMultiCharacterModal();
-                      // }, //3.0작업
+                      onDoubleTap: () {
+                        context.push('/character');
+                      },
+                      onLongPress: () {
+                        _showMultiCharacterModal();
+                      }, //3.0작업
                       child: Container(
                         padding: const EdgeInsets.all(1.5), // 내부 패딩
                         decoration: BoxDecoration(
