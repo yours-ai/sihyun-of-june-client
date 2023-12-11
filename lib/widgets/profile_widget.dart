@@ -32,7 +32,7 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       getReadCharacterStoryMutation(
         refetchQueries: ['my-character'],
       ).mutate(widget.id);
