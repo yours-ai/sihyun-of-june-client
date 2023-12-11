@@ -60,16 +60,26 @@ class NotificationService {
 
   void initializeNotificationHandlers(
       WidgetRef ref, CharacterColors characterColors) async {
-    if (ref.read(firebaseMessagingListenerProvider)['onMessage'] != null &&
-        ref.read(firebaseMessagingListenerProvider)['onMessageOpenedApp'] != null) {
+    if (ref.read(firebaseMessagingListenerProvider)['onTokenRefresh'] != null &&
+        ref.read(firebaseMessagingListenerProvider)['onMessage'] != null &&
+        ref.read(firebaseMessagingListenerProvider)['onMessageOpenedApp'] !=
+            null) {
+      await ref
+          .read(firebaseMessagingListenerProvider)['onTokenRefresh']!
+          .cancel();
       await ref.read(firebaseMessagingListenerProvider)['onMessage']!.cancel();
-      await ref.read(firebaseMessagingListenerProvider)['onMessageOpenedApp']!.cancel();
+      await ref
+          .read(firebaseMessagingListenerProvider)['onMessageOpenedApp']!
+          .cancel();
     }
     FirebaseMessaging.instance
         .getToken()
         .then((token) => token != null ? getOrCreateUserDevice(token) : null);
-    FirebaseMessaging.instance.onTokenRefresh
-        .listen((token) => getOrCreateUserDevice(token));
+    ref
+            .read(firebaseMessagingListenerProvider.notifier)
+            .state['onTokenRefresh'] =
+        FirebaseMessaging.instance.onTokenRefresh
+            .listen((token) => getOrCreateUserDevice(token));
     ref.read(firebaseMessagingListenerProvider.notifier).state['onMessage'] =
         FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       // 포그라운드
@@ -84,7 +94,9 @@ class NotificationService {
         ),
       );
     });
-    ref.read(firebaseMessagingListenerProvider.notifier).state['onMessageOpenedApp'] =
+    ref
+            .read(firebaseMessagingListenerProvider.notifier)
+            .state['onMessageOpenedApp'] =
         FirebaseMessaging.onMessageOpenedApp
             .listen(handleFCMMessageTap); //백그라운드 -> 포그라운드
     addBadgeControlListener();

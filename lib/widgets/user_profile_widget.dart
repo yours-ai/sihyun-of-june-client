@@ -91,7 +91,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        state.data!.first.isImageUpdated
+                        state.data!.first.is_image_updated
                             ? showModalBottomSheet(
                                 isScrollControlled: true,
                                 context: context,
@@ -116,7 +116,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                           borderRadius: BorderRadius.circular(70.0),
                           // 원형 테두리 반경
                           border: Border.all(
-                            color: state.data!.first.isImageUpdated
+                            color: state.data!.first.is_image_updated
                                 ? Color(ref
                                     .watch(characterThemeProvider)
                                     .colors!
@@ -153,7 +153,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: state.data!.first.isImageUpdated
+                            color: state.data!.first.is_image_updated
                                 ? Color(ref
                                     .watch(characterThemeProvider)
                                     .colors!
@@ -164,9 +164,9 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                         ),
                       ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
                       child: Text(
-                          '${state.data!.first.isImageUpdated ? '새 ' : ''}프로필 보기',
+                          '${state.data!.first.is_image_updated ? '새 ' : ''}프로필 보기',
                           style: TextStyle(
-                              color: state.data!.first.isImageUpdated
+                              color: state.data!.first.is_image_updated
                                   ? Color(ref
                                       .watch(characterThemeProvider)
                                       .colors!

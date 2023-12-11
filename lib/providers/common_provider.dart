@@ -9,8 +9,10 @@ final imageCacheDurationProvider = Provider<Duration>((ref) {
 
 final topPaddingProvider = StateProvider<double?>((ref) => null);
 
-final firebaseMessagingListenerProvider = StateProvider<Map<String, StreamSubscription<RemoteMessage>?>>((ref) {
+final firebaseMessagingListenerProvider =
+    StateProvider<Map<String, StreamSubscription<dynamic>?>>((ref) {
   return {
+    'onTokenRefresh': null,
     'onMessage': null,
     'onMessageOpenedApp': null,
   };

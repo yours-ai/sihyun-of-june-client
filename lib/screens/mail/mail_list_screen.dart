@@ -168,7 +168,7 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      state.data!.first.isImageUpdated
+                                      state.data!.first.is_image_updated
                                           ? showModalBottomSheet(
                                               isScrollControlled: true,
                                               context: context,
@@ -190,7 +190,7 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                         // 원형 테두리 반경
                                         border: Border.all(
                                           color: state
-                                                  .data!.first.isImageUpdated
+                                                  .data!.first.is_image_updated
                                               ? Color(ref
                                                   .watch(characterThemeProvider)
                                                   .colors!
