@@ -30,7 +30,7 @@ class RequestNotificationPermissionWidgetState
           builder: (BuildContext context) {
             final mutation = getRequestNotificationPermissionMutation(
               onSuccess: (res, arg) {
-                notificationService.initializeNotificationHandlers(ref.watch(characterThemeProvider).colors!);
+                notificationService.initializeNotificationHandlers(ref, ref.watch(characterThemeProvider).colors!);
                 context.pop();
               },
               onError: (arg, err, fallback) {

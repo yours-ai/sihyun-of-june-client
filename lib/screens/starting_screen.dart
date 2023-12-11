@@ -110,7 +110,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
   _initializeNotificationHandlerIfAccepted(CharacterColors characterColors) async {
     final isAccepted = await getIsNotificationAccepted();
     if (isAccepted == true) {
-      notificationService.initializeNotificationHandlers(characterColors);
+      notificationService.initializeNotificationHandlers(ref, characterColors);
     }
   }
 

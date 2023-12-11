@@ -112,12 +112,12 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
             ),
           ),
         ),
-        if (characterInfo.sns != null)
+        if (widget.characterInfo.sns != null)
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: characterInfo.sns!.map((sns) {
+              children: widget.characterInfo.sns!.map((sns) {
                 if (sns.platform == "etc") {
                   return IconButton(
                     onPressed: () {
