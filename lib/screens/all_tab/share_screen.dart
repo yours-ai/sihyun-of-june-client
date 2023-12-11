@@ -10,7 +10,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../actions/auth/queries.dart';
 import '../../constants.dart';
-import '../../providers/character_theme_provider.dart';
+import '../../providers/character_provider.dart';
 import '../../services.dart';
 
 class ShareScreen extends ConsumerWidget {

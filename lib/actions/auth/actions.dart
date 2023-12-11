@@ -11,6 +11,7 @@ import 'package:project_june_client/actions/auth/models/SihyunOfJuneUser.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
+import 'package:project_june_client/services.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'models/Token.dart';
@@ -197,6 +198,7 @@ logout() async {
   } catch (e) {}
   CachedQuery.instance.deleteCache();
   dio.options.headers.clear();
+  characterService.deleteSelectedCharacterId();
   return;
 }
 

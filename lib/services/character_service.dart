@@ -2,9 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
+import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 
 class CharacterService {
   const CharacterService();
+
+  static const _CHARACTER_ID_KEY = 'CHARACTER_ID';
 
   List<CharacterImage> selectStackedImageList(List<CharacterImage> imageList) {
     final revealedImageList =
@@ -44,5 +47,25 @@ class CharacterService {
         ),
       ),
     ];
+  }
+
+  Future<int?> getSelectedCharacterId() async {
+    final storage = getSecureStorage();
+    final selectedCharacterId = await storage.read(key: _CHARACTER_ID_KEY);
+    if (selectedCharacterId == null) return null;
+    return int.parse(selectedCharacterId);
+  }
+
+  Future<void> saveSelectedCharacterId({
+    required int selectedCharacterId,
+  }) async {
+    final storage = getSecureStorage();
+    await storage.write(
+        key: _CHARACTER_ID_KEY, value: selectedCharacterId.toString());
+  }
+
+  Future<void> deleteSelectedCharacterId() async {
+    final storage = getSecureStorage();
+    await storage.delete(key: _CHARACTER_ID_KEY);
   }
 }

@@ -9,7 +9,7 @@ import 'package:project_june_client/services/unique_cachekey_service.dart';
 import '../actions/auth/queries.dart';
 import '../actions/character/queries.dart';
 import '../constants.dart';
-import '../providers/character_theme_provider.dart';
+import '../providers/character_provider.dart';
 import '../screens/character_profile/profile_details_screen.dart';
 import '../services.dart';
 
@@ -34,7 +34,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
   //           color: ColorConstants.background,
   //           borderRadius: BorderRadius.circular(10),
   //         ),
-  //         child: QueryBuilder(
+  //         child: QueryBuilder( // 이거 두번이나 불러옴. 필요 없을듯
   //           query: getRetrieveMyCharacterQuery(),
   //           builder: (context, state) => Column(
   //             children: [
@@ -80,25 +80,25 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
           query: getRetrieveMyCharacterQuery(),
           builder: (context, state) {
             if (state.data != null) {
-              final mainImageSrc = characterService.getMainImage(state
-                  .data!
-                  .first
-                  .character_info!
-                  .images!); //TODO 나중에는 first인 애들 선택한 캐릭터로 바꿔야함
+              final selectedCharacter = state.data!
+                  .where((character) =>
+                      character.id == ref.watch(selectedCharacterProvider))
+                  .first;
+              final mainImageSrc = characterService
+                  .getMainImage(selectedCharacter.character_info!.images!);
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Center(
                     child: GestureDetector(
                       onTap: () {
-                        state.data!.first.is_image_updated
+                        selectedCharacter.is_image_updated!
                             ? showModalBottomSheet(
                                 isScrollControlled: true,
                                 context: context,
                                 builder: (context) => ProfileDetailsScreen(
                                   imageList:
-                                      state.data!.first.character_info!.images!,
-                                  id: state.data!.first.id,
+                                      selectedCharacter.character_info!.images!,
                                   index: mainImageSrc.order - 1,
                                 ),
                               )
@@ -116,7 +116,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                           borderRadius: BorderRadius.circular(70.0),
                           // 원형 테두리 반경
                           border: Border.all(
-                            color: state.data!.first.is_image_updated
+                            color: selectedCharacter.is_image_updated!
                                 ? Color(ref
                                     .watch(characterThemeProvider)
                                     .colors!
@@ -153,7 +153,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: state.data!.first.is_image_updated
+                            color: selectedCharacter.is_image_updated!
                                 ? Color(ref
                                     .watch(characterThemeProvider)
                                     .colors!
@@ -164,9 +164,9 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                         ),
                       ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
                       child: Text(
-                          '${state.data!.first.is_image_updated ? '새 ' : ''}프로필 보기',
+                          '${selectedCharacter.is_image_updated! ? '새 ' : ''}프로필 보기',
                           style: TextStyle(
-                              color: state.data!.first.is_image_updated
+                              color: selectedCharacter.is_image_updated!
                                   ? Color(ref
                                       .watch(characterThemeProvider)
                                       .colors!
