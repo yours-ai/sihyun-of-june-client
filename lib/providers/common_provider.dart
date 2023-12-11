@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final imageCacheDurationProvider = Provider<Duration>((ref) {
@@ -5,3 +8,10 @@ final imageCacheDurationProvider = Provider<Duration>((ref) {
 });
 
 final topPaddingProvider = StateProvider<double?>((ref) => null);
+
+final firebaseMessagingListenerProvider = StateProvider<Map<String, StreamSubscription<RemoteMessage>?>>((ref) {
+  return {
+    'onMessage': null,
+    'onMessageOpenedApp': null,
+  };
+});
