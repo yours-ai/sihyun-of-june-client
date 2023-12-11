@@ -49,8 +49,8 @@ class CharacterDetailWidget extends ConsumerWidget {
                     ),
                     children: [
                       ProfileWidget(
+                        id: character!.id,
                         name: character.name!,
-                        defaultImage: character.default_image,
                         characterInfo: character.character_info!,
                         primaryColor: Color(character.theme!.colors!.primary!),
                       ),

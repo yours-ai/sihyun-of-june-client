@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/models/CharacterImage.dart';
+import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 class ProfileDetailsScreen extends ConsumerStatefulWidget {
-  final List<String> imageList;
+  final List<CharacterImage> imageList;
+  final int id;
+  final int? index;
 
-  const ProfileDetailsScreen(this.imageList, {super.key});
+  const ProfileDetailsScreen(
+      {required this.imageList, required this.id, this.index, super.key});
 
   @override
   ProfileDetailsScreenView createState() => ProfileDetailsScreenView();
@@ -17,6 +23,17 @@ class ProfileDetailsScreen extends ConsumerStatefulWidget {
 
 class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
   int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentPage = widget.index ?? 0;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getReadCharacterStoryMutation(
+        refetchQueries: ['my-character'],
+      ).mutate(widget.id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,31 +84,71 @@ class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
               ),
               Expanded(
                 child: ExtendedImageGesturePageView.builder(
+                  controller:
+                      ExtendedPageController(initialPage: widget.index ?? 0),
                   itemCount: widget.imageList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return ExtendedImage.network(
-                      widget.imageList[index],
-                      fit: BoxFit.fitWidth,
-                      mode: ExtendedImageMode.gesture,
-                      enableSlideOutPage: true,
-                      timeLimit: ref.watch(imageCacheDurationProvider),
-                      cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                          widget.imageList[index]),
-                      initGestureConfigHandler: (state) {
-                        return GestureConfig(
-                          minScale: 1.0,
-                          animationMinScale: 0.7,
-                          maxScale: 3.0,
-                          animationMaxScale: 3.5,
-                          speed: 1.0,
-                          inertialSpeed: 100.0,
-                          inPageView: true,
-                          initialScale: 1.0001,
-                          // 안드로이드에서 줌된 상태에서는 확대가 매우 잘됩니다. 유저가 알아볼수없는 정도로 확대해놓았습니다
-                          cacheGesture: false,
-                        );
-                      },
-                    );
+                    if (widget.imageList[index].is_blurred == true) {
+                      return Stack(
+                        children: [
+                          Positioned.fill(
+                            child: ExtendedImage.network(
+                              widget.imageList[index].src,
+                              fit: BoxFit.fitWidth,
+                              mode: ExtendedImageMode.gesture,
+                              enableSlideOutPage: true,
+                              timeLimit: ref.watch(imageCacheDurationProvider),
+                              cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                                  widget.imageList[index].src),
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: Container(
+                              color: Colors.black.withOpacity(0.3),
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: Center(
+                              child: Text(
+                                widget.imageList[index].quest_text,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Pretendard',
+                                  fontSize: 25,
+                                  height: 35 / 25,
+                                  fontWeight: FontWeightConstants.semiBold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return ExtendedImage.network(
+                        widget.imageList[index].src,
+                        fit: BoxFit.fitWidth,
+                        mode: ExtendedImageMode.gesture,
+                        enableSlideOutPage: true,
+                        timeLimit: ref.watch(imageCacheDurationProvider),
+                        cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                            widget.imageList[index].src),
+                        initGestureConfigHandler: (state) {
+                          return GestureConfig(
+                            minScale: 1.0,
+                            animationMinScale: 0.7,
+                            maxScale: 3.0,
+                            animationMaxScale: 3.5,
+                            speed: 1.0,
+                            inertialSpeed: 100.0,
+                            inPageView: true,
+                            initialScale: 1.0001,
+                            // 안드로이드에서 줌된 상태에서는 확대가 매우 잘됩니다. 유저가 알아볼수없는 정도로 확대해놓았습니다
+                            cacheGesture: false,
+                          );
+                        },
+                      );
+                    }
                   },
                   onPageChanged: (int index) {
                     setState(() {

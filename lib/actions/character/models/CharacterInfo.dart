@@ -1,19 +1,23 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:project_june_client/actions/character/models/CharacterImage.dart';
+import 'package:project_june_client/actions/character/models/CharacterSns.dart';
 
 part 'CharacterInfo.g.dart';
 
 @JsonSerializable()
 class CharacterInfo {
-  num age;
+  num? age;
   String? one_line_description;
-  String description;
-  List<String>? images;
+  String? description;
+  List<CharacterImage>? images;
+  List<CharacterSns>? sns;
 
   CharacterInfo(
-      {required this.age,
+      {this.age,
       this.one_line_description,
-      required this.description,
-      this.images});
+      this.description,
+      this.images,
+      this.sns});
 
   factory CharacterInfo.fromJson(Map<String, dynamic> json) =>
       _$CharacterInfoFromJson(json);

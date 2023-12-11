@@ -12,7 +12,7 @@ class AppNotification {
   String? link;
   bool? is_read;
   bool is_all;
-  num user;
+  int user;
 
   AppNotification({
     required this.id,

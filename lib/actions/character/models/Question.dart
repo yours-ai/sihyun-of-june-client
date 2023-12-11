@@ -4,7 +4,7 @@ part 'Question.g.dart';
 
 @JsonSerializable()
 class Question {
-  num id;
+  int id;
   String question_text;
   String choice_1_text;
   String choice_2_text;
