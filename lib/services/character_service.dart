@@ -16,10 +16,10 @@ class CharacterService {
       ..addAll(revealedImageList);
   }
 
-  String getMainImage(List<CharacterImage> imageList) {
+  CharacterImage getMainImage(List<CharacterImage> imageList) {
     final mainImageList =
         imageList.where((image) => image.is_main == true).toList();
-    return mainImageList.first.src;
+    return mainImageList.first;
   }
 
   List<Widget> addBlur() {

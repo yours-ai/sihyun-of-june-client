@@ -9,6 +9,8 @@ import 'package:project_june_client/services/unique_cachekey_service.dart';
 import '../actions/auth/queries.dart';
 import '../actions/character/queries.dart';
 import '../constants.dart';
+import '../providers/character_theme_provider.dart';
+import '../screens/character_profile/profile_details_screen.dart';
 import '../services.dart';
 
 class UserProfileWidget extends ConsumerStatefulWidget {
@@ -19,67 +21,165 @@ class UserProfileWidget extends ConsumerStatefulWidget {
 }
 
 class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
+  // void _showMultiCharacterModal() {
+  //   showModalBottomSheet(
+  //     backgroundColor: ColorConstants.lightGray,
+  //     context: context,
+  //     showDragHandle: true,
+  //     builder: (context) {
+  //       return Container(
+  //         margin: const EdgeInsets.symmetric(horizontal: 10),
+  //         height: 300,
+  //         decoration: BoxDecoration(
+  //           color: ColorConstants.background,
+  //           borderRadius: BorderRadius.circular(10),
+  //         ),
+  //         child: QueryBuilder(
+  //           query: getRetrieveMyCharacterQuery(),
+  //           builder: (context, state) => Column(
+  //             children: [
+  //               ...state.data!
+  //                   .map((character) => CharacterChangeListWidget(
+  //                       character: character, isSelected: false))
+  //                   .toList(),
+  //               Row(
+  //                 children: [
+  //                   Padding(
+  //                       padding: const EdgeInsets.symmetric(
+  //                           horizontal: 16.0, vertical: 8.0),
+  //                       child: Icon(
+  //                         PhosphorIcons.plus_circle_fill,
+  //                         color: ColorConstants.primary,
+  //                         size: 40,
+  //                       )),
+  //                   Expanded(
+  //                     child: Text(
+  //                       '새 친구 만나기',
+  //                       style: TextStyle(
+  //                         fontSize: 17,
+  //                         color: ColorConstants.primary,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // } //3.0작업
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Column(
-          children: [
-            QueryBuilder(
-              query: getRetrieveMyCharacterQuery(),
-              builder: (context, state) {
-                if (state.data != null) {
-                  final mainImageSrc = characterService.getMainImage(state
-                      .data!
-                      .first
-                      .character_info!
-                      .images!); //TODO 나중에는 first인 애들 선택한 캐릭터로 바꿔야함
-                  return Center(
+        QueryBuilder(
+          query: getRetrieveMyCharacterQuery(),
+          builder: (context, state) {
+            if (state.data != null) {
+              final mainImageSrc = characterService.getMainImage(state
+                  .data!
+                  .first
+                  .character_info!
+                  .images!); //TODO 나중에는 first인 애들 선택한 캐릭터로 바꿔야함
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Center(
                     child: GestureDetector(
                       onTap: () {
-                        context.push('/mails/my-character');
+                        state.data!.first.isImageUpdated
+                            ? showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (context) => ProfileDetailsScreen(
+                                  imageList:
+                                      state.data!.first.character_info!.images!,
+                                  id: state.data!.first.id,
+                                  index: mainImageSrc.order - 1,
+                                ),
+                              )
+                            : context.push('/mails/my-character');
                       },
-                      child: ClipRRect(
-                        clipBehavior: Clip.hardEdge,
-                        borderRadius: BorderRadius.circular(66),
-                        child: SizedBox(
-                          width: 132,
-                          height: 132,
-                          child: ExtendedImage.network(
-                            mainImageSrc,
-                            timeLimit: ref.watch(imageCacheDurationProvider),
-                            cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                                mainImageSrc),
-                            fit: BoxFit.cover,
+                      // onDoubleTap: () {
+                      //   context.push('/character');
+                      // },
+                      // onLongPress: () {
+                      //   _showMultiCharacterModal();
+                      // }, //3.0작업
+                      child: Container(
+                        padding: const EdgeInsets.all(1.5), // 내부 패딩
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(70.0),
+                          // 원형 테두리 반경
+                          border: Border.all(
+                            color: state.data!.first.isImageUpdated
+                                ? Color(ref
+                                    .watch(characterThemeProvider)
+                                    .colors!
+                                    .primary!)
+                                : ColorConstants.background,
+                            // 테두리 색상
+                            width: 4.0, // 테두리 두께
+                          ),
+                        ),
+                        child: ClipRRect(
+                          clipBehavior: Clip.hardEdge,
+                          borderRadius: BorderRadius.circular(66),
+                          child: SizedBox(
+                            width: 132,
+                            height: 132,
+                            child: ExtendedImage.network(
+                              mainImageSrc.src,
+                              timeLimit: ref.watch(imageCacheDurationProvider),
+                              cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                                  mainImageSrc.src),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  );
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-            TextButton(
-              onPressed: () {
-                context.push('/mails/my-character');
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: ColorConstants.gray,
-                      width: 1.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.push('/mails/my-character');
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(0, 5, 0, 20),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: state.data!.first.isImageUpdated
+                                ? Color(ref
+                                    .watch(characterThemeProvider)
+                                    .colors!
+                                    .primary!)
+                                : ColorConstants.gray,
+                            width: 1.0,
+                          ),
+                        ),
+                      ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
+                      child: Text(
+                          '${state.data!.first.isImageUpdated ? '새 ' : ''}프로필 보기',
+                          style: TextStyle(
+                              color: state.data!.first.isImageUpdated
+                                  ? Color(ref
+                                      .watch(characterThemeProvider)
+                                      .colors!
+                                      .primary!)
+                                  : ColorConstants.gray,
+                              height: 1.0)),
                     ),
                   ),
-                ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
-                padding: const EdgeInsets.all(0),
-                child: Text('프로필 보기',
-                    style: TextStyle(color: ColorConstants.gray, height: 1.0)),
-              ),
-            ),
-          ],
+                ],
+              );
+            }
+            return const SizedBox.shrink();
+          },
         ),
         Column(
           children: [
@@ -88,38 +188,43 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
               builder: (context, state) => state.data == null
                   ? const SizedBox.shrink()
                   : Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          userProfileService.showChangeImageModal(context, ref);
-                        },
-                        child: ClipRRect(
-                          clipBehavior: Clip.hardEdge,
-                          borderRadius: BorderRadius.circular(66),
-                          child: SizedBox(
-                            width: 132,
-                            height: 132,
-                            child: state.data!.image == null
-                                ? Image.asset(
-                                    'assets/images/default_user_image.png')
-                                : ExtendedImage.network(
-                                    state.data!.image!,
-                                    timeLimit:
-                                        ref.watch(imageCacheDurationProvider),
-                                    cacheKey:
-                                        UniqueCacheKeyService.makeUniqueKey(
-                                            state.data!.image!),
-                                    fit: BoxFit.cover,
-                                  ),
+                      child: Container(
+                        padding: const EdgeInsets.all(5.5),
+                        child: GestureDetector(
+                          onTap: () {
+                            userProfileService.showChangeImageModal(
+                                context, ref);
+                          },
+                          child: ClipRRect(
+                            clipBehavior: Clip.hardEdge,
+                            borderRadius: BorderRadius.circular(66),
+                            child: SizedBox(
+                              width: 132,
+                              height: 132,
+                              child: state.data!.image == null
+                                  ? Image.asset(
+                                      'assets/images/default_user_image.png')
+                                  : ExtendedImage.network(
+                                      state.data!.image!,
+                                      timeLimit:
+                                          ref.watch(imageCacheDurationProvider),
+                                      cacheKey:
+                                          UniqueCacheKeyService.makeUniqueKey(
+                                              state.data!.image!),
+                                      fit: BoxFit.cover,
+                                    ),
+                            ),
                           ),
                         ),
                       ),
                     ),
             ),
-            TextButton(
-              onPressed: () {
+            GestureDetector(
+              onTap: () {
                 userProfileService.showChangeImageModal(context, ref);
               },
               child: Container(
+                margin: const EdgeInsets.fromLTRB(0, 5, 0, 20),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
@@ -128,7 +233,6 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                     ),
                   ),
                 ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
-                padding: const EdgeInsets.all(0),
                 child: Text('프로필 변경하기',
                     style: TextStyle(color: ColorConstants.gray, height: 1.0)),
               ),

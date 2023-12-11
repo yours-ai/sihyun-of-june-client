@@ -19,6 +19,7 @@ import '../../actions/notification/queries.dart';
 import '../../constants.dart';
 import '../../services.dart';
 import '../../widgets/common/alert/alert_widget.dart';
+import '../character_profile/profile_details_screen.dart';
 
 class MailListScreen extends ConsumerStatefulWidget {
   const MailListScreen({super.key});
@@ -166,20 +167,53 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   GestureDetector(
-                                    onTap: () =>
-                                        context.push('/mails/my-character'),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: SizedBox(
-                                        height: 40,
-                                        width: 40,
-                                        child: ExtendedImage.network(
-                                          timeLimit: ref.watch(
-                                              imageCacheDurationProvider),
-                                          cacheKey: UniqueCacheKeyService
-                                              .makeUniqueKey(mainImageSrc),
-                                          mainImageSrc,
-                                          fit: BoxFit.cover,
+                                    onTap: () {
+                                      state.data!.first.isImageUpdated
+                                          ? showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              context: context,
+                                              builder: (context) =>
+                                                  ProfileDetailsScreen(
+                                                imageList: state.data!.first
+                                                    .character_info!.images!,
+                                                id : state.data!.first.id,
+                                                index: mainImageSrc.order - 1,
+                                              ),
+                                            )
+                                          : context.push('/mails/my-character');
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(2),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(70.0),
+                                        // 원형 테두리 반경
+                                        border: Border.all(
+                                          color: state
+                                                  .data!.first.isImageUpdated
+                                              ? Color(ref
+                                                  .watch(characterThemeProvider)
+                                                  .colors!
+                                                  .primary!)
+                                              : ColorConstants.background,
+                                          // 테두리 색상
+                                          width: 2.0, // 테두리 두께
+                                        ),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: SizedBox(
+                                          height: 40,
+                                          width: 40,
+                                          child: ExtendedImage.network(
+                                            timeLimit: ref.watch(
+                                                imageCacheDurationProvider),
+                                            cacheKey: UniqueCacheKeyService
+                                                .makeUniqueKey(
+                                                    mainImageSrc.src),
+                                            mainImageSrc.src,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                     ),

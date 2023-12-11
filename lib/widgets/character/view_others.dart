@@ -69,12 +69,12 @@ class ViewOthersWidget extends ConsumerWidget {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(12),
                                     child: ExtendedImage.network(
-                                      mainImageSrc,
+                                      mainImageSrc.src,
                                       timeLimit:
                                           ref.watch(imageCacheDurationProvider),
                                       cacheKey:
                                           UniqueCacheKeyService.makeUniqueKey(
-                                              mainImageSrc),
+                                              mainImageSrc.src),
                                       fit: BoxFit.cover,
                                     ),
                                   ),

@@ -4,14 +4,18 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
+import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 class ProfileDetailsScreen extends ConsumerStatefulWidget {
   final List<CharacterImage> imageList;
+  final int id;
+  final int? index;
 
-  const ProfileDetailsScreen(this.imageList, {super.key});
+  const ProfileDetailsScreen(
+      {required this.imageList, required this.id, this.index, super.key});
 
   @override
   ProfileDetailsScreenView createState() => ProfileDetailsScreenView();
@@ -19,6 +23,17 @@ class ProfileDetailsScreen extends ConsumerStatefulWidget {
 
 class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
   int _currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentPage = widget.index ?? 0;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getReadCharacterStoryMutation(
+        refetchQueries: ['my-character'],
+      ).mutate(widget.id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +84,8 @@ class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
               ),
               Expanded(
                 child: ExtendedImageGesturePageView.builder(
+                  controller:
+                      ExtendedPageController(initialPage: widget.index ?? 0),
                   itemCount: widget.imageList.length,
                   itemBuilder: (BuildContext context, int index) {
                     if (widget.imageList[index].is_blurred == true) {
