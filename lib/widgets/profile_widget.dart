@@ -35,13 +35,6 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getReadCharacterStoryMutation(
         refetchQueries: ['my-character'],
-        onError: (arr, err, fallback) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('프로필을 불러오지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
-            ),
-          );
-        },
       ).mutate(widget.id);
     });
   }
