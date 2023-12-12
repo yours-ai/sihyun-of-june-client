@@ -1,6 +1,7 @@
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project_june_client/actions/mails/models/Mail.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 
@@ -127,5 +128,9 @@ class MailService {
   Future<void> deleteBeforeReply(int mailId) async {
     final storage = getSecureStorage();
     await storage.delete(key: 'MAIL_REPLY_$mailId');
+  }
+
+  List<Mail> filterSelectedMailList(List<Mail> mails, int selectedCharacterId) {
+    return mails.where((mail) => mail.by == selectedCharacterId).toList();
   }
 }

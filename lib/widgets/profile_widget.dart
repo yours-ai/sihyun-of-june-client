@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project_june_client/actions/character/models/CharacterInfo.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/screens/character_profile/profile_details_screen.dart';
 import 'package:project_june_client/services.dart';
@@ -14,14 +15,12 @@ import 'package:url_launcher/url_launcher.dart';
 import '../actions/character/queries.dart';
 
 class ProfileWidget extends ConsumerStatefulWidget {
-  final int id;
   final String? name;
   final CharacterInfo characterInfo;
   final Color primaryColor;
 
   const ProfileWidget({
     super.key,
-    required this.id,
     required this.name,
     required this.characterInfo,
     required this.primaryColor,
@@ -36,9 +35,11 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getReadCharacterStoryMutation(
-        refetchQueries: ['my-character'],
-      ).mutate(widget.id);
+      if (ref.watch(selectedCharacterProvider) != null) {
+        getReadCharacterStoryMutation(
+          refetchQueries: ['my-character'],
+        ).mutate(ref.watch(selectedCharacterProvider));
+      }
     });
   }
 
@@ -63,7 +64,6 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
                   context: context,
                   builder: (context) => ProfileDetailsScreen(
                       imageList: widget.characterInfo.images!,
-                      id: widget.id,
                       index: stackedImageList[index].order - 1),
                 );
               },

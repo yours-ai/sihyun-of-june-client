@@ -11,7 +11,7 @@ import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/character/models/CharacterColors.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/services.dart';
 
@@ -42,7 +42,16 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
 
     final character = await getRetrieveMyCharacterQuery().result;
     if (character.data!.isNotEmpty) {
-      CharacterTheme characterTheme = character.data![0].theme!;
+      late CharacterTheme characterTheme;
+      final selectedCharacterId = await characterService.getSelectedCharacterId();
+      if(selectedCharacterId == null) {
+        ref.read(selectedCharacterProvider.notifier).state = character.data![0].id;
+        characterTheme = character.data![0].theme!;
+        characterService.saveSelectedCharacterId(selectedCharacterId: character.data![0].id);
+      } else{
+        ref.read(selectedCharacterProvider.notifier).state = selectedCharacterId;
+        characterTheme = character.data!.where((character) => character.id == selectedCharacterId).first.theme!;
+      }
       ref.read(characterThemeProvider.notifier).state = characterTheme;
       await _initializeNotificationHandlerIfAccepted(characterTheme.colors!);
       final push = await getPushIfPushClicked();

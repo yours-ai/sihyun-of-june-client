@@ -11,7 +11,7 @@ class Character {
   String? name;
   CharacterInfo? character_info;
   CharacterTheme? theme;
-  bool is_image_updated;
+  bool? is_image_updated;
 
   Character(
       {required this.id,
@@ -19,7 +19,7 @@ class Character {
       required this.name,
       required this.character_info,
       required this.theme,
-      required this.is_image_updated});
+      this.is_image_updated});
 
   factory Character.fromJson(Map<String, dynamic> json) =>
       _$CharacterFromJson(json);

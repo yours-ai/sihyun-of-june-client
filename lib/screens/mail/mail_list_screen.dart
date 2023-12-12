@@ -5,7 +5,7 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
@@ -144,7 +144,9 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
         query: listMailQuery,
         builder: (context, listMailState) {
           if (listMailState.data != null && listMailState.data!.isNotEmpty) {
-            updateAllMailList(listMailState.data!);
+            final seletedCharacterMailList = mailService.filterSelectedMailList(
+                listMailState.data!, ref.watch(selectedCharacterProvider)!);
+            updateAllMailList(seletedCharacterMailList);
             if (selectedMonth == null) {
               selectedMonth = mailReceivedMonth! - 1;
             }
@@ -160,23 +162,27 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                         query: retrieveMyCharacterQuery,
                         builder: (context, state) {
                           if (state.data != null && state.data!.isNotEmpty) {
+                            final selectedCharacter = state.data!
+                                .where((character) =>
+                                    character.id ==
+                                    ref.watch(selectedCharacterProvider))
+                                .first;
                             final mainImageSrc = characterService.getMainImage(
-                                state.data![0].character_info!.images!);
+                                selectedCharacter.character_info!.images!);
                             return Expanded(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      state.data!.first.is_image_updated
+                                      selectedCharacter.is_image_updated!
                                           ? showModalBottomSheet(
                                               isScrollControlled: true,
                                               context: context,
                                               builder: (context) =>
                                                   ProfileDetailsScreen(
-                                                imageList: state.data!.first
+                                                imageList: selectedCharacter
                                                     .character_info!.images!,
-                                                id : state.data!.first.id,
                                                 index: mainImageSrc.order - 1,
                                               ),
                                             )
@@ -189,8 +195,8 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                             BorderRadius.circular(70.0),
                                         // 원형 테두리 반경
                                         border: Border.all(
-                                          color: state
-                                                  .data!.first.is_image_updated
+                                          color: selectedCharacter
+                                                  .is_image_updated!
                                               ? Color(ref
                                                   .watch(characterThemeProvider)
                                                   .colors!
