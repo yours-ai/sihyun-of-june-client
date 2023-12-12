@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../actions/character/models/Character.dart';
 import '../constants.dart';
-import '../providers/character_theme_provider.dart';
+import '../providers/character_provider.dart';
 import '../providers/common_provider.dart';
 import '../services.dart';
 import '../services/unique_cachekey_service.dart';
