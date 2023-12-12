@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/character/models/Character.dart';
-import '../providers/character_theme_provider.dart';
+import '../providers/character_provider.dart';
 import '../providers/common_provider.dart';
 import '../services/unique_cachekey_service.dart';
 
