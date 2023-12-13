@@ -168,6 +168,10 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
         ],
       ),
       actions: FilledButton(
+        style: ButtonStyle(
+          backgroundColor:
+          MaterialStateProperty.all(ColorConstants.pink),
+        ),
         onPressed: () {
           setState(() {
             isSubmitClicked = true;

@@ -123,7 +123,7 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
             mutation: getWithdrawUserMutation(onSuccess: (res, arg) async {
               widget.onWithdraw();
               await Future.delayed(const Duration(seconds: 3));
-              logout();
+              await logout();
               context.go('/login');
             }),
             builder: (context, state, mutate) {
