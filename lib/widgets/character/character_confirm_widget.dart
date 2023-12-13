@@ -101,7 +101,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
               MutationBuilder(
                 mutation: getConfirmChoiceMutation(
                   onSuccess: (res, arg) {
-                    context.go('/mails');
+                    context.go('/');
                   },
                 ),
                 builder: (context, state, mutate) => FilledButton(

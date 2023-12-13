@@ -110,6 +110,10 @@ class _TestResultWidget extends State<TestResultWidget> {
                         },
                       ),
                       builder: (context, state, mutate) => FilledButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                            MaterialStateProperty.all(ColorConstants.pink),
+                          ),
                           onPressed: () =>
                               {mutate(widget.responses.toJsonList())},
                           child: Text(tabList[_tab].button)),

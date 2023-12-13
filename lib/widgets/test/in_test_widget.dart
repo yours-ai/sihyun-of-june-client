@@ -44,7 +44,7 @@ class _InTestWidget extends State<InTestWidget> {
               ),
             );
             logout();
-            context.go('/');
+            context.go('/login');
           },
         );
       });
