@@ -30,56 +30,96 @@ class MailListScreen extends ConsumerStatefulWidget {
   MailListScreenState createState() => MailListScreenState();
 }
 
-class MailListScreenState extends ConsumerState<MailListScreen> {
+class MailListScreenState extends ConsumerState<MailListScreen>
+    with SingleTickerProviderStateMixin {
   int? mailReceivedMonth; //편지를 받은 개월 수, 1부터 시작
   int? selectedMonth; //0부터 시작
   DateTime? firstMailDate;
   List<Widget> mailWidgetList = [];
-  GlobalKey _targetKey = GlobalKey();
+  final GlobalKey _targetKey = GlobalKey();
+  AnimationController? controller;
+  Animation<double>? fadeAnimation;
+  OverlayEntry? overlayEntry;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100), // 애니메이션 지속 시간
+    );
+    fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(controller!);
+  }
 
   void changeProfileList(List<Character> characterList) {
-    OverlayEntry? overlayEntry;
     final RenderObject? renderBox =
         _targetKey.currentContext?.findRenderObject();
     if (renderBox is RenderBox) {
       final Offset offset = renderBox.localToGlobal(Offset.zero);
       overlayEntry = OverlayEntry(
         builder: (context) => GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onTap: () {
-            overlayEntry!.remove();
+            hideOverlay();
           },
-          child: Material(
-            color: Colors.black54,
-            child: Stack(
-              children: [
-                Positioned(
-                  top: offset.dy - 7,
-                  right: MediaQuery.of(context).size.width - offset.dx - 54,
-                  child: Container(
-                    width: 175,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
+          child: FadeTransition(
+            opacity: fadeAnimation!,
+            child: Material(
+              color: Colors.black54,
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: offset.dy - 7,
+                    right: MediaQuery.of(context).size.width - offset.dx - 54,
+                    child: Container(
+                      width: 175,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Column(
+                        children: [
+                          ...characterList
+                              .where((character) =>
+                                  character.id ==
+                                  ref.watch(selectedCharacterProvider))
+                              .map(
+                                (character) => CharacterChangeOverlayWidget(
+                                  character: character,
+                                ),
+                              )
+                              .toList(),
+                          ...characterList
+                              .where((character) =>
+                                  character.id !=
+                                  ref.watch(selectedCharacterProvider))
+                              .map(
+                                (character) => CharacterChangeOverlayWidget(
+                                  character: character,
+                                  hideOverlay: hideOverlay,
+                                ),
+                              )
+                              .toList(),
+                          const CharacterChangeOverlayWidget(),
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        ...characterList
-                            .map(
-                              (e) => CharacterChangeOverlayWidget(character: e),
-                            )
-                            .toList(),
-                        CharacterChangeOverlayWidget(),
-                      ],
-                    ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
       );
-      Overlay.of(context).insert(overlayEntry);
+      Overlay.of(context).insert(overlayEntry!);
+      controller!.forward();
     }
+  }
+
+  void hideOverlay() {
+    controller!.reverse().then((_) {
+      overlayEntry!.remove();
+    });
   }
 
   void checkMailNumber(List<Mail> mails) {
@@ -239,6 +279,9 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                     onLongPress: () {
                                       changeProfileList(state.data!);
                                     },
+                                    onDoubleTap: () => characterService
+                                        .changeCharacterByDoubleTap(
+                                            ref, state.data!),
                                     child: Container(
                                       key: _targetKey,
                                       padding: const EdgeInsets.all(2),

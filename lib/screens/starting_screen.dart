@@ -43,14 +43,25 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     final character = await getRetrieveMyCharacterQuery().result;
     if (character.data!.isNotEmpty) {
       late CharacterTheme characterTheme;
-      final selectedCharacterId = await characterService.getSelectedCharacterId();
-      if(selectedCharacterId == null) {
-        ref.read(selectedCharacterProvider.notifier).state = character.data![0].id;
+      final selectedCharacterId =
+          await characterService.getSelectedCharacterId('CHARACTER_ID');
+      ref.read(beforeSelectedCharacterProvider.notifier).state =
+          await characterService.getSelectedCharacterId('BEFORE_CHARACTER_ID');
+      if (selectedCharacterId == null) {
+        ref.read(selectedCharacterProvider.notifier).state =
+            character.data![0].id;
         characterTheme = character.data![0].theme!;
-        characterService.saveSelectedCharacterId(selectedCharacterId: character.data![0].id);
-      } else{
-        ref.read(selectedCharacterProvider.notifier).state = selectedCharacterId;
-        characterTheme = character.data!.where((character) => character.id == selectedCharacterId).first.theme!;
+        characterService.saveSelectedCharacterId(
+          selectedCharacterId: character.data![0].id,
+          storageKey: 'CHARACTER_ID',
+        );
+      } else {
+        ref.read(selectedCharacterProvider.notifier).state =
+            selectedCharacterId;
+        characterTheme = character.data!
+            .where((character) => character.id == selectedCharacterId)
+            .first
+            .theme!;
       }
       ref.read(characterThemeProvider.notifier).state = characterTheme;
       await _initializeNotificationHandlerIfAccepted(characterTheme.colors!);
@@ -116,7 +127,8 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     return initialMessage;
   }
 
-  _initializeNotificationHandlerIfAccepted(CharacterColors characterColors) async {
+  _initializeNotificationHandlerIfAccepted(
+      CharacterColors characterColors) async {
     final isAccepted = await getIsNotificationAccepted();
     if (isAccepted == true) {
       notificationService.initializeNotificationHandlers(ref, characterColors);

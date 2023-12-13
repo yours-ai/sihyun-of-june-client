@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
@@ -23,50 +24,62 @@ class UserProfileWidget extends ConsumerStatefulWidget {
 }
 
 class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
-  void _showMultiCharacterModal() {
+  void _showMultiCharacterModal(List<Character> characterList) {
     showModalBottomSheet(
       backgroundColor: ColorConstants.lightGray,
       context: context,
       showDragHandle: true,
       builder: (context) {
         return Container(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
           margin: const EdgeInsets.symmetric(horizontal: 10),
-          height: 300,
           decoration: BoxDecoration(
             color: ColorConstants.background,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(16),
           ),
-          child: QueryBuilder( // TODO : 쿼리빌더 빼기
-            query: getRetrieveMyCharacterQuery(),
-            builder: (context, state) => Column(
-              children: [
-                ...state.data!
-                    .map((character) => CharacterChangeListWidget(
-                        character: character, isSelected: false))
-                    .toList(),
-                Row(
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
-                        child: Icon(
-                          PhosphorIcons.plus_circle_fill,
-                          color: ColorConstants.primary,
-                          size: 40,
-                        )),
-                    Expanded(
-                      child: Text(
-                        '새 친구 만나기',
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: ColorConstants.primary,
-                        ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ...characterList
+                  .where((character) =>
+                      ref.watch(selectedCharacterProvider) == character.id)
+                  .map((character) => CharacterChangeListWidget(
+                      character: character,
+                      isSelected:
+                          ref.watch(selectedCharacterProvider) == character.id))
+                  .toList(),
+              ...characterList
+                  .where((character) =>
+                      ref.watch(selectedCharacterProvider) != character.id)
+                  .map((character) => CharacterChangeListWidget(
+                      character: character,
+                      isSelected:
+                          ref.watch(selectedCharacterProvider) == character.id))
+                  .toList(),
+              Row(
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
+                      child: Icon(
+                        PhosphorIcons.plus_circle_fill,
+                        color: ColorConstants.primary,
+                        size: 40,
+                      )),
+                  Expanded(
+                    child: Text(
+                      '새 친구 만나기',
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: ColorConstants.primary,
                       ),
                     ),
-                  ],
-                )
-              ],
-            ),
+                  ),
+                ],
+              )
+            ],
           ),
         );
       },
@@ -106,12 +119,11 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               )
                             : context.push('/mails/my-character');
                       },
-                      onDoubleTap: () {
-                        context.push('/character');
-                      },
+                      onDoubleTap: () => characterService
+                          .changeCharacterByDoubleTap(ref, state.data!),
                       onLongPress: () {
-                        _showMultiCharacterModal();
-                      }, //3.0작업
+                        _showMultiCharacterModal(state.data!);
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(1.5), // 내부 패딩
                         decoration: BoxDecoration(
