@@ -22,7 +22,7 @@ Future<String> fetchTestStatus() async {
 }
 
 Future<Map<String, dynamic>> fetchPendingTest() async {
-  final response = await dio.get('/character/test/pending/');
+  final response = await dio.get('/character/v3/test/pending/');
   return response.data;
 }
 
@@ -32,7 +32,7 @@ Future<void> confirmChoice(int id) async {
 }
 
 Future<List<Character>> fetchCharacters() async {
-  final response = await dio.get('/character/v2/characters/');
+  final response = await dio.get('/character/v3/characters/');
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }
 
@@ -42,11 +42,16 @@ Future<void> denyChoice(int id) async {
 }
 
 Future<List<Character>> fetchMyCharacter() async {
-  final response = await dio.get('/character/v2/me/characters/');
+  final response = await dio.get('/character/v3/me/characters/');
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }
 
 Future<Character> fetchCharacterById(int id) async {
-  final response = await dio.get('/character/v2/characters/$id/');
+  final response = await dio.get('/character/v3/characters/$id/');
   return Character.fromJson(response.data);
+}
+
+Future<void> readCharacterStory(int id) async {
+  await dio.post('/character/me/story/read/', data: {'character_id': id});
+  return;
 }

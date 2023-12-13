@@ -50,7 +50,7 @@ class _ReasonTabWidgetState extends State<ReasonTabWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text(
                     '탈퇴 사유를 알려주시면,\n더욱 개선된 서비스로 찾아뵙겠습니다.',
                     style: TextStyle(

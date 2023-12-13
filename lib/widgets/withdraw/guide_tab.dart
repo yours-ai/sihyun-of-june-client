@@ -1,13 +1,9 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
-import 'package:project_june_client/actions/character/models/CharacterColors.dart';
-import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
-import 'package:project_june_client/providers/character_theme_provider.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -127,7 +123,7 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
             mutation: getWithdrawUserMutation(onSuccess: (res, arg) async {
               widget.onWithdraw();
               await Future.delayed(const Duration(seconds: 3));
-              logout();
+              await logout();
               context.go('/login');
             }),
             builder: (context, state, mutate) {

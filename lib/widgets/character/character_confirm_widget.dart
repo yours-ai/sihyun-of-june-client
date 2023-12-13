@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/CharacterColors.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
@@ -101,7 +101,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
               MutationBuilder(
                 mutation: getConfirmChoiceMutation(
                   onSuccess: (res, arg) {
-                    context.go('/mails');
+                    context.go('/');
                   },
                 ),
                 builder: (context, state, mutate) => FilledButton(

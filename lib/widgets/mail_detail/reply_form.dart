@@ -3,6 +3,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
@@ -27,9 +28,19 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  void dispose() {
-    controller.dispose();
+  void initState() {
+    super.initState();
+    mailService.getBeforeReply(controller: controller, mailId: widget.mail.id);
+  }
+
+  @override
+  void dispose() async {
     super.dispose();
+    await mailService.saveBeforeReply(
+      reply: controller.value.text,
+      mailId: widget.mail.id,
+    );
+    controller.dispose();
   }
 
   ReplyMailDTO getReplyDTO() {
@@ -42,8 +53,12 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   @override
   Widget build(BuildContext context) {
     final mutation = getSendMailReplyMutation(
-      refetchQueries: ['character-sent-mail/${widget.mail.id}', 'character-sent-mail-list'],
+      refetchQueries: [
+        'character-sent-mail/${widget.mail.id}',
+        'character-sent-mail-list'
+      ],
       onSuccess: (res, arg) async {
+        await mailService.deleteBeforeReply(widget.mail.id);
         context.pop();
       },
     );
@@ -91,6 +106,12 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                     return '답장을 입력해주세요.';
                   }
                   return null;
+                },
+                onChanged: (value) {
+                  mailService.saveBeforeReply(
+                    reply: value,
+                    mailId: widget.mail.id,
+                  );
                 },
                 controller: controller,
                 maxLines: null,

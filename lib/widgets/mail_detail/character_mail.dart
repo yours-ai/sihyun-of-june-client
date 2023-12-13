@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 
 import '../../actions/mails/models/Mail.dart';
 import '../../constants.dart';

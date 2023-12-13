@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/providers/character_theme_provider.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/profile_widget.dart';
 
 import '../../screens/character_test/character_choice_screen.dart';
@@ -50,7 +50,6 @@ class CharacterDetailWidget extends ConsumerWidget {
                     children: [
                       ProfileWidget(
                         name: character.name!,
-                        defaultImage: character.default_image,
                         characterInfo: character.character_info!,
                         primaryColor: Color(character.theme!.colors!.primary!),
                       ),

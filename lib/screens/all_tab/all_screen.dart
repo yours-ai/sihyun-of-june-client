@@ -182,19 +182,7 @@ class _AllScreenState extends State<AllScreen> {
                 _showWithdrawModal();
               },
             ),
-            QueryBuilder(
-              query: getRefferalCodeQuery(),
-              builder: (context, state) {
-                return MenuWidget(
-                  title: '의견 남기기',
-                  onPressed: () {
-                    launchUrl(Uri.parse(
-                        'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
-                  },
-                );
-              },
-            ),
-            MenuTitleWidget(title: '고객센터'),
+            const MenuTitleWidget(title: '고객센터'),
             MenuWidget(
               title: '공지',
               onPressed: () => launchUrl(Uri.parse(Urls.notice)),

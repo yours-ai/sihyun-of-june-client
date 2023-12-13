@@ -108,3 +108,16 @@ Mutation<void, int> getConfirmChoiceMutation({
     onError: onError,
   );
 }
+
+Mutation<void, int> getReadCharacterStoryMutation({
+  refetchQueries = const [],
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, int>(
+    refetchQueries: refetchQueries,
+    queryFn: readCharacterStory,
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}

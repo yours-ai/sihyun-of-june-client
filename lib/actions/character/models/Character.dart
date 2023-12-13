@@ -6,22 +6,20 @@ part 'Character.g.dart';
 
 @JsonSerializable()
 class Character {
-  num id;
+  int id;
   bool is_active;
   String? name;
-  String default_image;
-  bool? is_blurred;
   CharacterInfo? character_info;
   CharacterTheme? theme;
+  bool? is_image_updated;
 
   Character(
       {required this.id,
       required this.is_active,
       required this.name,
-      required this.default_image,
-      this.is_blurred,
       required this.character_info,
-      required this.theme});
+      required this.theme,
+      this.is_image_updated});
 
   factory Character.fromJson(Map<String, dynamic> json) =>
       _$CharacterFromJson(json);
