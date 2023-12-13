@@ -46,6 +46,7 @@ class CharacterChangeListWidget extends ConsumerWidget {
                     .src),
                 width: 40,
                 height: 40,
+                fit: BoxFit.cover,
               ),
             ),
           ),
