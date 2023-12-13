@@ -107,6 +107,12 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   }
                   return null;
                 },
+                onChanged: (value) {
+                  mailService.saveBeforeReply(
+                    reply: value,
+                    mailId: widget.mail.id,
+                  ).then((value) => print("asdasd"));
+                },
                 controller: controller,
                 maxLines: null,
                 keyboardType: TextInputType.multiline,
