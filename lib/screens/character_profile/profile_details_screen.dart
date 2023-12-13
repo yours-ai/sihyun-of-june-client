@@ -105,13 +105,14 @@ class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
                           ),
                           Positioned.fill(
                             child: Container(
-                              color: Colors.black.withOpacity(0.3),
+                              color: Colors.black.withOpacity(0.9),
                             ),
                           ),
                           Positioned.fill(
                             child: Center(
                               child: Text(
-                                widget.imageList[index].quest_text,
+                                widget.imageList[index].quest_text
+                                    .replaceAll("\\n", "\n"),
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.white,
