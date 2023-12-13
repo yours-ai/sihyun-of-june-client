@@ -16,6 +16,7 @@ import '../../actions/auth/queries.dart';
 import '../../constants.dart';
 import '../../services.dart';
 import '../../widgets/common/title_layout.dart';
+import '../../widgets/retest_modal_widget.dart';
 
 class AllScreen extends StatefulWidget {
   const AllScreen({super.key});
@@ -163,6 +164,14 @@ class _AllScreenState extends State<AllScreen> {
               title: '친구 초대하고 포인트 받기',
               onPressed: () {
                 context.push('/share');
+              },
+            ),
+            MenuWidget(
+              title: '상대 변경하기',
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) => const RetestModalWidget());
               },
             ),
             const MenuTitleWidget(title: '내 정보'),

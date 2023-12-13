@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 
 import '../actions/transaction/queries.dart';
 
+enum PurchaseState { coin, point, both, impossible }
+
 class TransactionService {
   void purchaseUpdatedListener(BuildContext context,
       PurchaseDetails purchaseDetails, InAppPurchase inAppPurchase) {
@@ -114,5 +116,17 @@ class TransactionService {
               rawPrice: e['rawPrice'],
             ))
         .toList();
+  }
+
+  PurchaseState getPurchaseState(int coin, int point) {
+    if (coin >= 50 && point >= 300) {
+      return PurchaseState.both;
+    } else if (coin >= 50 && point < 300) {
+      return PurchaseState.coin;
+    } else if (coin < 50 && point >= 300) {
+      return PurchaseState.point;
+    } else {
+      return PurchaseState.impossible;
+    }
   }
 }

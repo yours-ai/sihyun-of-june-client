@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
@@ -15,6 +16,7 @@ import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/notification_permission_check.dart';
+import 'package:project_june_client/widgets/retest_modal_widget.dart';
 
 import '../../actions/character/models/Character.dart';
 import '../../actions/mails/models/Mail.dart';
@@ -51,6 +53,20 @@ class MailListScreenState extends ConsumerState<MailListScreen>
       duration: const Duration(milliseconds: 100), // 애니메이션 지속 시간
     );
     fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(controller!);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback(
+      (_) async {
+        final character = await getRetrieveMyCharacterQuery().result;
+        if (character.data != null) { //TODO - 편지 마무리 bool로 확인하기
+          showModalBottomSheet(
+              context: context, builder: (context) => RetestModalWidget());
+        }
+      },
+    );
   }
 
   void changeProfileList(List<Character> characterList) {
