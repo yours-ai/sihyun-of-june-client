@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 
 import '../../actions/mails/models/Mail.dart';
@@ -8,8 +9,11 @@ import 'mail_info.dart';
 
 class CharacterMailWidget extends ConsumerWidget {
   final Mail mail;
+  final CharacterTheme characterThemeInMail;
 
-  const CharacterMailWidget({Key? key, required this.mail}) : super(key: key);
+  const CharacterMailWidget(
+      {Key? key, required this.mail, required this.characterThemeInMail})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -22,6 +26,7 @@ class CharacterMailWidget extends ConsumerWidget {
           byFullName: mail.by_first_name,
           availableAt: mail.available_at,
           isMe: false,
+          primaryColorInMail: characterThemeInMail.colors!.primary!,
         ),
         const SizedBox(
           height: 22,
@@ -29,7 +34,7 @@ class CharacterMailWidget extends ConsumerWidget {
         Text(
           mail.description,
           style: TextStyle(
-            fontFamily: ref.watch(characterThemeProvider).font,
+            fontFamily: characterThemeInMail.font,
             fontSize: 19,
             fontWeight: FontWeight.bold,
             color: ColorConstants.primary,

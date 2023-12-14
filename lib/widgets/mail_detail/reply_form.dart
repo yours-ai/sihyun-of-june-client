@@ -16,8 +16,11 @@ import '../../constants.dart';
 
 class ReplyFormWidget extends ConsumerStatefulWidget {
   final Mail mail;
+  final int primaryColorInMail;
 
-  const ReplyFormWidget({Key? key, required this.mail}) : super(key: key);
+  const ReplyFormWidget(
+      {Key? key, required this.mail, required this.primaryColorInMail})
+      : super(key: key);
 
   @override
   ReplyFormWidgetState createState() => ReplyFormWidgetState();
@@ -93,6 +96,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
           byImage: widget.mail.to_image,
           isMe: true,
           availableAt: clock.now(),
+          primaryColorInMail: widget.primaryColorInMail,
         ),
         Form(
           key: _formKey,

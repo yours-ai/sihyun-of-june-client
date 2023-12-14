@@ -15,6 +15,7 @@ class MailInfoWidget extends ConsumerWidget {
   final String byFullName;
   final DateTime availableAt;
   final bool isMe;
+  final int primaryColorInMail;
 
   const MailInfoWidget({
     Key? key,
@@ -23,6 +24,7 @@ class MailInfoWidget extends ConsumerWidget {
     required this.byFullName,
     required this.availableAt,
     required this.isMe,
+    required this.primaryColorInMail,
   }) : super(key: key);
 
   @override
@@ -93,8 +95,7 @@ class MailInfoWidget extends ConsumerWidget {
                       fontFamily: 'Pretendard',
                       fontSize: 12,
                       fontWeight: FontWeightConstants.semiBold,
-                      color: Color(
-                          ref.watch(characterThemeProvider).colors!.primary!),
+                      color: Color(primaryColorInMail),
                     ),
                   ),
                 ],
