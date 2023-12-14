@@ -60,8 +60,14 @@ class MailListScreenState extends ConsumerState<MailListScreen>
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback(
       (_) async {
-        final character = await getRetrieveMyCharacterQuery().result;
-        if (character.data != null) { //TODO - 편지 마무리 bool로 확인하기
+        final selectedCharacter = await getRetrieveMyCharacterQuery()
+            .result
+            .then((value) => value.data
+                ?.where((character) =>
+                    character.id == ref.watch(selectedCharacterProvider))
+                .first);
+        if (selectedCharacter != null &&
+            selectedCharacter!.is_30days_finished!) {
           showModalBottomSheet(
               context: context, builder: (context) => RetestModalWidget());
         }

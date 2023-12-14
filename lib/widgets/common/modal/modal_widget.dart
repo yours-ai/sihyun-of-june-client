@@ -33,6 +33,7 @@ class ModalWidget extends StatelessWidget {
                     height: 28/21,
                     fontWeight: FontWeight.bold,
                     color: ColorConstants.primary,
+                    letterSpacing: 0.5,
                   ),
                 )),
             description,

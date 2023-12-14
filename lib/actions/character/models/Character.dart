@@ -13,18 +13,19 @@ class Character {
   CharacterInfo? character_info;
   CharacterTheme? theme;
   bool? is_image_updated;
-  DateTime? date_allocated;
+  String? date_allocated;
+  bool? is_30days_finished;
 
-  Character({
-    required this.id,
-    required this.is_active,
-    required this.name,
-    required this.first_name,
-    required this.character_info,
-    required this.theme,
-    this.is_image_updated,
-    this.date_allocated,
-  });
+  Character(
+      {required this.id,
+      required this.is_active,
+      required this.name,
+      required this.first_name,
+      required this.character_info,
+      required this.theme,
+      this.is_image_updated,
+      this.date_allocated,
+      this.is_30days_finished});
 
   factory Character.fromJson(Map<String, dynamic> json) =>
       _$CharacterFromJson(json);

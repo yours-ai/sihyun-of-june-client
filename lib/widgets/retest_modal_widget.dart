@@ -121,7 +121,6 @@ class RetestModalWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return QueryBuilder(
       query: getRetrieveMyCharacterQuery(),
-      //TODO - hasTimeLeft 쿼리로 바꾸기 + 이름 성 빼기
       builder: (context, state) {
         if (state.data != null) {
           final selectedCharacter = state.data!
@@ -129,14 +128,11 @@ class RetestModalWidget extends ConsumerWidget {
                   character.id == ref.watch(selectedCharacterProvider))
               .first;
           return ModalWidget(
-            title: hasTimeLeft
-                ? '아직 ${selectedCharacter.name}이와의 시간이 남았어요.\n그래도 새 친구를 만나시겠어요?'
-                : '정말 다른 상대로 정해드릴까요?',
-            description: hasTimeLeft
-                ? ModalDescriptionWidget(
-                    description:
-                        '${selectedCharacter.name}이와의 기억이 지워지고,\n더 이상 편지를 받아볼 수 없어요.')
-                : const SizedBox.shrink(),
+            title:
+                '아직 ${selectedCharacter.first_name}이와의 시간이 남았어요.\n그래도 새 친구를 만나시겠어요?',
+            description: ModalDescriptionWidget(
+                description:
+                    '${selectedCharacter.first_name}이와의 기억이 지워지고,\n더 이상 편지를 받아볼 수 없어요.'),
             choiceColumn: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
