@@ -119,8 +119,11 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               )
                             : context.push('/mails/my-character');
                       },
-                      onDoubleTap: () => characterService
-                          .changeCharacterByDoubleTap(ref, state.data!),
+                      onDoubleTap: () {
+                        _showMultiCharacterModal(state.data!);
+                        characterService.changeCharacterByDoubleTap(
+                            ref, state.data!);
+                      },
                       onLongPress: () {
                         _showMultiCharacterModal(state.data!);
                       },

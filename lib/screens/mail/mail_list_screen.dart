@@ -298,9 +298,12 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                     onLongPress: () {
                                       changeProfileList(state.data!);
                                     },
-                                    onDoubleTap: () => characterService
-                                        .changeCharacterByDoubleTap(
-                                            ref, state.data!),
+                                    onDoubleTap: () {
+                                      changeProfileList(state.data!);
+                                      characterService
+                                          .changeCharacterByDoubleTap(
+                                              ref, state.data!);
+                                    },
                                     child: Container(
                                       key: _targetKey,
                                       padding: const EdgeInsets.all(2),
