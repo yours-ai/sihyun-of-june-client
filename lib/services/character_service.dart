@@ -70,44 +70,32 @@ class CharacterService {
 
   void changeCharacterByDoubleTap(
       WidgetRef ref, List<Character> characterList) async {
-    if (ref.read(beforeSelectedCharacterProvider) == null) {
-      final notSelectedCharacterList = characterList.where(
-          (character) => character.id != ref.watch(selectedCharacterProvider));
-      if (notSelectedCharacterList.isNotEmpty) {
+    final notSelectedCharacterList = characterList.where(
+        (character) => character.id != ref.watch(selectedCharacterProvider));
+    if (notSelectedCharacterList.isNotEmpty) {
+      void changeProviderAndStorage(int beforeCharacterId) async {
         await saveSelectedCharacterId(
-            selectedCharacterId: notSelectedCharacterList.first.id,
-            storageKey: 'CHARACTER_ID');
+            selectedCharacterId: beforeCharacterId, storageKey: 'CHARACTER_ID');
         await saveSelectedCharacterId(
           selectedCharacterId: ref.read(selectedCharacterProvider)!,
           storageKey: 'BEFORE_CHARACTER_ID',
         );
         ref.read(beforeSelectedCharacterProvider.notifier).state =
             await getSelectedCharacterId('BEFORE_CHARACTER_ID');
-        ref.read(selectedCharacterProvider.notifier).state =
-            notSelectedCharacterList.first.id;
+        final changeCharacterId = await getSelectedCharacterId('CHARACTER_ID');
+        ref.read(selectedCharacterProvider.notifier).state = changeCharacterId;
         ref.read(characterThemeProvider.notifier).state = characterList
-            .where((character) =>
-                character.id == ref.watch(selectedCharacterProvider))
+            .where((character) => character.id == changeCharacterId)
             .first
             .theme!;
       }
-      return;
+
+      if (ref.read(beforeSelectedCharacterProvider) == null) {
+        changeProviderAndStorage(notSelectedCharacterList.first.id);
+      } else {
+        changeProviderAndStorage(ref.read(beforeSelectedCharacterProvider)!);
+      }
     }
-    await saveSelectedCharacterId(
-        selectedCharacterId: ref.read(beforeSelectedCharacterProvider)!,
-        storageKey: 'CHARACTER_ID');
-    await saveSelectedCharacterId(
-      selectedCharacterId: ref.read(selectedCharacterProvider)!,
-      storageKey: 'BEFORE_CHARACTER_ID',
-    );
-    ref.read(beforeSelectedCharacterProvider.notifier).state =
-        await getSelectedCharacterId('BEFORE_CHARACTER_ID');
-    final changeCharacterId = await getSelectedCharacterId('CHARACTER_ID');
-    ref.read(selectedCharacterProvider.notifier).state = changeCharacterId!;
-    ref.read(characterThemeProvider.notifier).state = characterList
-        .where((character) => character.id == changeCharacterId)
-        .first
-        .theme!;
   }
 
   void changeCharacterByTap(WidgetRef ref, Character character) async {
