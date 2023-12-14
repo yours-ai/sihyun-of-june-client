@@ -95,7 +95,7 @@ class _TestResultWidget extends State<TestResultWidget> {
               ? OutlinedButton(
                   onPressed: () {},
                   child: Text(tabList[_tab].button,
-                      style: TextStyle(color: ColorConstants.neutral)),
+                      style: TextStyle(color: ColorConstants.gray)),
                 )
               : _tab == 1
                   ? MutationBuilder(
@@ -110,6 +110,10 @@ class _TestResultWidget extends State<TestResultWidget> {
                         },
                       ),
                       builder: (context, state, mutate) => FilledButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                            MaterialStateProperty.all(ColorConstants.pink),
+                          ),
                           onPressed: () =>
                               {mutate(widget.responses.toJsonList())},
                           child: Text(tabList[_tab].button)),

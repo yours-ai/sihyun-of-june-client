@@ -232,12 +232,10 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         query: listMailQuery,
         builder: (context, listMailState) {
           if (listMailState.data != null && listMailState.data!.isNotEmpty) {
-            final seletedCharacterMailList = mailService.filterSelectedMailList(
+            final selectedCharacterMailList = mailService.filterSelectedMailList(
                 listMailState.data!, ref.watch(selectedCharacterProvider)!);
-            updateAllMailList(seletedCharacterMailList);
-            if (selectedMonth == null) {
-              selectedMonth = mailReceivedMonth! - 1;
-            }
+            updateAllMailList(selectedCharacterMailList);
+            selectedMonth ??= mailReceivedMonth! - 1;
           }
           return listMailState.data == null
               ? const SizedBox()

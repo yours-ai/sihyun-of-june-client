@@ -94,14 +94,16 @@ class CharacterConfirmWidget extends ConsumerWidget {
                   onPressed: () {
                     _showDenyModal();
                   },
-                  child: const Text('다른 상대로 해주세요.')),
+                  child: Text('다른 상대로 해주세요.', style: TextStyle(
+                    color: ColorConstants.gray,
+                  ),)),
               const SizedBox(
                 height: 10,
               ),
               MutationBuilder(
                 mutation: getConfirmChoiceMutation(
                   onSuccess: (res, arg) {
-                    context.go('/mails');
+                    context.go('/');
                   },
                 ),
                 builder: (context, state, mutate) => FilledButton(
