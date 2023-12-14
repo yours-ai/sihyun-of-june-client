@@ -16,3 +16,5 @@ final characterThemeProvider = StateProvider.autoDispose<CharacterTheme>((ref) {
 });
 
 final selectedCharacterProvider = StateProvider<int?>((ref) => null);
+
+final beforeSelectedCharacterProvider = StateProvider<int?>((ref) => null);

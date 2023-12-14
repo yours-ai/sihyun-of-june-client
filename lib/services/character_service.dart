@@ -1,13 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 
 class CharacterService {
   const CharacterService();
-
-  static const _CHARACTER_ID_KEY = 'CHARACTER_ID';
 
   List<CharacterImage> selectStackedImageList(List<CharacterImage> imageList) {
     final revealedImageList =
@@ -49,23 +50,64 @@ class CharacterService {
     ];
   }
 
-  Future<int?> getSelectedCharacterId() async {
+  Future<int?> getSelectedCharacterId(String storageKey) async {
     final storage = getSecureStorage();
-    final selectedCharacterId = await storage.read(key: _CHARACTER_ID_KEY);
+    final selectedCharacterId = await storage.read(key: storageKey);
     if (selectedCharacterId == null) return null;
     return int.parse(selectedCharacterId);
   }
 
-  Future<void> saveSelectedCharacterId({
-    required int selectedCharacterId,
-  }) async {
+  Future<void> saveSelectedCharacterId(
+      {required int selectedCharacterId, required String storageKey}) async {
     final storage = getSecureStorage();
-    await storage.write(
-        key: _CHARACTER_ID_KEY, value: selectedCharacterId.toString());
+    await storage.write(key: storageKey, value: selectedCharacterId.toString());
   }
 
-  Future<void> deleteSelectedCharacterId() async {
+  Future<void> deleteSelectedCharacterId(String storageKey) async {
     final storage = getSecureStorage();
-    await storage.delete(key: _CHARACTER_ID_KEY);
+    await storage.delete(key: storageKey);
+  }
+
+  void changeCharacterByDoubleTap(
+      WidgetRef ref, List<Character> characterList) async {
+    final notSelectedCharacterList = characterList.where(
+        (character) => character.id != ref.watch(selectedCharacterProvider));
+    if (notSelectedCharacterList.isNotEmpty) {
+      void changeProviderAndStorage(int beforeCharacterId) async {
+        await saveSelectedCharacterId(
+            selectedCharacterId: beforeCharacterId, storageKey: 'CHARACTER_ID');
+        await saveSelectedCharacterId(
+          selectedCharacterId: ref.read(selectedCharacterProvider)!,
+          storageKey: 'BEFORE_CHARACTER_ID',
+        );
+        ref.read(beforeSelectedCharacterProvider.notifier).state =
+            await getSelectedCharacterId('BEFORE_CHARACTER_ID');
+        final changeCharacterId = await getSelectedCharacterId('CHARACTER_ID');
+        ref.read(selectedCharacterProvider.notifier).state = changeCharacterId;
+        ref.read(characterThemeProvider.notifier).state = characterList
+            .where((character) => character.id == changeCharacterId)
+            .first
+            .theme!;
+      }
+
+      if (ref.read(beforeSelectedCharacterProvider) == null) {
+        changeProviderAndStorage(notSelectedCharacterList.first.id);
+      } else {
+        changeProviderAndStorage(ref.read(beforeSelectedCharacterProvider)!);
+      }
+    }
+  }
+
+  void changeCharacterByTap(WidgetRef ref, Character character) async {
+    saveSelectedCharacterId(
+        selectedCharacterId: character.id, storageKey: 'CHARACTER_ID');
+    saveSelectedCharacterId(
+      selectedCharacterId: ref.read(selectedCharacterProvider)!,
+      storageKey: 'BEFORE_CHARACTER_ID',
+    );
+    ref.read(beforeSelectedCharacterProvider.notifier).state =
+        ref.read(selectedCharacterProvider)!;
+    ref.read(selectedCharacterProvider.notifier).state = character.id;
+    ref.read(characterThemeProvider.notifier).state = character.theme!;
   }
 }
