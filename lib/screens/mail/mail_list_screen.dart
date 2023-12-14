@@ -8,11 +8,13 @@ import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
+import 'package:project_june_client/widgets/character_change_overlay_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/notification_permission_check.dart';
 
+import '../../actions/character/models/Character.dart';
 import '../../actions/mails/models/Mail.dart';
 import '../../actions/mails/queries.dart';
 import '../../actions/notification/queries.dart';
@@ -33,6 +35,52 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
   int? selectedMonth; //0부터 시작
   DateTime? firstMailDate;
   List<Widget> mailWidgetList = [];
+  GlobalKey _targetKey = GlobalKey();
+
+  void changeProfileList(List<Character> characterList) {
+    OverlayEntry? overlayEntry;
+    final RenderObject? renderBox =
+        _targetKey.currentContext?.findRenderObject();
+    if (renderBox is RenderBox) {
+      final Offset offset = renderBox.localToGlobal(Offset.zero);
+      overlayEntry = OverlayEntry(
+        builder: (context) => GestureDetector(
+          onTap: () {
+            overlayEntry!.remove();
+          },
+          child: Material(
+            color: Colors.black54,
+            child: Stack(
+              children: [
+                Positioned(
+                  top: offset.dy - 7,
+                  right: MediaQuery.of(context).size.width - offset.dx - 54,
+                  child: Container(
+                    width: 175,
+                    clipBehavior: Clip.hardEdge,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Column(
+                      children: [
+                        ...characterList
+                            .map(
+                              (e) => CharacterChangeOverlayWidget(character: e),
+                            )
+                            .toList(),
+                        CharacterChangeOverlayWidget(),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+      Overlay.of(context).insert(overlayEntry);
+    }
+  }
 
   void checkMailNumber(List<Mail> mails) {
     firstMailDate = mails.last.available_at;
@@ -186,7 +234,11 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
                                             )
                                           : context.push('/mails/my-character');
                                     },
+                                    onLongPress: () {
+                                      changeProfileList(state.data!);
+                                    },
                                     child: Container(
+                                      key: _targetKey,
                                       padding: const EdgeInsets.all(2),
                                       decoration: BoxDecoration(
                                         borderRadius:

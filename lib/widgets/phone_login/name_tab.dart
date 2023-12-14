@@ -108,7 +108,7 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
                     '취소하기',
                     style: TextStyle(
                       fontSize: 16,
-                      color: ColorConstants.neutral,
+                      color: ColorConstants.gray,
                       fontWeight: FontWeightConstants.semiBold,
                       height: 1.0,
                     ),

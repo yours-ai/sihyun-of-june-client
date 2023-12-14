@@ -142,7 +142,7 @@ class _ReasonTabWidgetState extends State<ReasonTabWidget> {
               widget.onQuitResponse(widget.dto);
             }
           },
-          child: const Text('다음'),
+          child: Text('다음', style: TextStyle(color: ColorConstants.gray)),
         ),
       ),
     );
