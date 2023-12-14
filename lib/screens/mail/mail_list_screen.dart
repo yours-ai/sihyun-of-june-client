@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
@@ -232,44 +233,64 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         query: listMailQuery,
         builder: (context, listMailState) {
           if (listMailState.data != null && listMailState.data!.isNotEmpty) {
-            final selectedCharacterMailList = mailService.filterSelectedMailList(
-                listMailState.data!, ref.watch(selectedCharacterProvider)!);
+            final selectedCharacterMailList =
+                mailService.filterSelectedMailList(
+                    listMailState.data!, ref.watch(selectedCharacterProvider)!);
             updateAllMailList(selectedCharacterMailList);
             selectedMonth ??= mailReceivedMonth! - 1;
           }
           return listMailState.data == null
               ? const SizedBox()
               : TitleLayout(
-                  title: Row(
-                    children: [
-                      const Expanded(child: SizedBox()),
-                      const TitleUnderline(titleText: "받은 편지함"),
-                      QueryBuilder(
-                        query: retrieveMyCharacterQuery,
-                        builder: (context, state) {
-                          if (state.data != null && state.data!.isNotEmpty) {
-                            final selectedCharacter = state.data!
-                                .where((character) =>
-                                    character.id ==
-                                    ref.watch(selectedCharacterProvider))
-                                .first;
-                            final mainImageSrc = characterService.getMainImage(
-                                selectedCharacter.character_info!.images!);
-                            return Expanded(
+                  title: QueryBuilder(
+                    query: retrieveMyCharacterQuery,
+                    builder: (context, state) {
+                      if (state.data != null && state.data!.isNotEmpty) {
+                        final selectedCharacter = state.data!
+                            .where((character) =>
+                                character.id ==
+                                ref.watch(selectedCharacterProvider))
+                            .first;
+                        final mainImageSrc = characterService.getMainImage(
+                            selectedCharacter.character_info!.images!);
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    '${selectedCharacter.first_name}이와의\n${mailService.getDDay(selectedCharacter.date_allocated!)}',
+                                    style: TextStyle(
+                                      fontFamily: 'NanumJungHagSaeng',
+                                      color: ColorConstants.primary,
+                                      fontSize: 18.5,
+                                      height: 15 / 18.5,
+                                      letterSpacing: 2,
+                                      fontWeight: FontWeightConstants.semiBold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const TitleUnderline(titleText: "받은 편지함"),
+                            Expanded(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      selectedCharacter.is_image_updated!
+                                      selectedCharacter!.is_image_updated!
                                           ? showModalBottomSheet(
                                               isScrollControlled: true,
                                               context: context,
                                               builder: (context) =>
                                                   ProfileDetailsScreen(
-                                                imageList: selectedCharacter
+                                                imageList: selectedCharacter!
                                                     .character_info!.images!,
-                                                index: mainImageSrc.order - 1,
+                                                index: mainImageSrc!.order - 1,
                                               ),
                                             )
                                           : context.push('/mails/my-character');
@@ -309,7 +330,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                                 imageCacheDurationProvider),
                                             cacheKey: UniqueCacheKeyService
                                                 .makeUniqueKey(
-                                                    mainImageSrc.src),
+                                                    mainImageSrc!.src),
                                             mainImageSrc.src,
                                             fit: BoxFit.cover,
                                           ),
@@ -319,12 +340,13 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                   ),
                                 ],
                               ),
-                            );
-                          }
-                          return const Expanded(child: SizedBox());
-                        },
-                      ),
-                    ],
+                            )
+                          ],
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
                   ),
                   body: Stack(
                     children: [
