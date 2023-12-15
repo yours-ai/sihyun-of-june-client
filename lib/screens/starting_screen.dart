@@ -44,17 +44,12 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     if (character.data!.isNotEmpty) {
       late CharacterTheme characterTheme;
       final selectedCharacterId =
-          await characterService.getSelectedCharacterId('CHARACTER_ID');
-      ref.read(beforeSelectedCharacterProvider.notifier).state =
-          await characterService.getSelectedCharacterId('BEFORE_CHARACTER_ID');
+          await characterService.getSelectedCharacterId();
       if (selectedCharacterId == null) {
         ref.read(selectedCharacterProvider.notifier).state =
             character.data![0].id;
         characterTheme = character.data![0].theme!;
-        characterService.saveSelectedCharacterId(
-          selectedCharacterId: character.data![0].id,
-          storageKey: 'CHARACTER_ID',
-        );
+        characterService.saveSelectedCharacterId(character.data![0].id);
       } else {
         ref.read(selectedCharacterProvider.notifier).state =
             selectedCharacterId;

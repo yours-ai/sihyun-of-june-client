@@ -49,7 +49,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 18.0),
@@ -64,7 +64,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
                       : ColorConstants.neutral,
                   fontSize: 20,
                   height: 1,
-                  letterSpacing: 2,
+                  letterSpacing: 1.5,
                   fontWeight: FontWeightConstants.semiBold,
                   fontFamily: 'NanumJungHagSaeng',
                 ),

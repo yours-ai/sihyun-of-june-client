@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -73,7 +74,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                     top: offset.dy - 7,
                     right: MediaQuery.of(context).size.width - offset.dx - 54,
                     child: Container(
-                      width: 175,
+                      width: 180,
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(6),
@@ -265,12 +266,12 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                     style: TextStyle(
                                       fontFamily: 'NanumJungHagSaeng',
                                       color: ColorConstants.primary,
-                                      fontSize: 18.5,
+                                      fontSize: 22,
                                       height: 15 / 18.5,
                                       letterSpacing: 2,
                                       fontWeight: FontWeightConstants.semiBold,
                                     ),
-                                    textAlign: TextAlign.center,
+                                    textAlign: TextAlign.start,
                                   ),
                                 ],
                               ),
@@ -282,27 +283,25 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      selectedCharacter!.is_image_updated!
+                                      selectedCharacter.is_image_updated!
                                           ? showModalBottomSheet(
                                               isScrollControlled: true,
                                               context: context,
                                               builder: (context) =>
                                                   ProfileDetailsScreen(
-                                                imageList: selectedCharacter!
+                                                imageList: selectedCharacter
                                                     .character_info!.images!,
-                                                index: mainImageSrc!.order - 1,
+                                                index: mainImageSrc.order - 1,
                                               ),
                                             )
                                           : context.push('/mails/my-character');
                                     },
-                                    onLongPress: () {
-                                      changeProfileList(state.data!);
+                                    onLongPressStart: (_) {
+                                      HapticFeedback.heavyImpact();
                                     },
-                                    onDoubleTap: () {
+                                    onLongPressEnd: (_) {
+                                      HapticFeedback.heavyImpact();
                                       changeProfileList(state.data!);
-                                      characterService
-                                          .changeCharacterByDoubleTap(
-                                              ref, state.data!);
                                     },
                                     child: Container(
                                       key: _targetKey,

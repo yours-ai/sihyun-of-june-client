@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -119,12 +120,11 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               )
                             : context.push('/mails/my-character');
                       },
-                      onDoubleTap: () {
-                        _showMultiCharacterModal(state.data!);
-                        characterService.changeCharacterByDoubleTap(
-                            ref, state.data!);
+                      onLongPressStart: (_) {
+                        HapticFeedback.heavyImpact();
                       },
-                      onLongPress: () {
+                      onLongPressEnd: (_) {
+                        HapticFeedback.heavyImpact();
                         _showMultiCharacterModal(state.data!);
                       },
                       child: Container(

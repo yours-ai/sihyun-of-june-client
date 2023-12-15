@@ -198,8 +198,7 @@ logout() async {
   } catch (e) {}
   CachedQuery.instance.deleteCache();
   dio.options.headers.clear();
-  characterService.deleteSelectedCharacterId('CHARACTER_ID');
-  characterService.deleteSelectedCharacterId('BEFORE_CHARACTER_ID');
+  characterService.deleteSelectedCharacterId();
   return;
 }
 
