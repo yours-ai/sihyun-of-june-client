@@ -34,6 +34,14 @@ class MailService {
     return normalizedDt.difference(normalizedFirstMailDate).inDays;
   }
 
+  String getDDay(DateTime startDate){
+    final goneDates = getMailDateDiff(clock.now(),startDate);
+    if(goneDates >= 29){
+      return '마지막 날';
+    }
+    return 'D-${30-goneDates}';
+  }
+
   String getMailReceiveDateStr(DateTime targetDate, bool needMonth) {
     if (needMonth || targetDate.day == 1) {
       return DateFormat('M월 d일').format(targetDate);

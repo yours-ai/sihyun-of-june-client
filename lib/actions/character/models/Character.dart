@@ -9,6 +9,7 @@ class Character {
   int id;
   bool is_active;
   String? name;
+  String? first_name;
   CharacterInfo? character_info;
   CharacterTheme? theme;
   bool? is_image_updated;
@@ -18,6 +19,7 @@ class Character {
     required this.id,
     required this.is_active,
     required this.name,
+    required this.first_name,
     required this.character_info,
     required this.theme,
     this.is_image_updated,

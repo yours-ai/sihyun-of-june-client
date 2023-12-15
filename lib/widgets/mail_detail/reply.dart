@@ -10,6 +10,7 @@ class ReplyWidget extends ConsumerWidget {
   final String byFullName;
   final Reply reply;
   final String? toImage;
+  final int primaryColorInMail;
 
   const ReplyWidget({
     Key? key,
@@ -17,6 +18,7 @@ class ReplyWidget extends ConsumerWidget {
     required this.toFullName,
     required this.byFullName,
     required this.toImage,
+    required this.primaryColorInMail,
   }) : super(key: key);
 
   @override
@@ -30,6 +32,7 @@ class ReplyWidget extends ConsumerWidget {
           availableAt: reply.created,
           byImage: toImage,
           isMe: true,
+          primaryColorInMail: primaryColorInMail,
         ),
         const SizedBox(
           height: 15,
