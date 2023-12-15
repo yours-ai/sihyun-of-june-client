@@ -14,7 +14,7 @@ class CharacterService {
 
   List<CharacterImage> selectStackedImageList(List<CharacterImage> imageList) {
     final revealedImageList =
-    imageList.where((image) => image.is_blurred == false).toList();
+        imageList.where((image) => image.is_blurred == false).toList();
     if (revealedImageList.length >= 3) {
       return revealedImageList.sublist(revealedImageList.length - 3);
     }
@@ -24,7 +24,7 @@ class CharacterService {
 
   CharacterImage getMainImage(List<CharacterImage> imageList) {
     final mainImageList =
-    imageList.where((image) => image.is_main == true).toList();
+        imageList.where((image) => image.is_main == true).toList();
     return mainImageList.first;
   }
 
@@ -71,13 +71,8 @@ class CharacterService {
   }
 
   void changeCharacterByTap(WidgetRef ref, Character character) async {
-    saveSelectedCharacterId(
-        character.id);
-    ref
-        .read(selectedCharacterProvider.notifier)
-        .state = character.id;
-    ref
-        .read(characterThemeProvider.notifier)
-        .state = character.theme!;
+    saveSelectedCharacterId(character.id);
+    ref.read(selectedCharacterProvider.notifier).state = character.id;
+    ref.read(characterThemeProvider.notifier).state = character.theme!;
   }
 }
