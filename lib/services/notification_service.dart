@@ -43,7 +43,7 @@ class NotificationService {
   void handleFCMMessageTap(RemoteMessage remoteMessage) async {
     // 앱 열릴때 실행되는 함수
     String? redirectLink = await remoteMessage.data['link'];
-    int? notificationId = await int.tryParse(remoteMessage.data['id'] ?? '');
+    int? notificationId = int.tryParse(remoteMessage.data['id'] ?? '');
     // id의 유무는 전체에게 보내면 id가 없고, 개인에게 보내면 id가 있음.
     if (notificationId == null || notificationId.isNaN) {
       router.go("/notifications", extra: redirectLink);

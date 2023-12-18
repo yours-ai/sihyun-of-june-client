@@ -367,7 +367,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                                 imageCacheDurationProvider),
                                             cacheKey: UniqueCacheKeyService
                                                 .makeUniqueKey(
-                                                    mainImageSrc!.src),
+                                                    mainImageSrc.src),
                                             mainImageSrc.src,
                                             fit: BoxFit.cover,
                                           ),

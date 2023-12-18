@@ -1,7 +1,6 @@
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:project_june_client/actions/mails/models/Mail.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 
