@@ -15,8 +15,8 @@ import 'package:project_june_client/widgets/character_change_overlay_widget.dart
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
-import 'package:project_june_client/widgets/notification_permission_check.dart';
-import 'package:project_june_client/widgets/retest_modal_widget.dart';
+import 'package:project_june_client/widgets/notification/notification_permission_check.dart';
+import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 
 import '../../actions/character/models/Character.dart';
 import '../../actions/mails/models/Mail.dart';

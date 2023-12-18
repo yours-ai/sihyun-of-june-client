@@ -8,7 +8,7 @@ import 'package:project_june_client/actions/transaction/queries.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
-import 'package:project_june_client/widgets/product_widget.dart';
+import 'package:project_june_client/widgets/transaction/product_widget.dart';
 
 import '../../actions/auth/queries.dart';
 import '../../constants.dart';

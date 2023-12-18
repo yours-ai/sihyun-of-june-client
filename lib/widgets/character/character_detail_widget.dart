@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/widgets/profile_widget.dart';
+import 'package:project_june_client/widgets/character/profile_widget.dart';
 
 import '../../screens/character_test/character_choice_screen.dart';
 
