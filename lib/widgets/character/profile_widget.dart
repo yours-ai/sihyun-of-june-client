@@ -12,7 +12,7 @@ import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../actions/character/queries.dart';
+import '../../actions/character/queries.dart';
 
 class ProfileWidget extends ConsumerStatefulWidget {
   final String? name;

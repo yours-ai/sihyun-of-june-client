@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
-import '../actions/transaction/models/TransactionLog.dart';
-import '../constants.dart';
+import '../../actions/transaction/models/TransactionLog.dart';
+import '../../constants.dart';
 
 class TransactionLogWidget extends StatelessWidget {
   final TransactionLog transactionLog;
