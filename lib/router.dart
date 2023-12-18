@@ -16,6 +16,9 @@ import 'package:project_june_client/screens/login/phone_login_screen.dart';
 import 'package:project_june_client/screens/character_profile/other_character_screen.dart';
 import 'package:project_june_client/screens/character_profile/my_character_screen.dart';
 import 'package:project_june_client/screens/all_tab/policy_screen.dart';
+import 'package:project_june_client/screens/retest/retest_confirm_screen.dart';
+import 'package:project_june_client/screens/retest/retest_extend_screen.dart';
+import 'package:project_june_client/screens/retest/retest_info_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
 import 'package:project_june_client/screens/character_test/character_choice_screen.dart';
 import 'package:project_june_client/screens/character_test/test_screen.dart';
@@ -156,6 +159,34 @@ final router = GoRouter(
     GoRoute(
       path: '/share',
       builder: (context, state) => const ShareScreen(),
+    ),
+    GoRoute(
+      path: '/retest',
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        return RetestInfoScreen(
+          characterIds: extra['characterIds'] as List<int>,
+          firstName: extra['firstName'] as String,
+        );
+      },
+      routes: [
+        GoRoute(
+          path: 'extend',
+          builder: (context, state) {
+            return RetestExtendScreen(
+              firstName: state.extra as String,
+            );
+          },
+        ),
+        GoRoute(
+          path: 'confirm',
+          builder: (context, state) {
+            return RetestConfirmScreen(
+              firstName: state.extra as String,
+            );
+          },
+        ),
+      ],
     ),
   ],
 );
