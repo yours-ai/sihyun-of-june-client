@@ -13,8 +13,10 @@ import 'package:project_june_client/actions/character/models/CharacterTheme.dart
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/deep_link_provider.dart';
+import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
 
+import '../actions/character/models/Character.dart';
 import '../actions/notification/actions.dart';
 import '../widgets/common/alert/alert_description_widget.dart';
 import '../widgets/common/alert/alert_widget.dart';
@@ -59,6 +61,9 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
             .theme!;
       }
       ref.read(characterThemeProvider.notifier).state = characterTheme;
+      final allCharacters = await getAllCharactersQuery().result;
+      ref.read(isEnableToRetestProvider.notifier).state =
+          character.data!.length != allCharacters.data!.length;
       await _initializeNotificationHandlerIfAccepted(characterTheme.colors!);
       final push = await getPushIfPushClicked();
       if (push != null) {
