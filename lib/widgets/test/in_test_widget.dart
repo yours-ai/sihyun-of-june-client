@@ -134,7 +134,7 @@ class _InTestWidget extends State<InTestWidget> {
                               .choice_1_text),
                         ),
                         const SizedBox(
-                          height: 15,
+                          height: 13,
                         ),
                         FilledButton(
                           style: Theme.of(context)

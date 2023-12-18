@@ -35,7 +35,7 @@ class ModalChoiceWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 8,
+          height: 13,
         ),
         FilledButton(
           onPressed: onSubmit,
