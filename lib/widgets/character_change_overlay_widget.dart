@@ -14,11 +14,12 @@ import '../services/unique_cachekey_service.dart';
 
 class CharacterChangeOverlayWidget extends ConsumerWidget {
   final Character? character;
-  final VoidCallback? hideOverlay;
+  final VoidCallback? hideOverlay, setInitialState;
 
   const CharacterChangeOverlayWidget({
     this.character,
     this.hideOverlay,
+    this.setInitialState,
     super.key,
   });
 
@@ -28,12 +29,11 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
     final bool isSelected = characterId == character?.id;
     return GestureDetector(
       behavior: HitTestBehavior.deferToChild,
-      onTap: () async {
+      onTap: () {
         if (isSelected || character == null) return;
+        characterService.changeCharacterByTap(ref, character!);
+        setInitialState!();
         hideOverlay!();
-        Timer(const Duration(milliseconds: 100), () {
-          characterService.changeCharacterByTap(ref, character!);
-        });
       }, // 캐릭터 전환 or 추가 배정받기
       child: Container(
         decoration: BoxDecoration(
@@ -52,11 +52,11 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 18.0),
+              padding: EdgeInsets.only(right: character == null ? 0 : 5),
               child: Text(
                 character == null
                     ? '새 친구 만나기'
-                    : 'D+${mailService.getMailDateDiff(DateTime.now(), character!.date_allocated!) + 1} ${character?.name}',
+                    : 'D+${mailService.getMailDateDiff(DateTime.now(), character!.date_allocated!.first) + 1} ${character?.name}',
                 style: TextStyle(
                   color: isSelected
                       ? Color(
@@ -75,12 +75,10 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: SizedBox(
-                  width: 40,
-                  height: 40,
                   child: character == null
                       ? Icon(
                           PhosphorIcons.plus_circle_thin,
-                          size: 40,
+                          size: 45,
                           color: ColorConstants.neutral,
                         )
                       : ExtendedImage.network(
@@ -94,6 +92,8 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
                               .getMainImage(character!.character_info!.images!)
                               .src,
                           fit: BoxFit.cover,
+                          width: 40,
+                          height: 40,
                         ),
                 ),
               ),

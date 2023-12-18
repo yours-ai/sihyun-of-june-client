@@ -61,14 +61,13 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                   if (mailState.data == null) {
                     return const Scaffold();
                   }
-
                   return QueryBuilder(
                     query: getCharacterQuery(id: mailState.data!.by),
                     builder: (context, state) {
                       if (state.data == null) {
                         return const SizedBox.shrink();
                       }
-                      final characterThemeInMail = state.data!.theme;
+                      final characterInMail = state.data!;
                       return GestureDetector(
                         onTap: () =>
                             FocusManager.instance.primaryFocus?.unfocus(),
@@ -92,8 +91,8 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                   children: [
                                     CharacterMailWidget(
                                         mail: mailState.data!,
-                                        characterThemeInMail:
-                                            characterThemeInMail!),
+                                        characterInMail:
+                                        characterInMail),
                                     if (mailState
                                         .data!.replies!.isNotEmpty) ...[
                                       Container(
@@ -105,13 +104,11 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                       ),
                                       ReplyWidget(
                                         reply: mailState.data!.replies!.first,
-                                        toFullName:
-                                            mailState.data!.by_first_name,
-                                        byFullName:
+                                        userName:
                                             mailState.data!.to_first_name,
+                                        characterName: characterInMail.first_name!,
                                         toImage: mailState.data!.to_image,
-                                        primaryColorInMail: characterThemeInMail
-                                            .colors!.primary!,
+                                        primaryColorInMail: characterInMail.theme!.colors!.primary!,
                                       )
                                     ],
                                     if (mailState.data!.replies!.isEmpty &&
@@ -125,8 +122,8 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                       ),
                                       ReplyFormWidget(
                                         mail: mailState.data!,
-                                        primaryColorInMail: characterThemeInMail
-                                            .colors!.primary!,
+                                        primaryColorInMail: characterInMail.theme!.colors!.primary!,
+                                          characterName: characterInMail.first_name!,
                                       )
                                     ],
                                     if (mailState.data!.replies!.isEmpty &&
