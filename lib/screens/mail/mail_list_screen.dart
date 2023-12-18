@@ -23,6 +23,7 @@ import '../../actions/mails/models/Mail.dart';
 import '../../actions/mails/queries.dart';
 import '../../actions/notification/queries.dart';
 import '../../constants.dart';
+import '../../providers/user_provider.dart';
 import '../../services.dart';
 import '../../widgets/common/alert/alert_widget.dart';
 import '../character_profile/profile_details_screen.dart';
@@ -45,6 +46,9 @@ class MailListScreenState extends ConsumerState<MailListScreen>
   Animation<double>? fadeAnimation;
   OverlayEntry? overlayEntry;
 
+  String firstName = '';
+  List<int> characterIds = [];
+
   @override
   void initState() {
     super.initState();
@@ -53,27 +57,36 @@ class MailListScreenState extends ConsumerState<MailListScreen>
       duration: const Duration(milliseconds: 100), // 애니메이션 지속 시간
     );
     fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(controller!);
-  }
-
-  @override
-  void initState() {
-    super.initState();
     WidgetsBinding.instance!.addPostFrameCallback(
       (_) async {
-        final selectedCharacter = await getRetrieveMyCharacterQuery()
-            .result
-            .then((value) => value.data
-                ?.where((character) =>
-                    character.id == ref.watch(selectedCharacterProvider))
-                .first);
-        if (selectedCharacter != null &&
-            selectedCharacter!.is_30days_finished!) {
-          showModalBottomSheet(
-              context: context, builder: (context) => RetestModalWidget());
-        }
+        checkRetest();
       },
     );
   }
+
+  void checkRetest() async {
+    final myCharacterList =
+        await getRetrieveMyCharacterQuery().result.then((value) => value.data);
+    final currentCharacter = await myCharacterList
+        ?.where((character) => character.is_current == true)
+        .first;
+    firstName = currentCharacter!.first_name!;
+    final bool is30daysFinished = true;
+    // await getRetrieveMeQuery().result.is_30_days_finished;
+    characterIds = myCharacterList!.map((character) => character.id).toList();
+    if (currentCharacter!.id == ref.read(selectedCharacterProvider) &&
+        is30daysFinished) {
+      context.push(
+        "/retest",
+        extra: <String, dynamic>{
+          "firstName": firstName,
+          "characterIds": characterIds,
+        },
+      );
+    }
+  }
+
+  void submitRetest() {}
 
   void changeProfileList(List<Character> characterList) {
     final RenderObject? renderBox =
@@ -124,7 +137,12 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                 ),
                               )
                               .toList(),
-                          const CharacterChangeOverlayWidget(),
+                          CharacterChangeOverlayWidget(
+                            firstName: characterService
+                                .getCurrentCharacterFirstName(characterList),
+                            characterIds:
+                                characterService.getCharacterIds(characterList),
+                          ),
                         ],
                       ),
                     ),
@@ -284,7 +302,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                 children: [
                                   const SizedBox(width: 10),
                                   Text(
-                                    '${selectedCharacter.first_name}이와의\n${mailService.getDDay(selectedCharacter.date_allocated!)}',
+                                    '${selectedCharacter.first_name}이와의\n${mailService.getDDay(selectedCharacter.date_allocated!.last)}',
                                     style: TextStyle(
                                       fontFamily: 'NanumJungHagSaeng',
                                       color: ColorConstants.primary,

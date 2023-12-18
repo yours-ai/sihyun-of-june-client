@@ -4,21 +4,29 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
+import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
 
 import '../actions/character/models/Character.dart';
 import '../constants.dart';
 import '../providers/character_provider.dart';
 import '../providers/common_provider.dart';
+import '../providers/user_provider.dart';
 import '../services.dart';
 import '../services/unique_cachekey_service.dart';
 
 class CharacterChangeOverlayWidget extends ConsumerWidget {
   final Character? character;
   final VoidCallback? hideOverlay;
+  final List<int>? characterIds;
+  final String? firstName;
 
   const CharacterChangeOverlayWidget({
     this.character,
     this.hideOverlay,
+    this.characterIds,
+    this.firstName,
     super.key,
   });
 
@@ -29,7 +37,27 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
     return GestureDetector(
       behavior: HitTestBehavior.deferToChild,
       onTap: () async {
-        if (isSelected || character == null) return;
+        if (isSelected) return;
+        if (character == null) {
+          final is30DaysFinished = true;
+          // await getRetrieveMeQuery().result.data.is_30days_finished;
+          if (is30DaysFinished == true) {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => RetestModalWidget(
+                firstName: firstName,
+              ),
+            );
+            return;
+          }
+          context.push(
+            '/retest',
+            extra: {
+              'characterIds': characterIds,
+              'firstName': firstName,
+            },
+          );
+        }
         hideOverlay!();
         Timer(const Duration(milliseconds: 100), () {
           characterService.changeCharacterByTap(ref, character!);
@@ -56,7 +84,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
               child: Text(
                 character == null
                     ? '새 친구 만나기'
-                    : 'D+${mailService.getMailDateDiff(DateTime.now(), character!.date_allocated!) + 1} ${character?.name}',
+                    : 'D+${mailService.getMailDateDiff(DateTime.now(), character!.date_allocated!.first) + 1} ${character?.name}',
                 style: TextStyle(
                   color: isSelected
                       ? Color(

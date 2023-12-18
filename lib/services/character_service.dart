@@ -75,4 +75,15 @@ class CharacterService {
     ref.read(selectedCharacterProvider.notifier).state = character.id;
     ref.read(characterThemeProvider.notifier).state = character.theme!;
   }
+
+  List<int> getCharacterIds(List<Character> characterList) {
+    return characterList.map((character) => character.id!).toList();
+  }
+
+  String getCurrentCharacterFirstName(List<Character> characterList) {
+    return characterList
+        .where((character) => character.is_current == true)
+        .first
+        .first_name!;
+  }
 }
