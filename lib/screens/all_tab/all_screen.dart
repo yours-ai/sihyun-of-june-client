@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/common/menu/menu_title_widget.dart';
@@ -13,10 +14,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../actions/auth/actions.dart';
 import '../../actions/auth/queries.dart';
+import '../../actions/character/models/Character.dart';
 import '../../constants.dart';
 import '../../services.dart';
+import '../../widgets/character_change_modal.dart';
 import '../../widgets/common/title_layout.dart';
-import '../../widgets/retest_modal_widget.dart';
 
 class AllScreen extends StatefulWidget {
   const AllScreen({super.key});
@@ -26,6 +28,17 @@ class AllScreen extends StatefulWidget {
 }
 
 class _AllScreenState extends State<AllScreen> {
+  void _showMultiCharacterModal(List<Character> characterList) {
+    showModalBottomSheet(
+      backgroundColor: ColorConstants.lightGray,
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return CharacterChangeModal(characterList: characterList);
+      },
+    );
+  } //3.0작업
+
   void _showLogoutModal() async {
     await showModalBottomSheet<void>(
       context: context,
@@ -166,14 +179,19 @@ class _AllScreenState extends State<AllScreen> {
                 context.push('/share');
               },
             ),
-            MenuWidget(
-              title: '상대 변경하기',
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    builder: (context) => const RetestModalWidget());
-              },
-            ),
+            QueryBuilder(
+                query: getRetrieveMyCharacterQuery(),
+                builder: (context, state) {
+                  if (state.data == null) {
+                    return const SizedBox.shrink();
+                  }
+                  return MenuWidget(
+                    title: '상대 변경하기',
+                    onPressed: () {
+                      _showMultiCharacterModal(state.data!);
+                    },
+                  );
+                }),
             const MenuTitleWidget(title: '내 정보'),
             MenuWidget(
               title: '이름 변경하기',
