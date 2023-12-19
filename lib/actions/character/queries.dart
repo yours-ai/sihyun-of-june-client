@@ -27,7 +27,7 @@ Mutation<void, List<Map<String, int>>> getSendResponseMutation({
   );
 }
 
-Query<String> getTestStatusQuery({
+Query<Map<String, dynamic>> getTestStatusQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(

@@ -17,9 +17,9 @@ Future<List<Question>> startTest() async {
       .toList();
 }
 
-Future<String> fetchTestStatus() async {
+Future<Map<String, dynamic>> fetchTestStatus() async {
   final response = await dio.get('/character/me/test-status/');
-  return response.data['status'];
+  return response.data;
 }
 
 Future<Map<String, dynamic>> fetchPendingTest() async {

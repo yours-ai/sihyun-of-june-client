@@ -74,7 +74,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       return;
     } else {
       final testStatus = await getTestStatusQuery().result;
-      if (testStatus.data == 'WAITING_CONFIRM') {
+      if (testStatus.data!['test_reason'] == 'WAITING_CONFIRM') {
         context.go('/character-choice');
       } else {
         context.go('/character-test');
