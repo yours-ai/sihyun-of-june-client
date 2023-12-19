@@ -12,13 +12,13 @@ class CharacterDetailWidget extends ConsumerWidget {
   final void Function(ActiveScreen) onActiveScreen;
   final void Function(TestReason) onTestReason;
   final void Function(int) onTestId;
-  final void Function(String) onName;
+  final void Function(String, int) onCharacterInfo;
 
   const CharacterDetailWidget({super.key,
     required this.onActiveScreen,
     required this.onTestReason,
     required this.onTestId,
-    required this.onName});
+    required this.onCharacterInfo});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -70,7 +70,7 @@ class CharacterDetailWidget extends ConsumerWidget {
                           : TestReason.retest);
                       onActiveScreen(ActiveScreen.confirm);
                       onTestId(state.data!['test_id']);
-                      onName(character!.name!.substring(1));
+                      onCharacterInfo(character!.first_name!, character.id!);
                     },
                     child: const Text('다음'),
                   ),

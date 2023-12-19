@@ -41,9 +41,12 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       context.go('/landing');
       return;
     }
+    final testStatus = await getTestStatusQuery().result;
+    if (testStatus.data!['status'] == 'WAITING_CONFIRM') {
+      context.go('/character-choice');
+    } else if (testStatus.data!['status'] == 'CONFIRMED') {
+      final character = await getRetrieveMyCharacterQuery().result;
 
-    final character = await getRetrieveMyCharacterQuery().result;
-    if (character.data!.isNotEmpty) {
       late CharacterTheme characterTheme;
       final selectedCharacterId =
           await characterService.getSelectedCharacterId();
@@ -73,12 +76,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       context.go('/mails');
       return;
     } else {
-      final testStatus = await getTestStatusQuery().result;
-      if (testStatus.data!['test_reason'] == 'WAITING_CONFIRM') {
-        context.go('/character-choice');
-      } else {
-        context.go('/character-test');
-      }
+      context.go('/character-test');
     }
   }
 

@@ -20,6 +20,7 @@ import '../../services.dart';
 
 class CharacterConfirmWidget extends ConsumerWidget {
   final int testId;
+  final int selectedCharacterId;
   final String name;
   final TestReason testReason;
   final void Function(ActiveScreen) onActiveScreen;
@@ -27,6 +28,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
   const CharacterConfirmWidget(
       {super.key,
       required this.onActiveScreen,
+      required this.selectedCharacterId,
       required this.testId,
       required this.name,
       required this.testReason});
@@ -128,6 +130,8 @@ class CharacterConfirmWidget extends ConsumerWidget {
               MutationBuilder(
                 mutation: getConfirmChoiceMutation(
                   onSuccess: (res, arg) {
+                    characterService
+                        .saveSelectedCharacterId(selectedCharacterId);
                     context.go('/');
                   },
                 ),

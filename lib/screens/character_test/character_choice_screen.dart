@@ -20,6 +20,7 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
 
   int testId = 0;
   String name = '시현';
+  int selectedCharacterId = 0;
 
   void handleActiveScreen(ActiveScreen screen) {
     setState(() {
@@ -39,9 +40,10 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
     });
   }
 
-  void handleName(String name) {
+  void handleCharacterInfo(String name, int id) {
     setState(() {
       this.name = name;
+      this.selectedCharacterId = id;
     });
   }
 
@@ -62,9 +64,10 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
             onActiveScreen: handleActiveScreen,
             onTestReason: handleTestReason,
             onTestId: handleTestId,
-            onName: handleName);
+            onCharacterInfo: handleCharacterInfo);
       case ActiveScreen.confirm:
         return CharacterConfirmWidget(
+            selectedCharacterId: selectedCharacterId,
             onActiveScreen: handleActiveScreen,
             testReason: testReason,
             testId: testId,
