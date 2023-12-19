@@ -10,14 +10,15 @@ import '../../screens/character_test/character_choice_screen.dart';
 
 class CharacterDetailWidget extends ConsumerWidget {
   final void Function(ActiveScreen) onActiveScreen;
+  final void Function(TestReason) onTestReason;
   final void Function(int) onTestId;
   final void Function(String) onName;
 
-  const CharacterDetailWidget(
-      {super.key,
-      required this.onActiveScreen,
-      required this.onTestId,
-      required this.onName});
+  const CharacterDetailWidget({super.key,
+    required this.onActiveScreen,
+    required this.onTestReason,
+    required this.onTestId,
+    required this.onName});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,9 +30,12 @@ class CharacterDetailWidget extends ConsumerWidget {
         if (state.data == null) {
           return const SizedBox.shrink();
         }
+        String testReason = state.data!['test_reason'];
         character = Character.fromJson(state.data!['character']);
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          ref.read(characterThemeProvider.notifier).state = character!.theme!;
+          ref
+              .read(characterThemeProvider.notifier)
+              .state = character!.theme!;
         });
         return Scaffold(
           body: SafeArea(
@@ -61,6 +65,9 @@ class CharacterDetailWidget extends ConsumerWidget {
                       left: 28.0, right: 28.0, bottom: 20.0),
                   child: FilledButton(
                     onPressed: () {
+                      onTestReason(testReason == 'NEW_USER'
+                          ? TestReason.newUser
+                          : TestReason.retest);
                       onActiveScreen(ActiveScreen.confirm);
                       onTestId(state.data!['test_id']);
                       onName(character!.name!.substring(1));

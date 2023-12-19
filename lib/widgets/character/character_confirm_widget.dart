@@ -10,7 +10,10 @@ import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 
+import '../../actions/auth/queries.dart';
+import '../../actions/character/dtos.dart';
 import '../../constants.dart';
 import '../../screens/character_test/character_choice_screen.dart';
 import '../../services.dart';
@@ -18,13 +21,15 @@ import '../../services.dart';
 class CharacterConfirmWidget extends ConsumerWidget {
   final int testId;
   final String name;
+  final TestReason testReason;
   final void Function(ActiveScreen) onActiveScreen;
 
   const CharacterConfirmWidget(
       {super.key,
       required this.onActiveScreen,
       required this.testId,
-      required this.name});
+      required this.name,
+      required this.testReason});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,28 +38,45 @@ class CharacterConfirmWidget extends ConsumerWidget {
         context: context,
         useRootNavigator: true,
         builder: (BuildContext context) {
-          return MutationBuilder(
-            mutation: getDenyChoiceMutation(
-              onSuccess: (res, arg) {
-                CharacterTheme defaultTheme = CharacterTheme(
-                  colors: CharacterColors(
-                      primary: 4294923379, secondary: 4294932624),
-                  font: "NanumNoRyeogHaNeunDongHee",
-                );
-                ref.read(characterThemeProvider.notifier).state = defaultTheme;
-                context.pop();
-                context.go('/character-test');
-              },
-            ),
-            builder: (context, state, mutate) => ModalWidget(
-              title: '정말 다른 상대로 정해드릴까요?',
-              choiceColumn: ModalChoiceWidget(
-                submitText: '네',
-                onSubmit: () => mutate(testId),
-                cancelText: '됐어요',
-                onCancel: () => context.pop(),
-              ),
-            ),
+          final mutation = getDenyChoiceMutation(
+            onSuccess: (res, arg) {
+              CharacterTheme defaultTheme = CharacterTheme(
+                colors:
+                    CharacterColors(primary: 4294923379, secondary: 4294932624),
+                font: "NanumNoRyeogHaNeunDongHee",
+              );
+              ref.read(characterThemeProvider.notifier).state = defaultTheme;
+              context.go('/character-test');
+            },
+          );
+          return ModalWidget(
+            title: '정말 다른 상대로 정해드릴까요?',
+            choiceColumn: testReason == TestReason.retest
+                ? MutationBuilder(
+                    mutation: mutation,
+                    builder: (context, state, mutate) {
+                      void handleRetest(String payment) {
+                        mutate(
+                          denyChoiceDTO(id: testId, payment: payment),
+                        );
+                      }
+
+                      return RetestChoiceWidget(
+                        onRetest: handleRetest,
+                      );
+                    },
+                  )
+                : MutationBuilder(
+                    mutation: mutation,
+                    builder: (context, state, mutate) => ModalChoiceWidget(
+                      submitText: '네',
+                      submitSuffix: '신규 1회 무료',
+                      onSubmit: () => mutate(
+                          denyChoiceDTO(id: testId, payment: 'new_user')),
+                      cancelText: '됐어요',
+                      onCancel: () => context.pop(),
+                    ),
+                  ),
           );
         },
       );
@@ -94,9 +116,12 @@ class CharacterConfirmWidget extends ConsumerWidget {
                   onPressed: () {
                     _showDenyModal();
                   },
-                  child: Text('다른 상대로 해주세요.', style: TextStyle(
-                    color: ColorConstants.gray,
-                  ),)),
+                  child: Text(
+                    '다른 상대로 해주세요.',
+                    style: TextStyle(
+                      color: ColorConstants.gray,
+                    ),
+                  )),
               const SizedBox(
                 height: 10,
               ),

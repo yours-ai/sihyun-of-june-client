@@ -5,6 +5,8 @@ import '../../widgets/character/character_detail_widget.dart';
 
 enum ActiveScreen { detail, confirm }
 
+enum TestReason { newUser, retest }
+
 class CharacterChoiceScreen extends StatefulWidget {
   const CharacterChoiceScreen({super.key});
 
@@ -14,12 +16,20 @@ class CharacterChoiceScreen extends StatefulWidget {
 
 class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
   ActiveScreen activeScreen = ActiveScreen.detail;
+  late TestReason testReason;
+
   int testId = 0;
   String name = '시현';
 
   void handleActiveScreen(ActiveScreen screen) {
     setState(() {
       activeScreen = screen;
+    });
+  }
+
+  void handleTestReason(TestReason reason) {
+    setState(() {
+      testReason = reason;
     });
   }
 
@@ -50,11 +60,15 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
       case ActiveScreen.detail:
         return CharacterDetailWidget(
             onActiveScreen: handleActiveScreen,
+            onTestReason: handleTestReason,
             onTestId: handleTestId,
             onName: handleName);
       case ActiveScreen.confirm:
         return CharacterConfirmWidget(
-            onActiveScreen: handleActiveScreen, testId: testId, name: name);
+            onActiveScreen: handleActiveScreen,
+            testReason: testReason,
+            testId: testId,
+            name: name);
       default:
         return Container(); // Default empty container
     }
