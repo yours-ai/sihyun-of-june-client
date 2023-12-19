@@ -11,11 +11,14 @@ import '../../constants.dart';
 import '../../services/transaction_service.dart';
 
 class RetestChoiceWidget extends ConsumerWidget {
-  final bool isExtend; // TODO - isExtend에 따라 나누기
   final bool inModal;
+  final Function(String) onRetest;
 
-  const RetestChoiceWidget(
-      {super.key, this.isExtend = false, this.inModal = false});
+  const RetestChoiceWidget({
+    super.key,
+    this.inModal = false,
+    required this.onRetest,
+  });
 
   void showNeedMoreGoodsModal(BuildContext context) {
     showModalBottomSheet(
@@ -48,7 +51,7 @@ class RetestChoiceWidget extends ConsumerWidget {
             FilledButton(
               onPressed: () {
                 context.pop();
-                // TODO - 코인 사용
+                onRetest('coin');
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +86,7 @@ class RetestChoiceWidget extends ConsumerWidget {
             FilledButton(
               onPressed: () {
                 context.pop();
-                // TODO - 포인트 사용
+                onRetest('point');
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -120,90 +123,41 @@ class RetestChoiceWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        OutlinedButton(
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all(ColorConstants.background),
-          ),
-          onPressed: () {
+    return QueryBuilder(
+      query: getRetrieveMeQuery(),
+      builder: (context, state) {
+        PurchaseState purchaseState = transactionService.getPurchaseState(
+          state.data!.coin,
+          state.data!.point,
+        );
+        return ModalChoiceWidget(
+          submitText: '좋아요',
+          cancelText: '아니요',
+          onSubmit: () {
+            if (inModal) {
+              context.pop();
+            }
+            switch (purchaseState) {
+              case PurchaseState.coin:
+                onRetest('coin');
+                break;
+              case PurchaseState.point:
+                onRetest('point');
+                break;
+              case PurchaseState.both:
+                showSelectGoodsModal(context);
+                break;
+              case PurchaseState.impossible:
+                showNeedMoreGoodsModal(context);
+                break;
+            }
+          },
+          onCancel: () {
             context.pop();
           },
-          child: Text(
-            '아니요',
-            style: TextStyle(
-              fontSize: 16,
-              color: ColorConstants.gray,
-              fontWeight: FontWeightConstants.semiBold,
-              height: 1.0,
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 13,
-        ),
-        QueryBuilder(
-          query: getRetrieveMeQuery(),
-          builder: (context, state) {
-            if (state.data == null) {
-              return const SizedBox.shrink();
-            }
-            PurchaseState purchaseState = transactionService.getPurchaseState(
-              state.data!.coin,
-              state.data!.point,
-            );
-            return FilledButton(
-              onPressed: () {
-                if (inModal) {
-                  context.pop();
-                }
-                switch (purchaseState) {
-                  case PurchaseState.coin:
-                    // TODO - 코인 사용
-                    break;
-                  case PurchaseState.point:
-                    // TODO - 포인트 사용
-                    break;
-                  case PurchaseState.both:
-                    showSelectGoodsModal(context);
-                    break;
-                  case PurchaseState.impossible:
-                    showNeedMoreGoodsModal(context);
-                    break;
-                }
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '네',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeightConstants.semiBold,
-                      height: 1.0,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 6,
-                  ),
-                  Text(
-                    '300P 또는 50코인',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: ColorConstants.lightGray.withOpacity(0.5),
-                      fontWeight: FontWeight.bold,
-                      height: 1.0,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ],
+          submitSuffix: '300P 또는 50코인',
+        );
+      },
     );
   }
 }

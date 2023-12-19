@@ -1,3 +1,4 @@
+import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +6,8 @@ import 'package:project_june_client/widgets/common/modal/modal_description_widge
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 
+import '../../actions/auth/queries.dart';
+import '../../actions/character/queries.dart';
 import '../../providers/user_provider.dart';
 
 class RetestModalWidget extends ConsumerWidget {
@@ -25,8 +28,26 @@ class RetestModalWidget extends ConsumerWidget {
             : '현재 상대하고만 편지를 주고받을 수 있어요.',
       ),
       choiceColumn: isEnableToRetest
-          ? const RetestChoiceWidget(
-              inModal: true,
+          ? MutationBuilder(
+              mutation: getRetestMutation(
+                refetchQueries: [
+                  getRetrieveMyCharacterQuery(),
+                  getRetrieveMeQuery(),
+                ],
+                onSuccess: (res, arg) {
+                  context.go('/character-test');
+                },
+              ),
+              builder: (context, state, mutate) {
+                void handleRetest(String payment) {
+                  mutate(payment);
+                }
+
+                return RetestChoiceWidget(
+                  inModal: true,
+                  onRetest: handleRetest,
+                );
+              },
             )
           : FilledButton(
               onPressed: () {
