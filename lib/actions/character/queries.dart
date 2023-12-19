@@ -1,18 +1,9 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/character/actions.dart';
+import 'package:project_june_client/actions/character/dtos.dart';
 
 import 'models/Character.dart';
 import 'models/Question.dart';
-
-Query<List<Question>> getQuestionsQuery({
-  OnQueryErrorCallback? onError,
-}) {
-  return Query(
-    key: "questions",
-    queryFn: startTest,
-    onError: onError,
-  );
-}
 
 Mutation<List<Question>, void> getStartTestMutation({
   OnSuccessCallback? onSuccess,
@@ -87,11 +78,11 @@ Query<List<Character>> getRetrieveMyCharacterQuery({
   );
 }
 
-Mutation<void, int> getDenyChoiceMutation({
+Mutation<void, denyChoiceDTO> getDenyChoiceMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
-  return Mutation<void, int>(
+  return Mutation<void, denyChoiceDTO>(
     queryFn: denyChoice,
     onSuccess: onSuccess,
     onError: onError,
@@ -117,6 +108,19 @@ Mutation<void, int> getReadCharacterStoryMutation({
   return Mutation<void, int>(
     refetchQueries: refetchQueries,
     queryFn: readCharacterStory,
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Mutation<void, String> getRetestMutation({
+  refetchQueries = const [],
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, String>(
+    refetchQueries: refetchQueries,
+    queryFn: retest,
     onSuccess: onSuccess,
     onError: onError,
   );

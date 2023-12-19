@@ -1,3 +1,4 @@
+import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/Question.dart';
 
@@ -36,8 +37,8 @@ Future<List<Character>> fetchCharacters() async {
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }
 
-Future<void> denyChoice(int id) async {
-  await dio.post('/character/test/$id/deny/');
+Future<void> denyChoice(denyChoiceDTO dto) async {
+  await dio.post('/character/test/${dto.id}/deny/', data: {'payment': dto.payment});
   return;
 }
 
@@ -53,5 +54,10 @@ Future<Character> fetchCharacterById(int id) async {
 
 Future<void> readCharacterStory(int id) async {
   await dio.post('/character/me/story/read/', data: {'character_id': id});
+  return;
+}
+
+Future<void> retest(String payment) async {
+  await dio.post('/character/test/retest/', data: {'payment': payment});
   return;
 }
