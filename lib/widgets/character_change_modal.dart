@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
 
+import '../actions/auth/queries.dart';
 import '../actions/character/models/Character.dart';
 import '../actions/character/queries.dart';
 import '../constants.dart';
@@ -47,33 +48,30 @@ class CharacterChangeModal extends ConsumerWidget {
                       ref.watch(selectedCharacterProvider) == character.id))
               .toList(),
           QueryBuilder(
-            query: getAllCharactersQuery(),
+            query: getRetrieveMeQuery(),
             builder: (context, state) {
               if (state.data == null) {
                 return const SizedBox.shrink();
               }
               return GestureDetector(
-                onTap: () {
+                onTap: () async {
                   context.pop();
-                  // if (characterList.first.is_30days_finished == false) {
+                  if (state.data!.is_30days_finished == false) {
                     showModalBottomSheet(
-                        context: context,
-                        builder: (context) => RetestModalWidget(
-                            firstName: characterList.first.first_name));
+                      context: context,
+                      builder: (context) => RetestModalWidget(
+                          firstName: characterService
+                              .getCurrentCharacterFirstName(characterList)),
+                    );
                     return;
-                  // }
-                  List<int> characterIds =
-                      characterList.map((character) => character.id!).toList();
+                  }
                   context.push(
                     '/retest',
                     extra: {
-                      'characterIds': characterIds,
-                      'firstName': characterList
-                          .where((character) =>
-                              character.id ==
-                              ref.read(selectedCharacterProvider))
-                          .first
-                          .first_name,
+                      'characterIds':
+                          characterService.getCharacterIds(characterList),
+                      'firstName': characterService
+                          .getCurrentCharacterFirstName(characterList),
                     },
                   );
                 },

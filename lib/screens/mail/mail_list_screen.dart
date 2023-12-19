@@ -67,15 +67,16 @@ class MailListScreenState extends ConsumerState<MailListScreen>
   void checkRetest() async {
     final myCharacterList =
         await getRetrieveMyCharacterQuery().result.then((value) => value.data);
-    final currentCharacter = await myCharacterList
-        ?.where((character) => character.is_current == true)
+    final currentCharacter = myCharacterList!
+        .where((character) => character.is_current == true)
         .first;
-    firstName = currentCharacter!.first_name!;
-    final bool is30daysFinished = true;
-    // await getRetrieveMeQuery().result.is_30_days_finished;
-    characterIds = myCharacterList!.map((character) => character.id).toList();
-    if (currentCharacter!.id == ref.read(selectedCharacterProvider) &&
-        is30daysFinished) {
+    firstName = characterService.getCurrentCharacterFirstName(myCharacterList!);
+    final bool is30DaysFinished = await getRetrieveMeQuery()
+        .result
+        .then((value) => value.data!.is_30days_finished!);
+    characterIds = myCharacterList.map((character) => character.id).toList();
+    if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
+        is30DaysFinished) {
       context.push(
         "/retest",
         extra: <String, dynamic>{
@@ -85,8 +86,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
       );
     }
   }
-
-  void submitRetest() {}
 
   void changeProfileList(List<Character> characterList) {
     final RenderObject? renderBox =
@@ -138,6 +137,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                               )
                               .toList(),
                           CharacterChangeOverlayWidget(
+                            hideOverlay: hideOverlay,
                             firstName: characterService
                                 .getCurrentCharacterFirstName(characterList),
                             characterIds:

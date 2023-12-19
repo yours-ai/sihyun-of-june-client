@@ -38,10 +38,12 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
       behavior: HitTestBehavior.deferToChild,
       onTap: () async {
         if (isSelected) return;
+        hideOverlay!();
         if (character == null) {
-          final is30DaysFinished = true;
-          // await getRetrieveMeQuery().result.data.is_30days_finished;
-          if (is30DaysFinished == true) {
+          final bool is30DaysFinished = await getRetrieveMeQuery()
+              .result
+              .then((value) => value.data!.is_30days_finished!);
+          if (is30DaysFinished == false) {
             showModalBottomSheet(
               context: context,
               builder: (context) => RetestModalWidget(
@@ -57,11 +59,14 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
               'firstName': firstName,
             },
           );
+          return;
         }
-        hideOverlay!();
-        Timer(const Duration(milliseconds: 100), () {
-          characterService.changeCharacterByTap(ref, character!);
-        });
+        Timer(
+          const Duration(milliseconds: 100),
+          () {
+            characterService.changeCharacterByTap(ref, character!);
+          },
+        );
       }, // 캐릭터 전환 or 추가 배정받기
       child: Container(
         decoration: BoxDecoration(
