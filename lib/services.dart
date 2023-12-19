@@ -1,5 +1,4 @@
 import 'package:project_june_client/services/character_service.dart';
-import 'package:project_june_client/services/fetch_service.dart';
 import 'package:project_june_client/services/share_service.dart';
 import 'package:project_june_client/services/user_profile_service.dart';
 import 'package:project_june_client/services/mail_service.dart';
@@ -16,4 +15,3 @@ var onelinkService = OnelinkService();
 var userProfileService = UserProfileService();
 const shareService = ShareService();
 const characterService = CharacterService();
-const fetchService = FetchService();

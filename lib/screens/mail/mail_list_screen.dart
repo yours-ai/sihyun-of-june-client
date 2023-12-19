@@ -32,23 +32,38 @@ class MailListScreen extends ConsumerStatefulWidget {
 }
 
 class MailListScreenState extends ConsumerState<MailListScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   int? selectedPage;
   DateTime? firstMailDate;
   List<Widget>? mailWidgetList;
   final GlobalKey _targetKey = GlobalKey();
-  AnimationController? controller;
-  Animation<double>? fadeAnimation;
+  AnimationController? profileChangeController, reloadMailController;
+  Animation<double>? profileChangeFadeAnimation, reloadMailFadeAnimation;
   OverlayEntry? overlayEntry;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
+    profileChangeController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 100), // 애니메이션 지속 시간
     );
-    fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(controller!);
+    reloadMailController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300), // 애니메이션 지속 시간
+    );
+    profileChangeFadeAnimation =
+        Tween<double>(begin: 0.0, end: 1.0).animate(profileChangeController!);
+    reloadMailFadeAnimation =
+        Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
+  }
+
+  Future<List<Mail>> fetchMailList(int characterId, int page) async {
+    final mailListState = await getListMailQuery(
+      characterId: characterId,
+      page: page,
+    ).result;
+    return mailListState.data!;
   }
 
   void setInitialState() {
@@ -70,7 +85,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
             hideOverlay();
           },
           child: FadeTransition(
-            opacity: fadeAnimation!,
+            opacity: profileChangeFadeAnimation!,
             child: Material(
               color: Colors.black54,
               child: Stack(
@@ -120,12 +135,12 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         ),
       );
       Overlay.of(context).insert(overlayEntry!);
-      controller!.forward();
+      profileChangeController!.forward();
     }
   }
 
   void hideOverlay() {
-    controller!.reverse().then((_) {
+    profileChangeController!.reverse().then((_) {
       overlayEntry!.remove();
     });
   }
@@ -448,10 +463,30 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                     mailService.calendarWeekday(),
                                     const SizedBox(height: 20),
                                     Expanded(
-                                      child: GridView.count(
-                                        crossAxisCount: 7,
-                                        childAspectRatio: 7 / 11,
-                                        children: mailWidgetList!,
+                                      child: RefreshIndicator.adaptive(
+                                        onRefresh: () async {
+                                          HapticFeedback.lightImpact();
+                                          retrieveMyCharacterQuery.refetch();
+                                          final reloadedMail =
+                                              await fetchMailList(
+                                                  ref.watch(
+                                                      selectedCharacterProvider)!,
+                                                  selectedPage!);
+                                          reloadMailController!
+                                              .forward()
+                                              .then((_) {
+                                            updateAllMailList(reloadedMail);
+                                            reloadMailController!.reverse();
+                                          });
+                                        },
+                                        child: FadeTransition(
+                                          opacity: reloadMailFadeAnimation!,
+                                          child: GridView.count(
+                                            crossAxisCount: 7,
+                                            childAspectRatio: 7 / 11,
+                                            children: mailWidgetList!,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ],
