@@ -13,6 +13,7 @@ import 'package:project_june_client/actions/character/models/CharacterTheme.dart
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/deep_link_provider.dart';
+import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/notification/actions.dart';
@@ -39,9 +40,12 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       context.go('/landing');
       return;
     }
+    final testStatus = await getTestStatusQuery().result;
+    if (testStatus.data!['status'] == 'WAITING_CONFIRM') {
+      context.go('/character-choice');
+    } else if (testStatus.data!['status'] == 'CONFIRMED') {
+      final character = await getRetrieveMyCharacterQuery().result;
 
-    final character = await getRetrieveMyCharacterQuery().result;
-    if (character.data!.isNotEmpty) {
       late CharacterTheme characterTheme;
       final selectedCharacterId =
           await characterService.getSelectedCharacterId();
@@ -59,6 +63,9 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
             .theme!;
       }
       ref.read(characterThemeProvider.notifier).state = characterTheme;
+      final allCharacters = await getAllCharactersQuery().result;
+      ref.read(isEnableToRetestProvider.notifier).state =
+          character.data!.length != allCharacters.data!.length;
       await _initializeNotificationHandlerIfAccepted(characterTheme.colors!);
       final push = await getPushIfPushClicked();
       if (push != null) {
@@ -68,12 +75,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       context.go('/mails');
       return;
     } else {
-      final testStatus = await getTestStatusQuery().result;
-      if (testStatus.data == 'WAITING_CONFIRM') {
-        context.go('/character-choice');
-      } else {
-        context.go('/character-test');
-      }
+      context.go('/character-test');
     }
   }
 

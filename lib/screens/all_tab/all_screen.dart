@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
-import 'package:project_june_client/widgets/menu_title_widget.dart';
-import 'package:project_june_client/widgets/menu_widget.dart';
+import 'package:project_june_client/widgets/common/menu/menu_title_widget.dart';
+import 'package:project_june_client/widgets/common/menu/menu_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/user_profile_widget.dart';
@@ -15,8 +15,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../actions/auth/actions.dart';
 import '../../actions/auth/queries.dart';
+import '../../actions/character/models/Character.dart';
 import '../../constants.dart';
 import '../../services.dart';
+import '../../widgets/character_change_modal.dart';
 import '../../widgets/common/title_layout.dart';
 
 class AllScreen extends StatefulWidget {
@@ -42,6 +44,16 @@ class _AllScreenState extends State<AllScreen>
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadAllController!);
   }
 
+  void _showMultiCharacterModal(List<Character> characterList) {
+    showModalBottomSheet(
+      backgroundColor: ColorConstants.lightGray,
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return CharacterChangeModal(characterList: characterList);
+      },
+    );
+  } //3.0작업
   void _showLogoutModal() async {
     await showModalBottomSheet<void>(
       context: context,

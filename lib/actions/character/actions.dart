@@ -1,3 +1,4 @@
+import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/Question.dart';
 
@@ -16,9 +17,9 @@ Future<List<Question>> startTest() async {
       .toList();
 }
 
-Future<String> fetchTestStatus() async {
+Future<Map<String, dynamic>> fetchTestStatus() async {
   final response = await dio.get('/character/me/test-status/');
-  return response.data['status'];
+  return response.data;
 }
 
 Future<Map<String, dynamic>> fetchPendingTest() async {
@@ -36,8 +37,8 @@ Future<List<Character>> fetchCharacters() async {
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }
 
-Future<void> denyChoice(int id) async {
-  await dio.post('/character/test/$id/deny/');
+Future<void> denyTestChoice(denyTestChoiceDTO dto) async {
+  await dio.post('/character/test/${dto.id}/deny/', data: {'payment': dto.payment});
   return;
 }
 
@@ -54,4 +55,22 @@ Future<Character> fetchCharacterById(int id) async {
 Future<void> readCharacterStory(int id) async {
   await dio.post('/character/me/story/read/', data: {'character_id': id});
   return;
+}
+
+Future<void> retest(String payment) async {
+  await dio.post('/character/reallocate/', data: {'payment': payment});
+  return;
+}
+
+Future<void> extend(String payment) async {
+  await dio.post('/character/extend/', data: {'payment': payment});
+  return;
+}
+
+Future<Map<String, int>> getExtendCost() async {
+  final response = await dio.get('/character/extend/cost/');
+  return {
+    'coin': response.data['coin'] as int,
+    'point': response.data['point'] as int,
+  };
 }

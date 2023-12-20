@@ -14,6 +14,7 @@ class SihyunOfJuneUser {
   int point;
   String env;
   String? image;
+  bool is_30days_finished;
 
   SihyunOfJuneUser({
     required this.id,
@@ -26,6 +27,7 @@ class SihyunOfJuneUser {
     required this.point,
     required this.env,
     this.image,
+    required this.is_30days_finished,
   });
 
   factory SihyunOfJuneUser.fromJson(Map<String, dynamic> json) =>

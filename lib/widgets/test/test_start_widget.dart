@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
+import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 import '../../constants.dart';
@@ -59,20 +60,28 @@ class _TestStartWidget extends State<TestStartWidget> {
       appBar: AppBar(
         backgroundColor: ColorConstants.background,
         elevation: 0,
-        title: Padding(
-          padding: const EdgeInsets.only(top: 30),
-          child: Center(
-            child: Text(
-              '편지를 받을 준비가 거의 끝났어요!',
-              style: TextStyle(
-                fontSize: 16,
-                color: ColorConstants.neutral,
-                fontFamily: 'Pretendard',
-              ),
-              softWrap: true,
-              textAlign: TextAlign.center,
-            ),
-          ),
+        title: QueryBuilder(
+          query: getTestStatusQuery(),
+          builder: (context, state) {
+            if (state.status == QueryStatus.success &&
+                state.data!['test_reason'] == 'NEW_USER')
+              return Padding(
+                padding: const EdgeInsets.only(top: 30),
+                child: Center(
+                  child: Text(
+                    '편지를 받을 준비가 거의 끝났어요!',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: ColorConstants.neutral,
+                      fontFamily: 'Pretendard',
+                    ),
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            return const SizedBox.shrink();
+          },
         ),
       ),
       body: SafeArea(

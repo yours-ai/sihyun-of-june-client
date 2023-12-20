@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import '../../actions/transaction/queries.dart';
-import '../../widgets/transaction_log_widget.dart';
+import '../../widgets/transaction/transaction_log_widget.dart';
 import '../../widgets/common/title_layout.dart';
 
 class PointLogScreen extends StatefulWidget {

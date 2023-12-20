@@ -2,7 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
-import 'package:project_june_client/widgets/profile_widget.dart';
+import 'package:project_june_client/widgets/character/profile_widget.dart';
 
 class OtherCharacterScreen extends StatelessWidget {
   final int id;

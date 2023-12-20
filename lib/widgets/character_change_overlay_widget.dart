@@ -1,7 +1,11 @@
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
+import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
 
 import '../actions/character/models/Character.dart';
 import '../constants.dart';
@@ -13,11 +17,15 @@ import '../services/unique_cachekey_service.dart';
 class CharacterChangeOverlayWidget extends ConsumerWidget {
   final Character? character;
   final VoidCallback? hideOverlay, setInitialState;
+  final List<int>? characterIds;
+  final String? firstName;
 
   const CharacterChangeOverlayWidget({
     this.character,
     this.hideOverlay,
     this.setInitialState,
+    this.characterIds,
+    this.firstName,
     super.key,
   });
 
@@ -27,11 +35,33 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
     final bool isSelected = characterId == character?.id;
     return GestureDetector(
       behavior: HitTestBehavior.deferToChild,
-      onTap: () {
-        if (isSelected || character == null) return;
-        characterService.changeCharacterByTap(ref, character!);
+      onTap: () async {
+        if (isSelected) return;
         setInitialState!();
         hideOverlay!();
+        if (character == null) {
+          final bool is30DaysFinished = await getRetrieveMeQuery()
+              .result
+              .then((value) => value.data!.is_30days_finished);
+          if (is30DaysFinished == false) {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => RetestModalWidget(
+                firstName: firstName,
+              ),
+            );
+            return;
+          }
+          context.push(
+            '/retest',
+            extra: {
+              'characterIds': characterIds,
+              'firstName': firstName,
+            },
+          );
+          return;
+        }
+        characterService.changeCharacterByTap(ref, character!);
       }, // 캐릭터 전환 or 추가 배정받기
       child: Container(
         decoration: BoxDecoration(

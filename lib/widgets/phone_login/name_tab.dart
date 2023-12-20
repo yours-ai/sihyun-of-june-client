@@ -115,7 +115,7 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
                   ),
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 13,
                 ),
                 FilledButton(
                   style: ButtonStyle(

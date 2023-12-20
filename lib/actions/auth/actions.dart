@@ -193,9 +193,7 @@ Future<bool> loadIsLogined() async {
 logout() async {
   final storage = getSecureStorage();
   await storage.deleteAll();
-  try {
-    await UserApi.instance.logout();
-  } catch (e) {}
+  await UserApi.instance.logout();
   CachedQuery.instance.deleteCache();
   dio.options.headers.clear();
   characterService.deleteSelectedCharacterId();

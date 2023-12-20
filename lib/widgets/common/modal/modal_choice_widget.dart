@@ -4,6 +4,7 @@ import 'package:project_june_client/constants.dart';
 class ModalChoiceWidget extends StatelessWidget {
   final String submitText, cancelText;
   final VoidCallback onSubmit, onCancel;
+  final String? submitSuffix;
 
   const ModalChoiceWidget({
     super.key,
@@ -11,6 +12,7 @@ class ModalChoiceWidget extends StatelessWidget {
     required this.cancelText,
     required this.onSubmit,
     required this.onCancel,
+    this.submitSuffix,
   });
 
   @override
@@ -35,17 +37,37 @@ class ModalChoiceWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 8,
+          height: 13,
         ),
         FilledButton(
           onPressed: onSubmit,
-          child: Text(
-            submitText,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeightConstants.semiBold,
-              height: 1.0,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                submitText,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeightConstants.semiBold,
+                  height: 1.0,
+                ),
+              ),
+              submitSuffix != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 6.0),
+                      child: Text(
+                        submitSuffix!,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: ColorConstants.lightGray.withOpacity(0.5),
+                          fontWeight: FontWeight.bold,
+                          height: 1.0,
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ],
           ),
         ),
       ],

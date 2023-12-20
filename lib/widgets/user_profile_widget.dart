@@ -2,7 +2,6 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
@@ -13,7 +12,7 @@ import '../constants.dart';
 import '../providers/character_provider.dart';
 import '../screens/character_profile/profile_details_screen.dart';
 import '../services.dart';
-import 'character_change_modal_widget.dart';
+import 'character_change_modal.dart';
 
 class UserProfileWidget extends ConsumerStatefulWidget {
   final Query retrieveMyCharacterQuery, retrieveMeQuery;
@@ -32,58 +31,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
       context: context,
       showDragHandle: true,
       builder: (context) {
-        return Container(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
-          margin: const EdgeInsets.symmetric(horizontal: 10),
-          decoration: BoxDecoration(
-            color: ColorConstants.background,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ...characterList
-                  .where((character) =>
-                      ref.watch(selectedCharacterProvider) == character.id)
-                  .map((character) => CharacterChangeListWidget(
-                      character: character,
-                      isSelected:
-                          ref.watch(selectedCharacterProvider) == character.id))
-                  .toList(),
-              ...characterList
-                  .where((character) =>
-                      ref.watch(selectedCharacterProvider) != character.id)
-                  .map((character) => CharacterChangeListWidget(
-                      character: character,
-                      isSelected:
-                          ref.watch(selectedCharacterProvider) == character.id))
-                  .toList(),
-              Row(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 8.0,
-                      ),
-                      child: Icon(
-                        PhosphorIcons.plus_circle_fill,
-                        color: ColorConstants.primary,
-                        size: 40,
-                      )),
-                  Expanded(
-                    child: Text(
-                      '새 친구 만나기',
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: ColorConstants.primary,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        );
+        return CharacterChangeModal(characterList: characterList);
       },
     );
   } //3.0작업
@@ -167,7 +115,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                       context.push('/mails/my-character');
                     },
                     child: Container(
-                      margin: const EdgeInsets.fromLTRB(0, 5, 0, 20),
+                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
@@ -13,7 +14,7 @@ import 'package:project_june_client/widgets/character_change_overlay_widget.dart
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
-import 'package:project_june_client/widgets/notification_permission_check.dart';
+import 'package:project_june_client/widgets/notification/notification_permission_check.dart';
 
 import '../../actions/character/models/Character.dart';
 import '../../actions/mails/models/Mail.dart';
@@ -56,6 +57,28 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         Tween<double>(begin: 0.0, end: 1.0).animate(profileChangeController!);
     reloadMailFadeAnimation =
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
+  }
+
+  void checkRetest() async {
+    final myCharacterList =
+        await getRetrieveMyCharacterQuery().result.then((value) => value.data);
+    final currentCharacter = myCharacterList!
+        .where((character) => character.is_current == true)
+        .first;
+    final bool is30DaysFinished = await getRetrieveMeQuery()
+        .result
+        .then((value) => value.data!.is_30days_finished);
+    if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
+        is30DaysFinished) {
+      context.push(
+        "/retest",
+        extra: <String, dynamic>{
+          "firstName":
+              characterService.getCurrentCharacterFirstName(myCharacterList),
+          "characterIds": characterService.getCharacterIds(myCharacterList),
+        },
+      );
+    }
   }
 
   void setInitialState() {
@@ -115,7 +138,13 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                 ),
                               )
                               .toList(),
-                          const CharacterChangeOverlayWidget(),
+                          CharacterChangeOverlayWidget(
+                            hideOverlay: hideOverlay,
+                            firstName: characterService
+                                .getCurrentCharacterFirstName(characterList),
+                            characterIds:
+                                characterService.getCharacterIds(characterList),
+                          ),
                         ],
                       ),
                     ),
@@ -460,7 +489,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                             setState(() {
                                               mailWidgetList = null;
                                             });
-                                            ;
                                             reloadMailController!.reverse();
                                           });
                                         },

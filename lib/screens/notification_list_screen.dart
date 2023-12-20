@@ -6,7 +6,7 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
-import 'package:project_june_client/widgets/notification_widget.dart';
+import 'package:project_june_client/widgets/notification/notification_widget.dart';
 
 import '../actions/notification/queries.dart';
 

@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
-import '../services.dart';
+import '../../services.dart';
 
 class ProductWidget extends StatefulWidget {
   final List<ProductDetails> products;
