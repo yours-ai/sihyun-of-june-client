@@ -13,7 +13,7 @@ class Character {
   CharacterInfo? character_info;
   CharacterTheme? theme;
   bool? is_image_updated;
-  DateTime? date_allocated;
+  List<DateTime>? date_allocated;
 
   Character({
     required this.id,
