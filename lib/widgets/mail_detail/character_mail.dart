@@ -38,7 +38,7 @@ class CharacterMailWidget extends ConsumerWidget {
             fontFamily: characterInMail.theme!.font,
             fontSize: 19,
             fontWeight: FontWeight.bold,
-            color: ColorConstants.primary,
+            color: ColorConstants.black,
             height: 1.289,
             letterSpacing: 1.02,
           ),

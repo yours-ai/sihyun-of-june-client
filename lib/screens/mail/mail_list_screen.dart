@@ -178,6 +178,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         mail: mail,
         mailNumber: mailDateDiff,
         firstMailDate: firstMailDate,
+        selectedPage: selectedPage,
       );
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -368,9 +369,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                     page: selectedPage!),
                 builder: (context, listMailState) {
                   if (listMailState.data != null) {
-                    if (mailWidgetList == null) {
                       updateAllMailList(listMailState.data!);
-                    }
                   }
                   return (selectedPage == null || mailWidgetList == null)
                       ? const SizedBox()
