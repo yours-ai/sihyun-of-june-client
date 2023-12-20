@@ -29,12 +29,15 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
   }
 
   void handleTestInfo(
-      TestReason reason, int testId, String name, int selectedCharacterId) {
+      {required TestReason reason,
+      required int testId,
+      required String firstName,
+      required int characterId}) {
     setState(() {
       testReason = reason;
       this.testId = testId;
-      this.name = name;
-      this.selectedCharacterId = selectedCharacterId;
+      this.name = firstName;
+      this.selectedCharacterId = characterId;
     });
   }
 

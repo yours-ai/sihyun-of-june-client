@@ -10,7 +10,11 @@ import '../../screens/character_test/character_choice_screen.dart';
 
 class CharacterDetailWidget extends ConsumerWidget {
   final void Function(ActiveScreen) onActiveScreen;
-  final void Function(TestReason, int, String, int) onTestInfo;
+  final void Function(
+      {required TestReason reason,
+      required int testId,
+      required String firstName,
+      required int characterId}) onTestInfo;
 
   const CharacterDetailWidget(
       {super.key, required this.onActiveScreen, required this.onTestInfo});
@@ -59,12 +63,12 @@ class CharacterDetailWidget extends ConsumerWidget {
                   child: FilledButton(
                     onPressed: () {
                       onTestInfo(
-                          testReason == 'NEW_USER'
+                          reason: testReason == 'NEW_USER'
                               ? TestReason.newUser
                               : TestReason.retest,
-                          state.data!['test_id'],
-                          character!.first_name!,
-                          character.id!);
+                          testId: state.data!['test_id'],
+                          firstName: character!.first_name!,
+                          characterId: character.id!);
                       onActiveScreen(ActiveScreen.confirm);
                     },
                     child: const Text('다음'),
