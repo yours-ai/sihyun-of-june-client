@@ -1,3 +1,4 @@
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
@@ -10,7 +11,6 @@ import '../actions/character/models/Character.dart';
 import '../constants.dart';
 import '../providers/character_provider.dart';
 import '../providers/common_provider.dart';
-import '../providers/user_provider.dart';
 import '../services.dart';
 import '../services/unique_cachekey_service.dart';
 
@@ -42,7 +42,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
         if (character == null) {
           final bool is30DaysFinished = await getRetrieveMeQuery()
               .result
-              .then((value) => value.data!.is_30days_finished!);
+              .then((value) => value.data!.is_30days_finished);
           if (is30DaysFinished == false) {
             showModalBottomSheet(
               context: context,
@@ -61,12 +61,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
           );
           return;
         }
-        Timer(
-          const Duration(milliseconds: 100),
-          () {
-            characterService.changeCharacterByTap(ref, character!);
-          },
-        );
+        characterService.changeCharacterByTap(ref, character!);
       }, // 캐릭터 전환 or 추가 배정받기
       child: Container(
         decoration: BoxDecoration(

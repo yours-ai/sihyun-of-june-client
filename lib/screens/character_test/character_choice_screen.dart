@@ -36,8 +36,8 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
     setState(() {
       testReason = reason;
       this.testId = testId;
-      this.name = firstName;
-      this.selectedCharacterId = characterId;
+      name = firstName;
+      selectedCharacterId = characterId;
     });
   }
 

@@ -42,7 +42,7 @@ class RetestLayoutWidget extends StatelessWidget {
             padding: const EdgeInsets.only(top: 30),
             child: Center(
               child: Text(
-                '${firstName}이와의 30일이 모두 끝났어요.',
+                '$firstName이와의 30일이 모두 끝났어요.',
                 style: TextStyle(
                   fontSize: 16,
                   color: ColorConstants.neutral,

@@ -68,7 +68,7 @@ class CharacterDetailWidget extends ConsumerWidget {
                               : TestReason.retest,
                           testId: state.data!['test_id'],
                           firstName: character!.first_name!,
-                          characterId: character.id!);
+                          characterId: character.id);
                       onActiveScreen(ActiveScreen.confirm);
                     },
                     child: const Text('다음'),

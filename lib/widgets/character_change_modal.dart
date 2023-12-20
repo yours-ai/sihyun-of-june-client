@@ -8,10 +8,8 @@ import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
 
 import '../actions/auth/queries.dart';
 import '../actions/character/models/Character.dart';
-import '../actions/character/queries.dart';
 import '../constants.dart';
 import '../providers/character_provider.dart';
-import '../providers/user_provider.dart';
 import 'character_change_list_widget.dart';
 
 class CharacterChangeModal extends ConsumerWidget {

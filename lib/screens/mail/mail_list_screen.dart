@@ -6,7 +6,6 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
-import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
@@ -16,14 +15,12 @@ import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/notification/notification_permission_check.dart';
-import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 
 import '../../actions/character/models/Character.dart';
 import '../../actions/mails/models/Mail.dart';
 import '../../actions/mails/queries.dart';
 import '../../actions/notification/queries.dart';
 import '../../constants.dart';
-import '../../providers/user_provider.dart';
 import '../../services.dart';
 import '../../widgets/common/alert/alert_widget.dart';
 import '../character_profile/profile_details_screen.dart';
@@ -70,14 +67,14 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         .first;
     final bool is30DaysFinished = await getRetrieveMeQuery()
         .result
-        .then((value) => value.data!.is_30days_finished!);
+        .then((value) => value.data!.is_30days_finished);
     if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
         is30DaysFinished) {
       context.push(
         "/retest",
         extra: <String, dynamic>{
           "firstName":
-              characterService.getCurrentCharacterFirstName(myCharacterList!),
+              characterService.getCurrentCharacterFirstName(myCharacterList),
           "characterIds": characterService.getCharacterIds(myCharacterList),
         },
       );
@@ -492,7 +489,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                             setState(() {
                                               mailWidgetList = null;
                                             });
-                                            ;
                                             reloadMailController!.reverse();
                                           });
                                         },

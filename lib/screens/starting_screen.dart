@@ -16,7 +16,6 @@ import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
 
-import '../actions/character/models/Character.dart';
 import '../actions/notification/actions.dart';
 import '../widgets/common/alert/alert_description_widget.dart';
 import '../widgets/common/alert/alert_widget.dart';

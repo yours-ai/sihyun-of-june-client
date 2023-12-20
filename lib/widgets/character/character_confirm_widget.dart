@@ -12,7 +12,6 @@ import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 
-import '../../actions/auth/queries.dart';
 import '../../actions/character/dtos.dart';
 import '../../constants.dart';
 import '../../globals.dart';

@@ -77,7 +77,7 @@ class CharacterService {
   }
 
   List<int> getCharacterIds(List<Character> characterList) {
-    return characterList.map((character) => character.id!).toList();
+    return characterList.map((character) => character.id).toList();
   }
 
   String getCurrentCharacterFirstName(List<Character> characterList) {

@@ -2,7 +2,6 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
@@ -14,7 +13,6 @@ import '../providers/character_provider.dart';
 import '../screens/character_profile/profile_details_screen.dart';
 import '../services.dart';
 import 'character_change_modal.dart';
-import 'character_change_list_widget.dart';
 
 class UserProfileWidget extends ConsumerStatefulWidget {
   final Query retrieveMyCharacterQuery, retrieveMeQuery;

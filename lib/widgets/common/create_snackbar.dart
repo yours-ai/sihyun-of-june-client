@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_june_client/actions/character/models/CharacterColors.dart';
-import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:project_june_client/globals.dart';
-import 'package:project_june_client/router.dart';
-import 'package:project_june_client/services.dart';
 
 SnackBar createSnackBar({
   required String snackBarText,
