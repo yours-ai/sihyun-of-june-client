@@ -58,14 +58,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
   }
 
-  Future<List<Mail>> fetchMailList(int characterId, int page) async {
-    final mailListState = await getListMailQuery(
-      characterId: characterId,
-      page: page,
-    ).result;
-    return mailListState.data!;
-  }
-
   void setInitialState() {
     setState(() {
       selectedPage = null;
@@ -282,111 +274,107 @@ class MailListScreenState extends ConsumerState<MailListScreen>
             final mainImageSrc = characterService
                 .getMainImage(selectedCharacter.character_info!.images!);
             selectedPage ??= selectedCharacter.date_allocated!.length;
-            return QueryBuilder(
-              query: getListMailQuery(
-                  characterId: ref.watch(selectedCharacterProvider)!,
-                  page: selectedPage!),
-              builder: (context, listMailState) {
-                if (listMailState.data != null) {
-                  if (mailWidgetList == null) {
-                    updateAllMailList(listMailState.data!);
-                  }
-                }
-                return (selectedPage == null || mailWidgetList == null)
-                    ? const SizedBox()
-                    : TitleLayout(
-                        title: Row(
-                          children: [
-                            Expanded(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    '${selectedCharacter.first_name}이와의\n${mailService.getDDay(selectedCharacter.date_allocated!.last)}',
-                                    style: TextStyle(
-                                      fontFamily: 'NanumJungHagSaeng',
-                                      color: ColorConstants.primary,
-                                      fontSize: 21,
-                                      height: 15 / 18.5,
-                                      letterSpacing: 2,
-                                      fontWeight: FontWeightConstants.semiBold,
+            return TitleLayout(
+              title: Row(
+                children: [
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 10),
+                        Text(
+                          '${selectedCharacter.first_name}이와의\n${mailService.getDDay(selectedCharacter.date_allocated!.last)}',
+                          style: TextStyle(
+                            fontFamily: 'NanumJungHagSaeng',
+                            color: ColorConstants.primary,
+                            fontSize: 21,
+                            height: 15 / 18.5,
+                            letterSpacing: 2,
+                            fontWeight: FontWeightConstants.semiBold,
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const TitleUnderline(titleText: "받은 편지함"),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            selectedCharacter.is_image_updated!
+                                ? showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    builder: (context) => ProfileDetailsScreen(
+                                      imageList: selectedCharacter
+                                          .character_info!.images!,
+                                      index: mainImageSrc.order - 1,
                                     ),
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ],
+                                  )
+                                : context.push('/mails/my-character');
+                          },
+                          onLongPressStart: (_) {
+                            HapticFeedback.heavyImpact();
+                          },
+                          onLongPressEnd: (_) {
+                            HapticFeedback.heavyImpact();
+                            changeProfileList(charactersState.data!);
+                          },
+                          child: Container(
+                            key: _targetKey,
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(70.0),
+                              // 원형 테두리 반경
+                              border: Border.all(
+                                color: selectedCharacter.is_image_updated!
+                                    ? Color(ref
+                                        .watch(characterThemeProvider)
+                                        .colors!
+                                        .primary!)
+                                    : ColorConstants.background,
+                                // 테두리 색상
+                                width: 2.0, // 테두리 두께
                               ),
                             ),
-                            const TitleUnderline(titleText: "받은 편지함"),
-                            Expanded(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      selectedCharacter.is_image_updated!
-                                          ? showModalBottomSheet(
-                                              isScrollControlled: true,
-                                              context: context,
-                                              builder: (context) =>
-                                                  ProfileDetailsScreen(
-                                                imageList: selectedCharacter
-                                                    .character_info!.images!,
-                                                index: mainImageSrc.order - 1,
-                                              ),
-                                            )
-                                          : context.push('/mails/my-character');
-                                    },
-                                    onLongPressStart: (_) {
-                                      HapticFeedback.heavyImpact();
-                                    },
-                                    onLongPressEnd: (_) {
-                                      HapticFeedback.heavyImpact();
-                                      changeProfileList(charactersState.data!);
-                                    },
-                                    child: Container(
-                                      key: _targetKey,
-                                      padding: const EdgeInsets.all(2),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(70.0),
-                                        // 원형 테두리 반경
-                                        border: Border.all(
-                                          color: selectedCharacter
-                                                  .is_image_updated!
-                                              ? Color(ref
-                                                  .watch(characterThemeProvider)
-                                                  .colors!
-                                                  .primary!)
-                                              : ColorConstants.background,
-                                          // 테두리 색상
-                                          width: 2.0, // 테두리 두께
-                                        ),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: SizedBox(
-                                          height: 40,
-                                          width: 40,
-                                          child: ExtendedImage.network(
-                                            timeLimit: ref.watch(
-                                                imageCacheDurationProvider),
-                                            cacheKey: UniqueCacheKeyService
-                                                .makeUniqueKey(
-                                                    mainImageSrc.src),
-                                            mainImageSrc.src,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: SizedBox(
+                                height: 40,
+                                width: 40,
+                                child: ExtendedImage.network(
+                                  timeLimit:
+                                      ref.watch(imageCacheDurationProvider),
+                                  cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                                      mainImageSrc.src),
+                                  mainImageSrc.src,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            )
-                          ],
+                            ),
+                          ),
                         ),
-                        body: Stack(
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              body: QueryBuilder(
+                query: getListMailQuery(
+                    characterId: ref.watch(selectedCharacterProvider)!,
+                    page: selectedPage!),
+                builder: (context, listMailState) {
+                  if (listMailState.data != null) {
+                    if (mailWidgetList == null) {
+                      updateAllMailList(listMailState.data!);
+                    }
+                  }
+                  return (selectedPage == null || mailWidgetList == null)
+                      ? const SizedBox()
+                      : Stack(
                           children: [
                             QueryBuilder(
                               query: isNotificationAcceptedQuery,
@@ -467,15 +455,13 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                         onRefresh: () async {
                                           HapticFeedback.lightImpact();
                                           retrieveMyCharacterQuery.refetch();
-                                          final reloadedMail =
-                                              await fetchMailList(
-                                                  ref.watch(
-                                                      selectedCharacterProvider)!,
-                                                  selectedPage!);
                                           reloadMailController!
                                               .forward()
                                               .then((_) {
-                                            updateAllMailList(reloadedMail);
+                                            setState(() {
+                                              mailWidgetList = null;
+                                            });
+                                            ;
                                             reloadMailController!.reverse();
                                           });
                                         },
@@ -494,9 +480,9 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                               ),
                             ),
                           ],
-                        ),
-                      );
-              },
+                        );
+                },
+              ),
             );
           }),
     );
