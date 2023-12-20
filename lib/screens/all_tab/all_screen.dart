@@ -54,6 +54,7 @@ class _AllScreenState extends State<AllScreen>
       },
     );
   } //3.0작업
+
   void _showLogoutModal() async {
     await showModalBottomSheet<void>(
       context: context,
@@ -207,6 +208,19 @@ class _AllScreenState extends State<AllScreen>
                     context.push('/share');
                   },
                 ),
+                QueryBuilder(
+                    query: retrieveMyCharacterQuery,
+                    builder: (context, state) {
+                      if (state.data == null) {
+                        return const SizedBox.shrink();
+                      }
+                      return MenuWidget(
+                        title: '상대 변경하기',
+                        onPressed: () {
+                          _showMultiCharacterModal(state.data!);
+                        },
+                      );
+                    }),
                 const MenuTitleWidget(title: '내 정보'),
                 MenuWidget(
                   title: '이름 변경하기',
