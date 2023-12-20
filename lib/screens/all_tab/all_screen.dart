@@ -1,7 +1,9 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/menu_title_widget.dart';
@@ -24,7 +26,22 @@ class AllScreen extends StatefulWidget {
   _AllScreenState createState() => _AllScreenState();
 }
 
-class _AllScreenState extends State<AllScreen> {
+class _AllScreenState extends State<AllScreen>
+    with SingleTickerProviderStateMixin {
+  AnimationController? reloadAllController;
+  Animation<double>? reloadAllFadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    reloadAllController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100), // 애니메이션 지속 시간
+    );
+    reloadAllFadeAnimation =
+        Tween<double>(begin: 1.0, end: 0.0).animate(reloadAllController!);
+  }
+
   void _showLogoutModal() async {
     await showModalBottomSheet<void>(
       context: context,
@@ -96,6 +113,8 @@ class _AllScreenState extends State<AllScreen> {
 
   @override
   Widget build(context) {
+    final retrieveMyCharacterQuery = getRetrieveMyCharacterQuery();
+    final retrieveMeQuery = getRetrieveMeQuery();
     return SafeArea(
       child: TitleLayout(
         title: const Center(
@@ -103,111 +122,124 @@ class _AllScreenState extends State<AllScreen> {
             titleText: '전체',
           ),
         ),
-        body: ListView(
-          children: [
-            const UserProfileWidget(),
-            QueryBuilder(
-              query: getRetrieveMeQuery(),
-              builder: (context, state) {
-                return Column(
-                  children: [
-                    MenuWidget(
-                      title: '포인트',
-                      onPressed: () => context.push('/my-point'),
-                      suffix: Row(
-                        children: [
-                          Text(
-                            state.data?.point != null
-                                ? '${transactionService.currencyFormatter.format(state.data?.point)} P'
-                                : '',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: ColorConstants.primary,
-                            ),
+        body: RefreshIndicator.adaptive(
+          onRefresh: () async {
+            HapticFeedback.lightImpact();
+            reloadAllController!.forward().then((_) async {
+              await retrieveMyCharacterQuery.refetch();
+              await retrieveMeQuery.refetch();
+              reloadAllController!.reverse();
+            });
+          },
+          child: FadeTransition(
+            opacity: reloadAllFadeAnimation!,
+            child: ListView(
+              children: [
+                UserProfileWidget(retrieveMyCharacterQuery, retrieveMeQuery),
+                QueryBuilder(
+                  query: retrieveMeQuery,
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        MenuWidget(
+                          title: '포인트',
+                          onPressed: () => context.push('/my-point'),
+                          suffix: Row(
+                            children: [
+                              Text(
+                                state.data?.point != null
+                                    ? '${transactionService.currencyFormatter.format(state.data?.point)} P'
+                                    : '',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: ColorConstants.primary,
+                                ),
+                              ),
+                              Icon(
+                                PhosphorIcons.caret_right_bold,
+                                color: ColorConstants.primary,
+                                size: 24,
+                              ),
+                            ],
                           ),
-                          Icon(
-                            PhosphorIcons.caret_right_bold,
-                            color: ColorConstants.primary,
-                            size: 24,
+                        ),
+                        MenuWidget(
+                          title: '코인',
+                          onPressed: () => context.push('/my-coin'),
+                          suffix: Row(
+                            children: [
+                              Text(
+                                state.data?.coin != null
+                                    ? '${transactionService.currencyFormatter.format(state.data?.coin)} 코인'
+                                    : '',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: ColorConstants.primary,
+                                ),
+                              ),
+                              Icon(
+                                PhosphorIcons.caret_right_bold,
+                                color: ColorConstants.primary,
+                                size: 24,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                    MenuWidget(
-                      title: '코인',
-                      onPressed: () => context.push('/my-coin'),
-                      suffix: Row(
-                        children: [
-                          Text(
-                            state.data?.coin != null
-                                ? '${transactionService.currencyFormatter.format(state.data?.coin)} 코인'
-                                : '',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: ColorConstants.primary,
-                            ),
-                          ),
-                          Icon(
-                            PhosphorIcons.caret_right_bold,
-                            color: ColorConstants.primary,
-                            size: 24,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-            MenuWidget(
-              title: '친구 초대하고 포인트 받기',
-              onPressed: () {
-                context.push('/share');
-              },
-            ),
-            const MenuTitleWidget(title: '내 정보'),
-            MenuWidget(
-              title: '이름 변경하기',
-              onPressed: () => context.push('/change-name'),
-            ),
-            MenuWidget(
-              title: '로그아웃',
-              onPressed: () {
-                _showLogoutModal();
-              },
-            ),
-            MenuWidget(
-              title: '탈퇴하기',
-              onPressed: () {
-                _showWithdrawModal();
-              },
-            ),
-            const MenuTitleWidget(title: '고객센터'),
-            MenuWidget(
-              title: '공지',
-              onPressed: () => launchUrl(Uri.parse(Urls.notice)),
-            ),
-            MenuWidget(
-              title: '문의하기',
-              onPressed: () => launchUrl(Uri.parse(Urls.ask)),
-            ),
-            QueryBuilder(
-              query: getRefferalCodeQuery(),
-              builder: (context, state) {
-                return MenuWidget(
-                  title: '의견 남기기',
-                  onPressed: () {
-                    launchUrl(Uri.parse(
-                        'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
+                        ),
+                      ],
+                    );
                   },
-                );
-              },
+                ),
+                MenuWidget(
+                  title: '친구 초대하고 포인트 받기',
+                  onPressed: () {
+                    context.push('/share');
+                  },
+                ),
+                const MenuTitleWidget(title: '내 정보'),
+                MenuWidget(
+                  title: '이름 변경하기',
+                  onPressed: () => context.push('/change-name'),
+                ),
+                MenuWidget(
+                  title: '로그아웃',
+                  onPressed: () {
+                    _showLogoutModal();
+                  },
+                ),
+                MenuWidget(
+                  title: '탈퇴하기',
+                  onPressed: () {
+                    _showWithdrawModal();
+                  },
+                ),
+                const MenuTitleWidget(title: '고객센터'),
+                MenuWidget(
+                  title: '공지',
+                  onPressed: () => launchUrl(Uri.parse(Urls.notice)),
+                ),
+                MenuWidget(
+                  title: '문의하기',
+                  onPressed: () => launchUrl(Uri.parse(Urls.ask)),
+                ),
+                QueryBuilder(
+                  query: getRefferalCodeQuery(),
+                  builder: (context, state) {
+                    return MenuWidget(
+                      title: '의견 남기기',
+                      onPressed: () {
+                        launchUrl(Uri.parse(
+                            'https://form.sihyunofjune.com/feedback?ref=${state.data}'));
+                      },
+                    );
+                  },
+                ),
+                MenuWidget(
+                  title: '약관 및 정책',
+                  onPressed: () => context.push('/policy'),
+                ),
+              ],
             ),
-            MenuWidget(
-              title: '약관 및 정책',
-              onPressed: () => context.push('/policy'),
-            ),
-          ],
+          ),
         ),
       ),
     );

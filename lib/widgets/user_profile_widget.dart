@@ -9,8 +9,6 @@ import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
-import '../actions/auth/queries.dart';
-import '../actions/character/queries.dart';
 import '../constants.dart';
 import '../providers/character_provider.dart';
 import '../screens/character_profile/profile_details_screen.dart';
@@ -18,7 +16,10 @@ import '../services.dart';
 import 'character_change_modal_widget.dart';
 
 class UserProfileWidget extends ConsumerStatefulWidget {
-  const UserProfileWidget({super.key});
+  final Query retrieveMyCharacterQuery, retrieveMeQuery;
+
+  const UserProfileWidget(this.retrieveMyCharacterQuery, this.retrieveMeQuery,
+      {super.key});
 
   @override
   UserProfileWidgetState createState() => UserProfileWidgetState();
@@ -93,7 +94,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         QueryBuilder(
-          query: getRetrieveMyCharacterQuery(),
+          query: widget.retrieveMyCharacterQuery,
           builder: (context, state) {
             if (state.data != null) {
               final selectedCharacter = state.data!
@@ -201,7 +202,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
         Column(
           children: [
             QueryBuilder(
-              query: getRetrieveMeQuery(),
+              query: widget.retrieveMeQuery,
               builder: (context, state) => state.data == null
                   ? const SizedBox.shrink()
                   : Center(

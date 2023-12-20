@@ -12,8 +12,9 @@ import '../../actions/mails/queries.dart';
 
 class MailDetailScreen extends StatefulWidget {
   final int id;
+  final int? selectedPage;
 
-  const MailDetailScreen({super.key, required this.id});
+  const MailDetailScreen({super.key, required this.id, this.selectedPage});
 
   @override
   State<MailDetailScreen> createState() => _MailDetailScreenState();
@@ -90,9 +91,9 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     CharacterMailWidget(
-                                        mail: mailState.data!,
-                                        characterInMail:
-                                        characterInMail),
+                                      mail: mailState.data!,
+                                      characterInMail: characterInMail,
+                                    ),
                                     if (mailState
                                         .data!.replies!.isNotEmpty) ...[
                                       Container(
@@ -104,11 +105,12 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                       ),
                                       ReplyWidget(
                                         reply: mailState.data!.replies!.first,
-                                        userName:
-                                            mailState.data!.to_first_name,
-                                        characterName: characterInMail.first_name!,
+                                        userName: mailState.data!.to_first_name,
+                                        characterName:
+                                            characterInMail.first_name!,
                                         toImage: mailState.data!.to_image,
-                                        primaryColorInMail: characterInMail.theme!.colors!.primary!,
+                                        primaryColorInMail: characterInMail
+                                            .theme!.colors!.primary!,
                                       )
                                     ],
                                     if (mailState.data!.replies!.isEmpty &&
@@ -122,8 +124,12 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                       ),
                                       ReplyFormWidget(
                                         mail: mailState.data!,
-                                        primaryColorInMail: characterInMail.theme!.colors!.primary!,
-                                          characterName: characterInMail.first_name!,
+                                        primaryColorInMail: characterInMail
+                                            .theme!.colors!.primary!,
+                                        characterName:
+                                            characterInMail.first_name!,
+                                        characterId: characterInMail.id,
+                                        selectedPage: widget.selectedPage,
                                       )
                                     ],
                                     if (mailState.data!.replies!.isEmpty &&

@@ -18,10 +18,17 @@ class ReplyFormWidget extends ConsumerStatefulWidget {
   final Mail mail;
   final int primaryColorInMail;
   final String characterName;
+  final int characterId;
+  final int? selectedPage;
 
-  const ReplyFormWidget(
-      {Key? key, required this.mail, required this.primaryColorInMail,  required this.characterName})
-      : super(key: key);
+  const ReplyFormWidget({
+    Key? key,
+    required this.characterId,
+    required this.mail,
+    required this.primaryColorInMail,
+    required this.characterName,
+    this.selectedPage,
+  }) : super(key: key);
 
   @override
   ReplyFormWidgetState createState() => ReplyFormWidgetState();
@@ -59,7 +66,8 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
     final mutation = getSendMailReplyMutation(
       refetchQueries: [
         'character-sent-mail/${widget.mail.id}',
-        'character-sent-mail-list'
+        if (widget.selectedPage != null)
+          'character-sent-mail-list/${widget.characterId}/${widget.selectedPage}'
       ],
       onSuccess: (res, arg) async {
         await mailService.deleteBeforeReply(widget.mail.id);
@@ -141,7 +149,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                 style: TextStyle(
                   fontFamily: 'NanumDaCaeSaRang',
                   fontSize: 19,
-                  color: ColorConstants.primary,
+                  color: ColorConstants.black,
                   fontWeight: FontWeight.bold,
                   height: 1.289,
                   letterSpacing: 1.02,

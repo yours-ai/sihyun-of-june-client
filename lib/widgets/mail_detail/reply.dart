@@ -43,7 +43,7 @@ class ReplyWidget extends ConsumerWidget {
             fontFamily: 'NanumDaCaeSaRang',
             fontSize: 19,
             fontWeight: FontWeightConstants.semiBold,
-            color: ColorConstants.primary,
+            color: ColorConstants.black,
             height: 1.289,
             letterSpacing: 1.02,
           ),
