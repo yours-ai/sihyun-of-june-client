@@ -19,7 +19,6 @@ class RetestConfirmScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String? userPayment;
     return RetestLayoutWidget(
       firstName: firstName,
       title: '이것이 ${firstName}이와의\n마지막 작별이 되어요.\n그래도 새로운 상대를\n만나시겠어요?',
@@ -32,7 +31,7 @@ class RetestConfirmScreen extends ConsumerWidget {
           onSuccess: (res, arg) {
             scaffoldMessengerKey.currentState?.showSnackBar(
               createSnackBar(
-                snackBarText: transactionService.getPurchaseStateText(userPayment!),
+                snackBarText: transactionService.getPurchaseStateText(arg),
                 characterColors: ref.watch(characterThemeProvider).colors!,
               ),
             );
@@ -42,7 +41,6 @@ class RetestConfirmScreen extends ConsumerWidget {
         builder: (context, state, mutate) {
           void handleRetest(String payment) {
             mutate(payment);
-            userPayment = payment;
           }
 
           return RetestChoiceWidget(

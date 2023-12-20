@@ -22,7 +22,6 @@ class RetestModalWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bool isEnableToRetest = ref.read(isEnableToRetestProvider);
-    String? userPayment;
     return ModalWidget(
       title: isEnableToRetest
           ? '아직 $firstName이와의 시간이 남았어요.\n그래도 새 친구를 만나시겠어요?'
@@ -42,7 +41,7 @@ class RetestModalWidget extends ConsumerWidget {
                 onSuccess: (res, arg) {
                   scaffoldMessengerKey.currentState?.showSnackBar(
                     createSnackBar(
-                      snackBarText: transactionService.getPurchaseStateText(userPayment!),
+                      snackBarText: transactionService.getPurchaseStateText(arg),
                       characterColors:
                           ref.watch(characterThemeProvider).colors!,
                     ),
@@ -53,7 +52,6 @@ class RetestModalWidget extends ConsumerWidget {
               builder: (context, state, mutate) {
                 void handleRetest(String payment) {
                   mutate(payment);
-                  userPayment = payment;
                 }
 
                 return RetestChoiceWidget(

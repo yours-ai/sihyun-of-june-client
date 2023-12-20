@@ -19,7 +19,6 @@ class RetestExtendScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String? userPayment;
     return QueryBuilder(
       query: getExtendCostQuery(),
       builder: (context, costState) {
@@ -35,7 +34,7 @@ class RetestExtendScreen extends ConsumerWidget {
               onSuccess: (res, arg) {
                 scaffoldMessengerKey.currentState?.showSnackBar(
                   createSnackBar(
-                    snackBarText: userPayment == 'coin'
+                    snackBarText: arg == 'coin'
                         ? '${costState.data!['coin']}코인을 사용했어요!'
                         : '${costState.data!['point']}포인트를 사용했어요!}',
                     characterColors: ref.watch(characterThemeProvider).colors!,
@@ -47,7 +46,6 @@ class RetestExtendScreen extends ConsumerWidget {
             builder: (context, state, mutate) {
               void handleRetest(String payment) {
                 mutate(payment);
-                userPayment = payment;
               }
 
               return RetestChoiceWidget(

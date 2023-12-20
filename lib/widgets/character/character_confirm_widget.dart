@@ -37,7 +37,6 @@ class CharacterConfirmWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String? userPayment;
     _showDenyModal() async {
       await showModalBottomSheet<void>(
         context: context,
@@ -46,16 +45,20 @@ class CharacterConfirmWidget extends ConsumerWidget {
           final mutation = getDenyTestChoiceMutation(
             onSuccess: (res, arg) {
               CharacterTheme defaultTheme = CharacterTheme(
-                colors:
-                    CharacterColors(primary: 4294923379, secondary: 4294932624),
+                colors: CharacterColors(
+                    primary: 4294923379,
+                    secondary: 4294932624,
+                    inverse_primary: 4294947513,
+                    inverse_surface: 4281741103,
+                    inverse_on_surface: 4294700782),
                 font: "NanumNoRyeogHaNeunDongHee",
               );
               ref.read(characterThemeProvider.notifier).state = defaultTheme;
-              if (userPayment != 'new_user') {
+              if (arg.payment != 'new_user') {
                 scaffoldMessengerKey.currentState?.showSnackBar(
                   createSnackBar(
                     snackBarText:
-                        transactionService.getPurchaseStateText(userPayment!),
+                        transactionService.getPurchaseStateText(arg.payment),
                     characterColors: ref.watch(characterThemeProvider).colors!,
                   ),
                 );
@@ -73,7 +76,6 @@ class CharacterConfirmWidget extends ConsumerWidget {
                         mutate(
                           denyTestChoiceDTO(id: testId, payment: payment),
                         );
-                        userPayment = payment;
                       }
 
                       return RetestChoiceWidget(
@@ -89,7 +91,6 @@ class CharacterConfirmWidget extends ConsumerWidget {
                       onSubmit: () {
                         mutate(
                             denyTestChoiceDTO(id: testId, payment: 'new_user'));
-                        userPayment = 'new_user';
                       },
                       cancelText: '됐어요',
                       onCancel: () => context.pop(),
