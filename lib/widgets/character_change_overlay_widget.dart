@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
@@ -18,13 +16,14 @@ import '../services/unique_cachekey_service.dart';
 
 class CharacterChangeOverlayWidget extends ConsumerWidget {
   final Character? character;
-  final VoidCallback? hideOverlay;
+  final VoidCallback? hideOverlay, setInitialState;
   final List<int>? characterIds;
   final String? firstName;
 
   const CharacterChangeOverlayWidget({
     this.character,
     this.hideOverlay,
+    this.setInitialState,
     this.characterIds,
     this.firstName,
     super.key,
@@ -38,6 +37,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
       behavior: HitTestBehavior.deferToChild,
       onTap: () async {
         if (isSelected) return;
+        setInitialState!();
         hideOverlay!();
         if (character == null) {
           final bool is30DaysFinished = await getRetrieveMeQuery()
@@ -85,7 +85,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 18.0),
+              padding: EdgeInsets.only(right: character == null ? 0 : 5),
               child: Text(
                 character == null
                     ? '새 친구 만나기'
@@ -108,12 +108,10 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: SizedBox(
-                  width: 40,
-                  height: 40,
                   child: character == null
                       ? Icon(
                           PhosphorIcons.plus_circle_thin,
-                          size: 40,
+                          size: 45,
                           color: ColorConstants.neutral,
                         )
                       : ExtendedImage.network(
@@ -127,6 +125,8 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
                               .getMainImage(character!.character_info!.images!)
                               .src,
                           fit: BoxFit.cover,
+                          width: 40,
+                          height: 40,
                         ),
                 ),
               ),

@@ -1,7 +1,6 @@
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:project_june_client/actions/mails/models/Mail.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 
@@ -34,12 +33,12 @@ class MailService {
     return normalizedDt.difference(normalizedFirstMailDate).inDays;
   }
 
-  String getDDay(DateTime startDate){
-    final goneDates = getMailDateDiff(clock.now(),startDate);
-    if(goneDates >= 29){
+  String getDDay(DateTime startDate) {
+    final goneDates = getMailDateDiff(clock.now(), startDate);
+    if (goneDates >= 29) {
       return '마지막 날';
     }
-    return 'D-${30-goneDates}';
+    return 'D-${30 - goneDates}';
   }
 
   String getMailReceiveDateStr(DateTime targetDate, bool needMonth) {
@@ -86,30 +85,30 @@ class MailService {
     );
   }
 
-  String kMonthData(index) {
+  String makePageLabel(index) {
     switch (index) {
       case 1:
-        return '첫 번째 달';
+        return '첫 번째 장';
       case 2:
-        return '두 번째 달';
+        return '두 번째 장';
       case 3:
-        return '세 번째 달';
+        return '세 번째 장';
       case 4:
-        return '네 번째 달';
+        return '네 번째 장';
       case 5:
-        return '다섯 번째 달';
+        return '다섯 번째 장';
       case 6:
-        return '여섯 번째 달';
+        return '여섯 번째 장';
       case 7:
-        return '일곱 번째 달';
+        return '일곱 번째 장';
       case 8:
-        return '여덟 번째 달';
+        return '여덟 번째 장';
       case 9:
-        return '아홉 번째 달';
+        return '아홉 번째 장';
       case 10:
-        return '열 번째 달';
+        return '열 번째 장';
       case 11:
-        return '열한 번째 달';
+        return '열한 번째 장';
     }
     return '';
   }
@@ -136,9 +135,5 @@ class MailService {
   Future<void> deleteBeforeReply(int mailId) async {
     final storage = getSecureStorage();
     await storage.delete(key: 'MAIL_REPLY_$mailId');
-  }
-
-  List<Mail> filterSelectedMailList(List<Mail> mails, int selectedCharacterId) {
-    return mails.where((mail) => mail.by == selectedCharacterId).toList();
   }
 }
