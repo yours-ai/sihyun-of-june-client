@@ -13,11 +13,13 @@ import '../../services/transaction_service.dart';
 class RetestChoiceWidget extends ConsumerWidget {
   final bool inModal;
   final Function(String) onRetest;
+  final Map<String, dynamic>? extendCost;
 
   const RetestChoiceWidget({
     super.key,
     this.inModal = false,
     required this.onRetest,
+    this.extendCost,
   });
 
   void showNeedMoreGoodsModal(BuildContext context) {
@@ -158,7 +160,9 @@ class RetestChoiceWidget extends ConsumerWidget {
           onCancel: () {
             context.pop();
           },
-          submitSuffix: '300P 또는 50코인',
+          submitSuffix: extendCost == null
+              ? '300P 또는 50코인'
+              : '${extendCost!['point']}P 또는 ${extendCost!['coin']}코인',
         );
       },
     );

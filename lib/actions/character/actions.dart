@@ -58,6 +58,19 @@ Future<void> readCharacterStory(int id) async {
 }
 
 Future<void> retest(String payment) async {
-  await dio.post('/character/test/retest/', data: {'payment': payment});
+  await dio.post('/character/reallocate/', data: {'payment': payment});
   return;
+}
+
+Future<void> extend(String payment) async {
+  await dio.post('/character/extend/', data: {'payment': payment});
+  return;
+}
+
+Future<Map<String, int>> getExtendCost() async {
+  final response = await dio.get('/character/extend/cost/');
+  return {
+    'coin': response.data['coin'] as int,
+    'point': response.data['point'] as int,
+  };
 }

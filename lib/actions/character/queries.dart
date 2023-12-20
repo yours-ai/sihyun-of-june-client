@@ -125,3 +125,26 @@ Mutation<void, String> getRetestMutation({
     onError: onError,
   );
 }
+
+Mutation<void, String> getExtendMutation({
+  refetchQueries = const [],
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, String>(
+    refetchQueries: refetchQueries,
+    queryFn: extend,
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Query<Map<String, int>> getExtendCostQuery({
+  OnQueryErrorCallback? onError,
+}) {
+  return Query(
+    key: 'extend-cost',
+    queryFn: getExtendCost,
+    onError: onError,
+  );
+}
