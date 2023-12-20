@@ -10,15 +10,10 @@ import '../../screens/character_test/character_choice_screen.dart';
 
 class CharacterDetailWidget extends ConsumerWidget {
   final void Function(ActiveScreen) onActiveScreen;
-  final void Function(TestReason) onTestReason;
-  final void Function(int) onTestId;
-  final void Function(String, int) onCharacterInfo;
+  final void Function(TestReason, int, String, int) onTestInfo;
 
-  const CharacterDetailWidget({super.key,
-    required this.onActiveScreen,
-    required this.onTestReason,
-    required this.onTestId,
-    required this.onCharacterInfo});
+  const CharacterDetailWidget(
+      {super.key, required this.onActiveScreen, required this.onTestInfo});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,9 +28,7 @@ class CharacterDetailWidget extends ConsumerWidget {
         String testReason = state.data!['test_reason'];
         character = Character.fromJson(state.data!['character']);
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          ref
-              .read(characterThemeProvider.notifier)
-              .state = character!.theme!;
+          ref.read(characterThemeProvider.notifier).state = character!.theme!;
         });
         return Scaffold(
           body: SafeArea(
@@ -65,12 +58,13 @@ class CharacterDetailWidget extends ConsumerWidget {
                       left: 28.0, right: 28.0, bottom: 20.0),
                   child: FilledButton(
                     onPressed: () {
-                      onTestReason(testReason == 'NEW_USER'
-                          ? TestReason.newUser
-                          : TestReason.retest);
-                      onActiveScreen(ActiveScreen.confirm);
-                      onTestId(state.data!['test_id']);
-                      onCharacterInfo(character!.first_name!, character.id!);
+                      onTestInfo(
+                          testReason == 'NEW_USER'
+                              ? TestReason.newUser
+                              : TestReason.retest,
+                          state.data!['test_id'],
+                          character!.first_name!,
+                          character.id!);
                     },
                     child: const Text('다음'),
                   ),

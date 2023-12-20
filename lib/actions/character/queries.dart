@@ -78,12 +78,12 @@ Query<List<Character>> getRetrieveMyCharacterQuery({
   );
 }
 
-Mutation<void, denyChoiceDTO> getDenyChoiceMutation({
+Mutation<void, denyTestChoiceDTO> getDenyTestChoiceMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
-  return Mutation<void, denyChoiceDTO>(
-    queryFn: denyChoice,
+  return Mutation<void, denyTestChoiceDTO>(
+    queryFn: denyTestChoice,
     onSuccess: onSuccess,
     onError: onError,
   );

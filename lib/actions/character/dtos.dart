@@ -28,9 +28,9 @@ class AnswerDTOList {
 }
 
 @immutable
-class denyChoiceDTO {
+class denyTestChoiceDTO {
   final int id;
   final String payment;
 
-  const denyChoiceDTO({required this.id, required this.payment});
+  const denyTestChoiceDTO({required this.id, required this.payment});
 }

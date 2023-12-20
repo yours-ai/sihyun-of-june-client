@@ -37,7 +37,7 @@ Future<List<Character>> fetchCharacters() async {
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }
 
-Future<void> denyChoice(denyChoiceDTO dto) async {
+Future<void> denyTestChoice(denyTestChoiceDTO dto) async {
   await dio.post('/character/test/${dto.id}/deny/', data: {'payment': dto.payment});
   return;
 }

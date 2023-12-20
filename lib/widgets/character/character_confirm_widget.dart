@@ -40,7 +40,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
         context: context,
         useRootNavigator: true,
         builder: (BuildContext context) {
-          final mutation = getDenyChoiceMutation(
+          final mutation = getDenyTestChoiceMutation(
             onSuccess: (res, arg) {
               CharacterTheme defaultTheme = CharacterTheme(
                 colors:
@@ -59,7 +59,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
                     builder: (context, state, mutate) {
                       void handleRetest(String payment) {
                         mutate(
-                          denyChoiceDTO(id: testId, payment: payment),
+                          denyTestChoiceDTO(id: testId, payment: payment),
                         );
                       }
 
@@ -74,7 +74,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
                       submitText: '네',
                       submitSuffix: '신규 1회 무료',
                       onSubmit: () => mutate(
-                          denyChoiceDTO(id: testId, payment: 'new_user')),
+                          denyTestChoiceDTO(id: testId, payment: 'new_user')),
                       cancelText: '됐어요',
                       onCancel: () => context.pop(),
                     ),

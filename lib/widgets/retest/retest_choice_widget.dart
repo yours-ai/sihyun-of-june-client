@@ -126,6 +126,9 @@ class RetestChoiceWidget extends ConsumerWidget {
     return QueryBuilder(
       query: getRetrieveMeQuery(),
       builder: (context, state) {
+        if (state.data == null) {
+          return const SizedBox.shrink();
+        }
         PurchaseState purchaseState = transactionService.getPurchaseState(
           state.data!.coin,
           state.data!.point,

@@ -46,9 +46,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
   Animation<double>? fadeAnimation;
   OverlayEntry? overlayEntry;
 
-  String firstName = '';
-  List<int> characterIds = [];
-
   @override
   void initState() {
     super.initState();
@@ -70,18 +67,17 @@ class MailListScreenState extends ConsumerState<MailListScreen>
     final currentCharacter = myCharacterList!
         .where((character) => character.is_current == true)
         .first;
-    firstName = characterService.getCurrentCharacterFirstName(myCharacterList!);
     final bool is30DaysFinished = await getRetrieveMeQuery()
         .result
         .then((value) => value.data!.is_30days_finished!);
-    characterIds = myCharacterList.map((character) => character.id).toList();
     if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
         is30DaysFinished) {
       context.push(
         "/retest",
         extra: <String, dynamic>{
-          "firstName": firstName,
-          "characterIds": characterIds,
+          "firstName":
+              characterService.getCurrentCharacterFirstName(myCharacterList!),
+          "characterIds": characterService.getCharacterIds(myCharacterList),
         },
       );
     }

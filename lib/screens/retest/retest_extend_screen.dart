@@ -20,8 +20,8 @@ class RetestExtendScreen extends StatelessWidget {
       action: MutationBuilder(
         mutation: getRetestMutation(
           refetchQueries: [
-            getRetrieveMyCharacterQuery(),
-            getRetrieveMeQuery(),
+            'my-character',
+            "retrieve-me",
           ],
           onSuccess: (res, arg) {
             context.go('/character-test');
