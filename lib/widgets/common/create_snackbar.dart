@@ -1,0 +1,32 @@
+import 'package:flutter/material.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
+import 'package:project_june_client/actions/notification/queries.dart';
+import 'package:project_june_client/globals.dart';
+import 'package:project_june_client/router.dart';
+import 'package:project_june_client/services.dart';
+
+SnackBar createSnackBar({
+  required String snackBarText,
+  required CharacterColors characterColors,
+  VoidCallback? onPressed,
+}) {
+  return SnackBar(
+    backgroundColor: Color(characterColors.inverse_surface!), // inverse_surface
+    content: Text(snackBarText,
+        style: TextStyle(
+          fontSize: 14,
+          height: 20 / 14,
+          color:
+              Color(characterColors.inverse_on_surface!), // inverse_on_surface
+        )),
+    behavior: SnackBarBehavior.floating,
+    action: SnackBarAction(
+      label: '확인',
+      textColor: Color(characterColors.inverse_primary!), // inverse_primary
+      onPressed: onPressed ??
+          () {
+            scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+          },
+    ),
+  );
+}

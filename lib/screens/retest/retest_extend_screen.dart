@@ -1,24 +1,28 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/actions.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_layout_widget.dart';
 
 import '../../actions/auth/queries.dart';
 import '../../actions/character/queries.dart';
+import '../../globals.dart';
+import '../../widgets/common/create_snackbar.dart';
 
-class RetestExtendScreen extends StatelessWidget {
+class RetestExtendScreen extends ConsumerWidget {
   final String firstName;
 
   const RetestExtendScreen({super.key, required this.firstName});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    String? userPayment;
     return QueryBuilder(
       query: getExtendCostQuery(),
       builder: (context, costState) {
-        if (costState == null) return SizedBox.shrink();
         return RetestLayoutWidget(
           firstName: firstName,
           title: '${firstName}이와의 시간을 늘리려면,\n더 많은 비용이 필요해요.\n그래도 계속하시겠어요?',
@@ -29,15 +33,23 @@ class RetestExtendScreen extends StatelessWidget {
                 "retrieve-me",
               ],
               onSuccess: (res, arg) {
-                context.go('/character-test');
+                scaffoldMessengerKey.currentState?.showSnackBar(
+                  createSnackBar(
+                    snackBarText: userPayment == 'coin'
+                        ? '${costState.data!['coin']}코인을 사용했어요!'
+                        : '${costState.data!['point']}포인트를 사용했어요!}',
+                    characterColors: ref.watch(characterThemeProvider).colors!,
+                  ),
+                );
+                context.go('/');
               },
-            ), // TODO - 연장으로 바꿔야함
+            ),
             builder: (context, state, mutate) {
               void handleRetest(String payment) {
                 mutate(payment);
+                userPayment = payment;
               }
 
-              print(costState.data);
               return RetestChoiceWidget(
                 onRetest: handleRetest,
                 extendCost: costState.data,

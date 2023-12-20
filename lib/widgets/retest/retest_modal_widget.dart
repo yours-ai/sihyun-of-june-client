@@ -8,7 +8,11 @@ import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 
 import '../../actions/auth/queries.dart';
 import '../../actions/character/queries.dart';
+import '../../globals.dart';
+import '../../providers/character_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../services.dart';
+import '../common/create_snackbar.dart';
 
 class RetestModalWidget extends ConsumerWidget {
   final String? firstName;
@@ -18,6 +22,7 @@ class RetestModalWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bool isEnableToRetest = ref.read(isEnableToRetestProvider);
+    String? userPayment;
     return ModalWidget(
       title: isEnableToRetest
           ? '아직 $firstName이와의 시간이 남았어요.\n그래도 새 친구를 만나시겠어요?'
@@ -35,12 +40,20 @@ class RetestModalWidget extends ConsumerWidget {
                   getRetrieveMeQuery(),
                 ],
                 onSuccess: (res, arg) {
+                  scaffoldMessengerKey.currentState?.showSnackBar(
+                    createSnackBar(
+                      snackBarText: transactionService.getPurchaseStateText(userPayment!),
+                      characterColors:
+                          ref.watch(characterThemeProvider).colors!,
+                    ),
+                  );
                   context.go('/character-test');
                 },
               ),
               builder: (context, state, mutate) {
                 void handleRetest(String payment) {
                   mutate(payment);
+                  userPayment = payment;
                 }
 
                 return RetestChoiceWidget(

@@ -118,15 +118,20 @@ class TransactionService {
         .toList();
   }
 
-  PurchaseState getPurchaseState(int coin, int point) {
-    if (coin >= 50 && point >= 300) {
+  PurchaseState getPurchaseState(
+      int coin, int point, int coinPrice, int pointPrice) {
+    if (coin >= coinPrice && point >= pointPrice) {
       return PurchaseState.both;
-    } else if (coin >= 50 && point < 300) {
+    } else if (coin >= coinPrice && point < pointPrice) {
       return PurchaseState.coin;
-    } else if (coin < 50 && point >= 300) {
+    } else if (coin < coinPrice && point >= pointPrice) {
       return PurchaseState.point;
     } else {
       return PurchaseState.impossible;
     }
+  }
+
+  String getPurchaseStateText(userPayment) {
+    return userPayment == 'coin' ? '50코인을 사용했어요!' : '300포인트를 사용했어요!';
   }
 }

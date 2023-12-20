@@ -15,8 +15,10 @@ import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 import '../../actions/auth/queries.dart';
 import '../../actions/character/dtos.dart';
 import '../../constants.dart';
+import '../../globals.dart';
 import '../../screens/character_test/character_choice_screen.dart';
 import '../../services.dart';
+import '../common/create_snackbar.dart';
 
 class CharacterConfirmWidget extends ConsumerWidget {
   final int testId;
@@ -35,6 +37,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    String? userPayment;
     _showDenyModal() async {
       await showModalBottomSheet<void>(
         context: context,
@@ -48,6 +51,15 @@ class CharacterConfirmWidget extends ConsumerWidget {
                 font: "NanumNoRyeogHaNeunDongHee",
               );
               ref.read(characterThemeProvider.notifier).state = defaultTheme;
+              if (userPayment != 'new_user') {
+                scaffoldMessengerKey.currentState?.showSnackBar(
+                  createSnackBar(
+                    snackBarText:
+                        transactionService.getPurchaseStateText(userPayment!),
+                    characterColors: ref.watch(characterThemeProvider).colors!,
+                  ),
+                );
+              }
               context.go('/character-test');
             },
           );
@@ -61,6 +73,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
                         mutate(
                           denyTestChoiceDTO(id: testId, payment: payment),
                         );
+                        userPayment = payment;
                       }
 
                       return RetestChoiceWidget(
@@ -73,8 +86,11 @@ class CharacterConfirmWidget extends ConsumerWidget {
                     builder: (context, state, mutate) => ModalChoiceWidget(
                       submitText: '네',
                       submitSuffix: '신규 1회 무료',
-                      onSubmit: () => mutate(
-                          denyTestChoiceDTO(id: testId, payment: 'new_user')),
+                      onSubmit: () {
+                        mutate(
+                            denyTestChoiceDTO(id: testId, payment: 'new_user'));
+                        userPayment = 'new_user';
+                      },
                       cancelText: '됐어요',
                       onCancel: () => context.pop(),
                     ),

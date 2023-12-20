@@ -134,6 +134,8 @@ class RetestChoiceWidget extends ConsumerWidget {
         PurchaseState purchaseState = transactionService.getPurchaseState(
           state.data!.coin,
           state.data!.point,
+          extendCost == null ? 50 : extendCost!['coin'],
+          extendCost == null ? 300 : extendCost!['point'],
         );
         return ModalChoiceWidget(
           submitText: '좋아요',
