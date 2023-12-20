@@ -186,15 +186,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
     return emptyCellsForWeekDay + modifiedWidgetList;
   }
 
-  void fetchMailListByPage(int page) async {
-    final getSelectedPageMailQuery = getListMailQuery(
-      characterId: ref.watch(selectedCharacterProvider)!,
-      page: page,
-    );
-    final selectedPageMailState = await getSelectedPageMailQuery.result;
-    updateAllMailList(selectedPageMailState.data!);
-  }
-
   Future showSelectMonthAlert(int mailReceivedMonth) {
     return showDialog(
       context: context,
@@ -231,9 +222,9 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                       ),
                     ),
                     onPressed: () async {
-                      fetchMailListByPage(index + 1);
                       setState(() {
                         selectedPage = index + 1;
+                        mailWidgetList = null;
                       });
                       context.pop();
                     },
@@ -275,14 +266,14 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                 .first;
             final mainImageSrc = characterService
                 .getMainImage(selectedCharacter.character_info!.images!);
+            selectedPage ??= selectedCharacter.date_allocated!.length;
             return QueryBuilder(
               query: getListMailQuery(
                   characterId: ref.watch(selectedCharacterProvider)!,
-                  page: selectedCharacter.date_allocated!.length),
+                  page: selectedPage!),
               builder: (context, listMailState) {
                 if (listMailState.data != null) {
-                  if (selectedPage == null || mailWidgetList == null) {
-                    selectedPage = selectedCharacter.date_allocated!.length;
+                  if (mailWidgetList == null) {
                     updateAllMailList(listMailState.data!);
                   }
                 }
