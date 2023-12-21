@@ -8,6 +8,7 @@ import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 
 import '../../actions/auth/queries.dart';
 import '../../actions/character/queries.dart';
+import '../../constants.dart';
 import '../../globals.dart';
 import '../../providers/character_provider.dart';
 import '../../providers/user_provider.dart';
@@ -43,7 +44,7 @@ class RetestModalWidget extends ConsumerWidget {
                     createSnackBar(
                       snackBarText: transactionService.getPurchaseStateText(arg),
                       characterColors:
-                          ref.watch(characterThemeProvider).colors!,
+                      ColorTheme.defaultTheme.colors!,
                     ),
                   );
                   context.go('/character-test');

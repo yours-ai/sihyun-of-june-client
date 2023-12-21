@@ -7,6 +7,7 @@ import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_layout_widget.dart';
 
 import '../../actions/character/queries.dart';
+import '../../constants.dart';
 import '../../globals.dart';
 import '../../widgets/common/create_snackbar.dart';
 
@@ -34,8 +35,8 @@ class RetestExtendScreen extends ConsumerWidget {
                   createSnackBar(
                     snackBarText: arg == 'coin'
                         ? '${costState.data!['coin']}코인을 사용했어요!'
-                        : '${costState.data!['point']}포인트를 사용했어요!}',
-                    characterColors: ref.watch(characterThemeProvider).colors!,
+                        : '${costState.data!['point']}포인트를 사용했어요!',
+                    characterColors: ColorTheme.defaultTheme.colors!,
                   ),
                 );
                 context.go('/');
