@@ -36,7 +36,7 @@ class RetestExtendScreen extends ConsumerWidget {
                     snackBarText: arg == 'coin'
                         ? '${costState.data!['coin']}코인을 사용했어요!'
                         : '${costState.data!['point']}포인트를 사용했어요!',
-                    characterColors: ColorTheme.defaultTheme.colors!,
+                    characterColors: ref.watch(characterThemeProvider).colors!,
                   ),
                 );
                 context.go('/');

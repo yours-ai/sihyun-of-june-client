@@ -60,6 +60,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
               'firstName': firstName,
             },
           );
+          hideOverlay!();
           return;
         }
         initializeMailList!();
