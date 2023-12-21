@@ -33,7 +33,7 @@ void initServerErrorSnackbar(BuildContext context) {
               ),
             );
           } else if (error.response!.statusCode == 401) {
-            logout();
+            logout().then(() => context.go('/'));
             scaffoldMessengerKey.currentState?.showSnackBar(
               const SnackBar(
                 content: Text(
@@ -41,7 +41,6 @@ void initServerErrorSnackbar(BuildContext context) {
                 ),
               ),
             );
-            context.go('/login');
           }
         }
         return handler.next(error);
