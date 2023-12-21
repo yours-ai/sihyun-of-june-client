@@ -9,6 +9,7 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
+import 'package:project_june_client/providers/mail_list_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/character_change_overlay_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
@@ -57,6 +58,15 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         Tween<double>(begin: 0.0, end: 1.0).animate(profileChangeController!);
     reloadMailFadeAnimation =
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(initializeMailListProvider.notifier).state = () {
+        setState(() {
+          mailWidgetList = null;
+          selectedPage = null;
+        });
+      };
+    });
+    checkRetest();
   }
 
   void checkRetest() async {
@@ -79,13 +89,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         },
       );
     }
-  }
-
-  void setInitialState() {
-    setState(() {
-      selectedPage = null;
-      mailWidgetList = null;
-    });
   }
 
   void changeProfileList(List<Character> characterList) {
@@ -134,7 +137,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                 (character) => CharacterChangeOverlayWidget(
                                   character: character,
                                   hideOverlay: hideOverlay,
-                                  setInitialState: setInitialState,
                                 ),
                               )
                               .toList(),
@@ -207,7 +209,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         mail: mail,
         mailNumber: mailDateDiff,
         firstMailDate: firstMailDate,
-        selectedPage: selectedPage,
       );
     }
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -259,6 +260,8 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                       ),
                     ),
                     onPressed: () async {
+                      ref.read(selectedPageToRefetch.notifier).state =
+                          index + 1;
                       setState(() {
                         selectedPage = index + 1;
                         mailWidgetList = null;
@@ -303,7 +306,13 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                 .first;
             final mainImageSrc = characterService
                 .getMainImage(selectedCharacter.character_info!.images!);
-            selectedPage ??= selectedCharacter.date_allocated!.length;
+            if (selectedPage == null) {
+              selectedPage = selectedCharacter.date_allocated!.length;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ref.read(selectedPageToRefetch.notifier).state =
+                    selectedCharacter.date_allocated!.length;
+              });
+            }
             return TitleLayout(
               title: Row(
                 children: [
@@ -398,7 +407,9 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                     page: selectedPage!),
                 builder: (context, listMailState) {
                   if (listMailState.data != null) {
+                    if (mailWidgetList == null) {
                       updateAllMailList(listMailState.data!);
+                    }
                   }
                   return (selectedPage == null || mailWidgetList == null)
                       ? const SizedBox()

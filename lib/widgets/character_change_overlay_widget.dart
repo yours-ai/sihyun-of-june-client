@@ -1,10 +1,10 @@
-
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
+import 'package:project_june_client/providers/mail_list_provider.dart';
 import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
 
 import '../actions/character/models/Character.dart';
@@ -16,14 +16,13 @@ import '../services/unique_cachekey_service.dart';
 
 class CharacterChangeOverlayWidget extends ConsumerWidget {
   final Character? character;
-  final VoidCallback? hideOverlay, setInitialState;
+  final VoidCallback? hideOverlay;
   final List<int>? characterIds;
   final String? firstName;
 
   const CharacterChangeOverlayWidget({
     this.character,
     this.hideOverlay,
-    this.setInitialState,
     this.characterIds,
     this.firstName,
     super.key,
@@ -37,8 +36,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
       behavior: HitTestBehavior.deferToChild,
       onTap: () async {
         if (isSelected) return;
-        setInitialState!();
-        hideOverlay!();
+
         if (character == null) {
           final bool is30DaysFinished = await getRetrieveMeQuery()
               .result
@@ -50,6 +48,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
                 firstName: firstName,
               ),
             );
+            hideOverlay!();
             return;
           }
           context.push(
@@ -61,7 +60,11 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
           );
           return;
         }
+        if (ref.watch(initializeMailListProvider) != null) {
+          ref.watch(initializeMailListProvider);
+        }
         characterService.changeCharacterByTap(ref, character!);
+        hideOverlay!();
       }, // 캐릭터 전환 or 추가 배정받기
       child: Container(
         decoration: BoxDecoration(
