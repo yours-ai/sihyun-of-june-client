@@ -465,30 +465,37 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                           ),
                                         )
                                       : const SizedBox(height: 20),
-                                  if (mailWidgetList!.isEmpty == true) ...[
-                                    Text(
-                                      '아직 도착한 편지가 없어요!',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: ColorConstants.primary,
-                                        fontSize: 21,
-                                        height: 1,
-                                        fontWeight:
-                                            FontWeightConstants.semiBold,
+                                  if (mailWidgetList!.isEmpty == true)
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            '아직 도착한 편지가 없어요!',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: ColorConstants.primary,
+                                              fontSize: 21,
+                                              height: 1,
+                                              fontWeight:
+                                                  FontWeightConstants.semiBold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 14),
+                                          Text(
+                                            '${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요. \n 조금만 기다려 주세요 :)',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: ColorConstants.neutral,
+                                              fontSize: 16,
+                                              height: 22 / 16,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(height: 14),
-                                    Text(
-                                      '${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요. \n 조금만 기다려 주세요 :)',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: ColorConstants.neutral,
-                                        fontSize: 16,
-                                        height: 22 / 16,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    )
-                                  ],
                                   if (mailWidgetList!.isEmpty == false) ...[
                                     mailService.calendarWeekday(),
                                     const SizedBox(height: 20),
