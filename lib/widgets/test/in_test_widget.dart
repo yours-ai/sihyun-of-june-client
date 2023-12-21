@@ -1,16 +1,19 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/models/Question.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/providers/character_provider.dart';
+import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:word_break_text/word_break_text.dart';
 import '../../screens/character_test/test_screen.dart';
 
-class InTestWidget extends StatefulWidget {
+class InTestWidget extends ConsumerStatefulWidget {
   const InTestWidget(
       {super.key, required this.onActiveScreen, required this.responses});
 
@@ -18,12 +21,12 @@ class InTestWidget extends StatefulWidget {
   final Function(AnswerDTOList) responses;
 
   @override
-  State<StatefulWidget> createState() {
-    return _InTestWidget();
+  InTestWidgetState createState() {
+    return InTestWidgetState();
   }
 }
 
-class _InTestWidget extends State<InTestWidget> {
+class InTestWidgetState extends ConsumerState<InTestWidget> {
   List<Question>? questionList;
   Mutation<List<Question>, void>? mutation;
 
@@ -49,6 +52,8 @@ class _InTestWidget extends State<InTestWidget> {
         );
       });
       mutation!.mutate();
+      characterService.deleteSelectedCharacterId();
+      ref.read(selectedCharacterProvider.notifier).state = null;
     });
   }
 
