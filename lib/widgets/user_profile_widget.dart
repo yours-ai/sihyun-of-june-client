@@ -190,7 +190,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                 userProfileService.showChangeImageModal(context, ref);
               },
               child: Container(
-                margin: const EdgeInsets.fromLTRB(0, 5, 0, 20),
+                margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
