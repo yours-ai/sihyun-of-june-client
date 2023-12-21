@@ -6,17 +6,19 @@ import '../../constants.dart';
 import 'mail_info.dart';
 
 class ReplyWidget extends ConsumerWidget {
-  final String toFullName;
-  final String byFullName;
+  final String characterName;
+  final String userName;
   final Reply reply;
   final String? toImage;
+  final int primaryColorInMail;
 
   const ReplyWidget({
     Key? key,
     required this.reply,
-    required this.toFullName,
-    required this.byFullName,
+    required this.characterName,
+    required this.userName,
     required this.toImage,
+    required this.primaryColorInMail,
   }) : super(key: key);
 
   @override
@@ -25,11 +27,12 @@ class ReplyWidget extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MailInfoWidget(
-          byFullName: byFullName,
-          toFullName: toFullName,
+          byFullName: userName,
+          toFullName: characterName,
           availableAt: reply.created,
           byImage: toImage,
           isMe: true,
+          primaryColorInMail: primaryColorInMail,
         ),
         const SizedBox(
           height: 15,
@@ -40,7 +43,7 @@ class ReplyWidget extends ConsumerWidget {
             fontFamily: 'NanumDaCaeSaRang',
             fontSize: 19,
             fontWeight: FontWeightConstants.semiBold,
-            color: ColorConstants.primary,
+            color: ColorConstants.black,
             height: 1.289,
             letterSpacing: 1.02,
           ),

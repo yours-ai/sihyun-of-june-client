@@ -95,7 +95,7 @@ class _TestResultWidget extends State<TestResultWidget> {
               ? OutlinedButton(
                   onPressed: () {},
                   child: Text(tabList[_tab].button,
-                      style: TextStyle(color: ColorConstants.neutral)),
+                      style: TextStyle(color: ColorConstants.gray)),
                 )
               : _tab == 1
                   ? MutationBuilder(

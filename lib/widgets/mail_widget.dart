@@ -12,7 +12,8 @@ class MailWidget extends ConsumerWidget {
   final int? mailNumber;
   final DateTime? firstMailDate;
 
-  const MailWidget({super.key, this.mail, this.mailNumber = 0, this.firstMailDate});
+  const MailWidget(
+      {super.key, this.mail, this.mailNumber = 0, this.firstMailDate});
 
   Widget letterIcon(
       String mailState, String primaryColor, String secondaryColor) {
@@ -56,7 +57,8 @@ class MailWidget extends ConsumerWidget {
                   Text(
                     mailService.getMailReceiveDateStr(
                         mail!.available_at, (mailNumber!) % 30 == 0),
-                    style: const TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
+                    style:
+                        const TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
                   )
                 ],
               ),
@@ -76,7 +78,8 @@ class MailWidget extends ConsumerWidget {
                   mailService.getMailReceiveDateStr(
                       firstMailDate!.add(Duration(days: mailNumber!)),
                       (mailNumber!) % 30 == 0),
-                  style: const TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
+                  style:
+                      const TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
                 ),
               ],
             ),

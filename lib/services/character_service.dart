@@ -1,8 +1,11 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 
 class CharacterService {
   const CharacterService();
@@ -56,9 +59,7 @@ class CharacterService {
     return int.parse(selectedCharacterId);
   }
 
-  Future<void> saveSelectedCharacterId({
-    required int selectedCharacterId,
-  }) async {
+  Future<void> saveSelectedCharacterId(int selectedCharacterId) async {
     final storage = getSecureStorage();
     await storage.write(
         key: _CHARACTER_ID_KEY, value: selectedCharacterId.toString());
@@ -67,5 +68,22 @@ class CharacterService {
   Future<void> deleteSelectedCharacterId() async {
     final storage = getSecureStorage();
     await storage.delete(key: _CHARACTER_ID_KEY);
+  }
+
+  void changeCharacterByTap(WidgetRef ref, Character character) async {
+    saveSelectedCharacterId(character.id);
+    ref.read(selectedCharacterProvider.notifier).state = character.id;
+    ref.read(characterThemeProvider.notifier).state = character.theme!;
+  }
+
+  List<int> getCharacterIds(List<Character> characterList) {
+    return characterList.map((character) => character.id).toList();
+  }
+
+  String getCurrentCharacterFirstName(List<Character> characterList) {
+    return characterList
+        .where((character) => character.is_current == true)
+        .first
+        .first_name!;
   }
 }

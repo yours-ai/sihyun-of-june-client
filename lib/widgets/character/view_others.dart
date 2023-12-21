@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';

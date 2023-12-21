@@ -10,10 +10,11 @@ import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/providers/common_provider.dart';
-import 'package:project_june_client/widgets/common/create_notification_snackbar.dart';
+import 'package:project_june_client/widgets/common/create_snackbar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../router.dart';
+import '../services.dart';
 
 class NotificationService {
   const NotificationService();
@@ -43,7 +44,7 @@ class NotificationService {
   void handleFCMMessageTap(RemoteMessage remoteMessage) async {
     // 앱 열릴때 실행되는 함수
     String? redirectLink = await remoteMessage.data['link'];
-    int? notificationId = await int.tryParse(remoteMessage.data['id'] ?? '');
+    int? notificationId = int.tryParse(remoteMessage.data['id'] ?? '');
     // id의 유무는 전체에게 보내면 id가 없고, 개인에게 보내면 id가 있음.
     if (notificationId == null || notificationId.isNaN) {
       router.go("/notifications", extra: redirectLink);
@@ -85,13 +86,26 @@ class NotificationService {
       // 포그라운드
       handleNewNotification();
       String snackBarText = message.notification?.body ?? message.data['body'];
+      String? redirectLink = message.data['link'];
+      int? notificationId = int.tryParse(message.data['id'] ?? '');
       scaffoldMessengerKey.currentState?.showSnackBar(
-        createNotificationSnackbar(
-          snackBarText: snackBarText,
-          redirectLink: message.data['link'],
-          notificationId: int.tryParse(message.data['id'] ?? ''),
-          characterColors: characterColors,
-        ),
+        createSnackBar(snackBarText: snackBarText, characterColors: characterColors, onPressed: () {
+          // id의 유무는 전체에게 보내면 id가 없고, 개인에게 보내면 id가 있음.
+          if (notificationId == null || notificationId.isNaN) {
+            router.go("/notifications", extra: redirectLink);
+            return;
+          } else {
+            final mutation = readNotificationMutation(
+              onSuccess: (res, arg) {
+                notificationService.routeRedirectLink(
+                    redirectLink); // 개인한테 보냈는데, link가 있는 경우. 예) 캐릭터가 보낸 메일
+                scaffoldMessengerKey.currentState
+                    ?.hideCurrentSnackBar(); // 개인한테 보냈는데, link가 없는 경우. 예) 포인트 쌓임
+              },
+              refetchQueries: ["list-app-notifications"],
+            );
+            mutation.mutate(notificationId);
+        }})
       );
     });
     ref

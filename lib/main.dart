@@ -174,7 +174,7 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
           style: OutlinedButton.styleFrom(
             splashFactory: NoSplash.splashFactory,
             side: BorderSide(
-              color: ColorConstants.neutral,
+              color: ColorConstants.gray,
             ),
             padding: const EdgeInsets.symmetric(
               vertical: 17.0,

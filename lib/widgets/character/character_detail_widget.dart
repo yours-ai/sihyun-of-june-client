@@ -4,20 +4,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/widgets/profile_widget.dart';
+import 'package:project_june_client/widgets/character/profile_widget.dart';
 
 import '../../screens/character_test/character_choice_screen.dart';
 
 class CharacterDetailWidget extends ConsumerWidget {
   final void Function(ActiveScreen) onActiveScreen;
-  final void Function(int) onTestId;
-  final void Function(String) onName;
+  final void Function(
+      {required TestReason reason,
+      required int testId,
+      required String firstName,
+      required int characterId}) onTestInfo;
 
   const CharacterDetailWidget(
-      {super.key,
-      required this.onActiveScreen,
-      required this.onTestId,
-      required this.onName});
+      {super.key, required this.onActiveScreen, required this.onTestInfo});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,6 +29,7 @@ class CharacterDetailWidget extends ConsumerWidget {
         if (state.data == null) {
           return const SizedBox.shrink();
         }
+        String testReason = state.data!['test_reason'];
         character = Character.fromJson(state.data!['character']);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           ref.read(characterThemeProvider.notifier).state = character!.theme!;
@@ -61,9 +62,14 @@ class CharacterDetailWidget extends ConsumerWidget {
                       left: 28.0, right: 28.0, bottom: 20.0),
                   child: FilledButton(
                     onPressed: () {
+                      onTestInfo(
+                          reason: testReason == 'NEW_USER'
+                              ? TestReason.newUser
+                              : TestReason.retest,
+                          testId: state.data!['test_id'],
+                          firstName: character!.first_name!,
+                          characterId: character.id);
                       onActiveScreen(ActiveScreen.confirm);
-                      onTestId(state.data!['test_id']);
-                      onName(character!.name!.substring(1));
                     },
                     child: const Text('다음'),
                   ),

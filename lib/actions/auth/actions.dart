@@ -195,7 +195,7 @@ logout() async {
   await storage.deleteAll();
   try {
     await UserApi.instance.logout();
-  } catch (e) {}
+  } catch (error) {}
   CachedQuery.instance.deleteCache();
   dio.options.headers.clear();
   characterService.deleteSelectedCharacterId();

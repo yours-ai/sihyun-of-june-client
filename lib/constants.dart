@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'actions/character/models/CharacterColors.dart';
+import 'actions/character/models/CharacterTheme.dart';
+
 abstract final class ColorConstants {
   static Color primary = const Color(0xff615B56);
   static Color background = const Color(0xffFBFBFB);
@@ -8,10 +11,23 @@ abstract final class ColorConstants {
   static Color pink = const Color(0xffFF5574);
   static Color neutral = const Color(0xffc0bebb);
   static Color alert = const Color.fromRGBO(254, 49, 64, 1);
-  static Color veryLightGray = const Color(0xffebebeb);
+  static Color veryLightGray = const Color(0xffdedede);
   static Color lightGray = const Color(0xffF6F6F6);
+  static Color mediumGray = const Color(0xffA7A1A1);
   static Color white = const Color(0xfffbfbfb);
   static Color black = const Color(0xff1a1a1a);
+}
+
+abstract final class ColorTheme {
+  static CharacterTheme defaultTheme = CharacterTheme(
+    colors: CharacterColors(
+        primary: 4294923379,
+        secondary: 4294932624,
+        inverse_primary: 4294947513,
+        inverse_surface: 4281741103,
+        inverse_on_surface: 4294700782),
+    font: "NanumNoRyeogHaNeunDongHee",
+  );
 }
 
 abstract final class AppID {

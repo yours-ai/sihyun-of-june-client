@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
-import 'package:project_june_client/widgets/menu_widget.dart';
+import 'package:project_june_client/widgets/common/menu/menu_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants.dart';

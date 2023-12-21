@@ -1,18 +1,9 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/character/actions.dart';
+import 'package:project_june_client/actions/character/dtos.dart';
 
 import 'models/Character.dart';
 import 'models/Question.dart';
-
-Query<List<Question>> getQuestionsQuery({
-  OnQueryErrorCallback? onError,
-}) {
-  return Query(
-    key: "questions",
-    queryFn: startTest,
-    onError: onError,
-  );
-}
 
 Mutation<List<Question>, void> getStartTestMutation({
   OnSuccessCallback? onSuccess,
@@ -36,7 +27,7 @@ Mutation<void, List<Map<String, int>>> getSendResponseMutation({
   );
 }
 
-Query<String> getTestStatusQuery({
+Query<Map<String, dynamic>> getTestStatusQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
@@ -87,12 +78,12 @@ Query<List<Character>> getRetrieveMyCharacterQuery({
   );
 }
 
-Mutation<void, int> getDenyChoiceMutation({
+Mutation<void, denyTestChoiceDTO> getDenyTestChoiceMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
-  return Mutation<void, int>(
-    queryFn: denyChoice,
+  return Mutation<void, denyTestChoiceDTO>(
+    queryFn: denyTestChoice,
     onSuccess: onSuccess,
     onError: onError,
   );
@@ -118,6 +109,42 @@ Mutation<void, int> getReadCharacterStoryMutation({
     refetchQueries: refetchQueries,
     queryFn: readCharacterStory,
     onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Mutation<void, String> getRetestMutation({
+  refetchQueries = const [],
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, String>(
+    refetchQueries: refetchQueries,
+    queryFn: retest,
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Mutation<void, String> getExtendMutation({
+  refetchQueries = const [],
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, String>(
+    refetchQueries: refetchQueries,
+    queryFn: extend,
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Query<Map<String, int>> getExtendCostQuery({
+  OnQueryErrorCallback? onError,
+}) {
+  return Query(
+    key: 'extend-cost',
+    queryFn: getExtendCost,
     onError: onError,
   );
 }

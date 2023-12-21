@@ -3,6 +3,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/providers/mail_list_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
@@ -16,8 +17,17 @@ import '../../constants.dart';
 
 class ReplyFormWidget extends ConsumerStatefulWidget {
   final Mail mail;
+  final int primaryColorInMail;
+  final String characterName;
+  final int characterId;
 
-  const ReplyFormWidget({Key? key, required this.mail}) : super(key: key);
+  const ReplyFormWidget({
+    Key? key,
+    required this.characterId,
+    required this.mail,
+    required this.primaryColorInMail,
+    required this.characterName,
+  }) : super(key: key);
 
   @override
   ReplyFormWidgetState createState() => ReplyFormWidgetState();
@@ -55,9 +65,11 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
     final mutation = getSendMailReplyMutation(
       refetchQueries: [
         'character-sent-mail/${widget.mail.id}',
-        'character-sent-mail-list'
       ],
       onSuccess: (res, arg) async {
+        if (ref.watch(refetchMailListProvider) != null) {
+          ref.watch(refetchMailListProvider)!.call();
+        }
         await mailService.deleteBeforeReply(widget.mail.id);
         context.pop();
       },
@@ -89,10 +101,11 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
       children: [
         MailInfoWidget(
           byFullName: widget.mail.to_first_name,
-          toFullName: widget.mail.by_first_name,
+          toFullName: widget.characterName,
           byImage: widget.mail.to_image,
           isMe: true,
           availableAt: clock.now(),
+          primaryColorInMail: widget.primaryColorInMail,
         ),
         Form(
           key: _formKey,
@@ -136,7 +149,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                 style: TextStyle(
                   fontFamily: 'NanumDaCaeSaRang',
                   fontSize: 19,
-                  color: ColorConstants.primary,
+                  color: ColorConstants.black,
                   fontWeight: FontWeight.bold,
                   height: 1.289,
                   letterSpacing: 1.02,

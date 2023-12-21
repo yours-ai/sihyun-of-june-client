@@ -13,6 +13,7 @@ import 'package:project_june_client/actions/character/models/CharacterTheme.dart
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/deep_link_provider.dart';
+import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
 
 import '../actions/notification/actions.dart';
@@ -39,20 +40,32 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       context.go('/landing');
       return;
     }
+    final testStatus = await getTestStatusQuery().result;
+    if (testStatus.data!['status'] == 'WAITING_CONFIRM') {
+      context.go('/character-choice');
+    } else if (testStatus.data!['status'] == 'CONFIRMED') {
+      final character = await getRetrieveMyCharacterQuery().result;
 
-    final character = await getRetrieveMyCharacterQuery().result;
-    if (character.data!.isNotEmpty) {
       late CharacterTheme characterTheme;
-      final selectedCharacterId = await characterService.getSelectedCharacterId();
-      if(selectedCharacterId == null) {
-        ref.read(selectedCharacterProvider.notifier).state = character.data![0].id;
+      final selectedCharacterId =
+          await characterService.getSelectedCharacterId();
+      if (selectedCharacterId == null) {
+        ref.read(selectedCharacterProvider.notifier).state =
+            character.data![0].id;
         characterTheme = character.data![0].theme!;
-        characterService.saveSelectedCharacterId(selectedCharacterId: character.data![0].id);
-      } else{
-        ref.read(selectedCharacterProvider.notifier).state = selectedCharacterId;
-        characterTheme = character.data!.where((character) => character.id == selectedCharacterId).first.theme!;
+        await characterService.saveSelectedCharacterId(character.data![0].id);
+      } else {
+        ref.read(selectedCharacterProvider.notifier).state =
+            selectedCharacterId;
+        characterTheme = character.data!
+            .where((character) => character.id == selectedCharacterId)
+            .first
+            .theme!;
       }
       ref.read(characterThemeProvider.notifier).state = characterTheme;
+      final allCharacters = await getAllCharactersQuery().result;
+      ref.read(isEnableToRetestProvider.notifier).state =
+          character.data!.length != allCharacters.data!.length;
       await _initializeNotificationHandlerIfAccepted(characterTheme.colors!);
       final push = await getPushIfPushClicked();
       if (push != null) {
@@ -62,12 +75,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       context.go('/mails');
       return;
     } else {
-      final testStatus = await getTestStatusQuery().result;
-      if (testStatus.data == 'WAITING_CONFIRM') {
-        context.go('/character-choice');
-      } else {
-        context.go('/character-test');
-      }
+      context.go('/character-test');
     }
   }
 
@@ -116,7 +124,8 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     return initialMessage;
   }
 
-  _initializeNotificationHandlerIfAccepted(CharacterColors characterColors) async {
+  _initializeNotificationHandlerIfAccepted(
+      CharacterColors characterColors) async {
     final isAccepted = await getIsNotificationAccepted();
     if (isAccepted == true) {
       notificationService.initializeNotificationHandlers(ref, characterColors);

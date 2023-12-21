@@ -135,7 +135,7 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                   '탈퇴하기',
                   style: TextStyle(
                     fontSize: 14,
-                    color: ColorConstants.primary,
+                    color: ColorConstants.gray,
                   ),
                 ),
               );

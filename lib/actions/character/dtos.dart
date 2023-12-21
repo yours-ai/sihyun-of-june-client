@@ -26,3 +26,11 @@ class AnswerDTOList {
         .toList();
   }
 }
+
+@immutable
+class denyTestChoiceDTO {
+  final int id;
+  final String payment;
+
+  const denyTestChoiceDTO({required this.id, required this.payment});
+}

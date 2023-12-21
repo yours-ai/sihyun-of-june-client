@@ -5,7 +5,7 @@ import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/character/view_others.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import '../../actions/character/queries.dart';
-import '../../widgets/profile_widget.dart';
+import '../../widgets/character/profile_widget.dart';
 
 class MyCharacterScreen extends ConsumerWidget {
   const MyCharacterScreen({super.key});
