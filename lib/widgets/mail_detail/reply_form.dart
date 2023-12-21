@@ -65,12 +65,10 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
     final mutation = getSendMailReplyMutation(
       refetchQueries: [
         'character-sent-mail/${widget.mail.id}',
-        if (ref.watch(selectedPageToRefetch) != null)
-          'character-sent-mail-list/${widget.characterId}/${ref.watch(selectedPageToRefetch)}'
       ],
       onSuccess: (res, arg) async {
-        if(ref.watch(initializeMailListProvider) != null) {
-          ref.watch(initializeMailListProvider);
+        if (ref.watch(refetchMailListProvider) != null) {
+          ref.watch(refetchMailListProvider)!.call();
         }
         await mailService.deleteBeforeReply(widget.mail.id);
         context.pop();

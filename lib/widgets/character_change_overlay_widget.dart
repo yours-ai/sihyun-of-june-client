@@ -19,12 +19,14 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
   final VoidCallback? hideOverlay;
   final List<int>? characterIds;
   final String? firstName;
+  final VoidCallback? initializeMailList;
 
   const CharacterChangeOverlayWidget({
     this.character,
     this.hideOverlay,
     this.characterIds,
     this.firstName,
+    this.initializeMailList,
     super.key,
   });
 
@@ -60,9 +62,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
           );
           return;
         }
-        if (ref.watch(initializeMailListProvider) != null) {
-          ref.watch(initializeMailListProvider);
-        }
+        initializeMailList!();
         characterService.changeCharacterByTap(ref, character!);
         hideOverlay!();
       }, // 캐릭터 전환 or 추가 배정받기

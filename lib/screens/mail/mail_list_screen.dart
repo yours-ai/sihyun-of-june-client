@@ -59,14 +59,24 @@ class MailListScreenState extends ConsumerState<MailListScreen>
     reloadMailFadeAnimation =
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(initializeMailListProvider.notifier).state = () {
-        setState(() {
-          mailWidgetList = null;
-          selectedPage = null;
+      ref.read(refetchMailListProvider.notifier).state = () {
+        getListMailQuery(
+                characterId: ref.watch(selectedCharacterProvider)!,
+                page: selectedPage!)
+            .result
+            .then((value) {
+          updateAllMailList(value.data!);
         });
       };
     });
     checkRetest();
+  }
+
+  void initializeMailList() {
+    setState(() {
+      mailWidgetList = null;
+      selectedPage = null;
+    });
   }
 
   void checkRetest() async {
@@ -137,6 +147,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                 (character) => CharacterChangeOverlayWidget(
                                   character: character,
                                   hideOverlay: hideOverlay,
+                                  initializeMailList: initializeMailList,
                                 ),
                               )
                               .toList(),
@@ -260,8 +271,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                       ),
                     ),
                     onPressed: () async {
-                      ref.read(selectedPageToRefetch.notifier).state =
-                          index + 1;
                       setState(() {
                         selectedPage = index + 1;
                         mailWidgetList = null;
@@ -306,13 +315,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                 .first;
             final mainImageSrc = characterService
                 .getMainImage(selectedCharacter.character_info!.images!);
-            if (selectedPage == null) {
-              selectedPage = selectedCharacter.date_allocated!.length;
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                ref.read(selectedPageToRefetch.notifier).state =
-                    selectedCharacter.date_allocated!.length;
-              });
-            }
+            selectedPage ??= selectedCharacter.date_allocated!.length;
             return TitleLayout(
               title: Row(
                 children: [

@@ -3,10 +3,6 @@ import 'dart:ui';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final initializeMailListProvider = StateProvider<VoidCallback?>((ref) {
-  return null;
-});
-
-final selectedPageToRefetch = StateProvider<int?>((ref) {
+final refetchMailListProvider = StateProvider<VoidCallback?>((ref) {
   return null;
 });
