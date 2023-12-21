@@ -55,7 +55,6 @@ class RetestChoiceWidget extends ConsumerWidget {
           children: [
             FilledButton(
               onPressed: () {
-                context.pop();
                 onRetest('coin');
               },
               child: Row(
@@ -74,7 +73,9 @@ class RetestChoiceWidget extends ConsumerWidget {
                     width: 6,
                   ),
                   Text(
-                    '50코인',
+                    extendCost == null
+                        ? _RETEST_COIN_COST.toString() + '코인'
+                        : extendCost!['coin'].toString() + '코인',
                     style: TextStyle(
                       fontSize: 14,
                       color: ColorConstants.lightGray.withOpacity(0.5),
@@ -90,7 +91,6 @@ class RetestChoiceWidget extends ConsumerWidget {
             ),
             FilledButton(
               onPressed: () {
-                context.pop();
                 onRetest('point');
               },
               child: Row(
@@ -109,7 +109,9 @@ class RetestChoiceWidget extends ConsumerWidget {
                     width: 6,
                   ),
                   Text(
-                    '300P',
+                    extendCost == null
+                        ? _RETEST_POINT_COST.toString() + 'P'
+                        : extendCost!['point'].toString() + 'P',
                     style: TextStyle(
                       fontSize: 14,
                       color: ColorConstants.lightGray.withOpacity(0.5),
@@ -144,9 +146,6 @@ class RetestChoiceWidget extends ConsumerWidget {
           submitText: '좋아요',
           cancelText: '아니요',
           onSubmit: () {
-            if (inModal) {
-              context.pop();
-            }
             switch (purchaseState) {
               case PurchaseState.coin:
                 onRetest('coin');
