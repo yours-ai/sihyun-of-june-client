@@ -6,6 +6,7 @@ import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_layout_widget.dart';
 
 import '../../actions/character/queries.dart';
+import '../../constants.dart';
 import '../../globals.dart';
 import '../../providers/character_provider.dart';
 import '../../services.dart';
@@ -31,7 +32,7 @@ class RetestConfirmScreen extends ConsumerWidget {
             scaffoldMessengerKey.currentState?.showSnackBar(
               createSnackBar(
                 snackBarText: transactionService.getPurchaseStateText(arg),
-                characterColors: ref.watch(characterThemeProvider).colors!,
+                characterColors: ColorTheme.defaultTheme.colors!,
               ),
             );
             context.go('/character-test');

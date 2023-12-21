@@ -43,22 +43,14 @@ class CharacterConfirmWidget extends ConsumerWidget {
         builder: (BuildContext context) {
           final mutation = getDenyTestChoiceMutation(
             onSuccess: (res, arg) {
-              CharacterTheme defaultTheme = CharacterTheme(
-                colors: CharacterColors(
-                    primary: 4294923379,
-                    secondary: 4294932624,
-                    inverse_primary: 4294947513,
-                    inverse_surface: 4281741103,
-                    inverse_on_surface: 4294700782),
-                font: "NanumNoRyeogHaNeunDongHee",
-              );
-              ref.read(characterThemeProvider.notifier).state = defaultTheme;
+              ref.read(characterThemeProvider.notifier).state =
+                  ColorTheme.defaultTheme;
               if (arg.payment != 'new_user') {
                 scaffoldMessengerKey.currentState?.showSnackBar(
                   createSnackBar(
                     snackBarText:
                         transactionService.getPurchaseStateText(arg.payment),
-                    characterColors: ref.watch(characterThemeProvider).colors!,
+                    characterColors: ColorTheme.defaultTheme.colors!,
                   ),
                 );
               }

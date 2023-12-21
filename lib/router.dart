@@ -118,9 +118,7 @@ final router = GoRouter(
             GoRoute(
               path: 'detail/:id',
               builder: (context, state) => MailDetailScreen(
-                id: int.tryParse(state.pathParameters['id']!)!,
-                selectedPage: state.extra as int?,
-              ),
+                  id: int.tryParse(state.pathParameters['id']!)!),
             ),
           ],
         ),

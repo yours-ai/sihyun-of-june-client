@@ -3,6 +3,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/providers/mail_list_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
@@ -19,7 +20,6 @@ class ReplyFormWidget extends ConsumerStatefulWidget {
   final int primaryColorInMail;
   final String characterName;
   final int characterId;
-  final int? selectedPage;
 
   const ReplyFormWidget({
     Key? key,
@@ -27,7 +27,6 @@ class ReplyFormWidget extends ConsumerStatefulWidget {
     required this.mail,
     required this.primaryColorInMail,
     required this.characterName,
-    this.selectedPage,
   }) : super(key: key);
 
   @override
@@ -66,10 +65,11 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
     final mutation = getSendMailReplyMutation(
       refetchQueries: [
         'character-sent-mail/${widget.mail.id}',
-        if (widget.selectedPage != null)
-          'character-sent-mail-list/${widget.characterId}/${widget.selectedPage}'
       ],
       onSuccess: (res, arg) async {
+        if (ref.watch(refetchMailListProvider) != null) {
+          ref.watch(refetchMailListProvider)!.call();
+        }
         await mailService.deleteBeforeReply(widget.mail.id);
         context.pop();
       },

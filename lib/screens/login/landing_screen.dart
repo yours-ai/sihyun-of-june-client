@@ -13,13 +13,13 @@ class LandingTabData {
 
 const List<LandingTabData> tabList = [
   LandingTabData(
-      title: '기다려본 적 있나요?\n하루 한 통의 설렘을.',
+      title: '지금,\n사랑받고 싶은 당신에게.',
       src: 'assets/images/landing/landing1.png'),
   LandingTabData(
-      title: '사람보다 더 따뜻한\n당신의 "시현이"에게,',
+      title: '당신만의 "시현이"를\n소개받고,',
       src: 'assets/images/landing/landing2.png'),
   LandingTabData(
-      title: '지금 바로 첫 편지를\n받아보세요 :)',
+      title: '하루 한 통의 설렘을\n받아보세요 :)',
       src: 'assets/images/landing/landing3.png'),
 ];
 

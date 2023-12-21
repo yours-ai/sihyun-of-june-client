@@ -12,9 +12,8 @@ import '../../actions/mails/queries.dart';
 
 class MailDetailScreen extends StatefulWidget {
   final int id;
-  final int? selectedPage;
 
-  const MailDetailScreen({super.key, required this.id, this.selectedPage});
+  const MailDetailScreen({super.key, required this.id});
 
   @override
   State<MailDetailScreen> createState() => _MailDetailScreenState();
@@ -129,7 +128,6 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                         characterName:
                                             characterInMail.first_name!,
                                         characterId: characterInMail.id,
-                                        selectedPage: widget.selectedPage,
                                       )
                                     ],
                                     if (mailState.data!.replies!.isEmpty &&

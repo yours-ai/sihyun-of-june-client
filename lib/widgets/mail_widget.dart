@@ -11,14 +11,9 @@ class MailWidget extends ConsumerWidget {
   final Mail? mail;
   final int? mailNumber;
   final DateTime? firstMailDate;
-  final int? selectedPage;
 
   const MailWidget(
-      {super.key,
-      this.mail,
-      this.mailNumber = 0,
-      this.firstMailDate,
-      this.selectedPage});
+      {super.key, this.mail, this.mailNumber = 0, this.firstMailDate});
 
   Widget letterIcon(
       String mailState, String primaryColor, String secondaryColor) {
@@ -46,7 +41,7 @@ class MailWidget extends ConsumerWidget {
       child: mailState != "notSent"
           ? GestureDetector(
               onTap: () {
-                context.push('/mails/detail/${mail!.id}', extra: selectedPage);
+                context.push('/mails/detail/${mail!.id}');
               },
               child: Column(
                 children: [
