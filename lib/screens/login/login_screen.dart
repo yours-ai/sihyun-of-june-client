@@ -26,8 +26,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(milliseconds: 500), () {
-      ref.read(selectedCharacterProvider.notifier).state =
-          null; // TODO before provider도 추가해야함
+      ref.read(selectedCharacterProvider.notifier).state = null;
     });
   }
 
