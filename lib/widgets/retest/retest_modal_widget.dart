@@ -10,7 +10,6 @@ import '../../actions/auth/queries.dart';
 import '../../actions/character/queries.dart';
 import '../../constants.dart';
 import '../../globals.dart';
-import '../../providers/character_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../services.dart';
 import '../common/create_snackbar.dart';
