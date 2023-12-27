@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
@@ -11,7 +12,6 @@ import 'package:project_june_client/controllers/auth/name_form_controller.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/name_form_widget.dart';
-
 
 class NameChangeScreen extends ConsumerStatefulWidget {
   const NameChangeScreen({Key? key}) : super(key: key);
@@ -63,6 +63,7 @@ class NameChangeScreenState extends ConsumerState<NameChangeScreen> {
               onSubmit: () => mutate(dto),
               cancelText: '아니요',
               onCancel: () => context.pop(),
+              mutationStatus: state.status,
             ),
           ),
         );

@@ -64,6 +64,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
                     mutation: mutation,
                     builder: (context, state, mutate) {
                       void handleRetest(String payment) {
+                        if(state.status == QueryStatus.loading) return;
                         mutate(
                           denyTestChoiceDTO(id: testId, payment: payment),
                         );
@@ -85,6 +86,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
                       },
                       cancelText: '됐어요',
                       onCancel: () => context.pop(),
+                      mutationStatus: state.status,
                     ),
                   ),
           );
@@ -144,7 +146,19 @@ class CharacterConfirmWidget extends ConsumerWidget {
                   },
                 ),
                 builder: (context, state, mutate) => FilledButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      state.status != QueryStatus.loading
+                          ? Color(
+                          ref.watch(characterThemeProvider).colors!.primary!)
+                          : Color(ref
+                          .watch(characterThemeProvider)
+                          .colors!
+                          .secondary!),
+                    ),
+                  ),
                   onPressed: () {
+                    if(state.status == QueryStatus.loading) return;
                     mutate(testId);
                   },
                   child: const Text(

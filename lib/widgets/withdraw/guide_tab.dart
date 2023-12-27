@@ -1,9 +1,11 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -128,7 +130,15 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
             }),
             builder: (context, state, mutate) {
               return OutlinedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    state.status != QueryStatus.loading
+                        ? ColorConstants.background
+                        : ColorConstants.lightGray,
+                  ),
+                ),
                 onPressed: () {
+                  if (state.status != QueryStatus.initial) return;
                   mutate(widget.dto);
                 },
                 child: Text(

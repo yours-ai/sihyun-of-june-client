@@ -89,6 +89,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                 onSubmit: () => mutate(getReplyDTO()),
                 cancelText: '아니요',
                 onCancel: () => context.pop(),
+                mutationStatus: state.status,
               ),
             ),
           );

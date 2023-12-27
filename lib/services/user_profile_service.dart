@@ -69,6 +69,7 @@ class UserProfileService {
                     mutation: getUserImage(),
                     builder: (context, state, mutate) => TextButton(
                       onPressed: () async {
+                        if (state.status == QueryStatus.loading) return;
                         var cropRect = editorKey.currentState?.getCropRect();
                         if (cropRect != null) {
                           var img = await _image!.readAsBytes();
@@ -132,8 +133,8 @@ class UserProfileService {
               },
               cancelText: '기본 이미지 설정',
               onCancel: () {
-                mutate(null);
-                context.pop();
+                if (state.status == QueryStatus.loading) return;
+                mutate(null).then((_)=>context.pop());
               },
             ),
           ),
