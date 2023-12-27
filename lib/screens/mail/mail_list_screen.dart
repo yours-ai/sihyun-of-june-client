@@ -88,6 +88,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
     final bool is30DaysFinished = await getRetrieveMeQuery()
         .result
         .then((value) => value.data!.is_30days_finished);
+    if (!mounted) return;
     if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
         is30DaysFinished) {
       context.push(
