@@ -67,8 +67,12 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
         'character-sent-mail/${widget.mail.id}',
       ],
       onSuccess: (res, arg) async {
-        if (ref.watch(refetchMailListProvider) != null) {
-          ref.watch(refetchMailListProvider)!.call();
+        if (ref.watch(initializeMailListProvider) != null) {
+          await getListMailQuery(
+                  characterId: widget.characterId,
+                  page: ref.watch(mailPageProvider)!)
+              .refetch();
+          ref.watch(initializeMailListProvider)!.call();
         }
         await mailService.deleteBeforeReply(widget.mail.id);
         context.pop();
@@ -89,6 +93,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                 onSubmit: () => mutate(getReplyDTO()),
                 cancelText: '아니요',
                 onCancel: () => context.pop(),
+                mutationStatus: state.status,
               ),
             ),
           );

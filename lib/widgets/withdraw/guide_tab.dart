@@ -128,7 +128,15 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
             }),
             builder: (context, state, mutate) {
               return OutlinedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    state.status != QueryStatus.loading
+                        ? ColorConstants.background
+                        : ColorConstants.lightGray,
+                  ),
+                ),
                 onPressed: () {
+                  if (state.status != QueryStatus.initial) return;
                   mutate(widget.dto);
                 },
                 child: Text(

@@ -83,7 +83,7 @@ class ViewOthersWidget extends ConsumerWidget {
                                     child: Text(
                                       "공개\n예정",
                                       style: TextStyle(
-                                        color: ColorConstants.white,
+                                        color: ColorConstants.background,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                       ),
