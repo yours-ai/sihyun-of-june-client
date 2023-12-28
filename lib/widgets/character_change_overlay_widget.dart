@@ -4,6 +4,7 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
+import 'package:project_june_client/providers/mail_list_provider.dart';
 import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
 
 import '../actions/character/models/Character.dart';
@@ -18,14 +19,12 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
   final VoidCallback? hideOverlay;
   final List<int>? characterIds;
   final String? firstName;
-  final VoidCallback? initializeMailList;
 
   const CharacterChangeOverlayWidget({
     this.character,
     this.hideOverlay,
     this.characterIds,
     this.firstName,
-    this.initializeMailList,
     super.key,
   });
 
@@ -62,7 +61,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
           hideOverlay!();
           return;
         }
-        initializeMailList!();
+        ref.watch(initializeMailListProvider)!.call();
         characterService.changeCharacterByTap(ref, character!);
         hideOverlay!();
       }, // 캐릭터 전환 or 추가 배정받기

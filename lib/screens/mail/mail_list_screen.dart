@@ -59,13 +59,10 @@ class MailListScreenState extends ConsumerState<MailListScreen>
     reloadMailFadeAnimation =
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(refetchMailListProvider.notifier).state = () {
-        getListMailQuery(
-                characterId: ref.watch(selectedCharacterProvider)!,
-                page: selectedPage!)
-            .result
-            .then((value) {
-          updateAllMailList(value.data!);
+      ref.read(initializeMailListProvider.notifier).state = () {
+        setState(() {
+          mailWidgetList = null;
+          selectedPage = null;
         });
       };
     });
@@ -148,7 +145,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                 (character) => CharacterChangeOverlayWidget(
                                   character: character,
                                   hideOverlay: hideOverlay,
-                                  initializeMailList: initializeMailList,
                                 ),
                               )
                               .toList(),
@@ -274,6 +270,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                     onPressed: () async {
                       setState(() {
                         selectedPage = index + 1;
+                        ref.read(mailPageProvider.notifier).state = index + 1;
                         mailWidgetList = null;
                       });
                       context.pop();
@@ -316,7 +313,14 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                 .first;
             final mainImageSrc = characterService
                 .getMainImage(selectedCharacter.character_info!.images!);
-            selectedPage ??= selectedCharacter.date_allocated!.length;
+            if (selectedPage == null) {
+              selectedPage = selectedCharacter.date_allocated!.length;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ref.read(mailPageProvider.notifier).state =
+                    selectedCharacter.date_allocated!.length;
+              });
+
+            }
             return TitleLayout(
               title: Row(
                 children: [
@@ -416,7 +420,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                     }
                   }
                   return (selectedPage == null || mailWidgetList == null)
-                      ? const SizedBox()
+                      ? const CircularProgressIndicator.adaptive()
                       : Stack(
                           children: [
                             QueryBuilder(
@@ -504,7 +508,13 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                       child: RefreshIndicator.adaptive(
                                         onRefresh: () async {
                                           HapticFeedback.lightImpact();
-                                          retrieveMyCharacterQuery.refetch();
+                                          await retrieveMyCharacterQuery
+                                              .refetch();
+                                          await getListMailQuery(
+                                                  characterId: ref.watch(
+                                                      selectedCharacterProvider)!,
+                                                  page: selectedPage!)
+                                              .refetch();
                                           reloadMailController!
                                               .forward()
                                               .then((_) {

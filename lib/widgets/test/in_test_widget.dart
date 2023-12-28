@@ -74,7 +74,7 @@ class InTestWidgetState extends ConsumerState<InTestWidget> {
             builder: (context, state, mutate) {
               if (state.data == null) {
                 return const Scaffold(
-                    body: Center(child: CircularProgressIndicator()));
+                    body: Center(child: CircularProgressIndicator.adaptive()));
               }
               questionList = state.data;
               return Scaffold(
