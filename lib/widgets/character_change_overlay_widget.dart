@@ -16,7 +16,8 @@ import '../services/unique_cachekey_service.dart';
 
 class CharacterChangeOverlayWidget extends ConsumerWidget {
   final Character? character;
-  final VoidCallback? hideOverlay, changeSelectedPageNull;
+  final VoidCallback? hideOverlay;
+  final Function? changeSelectedPageNull;
   final List<int>? characterIds;
   final String? firstName;
 
@@ -62,7 +63,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
           hideOverlay!();
           return;
         }
-        changeSelectedPageNull!();
+        changeSelectedPageNull!(null);
         characterService.changeCharacterByTap(ref, character!);
         hideOverlay!();
       }, // 캐릭터 전환 or 추가 배정받기
