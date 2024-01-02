@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 
+import '../actions/mails/models/Mail.dart';
+
 extension TimeOfDayExtension on TimeOfDay {
   int compareTo(TimeOfDay other) {
     if (hour < other.hour) return -1;
@@ -135,5 +137,12 @@ class MailService {
   Future<void> deleteBeforeReply(int mailId) async {
     final storage = getSecureStorage();
     await storage.delete(key: 'MAIL_REPLY_$mailId');
+  }
+
+  int checkMailNumber(List<Mail> mails) {
+    var firstMailDate = mails.last.available_at;
+    var lastMailDate = mails.first.available_at;
+    var totalMailNumber = getMailDateDiff(lastMailDate, firstMailDate) + 1;
+    return totalMailNumber;
   }
 }

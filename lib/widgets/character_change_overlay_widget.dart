@@ -16,13 +16,14 @@ import '../services/unique_cachekey_service.dart';
 
 class CharacterChangeOverlayWidget extends ConsumerWidget {
   final Character? character;
-  final VoidCallback? hideOverlay;
+  final VoidCallback? hideOverlay, changeSelectedPageNull;
   final List<int>? characterIds;
   final String? firstName;
 
   const CharacterChangeOverlayWidget({
     this.character,
     this.hideOverlay,
+    this.changeSelectedPageNull,
     this.characterIds,
     this.firstName,
     super.key,
@@ -61,7 +62,7 @@ class CharacterChangeOverlayWidget extends ConsumerWidget {
           hideOverlay!();
           return;
         }
-        ref.watch(initializeMailListProvider)!.call();
+        changeSelectedPageNull!();
         characterService.changeCharacterByTap(ref, character!);
         hideOverlay!();
       }, // 캐릭터 전환 or 추가 배정받기

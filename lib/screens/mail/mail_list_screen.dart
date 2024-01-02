@@ -36,6 +36,8 @@ class MailListScreen extends ConsumerStatefulWidget {
 class MailListScreenState extends ConsumerState<MailListScreen>
     with TickerProviderStateMixin {
   int? selectedPage;
+  int? lastMailId;
+  bool? isLastMailReplied;
   DateTime? firstMailDate;
   List<Widget>? mailWidgetList;
   final GlobalKey _targetKey = GlobalKey();
@@ -58,22 +60,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         Tween<double>(begin: 0.0, end: 1.0).animate(profileChangeController!);
     reloadMailFadeAnimation =
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(initializeMailListProvider.notifier).state = () {
-        setState(() {
-          mailWidgetList = null;
-          selectedPage = null;
-        });
-      };
-    });
     checkRetest();
-  }
-
-  void initializeMailList() {
-    setState(() {
-      mailWidgetList = null;
-      selectedPage = null;
-    });
   }
 
   void checkRetest() async {
@@ -145,11 +132,14 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                 (character) => CharacterChangeOverlayWidget(
                                   character: character,
                                   hideOverlay: hideOverlay,
+                                  changeSelectedPageNull:
+                                      changeSelectedPageNull,
                                 ),
                               )
                               .toList(),
                           CharacterChangeOverlayWidget(
                             hideOverlay: hideOverlay,
+                            changeSelectedPageNull: changeSelectedPageNull,
                             firstName: characterService
                                 .getCurrentCharacterFirstName(characterList),
                             characterIds:
@@ -176,12 +166,10 @@ class MailListScreenState extends ConsumerState<MailListScreen>
     });
   }
 
-  int checkMailNumber(List<Mail> mails) {
-    firstMailDate = mails.last.available_at;
-    var lastMailDate = mails.first.available_at;
-    var totalMailNumber =
-        mailService.getMailDateDiff(lastMailDate, firstMailDate!) + 1;
-    return totalMailNumber;
+  void changeSelectedPageNull() {
+    setState(() {
+      selectedPage = null;
+    });
   }
 
   void updateAllMailList(List<Mail> mails) {
@@ -189,11 +177,16 @@ class MailListScreenState extends ConsumerState<MailListScreen>
       WidgetsBinding.instance.addPostFrameCallback((_) {
         setState(() {
           mailWidgetList = [];
+          lastMailId = null;
+          isLastMailReplied = null;
         });
       });
       return;
     }
-    final mailCount = checkMailNumber(mails);
+    firstMailDate = mails.last.available_at;
+    lastMailId = mails.first.id;
+    isLastMailReplied = mails.first.replies!.isEmpty;
+    final mailCount = mailService.checkMailNumber(mails);
     List<MailWidget> modifiedMailList = [];
     if (mailCount <= 30) {
       modifiedMailList = List.generate(
@@ -319,7 +312,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                 ref.read(mailPageProvider.notifier).state =
                     selectedCharacter.date_allocated!.length;
               });
-
             }
             return TitleLayout(
               title: Row(
@@ -415,7 +407,21 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                     page: selectedPage!),
                 builder: (context, listMailState) {
                   if (listMailState.data != null) {
-                    if (mailWidgetList == null) {
+                    bool isFirstLoad = mailWidgetList == null;
+                    bool isMailListEmpty = listMailState.data!.isEmpty;
+                    int? currentFirstMailId =
+                        isMailListEmpty ? null : listMailState.data!.first.id;
+                    bool hasLastMailIdChanged =
+                        currentFirstMailId != lastMailId;
+                    bool hasLastMailReplyStatusChanged =
+                        listMailState.data!.isEmpty
+                            ? false
+                            : listMailState.data!.first.replies!.isEmpty !=
+                                isLastMailReplied;
+
+                    if (isFirstLoad ||
+                        hasLastMailIdChanged ||
+                        hasLastMailReplyStatusChanged) {
                       updateAllMailList(listMailState.data!);
                     }
                   }
@@ -518,9 +524,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                                           reloadMailController!
                                               .forward()
                                               .then((_) {
-                                            setState(() {
-                                              mailWidgetList = null;
-                                            });
                                             reloadMailController!.reverse();
                                           });
                                         },
