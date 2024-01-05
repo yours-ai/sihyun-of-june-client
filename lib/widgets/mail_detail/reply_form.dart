@@ -37,6 +37,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   final controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   VoidCallback? mailListInitializer;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -76,7 +77,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
         await mailService.deleteBeforeReply(widget.mail.id);
       },
     );
-    _showConfirmModal() async {
+    showConfirmModal() async {
       await showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -89,6 +90,9 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
               choiceColumn: ModalChoiceWidget(
                 submitText: '네',
                 onSubmit: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
                   await mutate(getReplyDTO());
                   if (mailListInitializer != null) {
                     getListMailQuery(
@@ -97,11 +101,14 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                         .refetch()
                         .then((_) => mailListInitializer!.call());
                   }
+                  setState(() {
+                    isLoading = false;
+                  });
                   context.pop();
                 },
                 cancelText: '아니요',
                 onCancel: () => context.pop(),
-                mutationStatus: state.status,
+                mutationStatus: isLoading ? QueryStatus.loading : null,
               ),
             ),
           );
@@ -178,7 +185,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      _showConfirmModal();
+                      showConfirmModal();
                     }
                   },
                   child: const Text(
