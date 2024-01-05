@@ -74,9 +74,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       MutationBuilder(
                         mutation: getLoginAsAppleMutation(
                           onSuccess: (res, arg) {
-                            getUserFunnelMutation(onSuccess: (res, arg) {
-                              context.go('/');
-                            }).mutate(funnelDTO);
+                            getUserFunnelMutation().mutate(funnelDTO).then((_)=>context.go('/'));
                           },
                           onError: (arg, error, callback) {
                             ScaffoldMessenger.of(context).showSnackBar(
