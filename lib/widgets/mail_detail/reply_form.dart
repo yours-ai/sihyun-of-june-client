@@ -36,11 +36,17 @@ class ReplyFormWidget extends ConsumerStatefulWidget {
 class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   final controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  VoidCallback? mailListInitializer;
 
   @override
   void initState() {
     super.initState();
     mailService.getBeforeReply(controller: controller, mailId: widget.mail.id);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        mailListInitializer = ref.watch(initializeMailListProvider);
+      });
+    });
   }
 
   @override
@@ -67,15 +73,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
         'character-sent-mail/${widget.mail.id}',
       ],
       onSuccess: (res, arg) async {
-        if (ref.watch(initializeMailListProvider) != null) {
-          await getListMailQuery(
-                  characterId: widget.characterId,
-                  page: ref.watch(mailPageProvider)!)
-              .refetch();
-          ref.watch(initializeMailListProvider)!.call();
-        }
         await mailService.deleteBeforeReply(widget.mail.id);
-        context.pop();
       },
     );
     _showConfirmModal() async {
@@ -90,7 +88,17 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   description: '답장을 보내면 수정이 불가능해요.🥲'),
               choiceColumn: ModalChoiceWidget(
                 submitText: '네',
-                onSubmit: () => mutate(getReplyDTO()),
+                onSubmit: () async {
+                  await mutate(getReplyDTO());
+                  if (mailListInitializer != null) {
+                    getListMailQuery(
+                            characterId: widget.characterId,
+                            page: ref.watch(mailPageProvider)!)
+                        .refetch()
+                        .then((_) => mailListInitializer!.call());
+                  }
+                  context.pop();
+                },
                 cancelText: '아니요',
                 onCancel: () => context.pop(),
                 mutationStatus: state.status,
