@@ -36,11 +36,18 @@ class ReplyFormWidget extends ConsumerStatefulWidget {
 class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   final controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  VoidCallback? mailListInitializer;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     mailService.getBeforeReply(controller: controller, mailId: widget.mail.id);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        mailListInitializer = ref.watch(initializeMailListProvider);
+      });
+    });
   }
 
   @override
@@ -67,18 +74,10 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
         'character-sent-mail/${widget.mail.id}',
       ],
       onSuccess: (res, arg) async {
-        if (ref.watch(initializeMailListProvider) != null) {
-          await getListMailQuery(
-                  characterId: widget.characterId,
-                  page: ref.watch(mailPageProvider)!)
-              .refetch();
-          ref.watch(initializeMailListProvider)!.call();
-        }
         await mailService.deleteBeforeReply(widget.mail.id);
-        context.pop();
       },
     );
-    _showConfirmModal() async {
+    showConfirmModal() async {
       await showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -90,10 +89,26 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   description: '답장을 보내면 수정이 불가능해요.🥲'),
               choiceColumn: ModalChoiceWidget(
                 submitText: '네',
-                onSubmit: () => mutate(getReplyDTO()),
+                onSubmit: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await mutate(getReplyDTO());
+                  if (mailListInitializer != null) {
+                    getListMailQuery(
+                            characterId: widget.characterId,
+                            page: ref.watch(mailPageProvider)!)
+                        .refetch()
+                        .then((_) => mailListInitializer!.call());
+                  }
+                  setState(() {
+                    isLoading = false;
+                  });
+                  context.pop();
+                },
                 cancelText: '아니요',
                 onCancel: () => context.pop(),
-                mutationStatus: state.status,
+                mutationStatus: isLoading ? QueryStatus.loading : null,
               ),
             ),
           );
@@ -170,7 +185,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      _showConfirmModal();
+                      showConfirmModal();
                     }
                   },
                   child: const Text(

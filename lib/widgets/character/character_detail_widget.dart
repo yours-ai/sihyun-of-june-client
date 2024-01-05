@@ -69,18 +69,24 @@ class CharacterDetailWidgetState extends ConsumerState<CharacterDetailWidget> {
                           return true;
                         },
                         child: ListView(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 28.0,
-                            vertical: 10,
-                          ),
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
                           children: [
-                            ProfileWidget(
-                              name: character.name!,
-                              characterInfo: character.character_info!,
-                              primaryColor:
-                                  Color(character.theme!.colors!.primary!),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: ProfileWidget(
+                                name: character.name!,
+                                characterInfo: character.character_info!,
+                                primaryColor:
+                                    Color(character.theme!.colors!.primary!),
+                              ),
                             ),
-                            ViewOthersWidget(excludeId: character.id),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: ViewOthersWidget(excludeId: character.id),
+                            ),
                             FilledButton(
                               onPressed: () {
                                 widget.onTestInfo(

@@ -30,7 +30,12 @@ class ModalChoiceWidget extends ConsumerWidget {
             backgroundColor:
                 MaterialStateProperty.all(ColorConstants.background),
           ),
-          onPressed: onCancel,
+          onPressed: () {
+            if (mutationStatus == null ||
+                mutationStatus != QueryStatus.loading) {
+              onCancel();
+            }
+          },
           child: Text(
             cancelText,
             style: TextStyle(
