@@ -74,8 +74,8 @@ class RetestChoiceWidget extends ConsumerWidget {
                   ),
                   Text(
                     extendCost == null
-                        ? _RETEST_COIN_COST.toString() + '코인'
-                        : extendCost!['coin'].toString() + '코인',
+                        ? '$_RETEST_COIN_COST코인'
+                        : '${extendCost!['coin']}코인',
                     style: TextStyle(
                       fontSize: 14,
                       color: ColorConstants.lightGray.withOpacity(0.5),
@@ -110,8 +110,8 @@ class RetestChoiceWidget extends ConsumerWidget {
                   ),
                   Text(
                     extendCost == null
-                        ? _RETEST_POINT_COST.toString() + 'P'
-                        : extendCost!['point'].toString() + 'P',
+                        ? '${_RETEST_POINT_COST}P'
+                        : '${extendCost!['point']}P',
                     style: TextStyle(
                       fontSize: 14,
                       color: ColorConstants.lightGray.withOpacity(0.5),
