@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/character/profile_widget.dart';
 import 'package:project_june_client/widgets/character/view_others.dart';
@@ -11,11 +12,12 @@ import '../../screens/character_test/character_choice_screen.dart';
 
 class CharacterDetailWidget extends ConsumerStatefulWidget {
   final void Function(ActiveScreen) onActiveScreen;
-  final void Function(
-      {required TestReason reason,
-      required int testId,
-      required String firstName,
-      required int characterId}) onTestInfo;
+  final void Function({
+    required TestReason reason,
+    required int testId,
+    required String firstName,
+    required int characterId,
+  }) onTestInfo;
 
   const CharacterDetailWidget(
       {super.key, required this.onActiveScreen, required this.onTestInfo});
@@ -29,7 +31,6 @@ class CharacterDetailWidgetState extends ConsumerState<CharacterDetailWidget> {
 
   void _updateOpacity(ScrollNotification notification) {
     if (notification.metrics.pixels > 50) {
-      // 스크롤 위치에 따라 조건을 조절하세요
       setState(() => _toolTipOpacity = 0.0);
     } else {
       setState(() => _toolTipOpacity = 1.0);
@@ -108,9 +109,9 @@ class CharacterDetailWidgetState extends ConsumerState<CharacterDetailWidget> {
                   ignoring: _toolTipOpacity == 0.0,
                   child: AnimatedOpacity(
                     opacity: _toolTipOpacity,
-                    duration: Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 500),
                     child: Container(
-                      padding: EdgeInsets.all(32),
+                      padding: const EdgeInsets.all(32),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.bottomCenter,
@@ -126,12 +127,15 @@ class CharacterDetailWidgetState extends ConsumerState<CharacterDetailWidget> {
                           children: [
                             Icon(
                               Icons.keyboard_arrow_down,
-                              color: Colors.white,
+                              color: ColorConstants.background,
                               size: 32,
                             ),
                             Text(
                               '다른 상대도 살펴보세요!',
-                              style: TextStyle(color: Colors.white, fontSize: 16),
+                              style: TextStyle(
+                                color: ColorConstants.background,
+                                fontSize: 16,
+                              ),
                             ),
                           ],
                         ),
