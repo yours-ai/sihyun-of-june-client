@@ -7,20 +7,20 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/providers/mail_list_provider.dart';
 import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
 
-import '../actions/character/models/Character.dart';
-import '../constants.dart';
-import '../providers/character_provider.dart';
-import '../providers/common_provider.dart';
-import '../services.dart';
-import '../services/unique_cachekey_service.dart';
+import '../../actions/character/models/Character.dart';
+import '../../constants.dart';
+import '../../providers/character_provider.dart';
+import '../../providers/common_provider.dart';
+import '../../services.dart';
+import '../../services/unique_cachekey_service.dart';
 
-class CharacterChangeOverlayWidget extends ConsumerWidget {
+class OverlayComponentWidget extends ConsumerWidget {
   final Character? character;
   final VoidCallback? hideOverlay;
   final List<int>? characterIds;
   final String? firstName;
 
-  const CharacterChangeOverlayWidget({
+  const OverlayComponentWidget({
     this.character,
     this.hideOverlay,
     this.characterIds,

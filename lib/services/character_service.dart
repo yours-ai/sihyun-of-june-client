@@ -2,8 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
+import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 
@@ -85,5 +87,30 @@ class CharacterService {
         .where((character) => character.is_current == true)
         .first
         .first_name!;
+  }
+
+  void redirectRetest(
+      {required currentContext,
+      required bool isMounted,
+      required WidgetRef ref}) async {
+    final myCharacterList =
+        await getRetrieveMyCharacterQuery().result.then((value) => value.data);
+    final currentCharacter = myCharacterList!
+        .where((character) => character.is_current == true)
+        .first;
+    final bool is30DaysFinished = await getRetrieveMeQuery()
+        .result
+        .then((value) => value.data!.is_30days_finished);
+    if (!isMounted) return;
+    if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
+        is30DaysFinished) {
+      currentContext.push(
+        "/retest",
+        extra: <String, dynamic>{
+          "firstName": getCurrentCharacterFirstName(myCharacterList),
+          "characterIds": getCharacterIds(myCharacterList),
+        },
+      );
+    }
   }
 }

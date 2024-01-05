@@ -55,9 +55,7 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
         return MutationBuilder(
           mutation: getSmsTokenMutation(
             onSuccess: (res, arg) {
-              getUserFunnelMutation(onSuccess: (res, arg) {
-                context.go('/');
-              }).mutate(funnelDTO);
+              getUserFunnelMutation().mutate(funnelDTO).then((_)=>context.go('/'));
             },
             onError: (arg, error, fallback) {
               ScaffoldMessenger.of(context).showSnackBar(

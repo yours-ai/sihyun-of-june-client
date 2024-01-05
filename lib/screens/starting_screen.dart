@@ -31,7 +31,6 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
   _checkAuthAndLand() async {
     final isLogined = await loadIsLogined();
     FlutterNativeSplash.remove();
-    if (!context.mounted) return;
 
     await _checkAppAvailability();
     await _checkUpdateAvailable();
