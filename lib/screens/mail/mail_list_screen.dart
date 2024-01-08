@@ -60,11 +60,12 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         });
       };
     });
-    characterService.redirectRetest(
-      currentContext: context,
-      isMounted: mounted,
-      ref: ref,
-    );
+    if (mounted) {
+      characterService.redirectRetest(
+        currentContext: context,
+        ref: ref,
+      );
+    }
   }
 
   void initializeMailList() {
@@ -290,7 +291,13 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                     }
                   }
                   if ((selectedPage == null || mailWidgetList == null)) {
-                    return const CircularProgressIndicator.adaptive();
+                    return const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator.adaptive(),
+                      ],
+                    );
                   } else {
                     return Stack(
                       children: [

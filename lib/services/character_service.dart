@@ -91,7 +91,6 @@ class CharacterService {
 
   void redirectRetest(
       {required currentContext,
-      required bool isMounted,
       required WidgetRef ref}) async {
     final myCharacterList =
         await getRetrieveMyCharacterQuery().result.then((value) => value.data);
@@ -101,7 +100,6 @@ class CharacterService {
     final bool is30DaysFinished = await getRetrieveMeQuery()
         .result
         .then((value) => value.data!.is_30days_finished);
-    if (!isMounted) return;
     if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
         is30DaysFinished) {
       currentContext.push(
