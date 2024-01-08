@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
@@ -90,7 +91,7 @@ class CharacterService {
   }
 
   void redirectRetest(
-      {required currentContext,
+      {required BuildContext currentContext,
       required WidgetRef ref}) async {
     final myCharacterList =
         await getRetrieveMyCharacterQuery().result.then((value) => value.data);
