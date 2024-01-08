@@ -12,7 +12,7 @@ Future<List<Mail>> fetchMailList(
 
 Future<Mail> fetchMailById(int id) async {
   final response = await dio.get(
-    '/mail/v2/character-sent-mails/$id/',
+    '/mail/v3/character-sent-mails/$id/',
   );
   return Mail.fromJson(response.data);
 }
