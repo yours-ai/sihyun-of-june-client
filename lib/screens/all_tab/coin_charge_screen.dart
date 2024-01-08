@@ -107,7 +107,7 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
                             builder: (context, state) {
                               return state.data == null
                                   ? const Center(
-                                      child: CircularProgressIndicator(),
+                                      child: CircularProgressIndicator.adaptive(),
                                     )
                                   : ProductWidget(
                                       products: transactionService

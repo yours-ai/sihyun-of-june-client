@@ -12,7 +12,6 @@ import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dar
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/name_form_widget.dart';
 
-
 class NameChangeScreen extends ConsumerStatefulWidget {
   const NameChangeScreen({Key? key}) : super(key: key);
 
@@ -63,6 +62,7 @@ class NameChangeScreenState extends ConsumerState<NameChangeScreen> {
               onSubmit: () => mutate(dto),
               cancelText: '아니요',
               onCancel: () => context.pop(),
+              mutationStatus: state.status,
             ),
           ),
         );

@@ -1,10 +1,14 @@
+import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 
-class ModalChoiceWidget extends StatelessWidget {
+class ModalChoiceWidget extends ConsumerWidget {
   final String submitText, cancelText;
   final VoidCallback onSubmit, onCancel;
   final String? submitSuffix;
+  final QueryStatus? mutationStatus;
 
   const ModalChoiceWidget({
     super.key,
@@ -13,10 +17,11 @@ class ModalChoiceWidget extends StatelessWidget {
     required this.onSubmit,
     required this.onCancel,
     this.submitSuffix,
+    this.mutationStatus,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -25,7 +30,12 @@ class ModalChoiceWidget extends StatelessWidget {
             backgroundColor:
                 MaterialStateProperty.all(ColorConstants.background),
           ),
-          onPressed: onCancel,
+          onPressed: () {
+            if (mutationStatus == null ||
+                mutationStatus != QueryStatus.loading) {
+              onCancel();
+            }
+          },
           child: Text(
             cancelText,
             style: TextStyle(
@@ -40,7 +50,18 @@ class ModalChoiceWidget extends StatelessWidget {
           height: 13,
         ),
         FilledButton(
-          onPressed: onSubmit,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(mutationStatus == null ||
+                    mutationStatus != QueryStatus.loading
+                ? Color(ref.watch(characterThemeProvider).colors!.primary!)
+                : Color(ref.watch(characterThemeProvider).colors!.secondary!)),
+          ),
+          onPressed: () {
+            if (mutationStatus == null ||
+                mutationStatus != QueryStatus.loading) {
+              onSubmit();
+            }
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

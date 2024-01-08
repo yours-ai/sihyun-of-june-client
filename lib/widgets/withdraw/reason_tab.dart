@@ -101,6 +101,9 @@ class _ReasonTabWidgetState extends State<ReasonTabWidget> {
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: TextFormField(
+                          style: TextStyle(
+                            color: ColorConstants.primary,
+                          ),
                           controller: widget.reasonController,
                           decoration: const InputDecoration(
                             hintText: '탈퇴 사유를 입력해주세요.',

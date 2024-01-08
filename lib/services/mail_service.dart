@@ -1,8 +1,10 @@
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project_june_client/actions/mails/models/Mail.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
+import 'package:project_june_client/widgets/mail_list/mail_widget.dart';
 
 extension TimeOfDayExtension on TimeOfDay {
   int compareTo(TimeOfDay other) {
@@ -52,7 +54,7 @@ class MailService {
     return DateFormat('yyyy.MM.dd').format(dt);
   }
 
-  List<Widget> emptyCellsForWeekDay(DateTime firstDate) {
+  List<Widget> getEmptyCells(DateTime firstDate) {
     return List.generate(
         (firstDate.weekday - DateTime.sunday) % 7, (index) => const SizedBox());
   }
@@ -135,5 +137,51 @@ class MailService {
   Future<void> deleteBeforeReply(int mailId) async {
     final storage = getSecureStorage();
     await storage.delete(key: 'MAIL_REPLY_$mailId');
+  }
+
+  int checkMailNumber(List<Mail> mails, DateTime firstMailDate) {
+    final lastMailDate = mails.first.available_at;
+    final totalMailNumber = getMailDateDiff(lastMailDate, firstMailDate) + 1;
+    return totalMailNumber;
+  }
+
+  List<Widget> makeMailWidgetList(List<Mail> mails) {
+    if (mails.isEmpty) {
+      return [];
+    }
+    final firstMailDate = mails.last.available_at;
+    final mailCount = checkMailNumber(mails, firstMailDate);
+    List<MailWidget> modifiedMailList = [];
+    if (mailCount <= 30) {
+      modifiedMailList = List.generate(
+          30,
+          (index) => MailWidget(
+                mailNumber: index,
+                firstMailDate: firstMailDate,
+              ));
+    } else {
+      modifiedMailList = List.generate(
+          mailCount,
+          (index) => MailWidget(
+                mailNumber: index,
+                firstMailDate: firstMailDate,
+              ));
+    }
+    for (var mail in mails) {
+      int mailDateDiff = getMailDateDiff(mail.available_at, firstMailDate);
+      modifiedMailList[mailDateDiff] = MailWidget(
+        mail: mail,
+        mailNumber: mailDateDiff,
+        firstMailDate: firstMailDate,
+      );
+    }
+    return fillMailList(modifiedMailList, firstMailDate);
+  }
+
+  List<Widget> fillMailList(
+      List<Widget> modifiedWidgetList, DateTime firstMailDate) {
+    List<Widget> emptyCellsForWeekDay =
+        getEmptyCells(firstMailDate); //첫 번째 날짜의 요일에 따라 빈 칸을 채움
+    return emptyCellsForWeekDay + modifiedWidgetList;
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
@@ -36,11 +38,18 @@ class ReplyFormWidget extends ConsumerStatefulWidget {
 class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   final controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  VoidCallback? mailListInitializer;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     mailService.getBeforeReply(controller: controller, mailId: widget.mail.id);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        mailListInitializer = ref.watch(initializeMailListProvider);
+      });
+    });
   }
 
   @override
@@ -60,6 +69,15 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
     );
   }
 
+  void requestRandomlyAppReview(bool isFirstReply) {
+    if (isFirstReply) {
+      return;
+    }
+    if (Random().nextInt(100) <= 50) {
+      notificationService.requestAppReview();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final mutation = getSendMailReplyMutation(
@@ -67,14 +85,10 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
         'character-sent-mail/${widget.mail.id}',
       ],
       onSuccess: (res, arg) async {
-        if (ref.watch(refetchMailListProvider) != null) {
-          ref.watch(refetchMailListProvider)!.call();
-        }
         await mailService.deleteBeforeReply(widget.mail.id);
-        context.pop();
       },
     );
-    _showConfirmModal() async {
+    showConfirmModal() async {
       await showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -86,9 +100,27 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   description: '답장을 보내면 수정이 불가능해요.🥲'),
               choiceColumn: ModalChoiceWidget(
                 submitText: '네',
-                onSubmit: () => mutate(getReplyDTO()),
+                onSubmit: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await mutate(getReplyDTO());
+                  if (mailListInitializer != null) {
+                    getListMailQuery(
+                            characterId: widget.characterId,
+                            page: ref.watch(mailPageProvider)!)
+                        .refetch()
+                        .then((_) => mailListInitializer!.call());
+                  }
+                  setState(() {
+                    isLoading = false;
+                  });
+                  context.pop();
+                  requestRandomlyAppReview(widget.mail.is_first_reply);
+                },
                 cancelText: '아니요',
                 onCancel: () => context.pop(),
+                mutationStatus: isLoading ? QueryStatus.loading : null,
               ),
             ),
           );
@@ -165,7 +197,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      _showConfirmModal();
+                      showConfirmModal();
                     }
                   },
                   child: const Text(

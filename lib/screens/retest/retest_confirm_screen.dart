@@ -8,7 +8,6 @@ import 'package:project_june_client/widgets/retest/retest_layout_widget.dart';
 import '../../actions/character/queries.dart';
 import '../../constants.dart';
 import '../../globals.dart';
-import '../../providers/character_provider.dart';
 import '../../services.dart';
 import '../../widgets/common/create_snackbar.dart';
 

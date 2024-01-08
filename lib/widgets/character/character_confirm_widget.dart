@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/character/models/CharacterColors.dart';
-import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
@@ -64,6 +62,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
                     mutation: mutation,
                     builder: (context, state, mutate) {
                       void handleRetest(String payment) {
+                        if(state.status == QueryStatus.loading) return;
                         mutate(
                           denyTestChoiceDTO(id: testId, payment: payment),
                         );
@@ -85,6 +84,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
                       },
                       cancelText: '됐어요',
                       onCancel: () => context.pop(),
+                      mutationStatus: state.status,
                     ),
                   ),
           );
@@ -144,7 +144,19 @@ class CharacterConfirmWidget extends ConsumerWidget {
                   },
                 ),
                 builder: (context, state, mutate) => FilledButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                      state.status != QueryStatus.loading
+                          ? Color(
+                          ref.watch(characterThemeProvider).colors!.primary!)
+                          : Color(ref
+                          .watch(characterThemeProvider)
+                          .colors!
+                          .secondary!),
+                    ),
+                  ),
                   onPressed: () {
+                    if(state.status == QueryStatus.loading) return;
                     mutate(testId);
                   },
                   child: const Text(

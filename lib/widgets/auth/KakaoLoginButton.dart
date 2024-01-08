@@ -24,9 +24,7 @@ class KakaoLoginButton extends ConsumerWidget {
     return MutationBuilder(
       mutation: getLoginAsKakaoMutation(
         onSuccess: (res, arg) {
-          getUserFunnelMutation(onSuccess: (res, arg) {
-            context.go('/');
-          }).mutate(funnelDTO);
+          getUserFunnelMutation().mutate(funnelDTO).then((_)=>context.go('/'));
         },
         onError: (arg, error, callback) {
           if (error is PlatformException && error.code == "CANCELED") {

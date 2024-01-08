@@ -5,20 +5,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/providers/mail_list_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
-import 'package:project_june_client/widgets/character_change_overlay_widget.dart';
+import 'package:project_june_client/widgets/mail_list/change_character_overlay_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
-import 'package:project_june_client/widgets/mail_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/notification/notification_permission_check.dart';
 
 import '../../actions/character/models/Character.dart';
-import '../../actions/mails/models/Mail.dart';
 import '../../actions/mails/queries.dart';
 import '../../actions/notification/queries.dart';
 import '../../constants.dart';
@@ -36,11 +33,10 @@ class MailListScreen extends ConsumerStatefulWidget {
 class MailListScreenState extends ConsumerState<MailListScreen>
     with TickerProviderStateMixin {
   int? selectedPage;
-  DateTime? firstMailDate;
   List<Widget>? mailWidgetList;
   final GlobalKey _targetKey = GlobalKey();
   AnimationController? profileChangeController, reloadMailController;
-  Animation<double>? profileChangeFadeAnimation, reloadMailFadeAnimation;
+  Animation<double>? reloadMailFadeAnimation;
   OverlayEntry? overlayEntry;
 
   @override
@@ -54,22 +50,22 @@ class MailListScreenState extends ConsumerState<MailListScreen>
       vsync: this,
       duration: const Duration(milliseconds: 300), // 애니메이션 지속 시간
     );
-    profileChangeFadeAnimation =
-        Tween<double>(begin: 0.0, end: 1.0).animate(profileChangeController!);
     reloadMailFadeAnimation =
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(refetchMailListProvider.notifier).state = () {
-        getListMailQuery(
-                characterId: ref.watch(selectedCharacterProvider)!,
-                page: selectedPage!)
-            .result
-            .then((value) {
-          updateAllMailList(value.data!);
+      ref.read(initializeMailListProvider.notifier).state = () {
+        setState(() {
+          mailWidgetList = null;
+          selectedPage = null;
         });
       };
     });
-    checkRetest();
+    if (mounted) {
+      characterService.redirectRetest(
+        currentContext: context,
+        ref: ref,
+      );
+    }
   }
 
   void initializeMailList() {
@@ -79,93 +75,17 @@ class MailListScreenState extends ConsumerState<MailListScreen>
     });
   }
 
-  void checkRetest() async {
-    final myCharacterList =
-        await getRetrieveMyCharacterQuery().result.then((value) => value.data);
-    final currentCharacter = myCharacterList!
-        .where((character) => character.is_current == true)
-        .first;
-    final bool is30DaysFinished = await getRetrieveMeQuery()
-        .result
-        .then((value) => value.data!.is_30days_finished);
-    if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
-        is30DaysFinished) {
-      context.push(
-        "/retest",
-        extra: <String, dynamic>{
-          "firstName":
-              characterService.getCurrentCharacterFirstName(myCharacterList),
-          "characterIds": characterService.getCharacterIds(myCharacterList),
-        },
-      );
-    }
-  }
-
   void changeProfileList(List<Character> characterList) {
     final RenderObject? renderBox =
         _targetKey.currentContext?.findRenderObject();
     if (renderBox is RenderBox) {
       final Offset offset = renderBox.localToGlobal(Offset.zero);
       overlayEntry = OverlayEntry(
-        builder: (context) => GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            hideOverlay();
-          },
-          child: FadeTransition(
-            opacity: profileChangeFadeAnimation!,
-            child: Material(
-              color: Colors.black54,
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: offset.dy - 7,
-                    right: MediaQuery.of(context).size.width - offset.dx - 54,
-                    child: Container(
-                      width: 180,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Column(
-                        children: [
-                          ...characterList
-                              .where((character) =>
-                                  character.id ==
-                                  ref.watch(selectedCharacterProvider))
-                              .map(
-                                (character) => CharacterChangeOverlayWidget(
-                                  character: character,
-                                ),
-                              )
-                              .toList(),
-                          ...characterList
-                              .where((character) =>
-                                  character.id !=
-                                  ref.watch(selectedCharacterProvider))
-                              .map(
-                                (character) => CharacterChangeOverlayWidget(
-                                  character: character,
-                                  hideOverlay: hideOverlay,
-                                  initializeMailList: initializeMailList,
-                                ),
-                              )
-                              .toList(),
-                          CharacterChangeOverlayWidget(
-                            hideOverlay: hideOverlay,
-                            firstName: characterService
-                                .getCurrentCharacterFirstName(characterList),
-                            characterIds:
-                                characterService.getCharacterIds(characterList),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+        builder: (context) => ChangeCharacterOverlayWidget(
+          hideOverlay: hideOverlay,
+          offset: offset,
+          characterList: characterList,
+          profileChangeController: profileChangeController!,
         ),
       );
       Overlay.of(context).insert(overlayEntry!);
@@ -177,62 +97,6 @@ class MailListScreenState extends ConsumerState<MailListScreen>
     profileChangeController!.reverse().then((_) {
       overlayEntry!.remove();
     });
-  }
-
-  int checkMailNumber(List<Mail> mails) {
-    firstMailDate = mails.last.available_at;
-    var lastMailDate = mails.first.available_at;
-    var totalMailNumber =
-        mailService.getMailDateDiff(lastMailDate, firstMailDate!) + 1;
-    return totalMailNumber;
-  }
-
-  void updateAllMailList(List<Mail> mails) {
-    if (mails.isEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {
-          mailWidgetList = [];
-        });
-      });
-      return;
-    }
-    final mailCount = checkMailNumber(mails);
-    List<MailWidget> modifiedMailList = [];
-    if (mailCount <= 30) {
-      modifiedMailList = List.generate(
-          30,
-          (index) => MailWidget(
-                mailNumber: index,
-                firstMailDate: firstMailDate,
-              ));
-    } else {
-      modifiedMailList = List.generate(
-          mailCount,
-          (index) => MailWidget(
-                mailNumber: index,
-                firstMailDate: firstMailDate,
-              ));
-    }
-    for (var mail in mails) {
-      int mailDateDiff =
-          mailService.getMailDateDiff(mail.available_at, firstMailDate!);
-      modifiedMailList[mailDateDiff] = MailWidget(
-        mail: mail,
-        mailNumber: mailDateDiff,
-        firstMailDate: firstMailDate,
-      );
-    }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        mailWidgetList = fillMailList(modifiedMailList);
-      });
-    });
-  }
-
-  List<Widget> fillMailList(List<Widget> modifiedWidgetList) {
-    List<Widget> emptyCellsForWeekDay = mailService
-        .emptyCellsForWeekDay(firstMailDate!); //첫 번째 날짜의 요일에 따라 빈 칸을 채움
-    return emptyCellsForWeekDay + modifiedWidgetList;
   }
 
   Future showSelectMonthAlert(int mailReceivedMonth) {
@@ -273,6 +137,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                     onPressed: () async {
                       setState(() {
                         selectedPage = index + 1;
+                        ref.read(mailPageProvider.notifier).state = index + 1;
                         mailWidgetList = null;
                       });
                       context.pop();
@@ -315,7 +180,13 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                 .first;
             final mainImageSrc = characterService
                 .getMainImage(selectedCharacter.character_info!.images!);
-            selectedPage ??= selectedCharacter.date_allocated!.length;
+            if (selectedPage == null) {
+              selectedPage = selectedCharacter.date_allocated!.length;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ref.read(mailPageProvider.notifier).state =
+                    selectedCharacter.date_allocated!.length;
+              });
+            }
             return TitleLayout(
               title: Row(
                 children: [
@@ -411,124 +282,136 @@ class MailListScreenState extends ConsumerState<MailListScreen>
                 builder: (context, listMailState) {
                   if (listMailState.data != null) {
                     if (mailWidgetList == null) {
-                      updateAllMailList(listMailState.data!);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        setState(() {
+                          mailWidgetList = mailService
+                              .makeMailWidgetList(listMailState.data!);
+                        });
+                      });
                     }
                   }
-                  return (selectedPage == null || mailWidgetList == null)
-                      ? const SizedBox()
-                      : Stack(
-                          children: [
-                            QueryBuilder(
-                              query: isNotificationAcceptedQuery,
-                              builder: (context, state) {
-                                return state.data == false
-                                    ? const RequestNotificationPermissionWidget()
-                                    : const SizedBox.shrink();
-                              },
-                            ),
-                            Positioned.fill(
-                              child: Column(
-                                children: [
-                                  selectedCharacter.date_allocated!.length > 1
-                                      ? GestureDetector(
-                                          onTap: () => showSelectMonthAlert(
-                                              selectedCharacter
-                                                  .date_allocated!.length),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 20.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  mailService.makePageLabel(
-                                                      selectedPage!),
-                                                  style: TextStyle(
-                                                    fontSize: 32,
-                                                    fontFamily:
-                                                        'NanumJungHagSaeng',
-                                                    color:
-                                                        ColorConstants.primary,
-                                                  ),
-                                                ),
-                                                const Padding(
-                                                  padding: EdgeInsets.only(
-                                                      left: 5.0, top: 5),
-                                                  child: Icon(
-                                                      PhosphorIcons
-                                                          .caret_down_bold,
-                                                      size: 18),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      : const SizedBox(height: 20),
-                                  if (mailWidgetList!.isEmpty == true)
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            '아직 도착한 편지가 없어요!',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: ColorConstants.primary,
-                                              fontSize: 21,
-                                              height: 1,
-                                              fontWeight:
-                                                  FontWeightConstants.semiBold,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 14),
-                                          Text(
-                                            '${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요. \n 조금만 기다려 주세요 :)',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: ColorConstants.neutral,
-                                              fontSize: 16,
-                                              height: 22 / 16,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  if (mailWidgetList!.isEmpty == false) ...[
-                                    mailService.calendarWeekday(),
-                                    const SizedBox(height: 20),
-                                    Expanded(
-                                      child: RefreshIndicator.adaptive(
-                                        onRefresh: () async {
-                                          HapticFeedback.lightImpact();
-                                          retrieveMyCharacterQuery.refetch();
-                                          reloadMailController!
-                                              .forward()
-                                              .then((_) {
-                                            setState(() {
-                                              mailWidgetList = null;
-                                            });
-                                            reloadMailController!.reverse();
-                                          });
-                                        },
-                                        child: FadeTransition(
-                                          opacity: reloadMailFadeAnimation!,
-                                          child: GridView.count(
-                                            crossAxisCount: 7,
-                                            childAspectRatio: 7 / 11,
-                                            children: mailWidgetList!,
+                  if ((selectedPage == null || mailWidgetList == null)) {
+                    return const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircularProgressIndicator.adaptive(),
+                      ],
+                    );
+                  } else {
+                    return Stack(
+                      children: [
+                        QueryBuilder(
+                          query: isNotificationAcceptedQuery,
+                          builder: (context, state) {
+                            return state.data == false
+                                ? const RequestNotificationPermissionWidget()
+                                : const SizedBox.shrink();
+                          },
+                        ),
+                        Positioned.fill(
+                          child: Column(
+                            children: [
+                              if (selectedCharacter.date_allocated!.length > 1)
+                                GestureDetector(
+                                  onTap: () => showSelectMonthAlert(
+                                      selectedCharacter.date_allocated!.length),
+                                  child: Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 20.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          mailService
+                                              .makePageLabel(selectedPage!),
+                                          style: TextStyle(
+                                            fontSize: 32,
+                                            fontFamily: 'NanumJungHagSaeng',
+                                            color: ColorConstants.primary,
                                           ),
                                         ),
+                                        const Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 5.0, top: 5),
+                                          child: Icon(
+                                              PhosphorIcons.caret_down_bold,
+                                              size: 18),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              else
+                                const SizedBox(height: 20),
+                              if (mailWidgetList!.isEmpty == true)
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        '아직 도착한 편지가 없어요!',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: ColorConstants.primary,
+                                          fontSize: 21,
+                                          height: 1,
+                                          fontWeight:
+                                              FontWeightConstants.semiBold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 14),
+                                      Text(
+                                        '${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요. \n 조금만 기다려 주세요 :)',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: ColorConstants.neutral,
+                                          fontSize: 16,
+                                          height: 22 / 16,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              if (mailWidgetList!.isEmpty == false) ...[
+                                mailService.calendarWeekday(),
+                                const SizedBox(height: 20),
+                                Expanded(
+                                  child: RefreshIndicator.adaptive(
+                                    onRefresh: () async {
+                                      HapticFeedback.lightImpact();
+                                      await retrieveMyCharacterQuery.refetch();
+                                      await getListMailQuery(
+                                              characterId: ref.watch(
+                                                  selectedCharacterProvider)!,
+                                              page: selectedPage!)
+                                          .refetch();
+                                      reloadMailController!.forward().then((_) {
+                                        setState(() {
+                                          mailWidgetList = null;
+                                        });
+                                        reloadMailController!.reverse();
+                                      });
+                                    },
+                                    child: FadeTransition(
+                                      opacity: reloadMailFadeAnimation!,
+                                      child: GridView.count(
+                                        crossAxisCount: 7,
+                                        childAspectRatio: 7 / 11,
+                                        children: mailWidgetList!,
                                       ),
                                     ),
-                                  ],
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  }
                 },
               ),
             );
