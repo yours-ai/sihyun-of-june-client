@@ -115,7 +115,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
           withAppBar: true,
           title: Text(
             '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
-            '편지가 올 거에요.',
+            '편지가 올 거에요 :)',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge,
           ),

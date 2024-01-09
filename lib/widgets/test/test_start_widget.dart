@@ -27,7 +27,7 @@ List<TestInfoTabData> getTabList(String firstName) {
             Center(child: Image.asset('assets/images/landing/test_image.png')),
         button: '다음'),
     TestInfoTabData(
-        titleText: '간단한 질문들로\n$firstName님을 알아가 볼게요 :)', button: '알겠어요!'),
+        titleText: '그렇다면, 간단한 질문들로\n$firstName님을 알아가 볼게요 :)', button: '알겠어요!'),
   ];
 }
 
@@ -64,7 +64,7 @@ class _TestStartWidget extends State<TestStartWidget> {
           query: getTestStatusQuery(),
           builder: (context, state) {
             if (state.status == QueryStatus.success &&
-                state.data!['test_reason'] == 'NEW_USER')
+                state.data!['test_reason'] == 'NEW_USER') {
               return Padding(
                 padding: const EdgeInsets.only(top: 30),
                 child: Center(
@@ -80,6 +80,7 @@ class _TestStartWidget extends State<TestStartWidget> {
                   ),
                 ),
               );
+            }
             return const SizedBox.shrink();
           },
         ),

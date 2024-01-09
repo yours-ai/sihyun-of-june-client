@@ -7,6 +7,11 @@ import 'package:project_june_client/screens/all_tab/my_point_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_change_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_log_screen.dart';
 import 'package:project_june_client/screens/all_tab/share_screen.dart';
+import 'package:project_june_client/screens/character_selection/decide_method_screen.dart';
+import 'package:project_june_client/screens/character_selection/decided_character_screen.dart';
+import 'package:project_june_client/screens/character_selection/decided_confirm_screen.dart';
+import 'package:project_june_client/screens/character_selection/deciding_screen.dart';
+import 'package:project_june_client/screens/character_selection/start_screen.dart';
 import 'package:project_june_client/screens/mail/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail/mail_detail_screen.dart';
 import 'package:project_june_client/screens/all_tab/name_change_screen.dart';
@@ -185,6 +190,40 @@ final router = GoRouter(
               firstName: state.extra as String,
             );
           },
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '/character-selection-start',
+      builder: (context, state) => const CharacterSelectionStartScreen(),
+      routes: [
+        GoRoute(
+          path: 'decide-method',
+          builder: (context, state) =>
+              const CharacterSelectionDecideMethodScreen(),
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '/character-selection-deciding',
+      builder: (context, state) => const CharacterSelectionDecidingScreen(),
+      routes: [
+        GoRoute(
+          path: 'character/:id',
+          name: DecidedRouteNames.character,
+          builder: (context, state) => CharacterSelectionDecidedCharacterScreen(
+            id: int.tryParse(state.pathParameters['id']!)!,
+          ),
+        ),
+        GoRoute(
+          path: 'confirm',
+          name: DecidedRouteNames.confirm,
+          builder: (context, state) => CharacterSelectionDecidedConfirmScreen(
+            id: int.tryParse(state.uri.queryParameters['id']!)!,
+            firstName: state.uri.queryParameters['firstName']!,
+            primaryColor: int.tryParse(state.uri.queryParameters['primaryColor']!)!,
+            secondaryColor: int.tryParse(state.uri.queryParameters['secondaryColor']!)!,
+          ),
         ),
       ],
     ),

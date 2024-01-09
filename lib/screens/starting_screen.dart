@@ -11,6 +11,7 @@ import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/character/models/CharacterColors.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/providers/user_provider.dart';
@@ -74,6 +75,20 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       context.go('/mails');
       return;
     } else {
+      // if(testStatus.data!['test_reason'] == 'character_test') {
+      //   context.go('/character-test');
+      // } else if(testStatus.data!['test_reason'] == 'character_selection') {
+      //   context.go('/character-selection-deciding');
+      // } else {
+      //   scaffoldMessengerKey.currentState?.showSnackBar(
+      //     const SnackBar(
+      //       content: Text(
+      //         '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+      //       ),
+      //     ),
+      //   );
+      //   context.go('/landing');
+      // }
       context.go('/character-test');
     }
   }

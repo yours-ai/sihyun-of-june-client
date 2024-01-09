@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
@@ -32,33 +33,11 @@ class RetestModalWidget extends ConsumerWidget {
             : '현재 상대하고만 편지를 주고받을 수 있어요.',
       ),
       choiceColumn: isEnableToRetest
-          ? MutationBuilder(
-              mutation: getRetestMutation(
-                refetchQueries: [
-                  getRetrieveMyCharacterQuery(),
-                  getRetrieveMeQuery(),
-                ],
-                onSuccess: (res, arg) {
-                  scaffoldMessengerKey.currentState?.showSnackBar(
-                    createSnackBar(
-                      snackBarText: transactionService.getPurchaseStateText(arg),
-                      characterColors:
-                      ColorTheme.defaultTheme.colors!,
-                    ),
-                  );
-                  context.go('/character-test');
-                },
-              ),
-              builder: (context, state, mutate) {
-                void handleRetest(String payment) {
-                  mutate(payment);
-                }
-
-                return RetestChoiceWidget(
-                  inModal: true,
-                  onRetest: handleRetest,
-                );
-              },
+          ? ModalChoiceWidget(
+              submitText: '네',
+              cancelText: '아니요',
+              onSubmit: () => context.push('/character-selection-start'),
+              onCancel: () => context.pop(),
             )
           : FilledButton(
               onPressed: () {
