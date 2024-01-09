@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
@@ -60,12 +61,7 @@ class MailListScreenState extends ConsumerState<MailListScreen>
         });
       };
     });
-    if (mounted) {
-      characterService.redirectRetest(
-        currentContext: context,
-        ref: ref,
-      );
-    }
+    redirectRetest();
   }
 
   void initializeMailList() {
@@ -73,6 +69,29 @@ class MailListScreenState extends ConsumerState<MailListScreen>
       mailWidgetList = null;
       selectedPage = null;
     });
+  }
+
+  void redirectRetest() async {
+    final myCharacterList =
+        await getRetrieveMyCharacterQuery().result.then((value) => value.data);
+    final currentCharacter = myCharacterList!
+        .where((character) => character.is_current == true)
+        .first;
+    final bool is30DaysFinished = await getRetrieveMeQuery()
+        .result
+        .then((value) => value.data!.is_30days_finished);
+    if (!mounted) return;
+    if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
+        is30DaysFinished) {
+      context.push(
+        "/retest",
+        extra: <String, dynamic>{
+          "firstName":
+              characterService.getCurrentCharacterFirstName(myCharacterList),
+          "characterIds": characterService.getCharacterIds(myCharacterList),
+        },
+      );
+    }
   }
 
   void changeProfileList(List<Character> characterList) {
