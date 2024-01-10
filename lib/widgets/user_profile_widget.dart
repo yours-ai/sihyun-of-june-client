@@ -44,105 +44,170 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
         QueryBuilder(
           query: widget.retrieveMyCharacterQuery,
           builder: (context, state) {
-            if (state.data != null) {
-              final selectedCharacter = state.data!
-                  .where((character) =>
-                      character.id == ref.watch(selectedCharacterProvider))
-                  .first;
-              final mainImageSrc = characterService
-                  .getMainImage(selectedCharacter.character_info!.images!);
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        selectedCharacter.is_image_updated!
-                            ? showModalBottomSheet(
-                                isScrollControlled: true,
-                                context: context,
-                                builder: (context) => ProfileDetailsScreen(
-                                  imageList:
-                                      selectedCharacter.character_info!.images!,
-                                  index: mainImageSrc.order - 1,
-                                ),
-                              )
-                            : context.push('/mails/my-character');
-                      },
-                      onLongPressStart: (_) {
-                        HapticFeedback.heavyImpact();
-                      },
-                      onLongPressEnd: (_) {
-                        HapticFeedback.heavyImpact();
-                        _showMultiCharacterModal(state.data!);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(1.5), // 내부 패딩
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(70.0),
-                          // 원형 테두리 반경
-                          border: Border.all(
-                            color: selectedCharacter.is_image_updated!
-                                ? Color(ref
-                                    .watch(characterThemeProvider)
-                                    .colors!
-                                    .primary!)
-                                : ColorConstants.background,
-                            // 테두리 색상
-                            width: 4.0, // 테두리 두께
+            if (state.status == QueryStatus.success) {
+              if (state.data == null || state.data!.isEmpty) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          //TODO: SelectionScreen으로 이동
+                        },
+                        onLongPressStart: (_) {
+                          HapticFeedback.heavyImpact();
+                        },
+                        onLongPressEnd: (_) {
+                          HapticFeedback.heavyImpact();
+                          _showMultiCharacterModal([]);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(1.5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(70.0),
+                            border: Border.all(
+                              color: ColorConstants.background,
+                              // 테두리 색상
+                              width: 4.0,
+                            ),
                           ),
-                        ),
-                        child: ClipRRect(
-                          clipBehavior: Clip.hardEdge,
-                          borderRadius: BorderRadius.circular(66),
-                          child: SizedBox(
-                            width: 132,
-                            height: 132,
-                            child: ExtendedImage.network(
-                              mainImageSrc.src,
-                              timeLimit: ref.watch(imageCacheDurationProvider),
-                              cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                                  mainImageSrc.src),
-                              fit: BoxFit.cover,
+                          child: ClipRRect(
+                            clipBehavior: Clip.hardEdge,
+                            borderRadius: BorderRadius.circular(66),
+                            child: SizedBox(
+                              width: 132,
+                              height: 132,
+                              child: ExtendedImage.asset(
+                                  'assets/images/default_user_image.png'),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      context.push('/mails/my-character');
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: selectedCharacter.is_image_updated!
-                                ? Color(ref
-                                    .watch(characterThemeProvider)
-                                    .colors!
-                                    .primary!)
-                                : ColorConstants.gray,
-                            width: 1.0,
+                    GestureDetector(
+                      onTap: () {
+                        //TODO: SelectionScreen으로 이동
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: ColorConstants.gray,
+                              width: 1.0,
+                            ),
                           ),
                         ),
-                      ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
-                      child: Text(
-                          '${selectedCharacter.is_image_updated! ? '새 ' : ''}프로필 보기',
+                        child: Text(
+                          '새 캐릭터 만나기',
                           style: TextStyle(
+                              color: ColorConstants.gray, height: 1.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                final selectedCharacter = state.data!
+                    .where((character) =>
+                        character.id == ref.watch(selectedCharacterProvider))
+                    .first;
+                final mainImageSrc = characterService
+                    .getMainImage(selectedCharacter.character_info!.images!);
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          selectedCharacter.is_image_updated!
+                              ? showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  context: context,
+                                  builder: (context) => ProfileDetailsScreen(
+                                    imageList: selectedCharacter
+                                        .character_info!.images!,
+                                    index: mainImageSrc.order - 1,
+                                  ),
+                                )
+                              : context.push('/mails/my-character');
+                        },
+                        onLongPressStart: (_) {
+                          HapticFeedback.heavyImpact();
+                        },
+                        onLongPressEnd: (_) {
+                          HapticFeedback.heavyImpact();
+                          _showMultiCharacterModal(state.data!);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(1.5), // 내부 패딩
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(70.0),
+                            // 원형 테두리 반경
+                            border: Border.all(
+                              color: selectedCharacter.is_image_updated!
+                                  ? Color(ref
+                                      .watch(characterThemeProvider)
+                                      .colors!
+                                      .primary!)
+                                  : ColorConstants.background,
+                              // 테두리 색상
+                              width: 4.0, // 테두리 두께
+                            ),
+                          ),
+                          child: ClipRRect(
+                            clipBehavior: Clip.hardEdge,
+                            borderRadius: BorderRadius.circular(66),
+                            child: SizedBox(
+                              width: 132,
+                              height: 132,
+                              child: ExtendedImage.network(
+                                mainImageSrc.src,
+                                timeLimit:
+                                    ref.watch(imageCacheDurationProvider),
+                                cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                                    mainImageSrc.src),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.push('/mails/my-character');
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
                               color: selectedCharacter.is_image_updated!
                                   ? Color(ref
                                       .watch(characterThemeProvider)
                                       .colors!
                                       .primary!)
                                   : ColorConstants.gray,
-                              height: 1.0)),
+                              width: 1.0,
+                            ),
+                          ),
+                        ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
+                        child: Text(
+                            '${selectedCharacter.is_image_updated! ? '새 ' : ''}프로필 보기',
+                            style: TextStyle(
+                                color: selectedCharacter.is_image_updated!
+                                    ? Color(ref
+                                        .watch(characterThemeProvider)
+                                        .colors!
+                                        .primary!)
+                                    : ColorConstants.gray,
+                                height: 1.0)),
+                      ),
                     ),
-                  ),
-                ],
-              );
+                  ],
+                );
+              }
             }
             return const SizedBox.shrink();
           },
@@ -168,7 +233,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               width: 132,
                               height: 132,
                               child: state.data!.image == null
-                                  ? Image.asset(
+                                  ? ExtendedImage.asset(
                                       'assets/images/default_user_image.png')
                                   : ExtendedImage.network(
                                       state.data!.image!,

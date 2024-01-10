@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/screens/all_tab/all_screen.dart';
+import 'package:project_june_client/screens/all_tab/all_tab_screen.dart';
 import 'package:project_june_client/screens/all_tab/coin_charge_screen.dart';
 import 'package:project_june_client/screens/all_tab/coin_log_screen.dart';
 import 'package:project_june_client/screens/all_tab/my_point_screen.dart';
@@ -119,7 +119,7 @@ final router = GoRouter(
               key: state.pageKey,
               child: NavbarLayout(
                 routePath: state.matchedLocation,
-                child: const AllScreen(),
+                child: const AllTabScreen(),
               ),
             );
           },

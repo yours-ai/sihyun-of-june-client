@@ -95,11 +95,13 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     final myCharacters = await getRetrieveMyCharacterQuery().result;
     final hasCharacter =
         myCharacters.data != null && myCharacters.data!.isNotEmpty;
+    await _checkEnableToRetest(hasCharacter, myCharacters.data);
     if (hasCharacter) {
       await _saveSelectedCharacterId(myCharacters.data!);
       await _setSelectedCharacterTheme(myCharacters.data!);
+    } else{ // 신규유저 or 1차 중도 재배정 후 결정안했거나 거절한 경우
+      //TODO: is_new_user==true면 SelectionScreen으로 이동
     }
-    await _checkEnableToRetest(hasCharacter, myCharacters.data);
   }
 
   _saveSelectedCharacterId(List<Character> myCharacters) async {

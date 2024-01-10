@@ -21,14 +21,14 @@ import '../../services.dart';
 import '../../widgets/character_change_modal.dart';
 import '../../widgets/common/title_layout.dart';
 
-class AllScreen extends StatefulWidget {
-  const AllScreen({super.key});
+class AllTabScreen extends StatefulWidget {
+  const AllTabScreen({super.key});
 
   @override
-  _AllScreenState createState() => _AllScreenState();
+  AllTabScreenState createState() => AllTabScreenState();
 }
 
-class _AllScreenState extends State<AllScreen>
+class AllTabScreenState extends State<AllTabScreen>
     with SingleTickerProviderStateMixin {
   AnimationController? reloadAllController;
   Animation<double>? reloadAllFadeAnimation;
@@ -156,7 +156,8 @@ class _AllScreenState extends State<AllScreen>
                       children: [
                         MenuWidget(
                           title: '포인트',
-                          onPressed: () => context.push('${TabRoutePaths.all}/my-point'),
+                          onPressed: () =>
+                              context.push('${TabRoutePaths.all}/my-point'),
                           suffix: Row(
                             children: [
                               Text(
@@ -178,7 +179,8 @@ class _AllScreenState extends State<AllScreen>
                         ),
                         MenuWidget(
                           title: '코인',
-                          onPressed: () => context.push('${TabRoutePaths.all}/my-coin'),
+                          onPressed: () =>
+                              context.push('${TabRoutePaths.all}/my-coin'),
                           suffix: Row(
                             children: [
                               Text(
@@ -211,20 +213,23 @@ class _AllScreenState extends State<AllScreen>
                 QueryBuilder(
                     query: retrieveMyCharacterQuery,
                     builder: (context, state) {
-                      if (state.data == null) {
+                      if (state.status != QueryStatus.success) {
                         return const SizedBox.shrink();
                       }
                       return MenuWidget(
                         title: '상대 변경하기',
                         onPressed: () {
-                          _showMultiCharacterModal(state.data!);
+                          var characterList = state.data;
+                          characterList ??= [];
+                          _showMultiCharacterModal(characterList);
                         },
                       );
                     }),
                 const MenuTitleWidget(title: '내 정보'),
                 MenuWidget(
                   title: '이름 변경하기',
-                  onPressed: () => context.push('${TabRoutePaths.all}/change-name'),
+                  onPressed: () =>
+                      context.push('${TabRoutePaths.all}/change-name'),
                 ),
                 MenuWidget(
                   title: '로그아웃',
