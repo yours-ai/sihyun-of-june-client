@@ -37,8 +37,8 @@ Future<List<Character>> fetchCharacters() async {
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }
 
-Future<void> denyTestChoice(denyTestChoiceDTO dto) async {
-  await dio.post('/character/test/${dto.id}/deny/', data: {'payment': dto.payment});
+Future<void> denyTestChoice(int testId) async {
+  await dio.post('/character/test/$testId/deny/');
   return;
 }
 
@@ -57,8 +57,8 @@ Future<void> readCharacterStory(int id) async {
   return;
 }
 
-Future<void> retest(String payment) async {
-  await dio.post('/character/reallocate/', data: {'payment': payment});
+Future<void> retest(ReallocateDTO dto) async {
+  await dio.post('/character/reallocate/', data: {'payment': dto.payment, 'method': dto.method});
   return;
 }
 
@@ -74,3 +74,5 @@ Future<Map<String, int>> getExtendCost() async {
     'point': response.data['point'] as int,
   };
 }
+
+

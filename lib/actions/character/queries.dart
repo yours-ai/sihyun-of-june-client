@@ -78,11 +78,11 @@ Query<List<Character>> getRetrieveMyCharacterQuery({
   );
 }
 
-Mutation<void, denyTestChoiceDTO> getDenyTestChoiceMutation({
+Mutation<void, int> getDenyTestChoiceMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
-  return Mutation<void, denyTestChoiceDTO>(
+  return Mutation<void, int>(
     queryFn: denyTestChoice,
     onSuccess: onSuccess,
     onError: onError,
@@ -113,12 +113,12 @@ Mutation<void, int> getReadCharacterStoryMutation({
   );
 }
 
-Mutation<void, String> getRetestMutation({
+Mutation<void, ReallocateDTO> getRetestMutation({
   refetchQueries = const [],
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
-  return Mutation<void, String>(
+  return Mutation<void, ReallocateDTO>(
     refetchQueries: refetchQueries,
     queryFn: retest,
     onSuccess: onSuccess,

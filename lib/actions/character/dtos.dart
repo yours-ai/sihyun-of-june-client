@@ -28,9 +28,8 @@ class AnswerDTOList {
 }
 
 @immutable
-class denyTestChoiceDTO {
-  final int id;
-  final String payment;
+class ReallocateDTO {
+  final String payment, method;
 
-  const denyTestChoiceDTO({required this.id, required this.payment});
+  const ReallocateDTO({required this.payment, required this.method});
 }

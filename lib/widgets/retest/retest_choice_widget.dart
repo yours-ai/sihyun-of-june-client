@@ -23,7 +23,7 @@ class RetestChoiceWidget extends ConsumerWidget {
   });
 
   static const int _RETEST_COIN_COST = 50;
-  static const int _RETEST_POINT_COST = 300;
+  static const int _RETEST_POINT_COST = 100;
 
   void showNeedMoreGoodsModal(BuildContext context) {
     showModalBottomSheet(
@@ -140,7 +140,7 @@ class RetestChoiceWidget extends ConsumerWidget {
           state.data!.coin,
           state.data!.point,
           extendCost == null ? _RETEST_COIN_COST : extendCost!['coin'],
-          extendCost == null ? 300 : extendCost!['point'],
+          extendCost == null ? _RETEST_POINT_COST : extendCost!['point'],
         );
         return ModalChoiceWidget(
           submitText: '좋아요',

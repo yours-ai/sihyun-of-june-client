@@ -195,12 +195,16 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/character-selection-start',
-      builder: (context, state) => const CharacterSelectionStartScreen(),
+      builder: (context, state) => CharacterSelectionStartScreen(
+        state.extra as int?,
+      ),
       routes: [
         GoRoute(
           path: 'decide-method',
           builder: (context, state) =>
-              const CharacterSelectionDecideMethodScreen(),
+              CharacterSelectionDecideMethodScreen(
+                state.extra as int?,
+              ),
         ),
       ],
     ),
@@ -221,8 +225,10 @@ final router = GoRouter(
           builder: (context, state) => CharacterSelectionDecidedConfirmScreen(
             id: int.tryParse(state.uri.queryParameters['id']!)!,
             firstName: state.uri.queryParameters['firstName']!,
-            primaryColor: int.tryParse(state.uri.queryParameters['primaryColor']!)!,
-            secondaryColor: int.tryParse(state.uri.queryParameters['secondaryColor']!)!,
+            primaryColor:
+                int.tryParse(state.uri.queryParameters['primaryColor']!)!,
+            secondaryColor:
+                int.tryParse(state.uri.queryParameters['secondaryColor']!)!,
           ),
         ),
       ],

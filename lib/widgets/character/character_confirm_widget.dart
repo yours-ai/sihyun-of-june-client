@@ -39,54 +39,21 @@ class CharacterConfirmWidget extends ConsumerWidget {
         context: context,
         useRootNavigator: true,
         builder: (BuildContext context) {
-          final mutation = getDenyTestChoiceMutation(
-            onSuccess: (res, arg) {
-              ref.read(characterThemeProvider.notifier).state =
-                  ColorTheme.defaultTheme;
-              if (arg.payment != 'new_user') {
-                scaffoldMessengerKey.currentState?.showSnackBar(
-                  createSnackBar(
-                    snackBarText:
-                        transactionService.getPurchaseStateText(arg.payment),
-                    characterColors: ColorTheme.defaultTheme.colors!,
-                  ),
-                );
-              }
-              context.go('/character-test');
-            },
-          );
           return ModalWidget(
             title: '정말 다른 상대로 정해드릴까요?',
-            choiceColumn: testReason == TestReason.retest
-                ? MutationBuilder(
-                    mutation: mutation,
-                    builder: (context, state, mutate) {
-                      void handleRetest(String payment) {
-                        if(state.status == QueryStatus.loading) return;
-                        mutate(
-                          denyTestChoiceDTO(id: testId, payment: payment),
-                        );
-                      }
+            choiceColumn: ModalChoiceWidget(
+              cancelText: '아니요',
+              submitText: '네',
+              onCancel: () {
+                context.pop();
+              },
+              onSubmit: () {
+                context.push('/character-selection-start', extra: {
+                  'beforeTestId': testId,
+                });
+              },
+            ),
 
-                      return RetestChoiceWidget(
-                        onRetest: handleRetest,
-                      );
-                    },
-                  )
-                : MutationBuilder(
-                    mutation: mutation,
-                    builder: (context, state, mutate) => ModalChoiceWidget(
-                      submitText: '네',
-                      submitSuffix: '신규 1회 무료',
-                      onSubmit: () {
-                        mutate(
-                            denyTestChoiceDTO(id: testId, payment: 'new_user'));
-                      },
-                      cancelText: '됐어요',
-                      onCancel: () => context.pop(),
-                      mutationStatus: state.status,
-                    ),
-                  ),
           );
         },
       );

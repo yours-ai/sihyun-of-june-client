@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -75,21 +76,19 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       context.go('/mails');
       return;
     } else {
-      // if(testStatus.data!['test_reason'] == 'character_test') {
-      //   context.go('/character-test');
-      // } else if(testStatus.data!['test_reason'] == 'character_selection') {
-      //   context.go('/character-selection-deciding');
-      // } else {
-      //   scaffoldMessengerKey.currentState?.showSnackBar(
-      //     const SnackBar(
-      //       content: Text(
-      //         '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
-      //       ),
-      //     ),
-      //   );
-      //   context.go('/landing');
-      // }
-      context.go('/character-test');
+      if(testStatus.data!['method'] == 'character_test') {
+        context.go('/character-test');
+      } else if(testStatus.data!['method'] == 'character_selection') {
+        context.go('/character-selection-deciding');
+      } else {
+        scaffoldMessengerKey.currentState?.showSnackBar(
+          const SnackBar(
+            content: Text(
+              '서버에 문제가 발생했습니다. 앱을 재시작 해주세요.',
+            ),
+          ),
+        );
+      }
     }
   }
 
@@ -149,17 +148,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
   @override
   void initState() {
     super.initState();
-    onelinkService.appsFlyerInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
-        if (dp.status == Status.FOUND) {
-          ref.read(deepLinkProvider.notifier).state = dp.deepLink;
-          if (dp.deepLink?.deepLinkValue == null ||
-              dp.deepLink?.deepLinkValue == '') return;
-          context.go(//ToDo 로그인이 필요한 작업시에 characterTheme을 설정해줘야 함
-              '${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
-        }
-      });
       _checkAuthAndLand();
     });
   }

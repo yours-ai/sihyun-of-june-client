@@ -13,7 +13,9 @@ import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 class CharacterSelectionStartScreen extends ConsumerWidget {
-  const CharacterSelectionStartScreen({super.key});
+  final int? beforeTestId;
+
+  const CharacterSelectionStartScreen(this.beforeTestId, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -69,7 +71,9 @@ class CharacterSelectionStartScreen extends ConsumerWidget {
                       ),
                   onPressed: () {
                     context.push(
-                      '/character-selection-start/decide-method',
+                      '/character-selection-start/decide-method', extra: {
+                      'beforeTestId': beforeTestId,
+                    }
                     );
                   },
                   child: const Text('다음'),
