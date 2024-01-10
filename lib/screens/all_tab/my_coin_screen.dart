@@ -52,13 +52,13 @@ class MyCoinScreen extends StatelessWidget {
                         const SizedBox(height: 16),
                         MenuWidget(
                           onPressed: () {
-                            context.push('/my-coin/charge');
+                            context.push('${TabRoutePaths.all}/my-coin/charge');
                           },
                           title: '코인 구매하기',
                         ),
                         MenuWidget(
                           onPressed: () {
-                            context.push('/my-coin/log');
+                            context.push('${TabRoutePaths.all}/my-coin/log');
                           },
                           title: '코인 내역',
                         ),

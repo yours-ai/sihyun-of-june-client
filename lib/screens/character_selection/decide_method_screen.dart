@@ -32,11 +32,11 @@ class CharacterSelectionDecideMethodScreen extends ConsumerWidget {
           submitText: '친구 초대하고 300P 받기',
           onCancel: () {
             context.pop();
-            context.push('/my-coin/charge');
+            context.push('${TabRoutePaths.all}/my-coin/charge');
           },
           onSubmit: () {
             context.pop();
-            context.push('/share');
+            context.push('${TabRoutePaths.all}/share');
           },
         ),
       ),

@@ -61,38 +61,10 @@ final router = GoRouter(
       builder: (context, state) => const CharacterChoiceScreen(),
     ),
     GoRoute(
-      path: '/withdraw',
-      builder: (context, state) => const WithdrawScreen(),
-    ),
-    GoRoute(
       path: '/other-character/:id',
       builder: (context, state) =>
           OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)!),
     ),
-    GoRoute(
-      path: '/policy',
-      builder: (context, state) => const PolicyScreen(),
-    ),
-    GoRoute(
-        path: '/my-coin',
-        builder: (context, state) => const MyCoinScreen(),
-        routes: [
-          GoRoute(
-              path: 'log', builder: (context, state) => const CoinLogScreen()),
-          GoRoute(
-              path: 'charge',
-              builder: (context, state) => const CoinChargeScreen()),
-        ]),
-    GoRoute(
-        path: '/my-point',
-        builder: (context, state) => const MyPointScreen(),
-        routes: [
-          GoRoute(
-              path: 'log', builder: (context, state) => const PointLogScreen()),
-          GoRoute(
-              path: 'charge',
-              builder: (context, state) => const PointChangeScreen()),
-        ]),
     ShellRoute(
       navigatorKey: shellNavigatorKey,
       builder: (context, state, child) {
@@ -151,19 +123,52 @@ final router = GoRouter(
               ),
             );
           },
+          routes: [
+            GoRoute(
+                path: 'my-point',
+                builder: (context, state) => const MyPointScreen(),
+                routes: [
+                  GoRoute(
+                      path: 'log',
+                      builder: (context, state) => const PointLogScreen()),
+                  GoRoute(
+                      path: 'charge',
+                      builder: (context, state) => const PointChangeScreen()),
+                ]),
+            GoRoute(
+                path: 'my-coin',
+                builder: (context, state) => const MyCoinScreen(),
+                routes: [
+                  GoRoute(
+                      path: 'log',
+                      builder: (context, state) => const CoinLogScreen()),
+                  GoRoute(
+                      path: 'charge',
+                      builder: (context, state) => const CoinChargeScreen()),
+                ]),
+            GoRoute(
+              path: 'share',
+              builder: (context, state) => const ShareScreen(),
+            ),
+            GoRoute(
+              path: 'change-name',
+              builder: (context, state) => const NameChangeScreen(),
+            ),
+            GoRoute(
+              path: 'withdraw',
+              builder: (context, state) => const WithdrawScreen(),
+            ),
+            GoRoute(
+              path: 'policy',
+              builder: (context, state) => const PolicyScreen(),
+            ),
+          ],
         ),
       ],
     ),
     GoRoute(
-        path: '/character-test',
-        builder: (context, state) => const CharacterTestScreen()),
-    GoRoute(
-      path: '/change-name',
-      builder: (context, state) => const NameChangeScreen(),
-    ),
-    GoRoute(
-      path: '/share',
-      builder: (context, state) => const ShareScreen(),
+      path: '/character-test',
+      builder: (context, state) => const CharacterTestScreen(),
     ),
     GoRoute(
       path: '/retest',
@@ -201,10 +206,9 @@ final router = GoRouter(
       routes: [
         GoRoute(
           path: 'decide-method',
-          builder: (context, state) =>
-              CharacterSelectionDecideMethodScreen(
-                state.extra as int?,
-              ),
+          builder: (context, state) => CharacterSelectionDecideMethodScreen(
+            state.extra as int?,
+          ),
         ),
       ],
     ),
