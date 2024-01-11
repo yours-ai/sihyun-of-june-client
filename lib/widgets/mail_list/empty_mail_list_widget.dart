@@ -40,7 +40,8 @@ class EmptyMailListWidget extends StatelessWidget {
                     context.go('/assignment');
                   },
                   child: const Text('새로운 상대 만나기'),
-                )
+                ),
+                const SizedBox(height: 50),
               ],
             ),
           ),
