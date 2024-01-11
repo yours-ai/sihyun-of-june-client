@@ -39,34 +39,44 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final myCharactersRawData = await getRetrieveMyCharacterQuery().result;
       setState(() {
-        hasCharacter = ref.watch(selectedCharacterProvider) != null;
+        hasCharacter = !(myCharactersRawData.data == null ||
+            myCharactersRawData.data!.isEmpty);
       });
     });
   }
 
   @override
   Widget build(context) {
-    final isNotificationAcceptedQuery = getIsNotificationAcceptedQuery();
-    return hasCharacter == null
-        ? const SafeArea(
-            child: Center(child: CircularProgressIndicator.adaptive()))
-        : Stack(
-            children: [
-              QueryBuilder(
-                query: isNotificationAcceptedQuery,
-                builder: (context, state) {
-                  return state.data == false
-                      ? const RequestNotificationPermissionWidget()
-                      : const SizedBox.shrink();
-                },
-              ),
-              if (hasCharacter!)
-                const MailListWidget()
-              else
-                const EmptyMailListWidget(),
-            ],
+    return QueryBuilder(
+      query: getRetrieveMyCharacterQuery(),
+      builder: (context, state) {
+        if (state.status == QueryStatus.loading) {
+          return const SafeArea(
+            child: Center(child: CircularProgressIndicator.adaptive()),
           );
+        }
+        final hasCharacter = !(state.data == null || state.data!.isEmpty);
+        return Stack(
+          children: [
+            QueryBuilder(
+              query: getIsNotificationAcceptedQuery(),
+              builder: (context, state) {
+                return state.data == false
+                    ? const RequestNotificationPermissionWidget()
+                    : const SizedBox.shrink();
+              },
+            ),
+            if (hasCharacter)
+              const MailListWidget()
+            else
+              const EmptyMailListWidget(),
+          ],
+        );
+      },
+    );
   }
 }

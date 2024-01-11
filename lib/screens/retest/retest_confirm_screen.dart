@@ -26,7 +26,7 @@ class RetestConfirmScreen extends ConsumerWidget {
           submitText: '좋아요',
           cancelText: '아니요',
           onSubmit: () {
-            context.push('/character-selection-start');
+            context.go('/assignment');
           },
           onCancel: () {
             context.pop();

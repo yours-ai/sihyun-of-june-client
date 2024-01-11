@@ -39,6 +39,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     await _checkUpdateAvailable();
 
     if (isLogined == false) {
+      if (!mounted) return;
       context.go('/landing');
       return;
     }
@@ -50,7 +51,6 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       notificationService.handleFCMMessageTap(push);
       return;
     }
-    context.go('/mails');
   }
 
   _checkAppAvailability() async {
@@ -61,6 +61,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     ));
     await remoteConfig.fetchAndActivate();
     if (remoteConfig.getBool('app_available') == false) {
+      if (!mounted) return;
       return showDialog(
         barrierDismissible: false,
         context: context,
@@ -77,6 +78,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
         },
       );
     } else {
+      if (!mounted) return;
       await updateService.forceUpdateByRemoteConfig(context, remoteConfig);
     }
   }
@@ -99,8 +101,18 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     if (hasCharacter) {
       await _saveSelectedCharacterId(myCharacters.data!);
       await _setSelectedCharacterTheme(myCharacters.data!);
-    } else{ // 신규유저 or 1차 중도 재배정 후 결정안했거나 거절한 경우
-      //TODO: is_new_user==true면 SelectionScreen으로 이동
+      if (!mounted) return;
+      context.go('/mails');
+    } else {
+      final isNewUserRawData = await getCheckNewUserQuery().result;
+      final isNewUser = isNewUserRawData.data!['is_available'];
+      if (isNewUser) {
+        if (!mounted) return;
+        context.go('/assignment');
+      } else {
+        if (!mounted) return;
+        context.go('/mails');
+      }
     }
   }
 

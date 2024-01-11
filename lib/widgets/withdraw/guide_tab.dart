@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
+import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,6 +23,8 @@ class GuideTabWidget extends StatefulWidget {
 }
 
 class _GuideTabWidgetState extends State<GuideTabWidget> {
+  bool isEnableToClick = true;
+
   @override
   Widget build(BuildContext context) {
     return QueryBuilder(
@@ -120,12 +123,27 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
             ),
           ),
           actions: MutationBuilder(
-            mutation: getWithdrawUserMutation(onSuccess: (res, arg) async {
-              widget.onWithdraw();
-              await Future.delayed(const Duration(seconds: 3));
-              await logout();
-              context.go('/login');
-            }),
+            mutation: getWithdrawUserMutation(
+              onSuccess: (res, arg) async {
+                widget.onWithdraw();
+                await Future.delayed(const Duration(seconds: 3));
+                await logout();
+                if (!mounted) return;
+                context.go('/login');
+              },
+              onError: (res, arg, error) {
+                setState(() {
+                  isEnableToClick = true;
+                });
+                scaffoldMessengerKey.currentState?.showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                      '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+                    ),
+                  ),
+                );
+              },
+            ),
             builder: (context, state, mutate) {
               return OutlinedButton(
                 style: ButtonStyle(
@@ -136,8 +154,12 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                   ),
                 ),
                 onPressed: () {
-                  if (state.status != QueryStatus.initial) return;
-                  mutate(widget.dto);
+                  if (isEnableToClick) {
+                    setState(() {
+                      isEnableToClick = false;
+                    });
+                    mutate(widget.dto);
+                  }
                 },
                 child: Text(
                   '탈퇴하기',

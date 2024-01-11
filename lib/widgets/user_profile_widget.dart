@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
+import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
@@ -38,96 +39,46 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        QueryBuilder(
-          query: widget.retrieveMyCharacterQuery,
-          builder: (context, state) {
-            if (state.status == QueryStatus.success) {
-              if (state.data == null || state.data!.isEmpty) {
-                return Column(
+    return QueryBuilder(
+        query: widget.retrieveMyCharacterQuery,
+        builder: (context, state) {
+          if (state.status != QueryStatus.success) {
+            return const SizedBox.shrink();
+          }
+          late final Character? selectedCharacter;
+          late final CharacterImage? mainImageSrc;
+          if (state.data != null && state.data!.isNotEmpty) {
+            selectedCharacter = state.data!
+                .where((character) =>
+                    character.id == ref.watch(selectedCharacterProvider))
+                .first;
+            mainImageSrc = characterService
+                .getMainImage(selectedCharacter!.character_info!.images!);
+          } else {
+            selectedCharacter = null;
+            mainImageSrc = null;
+          }
+          return Row(
+            mainAxisAlignment:
+                (selectedCharacter != null && mainImageSrc != null)
+                    ? MainAxisAlignment.spaceEvenly
+                    : MainAxisAlignment.center,
+            children: [
+              if (selectedCharacter != null && mainImageSrc != null)
+                Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          //TODO: SelectionScreen으로 이동
-                        },
-                        onLongPressStart: (_) {
-                          HapticFeedback.heavyImpact();
-                        },
-                        onLongPressEnd: (_) {
-                          HapticFeedback.heavyImpact();
-                          _showMultiCharacterModal([]);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(1.5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(70.0),
-                            border: Border.all(
-                              color: ColorConstants.background,
-                              // 테두리 색상
-                              width: 4.0,
-                            ),
-                          ),
-                          child: ClipRRect(
-                            clipBehavior: Clip.hardEdge,
-                            borderRadius: BorderRadius.circular(66),
-                            child: SizedBox(
-                              width: 132,
-                              height: 132,
-                              child: ExtendedImage.asset(
-                                  'assets/images/default_user_image.png'),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        //TODO: SelectionScreen으로 이동
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: ColorConstants.gray,
-                              width: 1.0,
-                            ),
-                          ),
-                        ),
-                        child: Text(
-                          '새 캐릭터 만나기',
-                          style: TextStyle(
-                              color: ColorConstants.gray, height: 1.0),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              } else {
-                final selectedCharacter = state.data!
-                    .where((character) =>
-                        character.id == ref.watch(selectedCharacterProvider))
-                    .first;
-                final mainImageSrc = characterService
-                    .getMainImage(selectedCharacter.character_info!.images!);
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Center(
-                      child: GestureDetector(
-                        onTap: () {
-                          selectedCharacter.is_image_updated!
+                          selectedCharacter!.is_image_updated!
                               ? showModalBottomSheet(
                                   isScrollControlled: true,
                                   context: context,
                                   builder: (context) => ProfileDetailsScreen(
-                                    imageList: selectedCharacter
+                                    imageList: selectedCharacter!
                                         .character_info!.images!,
-                                    index: mainImageSrc.order - 1,
+                                    index: mainImageSrc!.order - 1,
                                   ),
                                 )
                               : context.push('/mails/my-character');
@@ -206,71 +157,68 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                       ),
                     ),
                   ],
-                );
-              }
-            }
-            return const SizedBox.shrink();
-          },
-        ),
-        Column(
-          children: [
-            QueryBuilder(
-              query: widget.retrieveMeQuery,
-              builder: (context, state) => state.data == null
-                  ? const SizedBox.shrink()
-                  : Center(
-                      child: Container(
-                        padding: const EdgeInsets.all(5.5),
-                        child: GestureDetector(
-                          onTap: () {
-                            userProfileService.showChangeImageModal(
-                                context, ref);
-                          },
-                          child: ClipRRect(
-                            clipBehavior: Clip.hardEdge,
-                            borderRadius: BorderRadius.circular(66),
-                            child: SizedBox(
-                              width: 132,
-                              height: 132,
-                              child: state.data!.image == null
-                                  ? ExtendedImage.asset(
-                                      'assets/images/default_user_image.png')
-                                  : ExtendedImage.network(
-                                      state.data!.image!,
-                                      timeLimit:
-                                          ref.watch(imageCacheDurationProvider),
-                                      cacheKey:
-                                          UniqueCacheKeyService.makeUniqueKey(
-                                              state.data!.image!),
-                                      fit: BoxFit.cover,
-                                    ),
+                ),
+              Column(
+                children: [
+                  QueryBuilder(
+                    query: widget.retrieveMeQuery,
+                    builder: (context, state) => state.data == null
+                        ? const SizedBox.shrink()
+                        : Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(5.5),
+                              child: GestureDetector(
+                                onTap: () {
+                                  userProfileService.showChangeImageModal(
+                                      context, ref);
+                                },
+                                child: ClipRRect(
+                                  clipBehavior: Clip.hardEdge,
+                                  borderRadius: BorderRadius.circular(66),
+                                  child: SizedBox(
+                                    width: 132,
+                                    height: 132,
+                                    child: state.data!.image == null
+                                        ? ExtendedImage.asset(
+                                            'assets/images/default_user_image.png')
+                                        : ExtendedImage.network(
+                                            state.data!.image!,
+                                            timeLimit: ref.watch(
+                                                imageCacheDurationProvider),
+                                            cacheKey: UniqueCacheKeyService
+                                                .makeUniqueKey(
+                                                    state.data!.image!),
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      userProfileService.showChangeImageModal(context, ref);
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: ColorConstants.gray,
+                            width: 1.0,
+                          ),
                         ),
-                      ),
-                    ),
-            ),
-            GestureDetector(
-              onTap: () {
-                userProfileService.showChangeImageModal(context, ref);
-              },
-              child: Container(
-                margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: ColorConstants.gray,
-                      width: 1.0,
+                      ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
+                      child: Text('프로필 변경하기',
+                          style: TextStyle(
+                              color: ColorConstants.gray, height: 1.0)),
                     ),
                   ),
-                ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
-                child: Text('프로필 변경하기',
-                    style: TextStyle(color: ColorConstants.gray, height: 1.0)),
+                ],
               ),
-            ),
-          ],
-        ),
-      ],
-    );
+            ],
+          );
+        });
   }
 }

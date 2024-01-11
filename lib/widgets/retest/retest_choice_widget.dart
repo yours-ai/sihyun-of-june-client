@@ -10,6 +10,9 @@ import '../../actions/auth/queries.dart';
 import '../../constants.dart';
 import '../../services/transaction_service.dart';
 
+const int _RETEST_COIN_COST = 50;
+const int _RETEST_POINT_COST = 100;
+
 class RetestChoiceWidget extends ConsumerWidget {
   final bool inModal;
   final Function(String) onRetest;
@@ -21,9 +24,6 @@ class RetestChoiceWidget extends ConsumerWidget {
     required this.onRetest,
     this.extendCost,
   });
-
-  static const int _RETEST_COIN_COST = 50;
-  static const int _RETEST_POINT_COST = 100;
 
   void showNeedMoreGoodsModal(BuildContext context) {
     showModalBottomSheet(
@@ -48,84 +48,92 @@ class RetestChoiceWidget extends ConsumerWidget {
 
   void showSelectGoodsModal(BuildContext context) {
     showModalBottomSheet(
-      context: context,
-      builder: (context) => ModalWidget(
-        title: '어떤 재화를 사용하시겠어요?',
-        choiceColumn: Column(
-          children: [
-            FilledButton(
-              onPressed: () {
-                onRetest('coin');
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '코인 사용',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeightConstants.semiBold,
-                      height: 1.0,
-                    ),
+        context: context,
+        builder: (context) {
+          bool isEnableToClickForModal = true;
+          return ModalWidget(
+            title: '어떤 재화를 사용하시겠어요?',
+            choiceColumn: Column(
+              children: [
+                FilledButton(
+                  onPressed: () {
+                    if (isEnableToClickForModal) {
+                      isEnableToClickForModal = false;
+                      onRetest('coin');
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '코인 사용',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeightConstants.semiBold,
+                          height: 1.0,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Text(
+                        extendCost == null
+                            ? '$_RETEST_COIN_COST코인'
+                            : '${extendCost!['coin']}코인',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: ColorConstants.lightGray.withOpacity(0.5),
+                          fontWeight: FontWeight.bold,
+                          height: 1.0,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    width: 6,
+                ),
+                const SizedBox(
+                  height: 13,
+                ),
+                FilledButton(
+                  onPressed: () {
+                    if (isEnableToClickForModal) {
+                      isEnableToClickForModal = false;
+                      onRetest('point');
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        '포인트 사용',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeightConstants.semiBold,
+                          height: 1.0,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Text(
+                        extendCost == null
+                            ? '${_RETEST_POINT_COST}P'
+                            : '${extendCost!['point']}P',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: ColorConstants.lightGray.withOpacity(0.5),
+                          fontWeight: FontWeight.bold,
+                          height: 1.0,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    extendCost == null
-                        ? '$_RETEST_COIN_COST코인'
-                        : '${extendCost!['coin']}코인',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: ColorConstants.lightGray.withOpacity(0.5),
-                      fontWeight: FontWeight.bold,
-                      height: 1.0,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 13,
-            ),
-            FilledButton(
-              onPressed: () {
-                onRetest('point');
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '포인트 사용',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeightConstants.semiBold,
-                      height: 1.0,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 6,
-                  ),
-                  Text(
-                    extendCost == null
-                        ? '${_RETEST_POINT_COST}P'
-                        : '${extendCost!['point']}P',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: ColorConstants.lightGray.withOpacity(0.5),
-                      fontWeight: FontWeight.bold,
-                      height: 1.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
 
   @override

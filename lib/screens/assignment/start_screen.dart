@@ -12,10 +12,8 @@ import 'package:project_june_client/widgets/character/not_chosen_list_widget.dar
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
-class CharacterSelectionStartScreen extends ConsumerWidget {
-  final int? beforeTestId;
-
-  const CharacterSelectionStartScreen(this.beforeTestId, {super.key});
+class AssignmentStartScreen extends ConsumerWidget {
+  const AssignmentStartScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -70,11 +68,7 @@ class CharacterSelectionStartScreen extends ConsumerWidget {
                             MaterialStateProperty.all(ColorConstants.pink),
                       ),
                   onPressed: () {
-                    context.push(
-                      '/character-selection-start/decide-method', extra: {
-                      'beforeTestId': beforeTestId,
-                    }
-                    );
+                    context.pushNamed('assignment-decide');
                   },
                   child: const Text('다음'),
                 ),

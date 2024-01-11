@@ -24,10 +24,10 @@ class CharacterSelectionDecidingScreen extends ConsumerWidget {
         backgroundColor: ColorConstants.background,
         elevation: 0,
         title: QueryBuilder(
-          query: getTestStatusQuery(),
+          query: getSelectionStatusQuery(),
           builder: (context, state) {
             if (state.status == QueryStatus.success &&
-                state.data!['test_reason'] == 'NEW_USER') {
+                state.data!['reason'] == 'NEW_USER') {
               return Padding(
                 padding: const EdgeInsets.only(top: 30),
                 child: Center(
@@ -37,6 +37,7 @@ class CharacterSelectionDecidingScreen extends ConsumerWidget {
                       fontSize: 16,
                       color: ColorConstants.neutral,
                       fontFamily: 'Pretendard',
+                      fontWeight: FontWeightConstants.semiBold,
                     ),
                     softWrap: true,
                     textAlign: TextAlign.center,
@@ -50,6 +51,7 @@ class CharacterSelectionDecidingScreen extends ConsumerWidget {
       ),
       body: SafeArea(
         child: TitleLayout(
+          withAppBar: true,
           title: Text(
             '어떤 상대와\n편지를 나누고 싶으세요?',
             style: Theme.of(context).textTheme.titleLarge,

@@ -92,7 +92,7 @@ class AllTabScreenState extends State<AllTabScreen>
                     text: '탈퇴하기 신청을 하면 이런 내용이 전부 삭제되어요.\n',
                   ),
                   TextSpan(
-                    text: '- 시현이 또는 우빈이와 함께 나누었던 ',
+                    text: '- 서로 함께 나누었던 ',
                     children: [
                       TextSpan(
                         text: '편지\n',

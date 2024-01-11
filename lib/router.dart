@@ -7,11 +7,12 @@ import 'package:project_june_client/screens/all_tab/my_point_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_change_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_log_screen.dart';
 import 'package:project_june_client/screens/all_tab/share_screen.dart';
-import 'package:project_june_client/screens/character_selection/decide_method_screen.dart';
+import 'package:project_june_client/screens/assignment/assignment_screen.dart';
+import 'package:project_june_client/screens/assignment/decide_method_screen.dart';
 import 'package:project_june_client/screens/character_selection/decided_character_screen.dart';
 import 'package:project_june_client/screens/character_selection/decided_confirm_screen.dart';
 import 'package:project_june_client/screens/character_selection/deciding_screen.dart';
-import 'package:project_june_client/screens/character_selection/start_screen.dart';
+import 'package:project_june_client/screens/assignment/start_screen.dart';
 import 'package:project_june_client/screens/mail/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail/mail_detail_screen.dart';
 import 'package:project_june_client/screens/all_tab/name_change_screen.dart';
@@ -65,6 +66,10 @@ final router = GoRouter(
       builder: (context, state) =>
           OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)!),
     ),
+    GoRoute(
+      path: '/assignment',
+      builder: (context, state) => const AssignmentScreen(),
+    ),
     ShellRoute(
       navigatorKey: shellNavigatorKey,
       builder: (context, state, child) {
@@ -96,6 +101,18 @@ final router = GoRouter(
               path: 'detail/:id',
               builder: (context, state) => MailDetailScreen(
                   id: int.tryParse(state.pathParameters['id']!)!),
+            ),
+            GoRoute(
+              path: 'assignment-start',
+              builder: (context, state) => const AssignmentStartScreen(),
+              routes: [
+                GoRoute(
+                  path: 'decide-method',
+                  name: 'assignment-decide',
+                  builder: (context, state) =>
+                      const AssignmentDecideMethodScreen(),
+                ),
+              ],
             ),
           ],
         ),
@@ -199,20 +216,6 @@ final router = GoRouter(
       ],
     ),
     GoRoute(
-      path: '/character-selection-start',
-      builder: (context, state) => CharacterSelectionStartScreen(
-        state.extra as int?,
-      ),
-      routes: [
-        GoRoute(
-          path: 'decide-method',
-          builder: (context, state) => CharacterSelectionDecideMethodScreen(
-            state.extra as int?,
-          ),
-        ),
-      ],
-    ),
-    GoRoute(
       path: '/character-selection-deciding',
       builder: (context, state) => const CharacterSelectionDecidingScreen(),
       routes: [
@@ -227,7 +230,7 @@ final router = GoRouter(
           path: 'confirm',
           name: DecidedRouteNames.confirm,
           builder: (context, state) => CharacterSelectionDecidedConfirmScreen(
-            id: int.tryParse(state.uri.queryParameters['id']!)!,
+            characterId: int.tryParse(state.uri.queryParameters['id']!)!,
             firstName: state.uri.queryParameters['firstName']!,
             primaryColor:
                 int.tryParse(state.uri.queryParameters['primaryColor']!)!,
