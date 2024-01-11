@@ -129,10 +129,13 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
   _setSelectedCharacterTheme(List<Character> myCharacters) async {
     final selectedCharacterId = await characterService.getSelectedCharacterId();
     if (selectedCharacterId != null) {
-      final selectedCharacterTheme = myCharacters
-          .where((character) => character.id == selectedCharacterId)
-          .first
-          .theme!;
+      final selectedCharacterList = myCharacters
+          .where((character) => character.id == selectedCharacterId);
+      if (selectedCharacterList.isEmpty) {
+        logout();
+        return;
+      }
+      final selectedCharacterTheme = selectedCharacterList.first.theme!;
       ref.read(characterThemeProvider.notifier).state = selectedCharacterTheme;
     }
   }
