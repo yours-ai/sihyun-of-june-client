@@ -1,11 +1,14 @@
 import 'package:amplitude_flutter/amplitude.dart';
+import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:moment_dart/moment_dart.dart';
 import 'package:project_june_client/actions/client.dart';
@@ -19,6 +22,7 @@ import 'firebase_options.dart';
 import 'constants.dart';
 import 'environments.dart';
 import 'globals.dart';
+import 'providers/deep_link_provider.dart';
 import 'router.dart';
 
 void _appRunner() {
@@ -43,6 +47,8 @@ Future<void> _initialize() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  await analytics.logAppOpen();
   Moment.setGlobalLocalization(MomentLocalizations.koKr());
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     systemNavigationBarColor: ColorConstants.background,
@@ -52,6 +58,7 @@ Future<void> _initialize() async {
     systemNavigationBarIconBrightness: Brightness.dark,
     statusBarColor: Colors.transparent, // status bar color
   ));
+  onelinkService.appsFlyerInit();
   if (BuildTimeEnvironments.amplitudeApiKey.isNotEmpty) {
     final Amplitude amplitude = Amplitude.getInstance();
     amplitude.init(BuildTimeEnvironments.amplitudeApiKey);
@@ -62,7 +69,6 @@ Future<void> _initialize() async {
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
   if (message.notification != null) {
     // 백그라운드에서 앱을 수신받았을때
     notificationService.handleNewNotification();
@@ -99,6 +105,15 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
     super.initState();
     initServerErrorSnackbar(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
+        if (dp.status == Status.FOUND) {
+          ref.read(deepLinkProvider.notifier).state = dp.deepLink;
+          if (dp.deepLink?.deepLinkValue == null ||
+              dp.deepLink?.deepLinkValue == '') return;
+          context.go(//ToDo 로그인이 필요한 작업시에 characterTheme을 설정해줘야 함
+              '${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
+        }
+      });
       final topPadding = MediaQuery.of(context).padding.top;
       ref.read(topPaddingProvider.notifier).state = topPadding;
     });

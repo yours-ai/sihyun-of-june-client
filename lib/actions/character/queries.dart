@@ -32,6 +32,9 @@ Query<Map<String, dynamic>> getTestStatusQuery({
 }) {
   return Query(
     key: "test-status",
+    config: QueryConfig(
+      cacheDuration: Duration.zero,
+    ),
     queryFn: fetchTestStatus,
     onError: onError,
   );
@@ -78,23 +81,24 @@ Query<List<Character>> getRetrieveMyCharacterQuery({
   );
 }
 
-Mutation<void, denyTestChoiceDTO> getDenyTestChoiceMutation({
+Mutation<void, int> getDenyTestChoiceMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
-  return Mutation<void, denyTestChoiceDTO>(
+  return Mutation<void, int>(
     queryFn: denyTestChoice,
     onSuccess: onSuccess,
     onError: onError,
   );
 }
 
-Mutation<void, int> getConfirmChoiceMutation({
+Mutation<void, int> getConfirmTestMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, int>(
-    queryFn: confirmChoice,
+    refetchQueries: ['my-character'],
+    queryFn: confirmTest,
     onSuccess: onSuccess,
     onError: onError,
   );
@@ -113,14 +117,13 @@ Mutation<void, int> getReadCharacterStoryMutation({
   );
 }
 
-Mutation<void, String> getRetestMutation({
-  refetchQueries = const [],
+Mutation<void, ReallocateDTO> getReallocateMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
-  return Mutation<void, String>(
-    refetchQueries: refetchQueries,
-    queryFn: retest,
+  return Mutation<void, ReallocateDTO>(
+    // refetchQueries: ['check-new-user', 'selection-status', 'test-status'],
+    queryFn: reallocate,
     onSuccess: onSuccess,
     onError: onError,
   );
@@ -144,7 +147,57 @@ Query<Map<String, int>> getExtendCostQuery({
 }) {
   return Query(
     key: 'extend-cost',
-    queryFn: getExtendCost,
+    queryFn: fetchExtendCost,
+    onError: onError,
+  );
+}
+
+Query<Map<String, dynamic>> getCheckNewUserQuery({
+  OnQuerySuccessCallback? onSuccess,
+  OnQueryErrorCallback? onError,
+}) {
+  return Query(
+    key: "check-new-user",
+    queryFn: fetchIsNewUser,
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Mutation<void, void> getAllocateForNewUserMutation({
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, void>(
+    queryFn: (_) => allocateForNewUser(),
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Mutation<void, void> getConfirmSelectionMutation({
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+  required int selectionId,
+  required int characterId,
+}) {
+  return Mutation<void, void>(
+    refetchQueries: ['my-character'],
+    queryFn: (_) => confirmSelection(selectionId, characterId),
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Query<Map<String, dynamic>> getSelectionStatusQuery({
+  OnQueryErrorCallback? onError,
+}) {
+  return Query(
+    key: "selection-status",
+    config: QueryConfig(
+      cacheDuration: Duration.zero,
+    ),
+    queryFn: fetchSelectionStatus,
     onError: onError,
   );
 }

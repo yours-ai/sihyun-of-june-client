@@ -17,7 +17,7 @@ import '../../screens/character_test/character_choice_screen.dart';
 import '../../services.dart';
 import '../common/create_snackbar.dart';
 
-class CharacterConfirmWidget extends ConsumerWidget {
+class CharacterConfirmWidget extends ConsumerStatefulWidget {
   final int testId;
   final int selectedCharacterId;
   final String name;
@@ -33,60 +33,52 @@ class CharacterConfirmWidget extends ConsumerWidget {
       required this.testReason});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    _showDenyModal() async {
+  CharacterConfirmWidgetState createState() {
+    return CharacterConfirmWidgetState();
+  }
+}
+
+class CharacterConfirmWidgetState
+    extends ConsumerState<CharacterConfirmWidget> {
+  bool isEnableToClick = true;
+
+  @override
+  Widget build(BuildContext context) {
+    showDenyModal() async {
       await showModalBottomSheet<void>(
         context: context,
         useRootNavigator: true,
         builder: (BuildContext context) {
-          final mutation = getDenyTestChoiceMutation(
-            onSuccess: (res, arg) {
-              ref.read(characterThemeProvider.notifier).state =
-                  ColorTheme.defaultTheme;
-              if (arg.payment != 'new_user') {
-                scaffoldMessengerKey.currentState?.showSnackBar(
-                  createSnackBar(
-                    snackBarText:
-                        transactionService.getPurchaseStateText(arg.payment),
-                    characterColors: ColorTheme.defaultTheme.colors!,
-                  ),
-                );
-              }
-              context.go('/character-test');
-            },
-          );
           return ModalWidget(
             title: '정말 다른 상대로 정해드릴까요?',
-            choiceColumn: testReason == TestReason.retest
-                ? MutationBuilder(
-                    mutation: mutation,
-                    builder: (context, state, mutate) {
-                      void handleRetest(String payment) {
-                        if(state.status == QueryStatus.loading) return;
-                        mutate(
-                          denyTestChoiceDTO(id: testId, payment: payment),
-                        );
-                      }
-
-                      return RetestChoiceWidget(
-                        onRetest: handleRetest,
-                      );
-                    },
-                  )
-                : MutationBuilder(
-                    mutation: mutation,
-                    builder: (context, state, mutate) => ModalChoiceWidget(
-                      submitText: '네',
-                      submitSuffix: '신규 1회 무료',
-                      onSubmit: () {
-                        mutate(
-                            denyTestChoiceDTO(id: testId, payment: 'new_user'));
-                      },
-                      cancelText: '됐어요',
-                      onCancel: () => context.pop(),
-                      mutationStatus: state.status,
-                    ),
-                  ),
+            choiceColumn: ModalChoiceWidget(
+              cancelText: '아니요',
+              submitText: '네',
+              onCancel: () {
+                context.pop();
+              },
+              onSubmit: () {
+                if (isEnableToClick) {
+                  setState(() {
+                    isEnableToClick = false;
+                  });
+                  getDenyTestChoiceMutation(onSuccess: (res, arg) {
+                    context.go('/mails/assignment-start');
+                  }, onError: (arg, error, fallback) {
+                    setState(() {
+                      isEnableToClick = true;
+                    });
+                    scaffoldMessengerKey.currentState?.showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+                        ),
+                      ),
+                    );
+                  }).mutate(widget.testId);
+                }
+              },
+            ),
           );
         },
       );
@@ -98,7 +90,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
         elevation: 0,
         leading: IconButton(
           onPressed: () {
-            onActiveScreen(ActiveScreen.detail);
+            widget.onActiveScreen(ActiveScreen.detail);
           },
           icon: Container(
             padding: const EdgeInsets.only(left: 23),
@@ -114,8 +106,8 @@ class CharacterConfirmWidget extends ConsumerWidget {
         child: TitleLayout(
           withAppBar: true,
           title: Text(
-            '$name이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
-            '편지가 올 거에요.',
+            '${widget.name}이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
+            '편지가 올 거에요 :)',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge,
           ),
@@ -124,7 +116,7 @@ class CharacterConfirmWidget extends ConsumerWidget {
             children: [
               OutlinedButton(
                   onPressed: () {
-                    _showDenyModal();
+                    showDenyModal();
                   },
                   child: Text(
                     '다른 상대로 해주세요.',
@@ -136,28 +128,47 @@ class CharacterConfirmWidget extends ConsumerWidget {
                 height: 10,
               ),
               MutationBuilder(
-                mutation: getConfirmChoiceMutation(
-                  onSuccess: (res, arg) {
-                    characterService
-                        .saveSelectedCharacterId(selectedCharacterId);
+                mutation: getConfirmTestMutation(
+                  onSuccess: (res, arg) async {
+                    await characterService
+                        .saveSelectedCharacterId(widget.selectedCharacterId);
+                    if (!mounted) return;
                     context.go('/');
+                  },
+                  onError: (arg, error, fallback) {
+                    setState(() {
+                      isEnableToClick = true;
+                    });
+                    scaffoldMessengerKey.currentState?.showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+                        ),
+                      ),
+                    );
                   },
                 ),
                 builder: (context, state, mutate) => FilledButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
-                      state.status != QueryStatus.loading
-                          ? Color(
-                          ref.watch(characterThemeProvider).colors!.primary!)
+                      isEnableToClick
+                          ? Color(ref
+                              .watch(characterThemeProvider)
+                              .colors!
+                              .primary!)
                           : Color(ref
-                          .watch(characterThemeProvider)
-                          .colors!
-                          .secondary!),
+                              .watch(characterThemeProvider)
+                              .colors!
+                              .secondary!),
                     ),
                   ),
                   onPressed: () {
-                    if(state.status == QueryStatus.loading) return;
-                    mutate(testId);
+                    if (isEnableToClick) {
+                      setState(() {
+                        isEnableToClick = false;
+                      });
+                      mutate(widget.testId);
+                    }
                   },
                   child: const Text(
                     '네',

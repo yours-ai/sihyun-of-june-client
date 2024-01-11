@@ -53,6 +53,10 @@ class CharacterChangeModal extends ConsumerWidget {
               }
               return GestureDetector(
                 onTap: () async {
+                  if (characterList.isEmpty) {
+                    context.go('/assignment');
+                    return;
+                  }
                   if (state.data!.is_30days_finished == false) {
                     showModalBottomSheet(
                       context: context,

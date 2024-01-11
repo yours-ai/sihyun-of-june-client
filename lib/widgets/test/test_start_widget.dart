@@ -27,7 +27,7 @@ List<TestInfoTabData> getTabList(String firstName) {
             Center(child: Image.asset('assets/images/landing/test_image.png')),
         button: '다음'),
     TestInfoTabData(
-        titleText: '간단한 질문들로\n$firstName님을 알아가 볼게요 :)', button: '알겠어요!'),
+        titleText: '그렇다면, 간단한 질문들로\n$firstName님을 알아가 볼게요 :)', button: '알겠어요!'),
   ];
 }
 
@@ -60,29 +60,7 @@ class _TestStartWidget extends State<TestStartWidget> {
       appBar: AppBar(
         backgroundColor: ColorConstants.background,
         elevation: 0,
-        title: QueryBuilder(
-          query: getTestStatusQuery(),
-          builder: (context, state) {
-            if (state.status == QueryStatus.success &&
-                state.data!['test_reason'] == 'NEW_USER')
-              return Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: Center(
-                  child: Text(
-                    '편지를 받을 준비가 거의 끝났어요!',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: ColorConstants.neutral,
-                      fontFamily: 'Pretendard',
-                    ),
-                    softWrap: true,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              );
-            return const SizedBox.shrink();
-          },
-        ),
+        title: const SizedBox.shrink(),
       ),
       body: SafeArea(
         child: QueryBuilder(

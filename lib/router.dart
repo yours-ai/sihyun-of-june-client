@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/screens/all_tab/all_screen.dart';
+import 'package:project_june_client/screens/all_tab/all_tab_screen.dart';
 import 'package:project_june_client/screens/all_tab/coin_charge_screen.dart';
 import 'package:project_june_client/screens/all_tab/coin_log_screen.dart';
 import 'package:project_june_client/screens/all_tab/my_point_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_change_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_log_screen.dart';
 import 'package:project_june_client/screens/all_tab/share_screen.dart';
+import 'package:project_june_client/screens/assignment/assignment_screen.dart';
+import 'package:project_june_client/screens/assignment/decide_method_screen.dart';
+import 'package:project_june_client/screens/character_selection/decided_character_screen.dart';
+import 'package:project_june_client/screens/character_selection/decided_confirm_screen.dart';
+import 'package:project_june_client/screens/character_selection/deciding_screen.dart';
+import 'package:project_june_client/screens/assignment/start_screen.dart';
 import 'package:project_june_client/screens/mail/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail/mail_detail_screen.dart';
 import 'package:project_june_client/screens/all_tab/name_change_screen.dart';
@@ -56,38 +62,14 @@ final router = GoRouter(
       builder: (context, state) => const CharacterChoiceScreen(),
     ),
     GoRoute(
-      path: '/withdraw',
-      builder: (context, state) => const WithdrawScreen(),
-    ),
-    GoRoute(
       path: '/other-character/:id',
       builder: (context, state) =>
           OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)!),
     ),
     GoRoute(
-      path: '/policy',
-      builder: (context, state) => const PolicyScreen(),
+      path: '/assignment',
+      builder: (context, state) => const AssignmentScreen(),
     ),
-    GoRoute(
-        path: '/my-coin',
-        builder: (context, state) => const MyCoinScreen(),
-        routes: [
-          GoRoute(
-              path: 'log', builder: (context, state) => const CoinLogScreen()),
-          GoRoute(
-              path: 'charge',
-              builder: (context, state) => const CoinChargeScreen()),
-        ]),
-    GoRoute(
-        path: '/my-point',
-        builder: (context, state) => const MyPointScreen(),
-        routes: [
-          GoRoute(
-              path: 'log', builder: (context, state) => const PointLogScreen()),
-          GoRoute(
-              path: 'charge',
-              builder: (context, state) => const PointChangeScreen()),
-        ]),
     ShellRoute(
       navigatorKey: shellNavigatorKey,
       builder: (context, state, child) {
@@ -120,6 +102,18 @@ final router = GoRouter(
               builder: (context, state) => MailDetailScreen(
                   id: int.tryParse(state.pathParameters['id']!)!),
             ),
+            GoRoute(
+              path: 'assignment-start',
+              builder: (context, state) => const AssignmentStartScreen(),
+              routes: [
+                GoRoute(
+                  path: 'decide-method',
+                  name: 'assignment-decide',
+                  builder: (context, state) =>
+                      const AssignmentDecideMethodScreen(),
+                ),
+              ],
+            ),
           ],
         ),
         GoRoute(
@@ -142,23 +136,56 @@ final router = GoRouter(
               key: state.pageKey,
               child: NavbarLayout(
                 routePath: state.matchedLocation,
-                child: const AllScreen(),
+                child: const AllTabScreen(),
               ),
             );
           },
+          routes: [
+            GoRoute(
+                path: 'my-point',
+                builder: (context, state) => const MyPointScreen(),
+                routes: [
+                  GoRoute(
+                      path: 'log',
+                      builder: (context, state) => const PointLogScreen()),
+                  GoRoute(
+                      path: 'charge',
+                      builder: (context, state) => const PointChangeScreen()),
+                ]),
+            GoRoute(
+                path: 'my-coin',
+                builder: (context, state) => const MyCoinScreen(),
+                routes: [
+                  GoRoute(
+                      path: 'log',
+                      builder: (context, state) => const CoinLogScreen()),
+                  GoRoute(
+                      path: 'charge',
+                      builder: (context, state) => const CoinChargeScreen()),
+                ]),
+            GoRoute(
+              path: 'share',
+              builder: (context, state) => const ShareScreen(),
+            ),
+            GoRoute(
+              path: 'change-name',
+              builder: (context, state) => const NameChangeScreen(),
+            ),
+            GoRoute(
+              path: 'withdraw',
+              builder: (context, state) => const WithdrawScreen(),
+            ),
+            GoRoute(
+              path: 'policy',
+              builder: (context, state) => const PolicyScreen(),
+            ),
+          ],
         ),
       ],
     ),
     GoRoute(
-        path: '/character-test',
-        builder: (context, state) => const CharacterTestScreen()),
-    GoRoute(
-      path: '/change-name',
-      builder: (context, state) => const NameChangeScreen(),
-    ),
-    GoRoute(
-      path: '/share',
-      builder: (context, state) => const ShareScreen(),
+      path: '/character-test',
+      builder: (context, state) => const CharacterTestScreen(),
     ),
     GoRoute(
       path: '/retest',
@@ -185,6 +212,31 @@ final router = GoRouter(
               firstName: state.extra as String,
             );
           },
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '/character-selection-deciding',
+      builder: (context, state) => const CharacterSelectionDecidingScreen(),
+      routes: [
+        GoRoute(
+          path: 'character/:id',
+          name: DecidedRouteNames.character,
+          builder: (context, state) => CharacterSelectionDecidedCharacterScreen(
+            id: int.tryParse(state.pathParameters['id']!)!,
+          ),
+        ),
+        GoRoute(
+          path: 'confirm',
+          name: DecidedRouteNames.confirm,
+          builder: (context, state) => CharacterSelectionDecidedConfirmScreen(
+            characterId: int.tryParse(state.uri.queryParameters['id']!)!,
+            firstName: state.uri.queryParameters['firstName']!,
+            primaryColor:
+                int.tryParse(state.uri.queryParameters['primaryColor']!)!,
+            secondaryColor:
+                int.tryParse(state.uri.queryParameters['secondaryColor']!)!,
+          ),
         ),
       ],
     ),

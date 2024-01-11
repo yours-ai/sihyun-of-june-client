@@ -40,6 +40,11 @@ abstract final class TabRoutePaths {
   static String all = '/all';
 }
 
+abstract final class DecidedRouteNames {
+  static String character = 'decided-character';
+  static String confirm = 'decided-confirm';
+}
+
 abstract final class Urls {
   static String notice = "https://pygmalion.app/notices/";
   static String faq =

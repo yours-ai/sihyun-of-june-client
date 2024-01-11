@@ -3,6 +3,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/widgets/character/not_chosen_list_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_layout_widget.dart';
 
 import '../../actions/character/models/Character.dart';
@@ -39,74 +40,9 @@ class RetestInfoScreen extends ConsumerWidget {
                     .where((character) => !characterIds.contains(character.id))
                     .toList()
                 : state.data!;
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    isEnableToRetest ? '아직 만나보지 않은 상대들이에요.' : '모든 상대를 만나 보셨군요!',
-                    style: TextStyle(
-                      color: ColorConstants.mediumGray,
-                      fontWeight: FontWeightConstants.semiBold,
-                    ),
-                  ),
-                  GridView.count(
-                      mainAxisSpacing: 16,
-                      shrinkWrap: true,
-                      crossAxisCount: 3,
-                      children: filteredCharacters.map(
-                        (character) {
-                          final mainImageSrc = characterService
-                              .getMainImage(character.character_info!.images!);
-                          return GestureDetector(
-                            onTap: () {
-                              if (!character.is_active) {
-                                return;
-                              }
-                              num id = character.id;
-                              context.push('/other-character/$id');
-                            },
-                            child: ClipRRect(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Stack(
-                                  children: [
-                                    Positioned.fill(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: ExtendedImage.network(
-                                          mainImageSrc.src,
-                                          timeLimit: ref.watch(
-                                              imageCacheDurationProvider),
-                                          cacheKey: UniqueCacheKeyService
-                                              .makeUniqueKey(mainImageSrc.src),
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    if (!character.is_active) ...[
-                                      ...characterService.addBlur(),
-                                      Center(
-                                        child: Text(
-                                          "공개\n예정",
-                                          style: TextStyle(
-                                            color: ColorConstants.background,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ).toList()),
-                ],
-              ),
+            return NotChosenListWidget(
+              isEnableToRetest: isEnableToRetest,
+              filteredCharacters: filteredCharacters,
             );
           }
           return const SizedBox.shrink();

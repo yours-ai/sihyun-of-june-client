@@ -131,7 +131,7 @@ class TransactionService {
     }
   }
 
-  String getPurchaseStateText(userPayment) {
-    return userPayment == 'coin' ? '50코인을 사용했어요!' : '300포인트를 사용했어요!';
+  String getPurchaseStateText(String userPayment) {
+    return userPayment == 'coin' ? '50코인을 사용했어요!' : '100포인트를 사용했어요!';
   }
 }

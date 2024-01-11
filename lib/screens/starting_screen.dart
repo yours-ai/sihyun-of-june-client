@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +9,11 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
+import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterColors.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/deep_link_provider.dart';
 import 'package:project_june_client/providers/user_provider.dart';
@@ -36,45 +39,17 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     await _checkUpdateAvailable();
 
     if (isLogined == false) {
+      if (!mounted) return;
       context.go('/landing');
       return;
     }
-    final testStatus = await getTestStatusQuery().result;
-    if (testStatus.data!['status'] == 'WAITING_CONFIRM') {
-      context.go('/character-choice');
-    } else if (testStatus.data!['status'] == 'CONFIRMED') {
-      final character = await getRetrieveMyCharacterQuery().result;
 
-      late CharacterTheme characterTheme;
-      final selectedCharacterId =
-          await characterService.getSelectedCharacterId();
-      if (selectedCharacterId == null) {
-        ref.read(selectedCharacterProvider.notifier).state =
-            character.data![0].id;
-        characterTheme = character.data![0].theme!;
-        await characterService.saveSelectedCharacterId(character.data![0].id);
-      } else {
-        ref.read(selectedCharacterProvider.notifier).state =
-            selectedCharacterId;
-        characterTheme = character.data!
-            .where((character) => character.id == selectedCharacterId)
-            .first
-            .theme!;
-      }
-      ref.read(characterThemeProvider.notifier).state = characterTheme;
-      final allCharacters = await getAllCharactersQuery().result;
-      ref.read(isEnableToRetestProvider.notifier).state =
-          character.data!.length != allCharacters.data!.length;
-      await _initializeNotificationHandlerIfAccepted(characterTheme.colors!);
-      final push = await getPushIfPushClicked();
-      if (push != null) {
-        notificationService.handleFCMMessageTap(push);
-        return;
-      }
-      context.go('/mails');
+    await _initializeCharacterInfo();
+    await _initializeNotificationHandlerIfAccepted();
+    final push = await getPushIfPushClicked();
+    if (push != null) {
+      notificationService.handleFCMMessageTap(push);
       return;
-    } else {
-      context.go('/character-test');
     }
   }
 
@@ -82,10 +57,11 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(seconds: 10),
-      minimumFetchInterval: const Duration(minutes: 10),
+      minimumFetchInterval: const Duration(minutes: 1),
     ));
     await remoteConfig.fetchAndActivate();
     if (remoteConfig.getBool('app_available') == false) {
+      if (!mounted) return;
       return showDialog(
         barrierDismissible: false,
         context: context,
@@ -102,6 +78,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
         },
       );
     } else {
+      if (!mounted) return;
       await updateService.forceUpdateByRemoteConfig(context, remoteConfig);
     }
   }
@@ -116,6 +93,67 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     }
   }
 
+  _initializeCharacterInfo() async {
+    final myCharacters = await getRetrieveMyCharacterQuery().result;
+    final hasCharacter =
+        myCharacters.data != null && myCharacters.data!.isNotEmpty;
+    await _checkEnableToRetest(hasCharacter, myCharacters.data);
+    if (hasCharacter) {
+      await _saveSelectedCharacterId(myCharacters.data!);
+      await _setSelectedCharacterTheme(myCharacters.data!);
+      if (!mounted) return;
+      context.go('/mails');
+    } else {
+      final isNewUserRawData = await getCheckNewUserQuery().result;
+      final isNewUser = isNewUserRawData.data!['is_available'];
+      if (isNewUser) {
+        if (!mounted) return;
+        context.go('/assignment');
+      } else {
+        if (!mounted) return;
+        context.go('/mails');
+      }
+    }
+  }
+
+  _saveSelectedCharacterId(List<Character> myCharacters) async {
+    final selectedCharacterId = await characterService.getSelectedCharacterId();
+    if (selectedCharacterId == null) {
+      ref.read(selectedCharacterProvider.notifier).state = myCharacters[0].id;
+      await characterService.saveSelectedCharacterId(myCharacters[0].id);
+    } else {
+      ref.read(selectedCharacterProvider.notifier).state = selectedCharacterId;
+    }
+  }
+
+  _setSelectedCharacterTheme(List<Character> myCharacters) async {
+    final selectedCharacterId = await characterService.getSelectedCharacterId();
+    if (selectedCharacterId != null) {
+      final selectedCharacterTheme = myCharacters
+          .where((character) => character.id == selectedCharacterId)
+          .first
+          .theme!;
+      ref.read(characterThemeProvider.notifier).state = selectedCharacterTheme;
+    }
+  }
+
+  _checkEnableToRetest(bool hasCharacter, List<Character>? myCharacters) async {
+    if (hasCharacter == false || myCharacters == null || myCharacters.isEmpty) {
+      ref.read(isEnableToRetestProvider.notifier).state = true;
+      return;
+    }
+    final allCharacters = await getAllCharactersQuery().result;
+    final isEnableToRetest = myCharacters.length != allCharacters.data!.length;
+    ref.read(isEnableToRetestProvider.notifier).state = isEnableToRetest;
+  }
+
+  _initializeNotificationHandlerIfAccepted() async {
+    final isAccepted = await getIsNotificationAccepted();
+    if (isAccepted == true) {
+      notificationService.initializeNotificationHandlers(ref);
+    }
+  }
+
   Future<RemoteMessage?> getPushIfPushClicked() async {
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
@@ -123,28 +161,10 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     return initialMessage;
   }
 
-  _initializeNotificationHandlerIfAccepted(
-      CharacterColors characterColors) async {
-    final isAccepted = await getIsNotificationAccepted();
-    if (isAccepted == true) {
-      notificationService.initializeNotificationHandlers(ref, characterColors);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    onelinkService.appsFlyerInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
-        if (dp.status == Status.FOUND) {
-          ref.read(deepLinkProvider.notifier).state = dp.deepLink;
-          if (dp.deepLink?.deepLinkValue == null ||
-              dp.deepLink?.deepLinkValue == '') return;
-          context.go(//ToDo 로그인이 필요한 작업시에 characterTheme을 설정해줘야 함
-              '${dp.deepLink?.deepLinkValue}'); //ToDo 딥링크로 이동하기 위해서는 비동기 함수 처리를 해야함.
-        }
-      });
       _checkAuthAndLand();
     });
   }
