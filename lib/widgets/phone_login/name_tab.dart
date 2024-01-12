@@ -8,6 +8,7 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/controllers/auth/name_form_controller.dart';
 import 'package:project_june_client/providers/deep_link_provider.dart';
+import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
@@ -55,7 +56,9 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
         return MutationBuilder(
           mutation: getSmsTokenMutation(
             onSuccess: (res, arg) {
-              getUserFunnelMutation().mutate(funnelDTO).then((_)=>context.go('/'));
+              getUserFunnelMutation()
+                  .mutate(funnelDTO)
+                  .then((_) => context.go('/'));
             },
             onError: (arg, error, fallback) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -93,44 +96,12 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
                 ),
               ),
             ),
-            choiceColumn: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                OutlinedButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(ColorConstants.background),
-                  ),
-                  onPressed: () => context.pop(),
-                  child: Text(
-                    '취소하기',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: ColorConstants.gray,
-                      fontWeight: FontWeightConstants.semiBold,
-                      height: 1.0,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 13,
-                ),
-                FilledButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(ColorConstants.pink),
-                  ),
-                  onPressed: () => mutate(dto),
-                  child: Text(
-                    '동의하고 시작하기',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeightConstants.semiBold,
-                      height: 1.0,
-                    ),
-                  ),
-                ),
-              ],
+            choiceColumn: ModalChoiceWidget(
+              isDefaultButton: true,
+              cancelText: '취소하기',
+              submitText: '동의하고 시작하기',
+              onCancel: () => context.pop(),
+              onSubmit: () => mutate(dto),
             ),
           ),
         );
@@ -167,8 +138,7 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
       ),
       actions: FilledButton(
         style: ButtonStyle(
-          backgroundColor:
-          MaterialStateProperty.all(ColorConstants.pink),
+          backgroundColor: MaterialStateProperty.all(ColorConstants.pink),
         ),
         onPressed: () {
           setState(() {

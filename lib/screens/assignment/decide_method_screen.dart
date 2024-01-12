@@ -32,6 +32,7 @@ class AssignmentDecideMethodScreenState
       builder: (context) => ModalWidget(
         title: '앗, 재화가 부족해요.',
         choiceColumn: ModalChoiceWidget(
+          isDefaultButton: true,
           cancelText: '코인 구매하러 가기',
           submitText: '친구 초대하고 300P 받기',
           onCancel: () {
