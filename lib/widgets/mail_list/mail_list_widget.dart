@@ -15,11 +15,9 @@ import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/mail_list/change_character_overlay_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
-import 'package:project_june_client/widgets/notification/notification_permission_check.dart';
 
 import '../../actions/character/models/Character.dart';
 import '../../actions/mails/queries.dart';
-import '../../actions/notification/queries.dart';
 import '../../constants.dart';
 import '../../services.dart';
 import '../../widgets/common/alert/alert_widget.dart';
@@ -337,8 +335,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                     ),
                                   ),
                                   const Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 5.0, top: 5),
+                                    padding: EdgeInsets.only(left: 5.0, top: 5),
                                     child: Icon(PhosphorIcons.caret_down_bold,
                                         size: 18),
                                   ),
@@ -386,8 +383,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                 HapticFeedback.lightImpact();
                                 await retrieveMyCharacterQuery.refetch();
                                 await getListMailQuery(
-                                        characterId: ref.watch(
-                                            selectedCharacterProvider)!,
+                                        characterId: ref
+                                            .watch(selectedCharacterProvider)!,
                                         page: selectedPage!)
                                     .refetch();
                                 reloadMailController!.forward().then((_) {

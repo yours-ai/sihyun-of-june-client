@@ -8,14 +8,10 @@ import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
-import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
-
-import '../../actions/character/dtos.dart';
 import '../../constants.dart';
 import '../../globals.dart';
 import '../../screens/character_test/character_choice_screen.dart';
 import '../../services.dart';
-import '../common/create_snackbar.dart';
 import '../common/modal/modal_description_widget.dart';
 
 class CharacterConfirmWidget extends ConsumerStatefulWidget {

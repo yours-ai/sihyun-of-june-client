@@ -58,7 +58,6 @@ class AssignmentStartScreen extends ConsumerWidget {
                             isEnableToRetest: isEnableToRetest,
                             filteredCharacters: filteredCharacters,
                           );
-                          return const SizedBox.shrink();
                         },
                       );
                     }),

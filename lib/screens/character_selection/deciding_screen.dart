@@ -1,15 +1,12 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
-import 'package:project_june_client/widgets/character/not_chosen_list_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 import '../../providers/common_provider.dart';
@@ -137,7 +134,6 @@ class CharacterSelectionDecidingScreen extends ConsumerWidget {
                         ],
                       ),
                     );
-                    return const SizedBox.shrink();
                   },
                 );
               }),

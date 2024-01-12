@@ -4,7 +4,6 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
-import 'package:project_june_client/actions/character/models/CharacterColors.dart';
 import 'package:project_june_client/actions/notification/actions.dart';
 import 'package:project_june_client/actions/notification/models/AppNotification.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
@@ -61,8 +60,7 @@ class NotificationService {
     }
   }
 
-  void initializeNotificationHandlers(
-      WidgetRef ref) async {
+  void initializeNotificationHandlers(WidgetRef ref) async {
     if (ref.read(firebaseMessagingListenerProvider)['onTokenRefresh'] != null &&
         ref.read(firebaseMessagingListenerProvider)['onMessage'] != null &&
         ref.read(firebaseMessagingListenerProvider)['onMessageOpenedApp'] !=
