@@ -21,7 +21,7 @@ import '../common/modal/modal_description_widget.dart';
 class CharacterConfirmWidget extends ConsumerStatefulWidget {
   final int testId;
   final int selectedCharacterId;
-  final String name;
+  final String characterFirstName;
   final TestReason testReason;
   final void Function(ActiveScreen) onActiveScreen;
 
@@ -30,7 +30,7 @@ class CharacterConfirmWidget extends ConsumerStatefulWidget {
       required this.onActiveScreen,
       required this.selectedCharacterId,
       required this.testId,
-      required this.name,
+      required this.characterFirstName,
       required this.testReason});
 
   @override
@@ -53,7 +53,7 @@ class CharacterConfirmWidgetState
           return ModalWidget(
             title: '정말 다른 상대로 정해드릴까요?',
             description: const ModalDescriptionWidget(
-              description: '블라블라', // TODO: 노션에 적혀있는걸로 바꾸기
+              description: '다른 상대를 만나려면,\n추가로 재화를 사용하셔야 해요.',
             ),
             choiceColumn: ModalChoiceWidget(
               cancelText: '아니요',
@@ -110,7 +110,7 @@ class CharacterConfirmWidgetState
         child: TitleLayout(
           withAppBar: true,
           title: Text(
-            '${widget.name}이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
+            '${widget.characterFirstName}이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
             '편지가 올 거에요 :)',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge,

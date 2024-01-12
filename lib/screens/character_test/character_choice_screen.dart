@@ -19,7 +19,7 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
   late TestReason testReason;
 
   int? testId;
-  String? name;
+  String? characterFirstName;
   int? selectedCharacterId;
 
   void handleActiveScreen(ActiveScreen screen) {
@@ -36,7 +36,7 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
     setState(() {
       testReason = reason;
       this.testId = testId;
-      name = firstName;
+      characterFirstName = firstName;
       selectedCharacterId = characterId;
     });
   }
@@ -58,11 +58,12 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
             onActiveScreen: handleActiveScreen, onTestInfo: handleTestInfo);
       case ActiveScreen.confirm:
         return CharacterConfirmWidget(
-            selectedCharacterId: selectedCharacterId!,
-            onActiveScreen: handleActiveScreen,
-            testReason: testReason,
-            testId: testId!,
-            name: name!);
+          selectedCharacterId: selectedCharacterId!,
+          onActiveScreen: handleActiveScreen,
+          testReason: testReason,
+          testId: testId!,
+          characterFirstName: characterFirstName!,
+        );
       default:
         return Container(); // Default empty container
     }
