@@ -72,9 +72,10 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
   void redirectRetest() async {
     final myCharacterList =
         await getRetrieveMyCharacterQuery().result.then((value) => value.data);
-    final currentCharacter = myCharacterList!
-        .where((character) => character.is_current == true)
-        .first;
+    final currentCharacterList =
+        myCharacterList!.where((character) => character.is_current == true);
+    if (currentCharacterList.isEmpty) return; // current character가 없는 경우
+    final currentCharacter = currentCharacterList.first;
     final bool is30DaysFinished = await getRetrieveMeQuery()
         .result
         .then((value) => value.data!.is_30days_finished);
@@ -84,8 +85,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
       context.push(
         "/retest",
         extra: <String, dynamic>{
-          "firstName":
-              characterService.getCurrentCharacterFirstName(myCharacterList),
+          "firstName": currentCharacter.first_name,
           "characterIds": characterService.getCharacterIds(myCharacterList),
         },
       );
@@ -190,10 +190,17 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
             if (charactersState.data == null) {
               return const SizedBox();
             }
-            final selectedCharacter = charactersState.data!
-                .where((character) =>
-                    character.id == ref.watch(selectedCharacterProvider))
-                .first;
+            final selectedCharacterList = charactersState.data!.where(
+                (character) =>
+                    character.id == ref.watch(selectedCharacterProvider));
+            if (selectedCharacterList.isEmpty) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ref.read(selectedCharacterProvider.notifier).state =
+                    charactersState.data!.first.id;
+              });
+              return const SizedBox();
+            }
+            final selectedCharacter = selectedCharacterList.first;
             final mainImageSrc = characterService
                 .getMainImage(selectedCharacter.character_info!.images!);
             if (selectedPage == null) {
