@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 
 class AssignmentScreen extends ConsumerStatefulWidget {
@@ -74,8 +75,17 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
         },
       ).mutate(null);
     } else {
-      if (!mounted) return;
-      context.go('/mails/assignment-start');
+      final bool is30DaysFinished = await getRetrieveMeQuery()
+          .result
+          .then((value) => value.data!.is_30days_finished);
+      if (is30DaysFinished) {
+        if (!mounted) return;
+        context.go('/all');
+        context.push('/mails/assignment-start');
+      } else {
+        if (!mounted) return;
+        context.go('/mails/assignment-start');
+      }
     }
   }
 
