@@ -16,6 +16,7 @@ import '../../globals.dart';
 import '../../screens/character_test/character_choice_screen.dart';
 import '../../services.dart';
 import '../common/create_snackbar.dart';
+import '../common/modal/modal_description_widget.dart';
 
 class CharacterConfirmWidget extends ConsumerStatefulWidget {
   final int testId;
@@ -51,6 +52,9 @@ class CharacterConfirmWidgetState
         builder: (BuildContext context) {
           return ModalWidget(
             title: '정말 다른 상대로 정해드릴까요?',
+            description: const ModalDescriptionWidget(
+              description: '블라블라', // TODO: 노션에 적혀있는걸로 바꾸기
+            ),
             choiceColumn: ModalChoiceWidget(
               cancelText: '아니요',
               submitText: '네',

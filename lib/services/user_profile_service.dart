@@ -69,13 +69,14 @@ class UserProfileService {
                     mutation: getUserImage(),
                     builder: (context, state, mutate) => TextButton(
                       onPressed: () async {
-                        if (state.status == QueryStatus.loading) return;
-                        var cropRect = editorKey.currentState?.getCropRect();
+                        context.pop();
+                        final cropRect = editorKey.currentState?.getCropRect();
                         if (cropRect != null) {
-                          var img = await _image!.readAsBytes();
-                          var croppedImg = await cropImage(img, cropRect);
-                          mutate(croppedImg);
-                          context.pop();
+                          Future.delayed(
+                              const Duration(milliseconds: 250),
+                              () => _image!.readAsBytes().then((img) =>
+                                  cropImage(img, cropRect).then((croppedImg) =>
+                                      getUserImage().mutate(croppedImg))));
                         }
                       },
                       child: Padding(
@@ -134,7 +135,7 @@ class UserProfileService {
               cancelText: '기본 이미지 설정',
               onCancel: () {
                 if (state.status == QueryStatus.loading) return;
-                mutate(null).then((_)=>context.pop());
+                mutate(null).then((_) => context.pop());
               },
             ),
           ),
