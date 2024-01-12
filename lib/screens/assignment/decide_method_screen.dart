@@ -1,18 +1,12 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/globals.dart';
-import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
-import 'package:project_june_client/widgets/character/not_chosen_list_widget.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/create_snackbar.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
@@ -38,6 +32,7 @@ class AssignmentDecideMethodScreenState
       builder: (context) => ModalWidget(
         title: '앗, 재화가 부족해요.',
         choiceColumn: ModalChoiceWidget(
+          isDefaultButton: true,
           cancelText: '코인 구매하러 가기',
           submitText: '친구 초대하고 300P 받기',
           onCancel: () {

@@ -9,6 +9,7 @@ class ModalChoiceWidget extends ConsumerWidget {
   final VoidCallback onSubmit, onCancel;
   final String? submitSuffix;
   final QueryStatus? mutationStatus;
+  final bool isDefaultButton;
 
   const ModalChoiceWidget({
     super.key,
@@ -18,6 +19,7 @@ class ModalChoiceWidget extends ConsumerWidget {
     required this.onCancel,
     this.submitSuffix,
     this.mutationStatus,
+    this.isDefaultButton = false,
   });
 
   @override
@@ -53,8 +55,13 @@ class ModalChoiceWidget extends ConsumerWidget {
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(mutationStatus == null ||
                     mutationStatus != QueryStatus.loading
-                ? Color(ref.watch(characterThemeProvider).colors!.primary!)
-                : Color(ref.watch(characterThemeProvider).colors!.secondary!)),
+                ? isDefaultButton
+                    ? ColorConstants.pink
+                    : Color(ref.watch(characterThemeProvider).colors!.primary!)
+                : isDefaultButton
+                    ? Color(ColorTheme.defaultTheme.colors!.secondary!)
+                    : Color(
+                        ref.watch(characterThemeProvider).colors!.secondary!)),
           ),
           onPressed: () {
             if (mutationStatus == null ||
