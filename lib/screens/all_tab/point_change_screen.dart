@@ -29,7 +29,7 @@ class PointChangeScreen extends StatelessWidget {
             choiceColumn: ModalChoiceWidget(
               submitText: '코인 구매하러 가기',
               onSubmit: () {
-                context.push('/my-coin/charge');
+                context.push('${TabRoutePaths.all}/my-coin/charge');
                 context.pop();
               },
               cancelText: '아니요',

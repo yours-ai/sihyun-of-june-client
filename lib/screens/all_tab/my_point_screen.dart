@@ -51,13 +51,13 @@ class MyPointScreen extends StatelessWidget {
                         const SizedBox(height: 16),
                         MenuWidget(
                           onPressed: () {
-                            context.push('/my-point/charge');
+                            context.push('${TabRoutePaths.all}/my-point/charge');
                           },
                           title: '포인트 전환하기',
                         ),
                         MenuWidget(
                           onPressed: () {
-                            context.push('/my-point/log');
+                            context.push('${TabRoutePaths.all}/my-point/log');
                           },
                           title: '포인트 내역',
                         ),

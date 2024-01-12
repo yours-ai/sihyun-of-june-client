@@ -89,27 +89,4 @@ class CharacterService {
         .first
         .first_name!;
   }
-
-  void redirectRetest(
-      {required BuildContext currentContext,
-      required WidgetRef ref}) async {
-    final myCharacterList =
-        await getRetrieveMyCharacterQuery().result.then((value) => value.data);
-    final currentCharacter = myCharacterList!
-        .where((character) => character.is_current == true)
-        .first;
-    final bool is30DaysFinished = await getRetrieveMeQuery()
-        .result
-        .then((value) => value.data!.is_30days_finished);
-    if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
-        is30DaysFinished) {
-      currentContext.push(
-        "/retest",
-        extra: <String, dynamic>{
-          "firstName": getCurrentCharacterFirstName(myCharacterList),
-          "characterIds": getCharacterIds(myCharacterList),
-        },
-      );
-    }
-  }
 }

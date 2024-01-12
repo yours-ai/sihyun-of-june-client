@@ -105,7 +105,8 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                     isLoading = true;
                   });
                   await mutate(getReplyDTO());
-                  if (mailListInitializer != null) {
+                  if (mailListInitializer != null &&
+                      ref.watch(mailPageProvider) != null) {
                     getListMailQuery(
                             characterId: widget.characterId,
                             page: ref.watch(mailPageProvider)!)

@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_layout_widget.dart';
 
@@ -19,35 +20,17 @@ class RetestConfirmScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return RetestLayoutWidget(
-      firstName: firstName,
-      title: '이것이 $firstName이와의\n마지막 작별이 되어요.\n그래도 새로운 상대를\n만나시겠어요?',
-      action: MutationBuilder(
-        mutation: getRetestMutation(
-          refetchQueries: [
-            'my-character',
-            "retrieve-me",
-          ],
-          onSuccess: (res, arg) {
-            scaffoldMessengerKey.currentState?.showSnackBar(
-              createSnackBar(
-                snackBarText: transactionService.getPurchaseStateText(arg),
-                characterColors: ColorTheme.defaultTheme.colors!,
-              ),
-            );
-            context.go('/character-test');
+        firstName: firstName,
+        title: '이것이 $firstName이와의\n마지막 작별이 되어요.\n그래도 새로운 상대를\n만나시겠어요?',
+        action: ModalChoiceWidget(
+          submitText: '좋아요',
+          cancelText: '아니요',
+          onSubmit: () {
+            context.go('/assignment');
           },
-        ),
-        builder: (context, state, mutate) {
-          void handleRetest(String payment) {
-            mutate(payment);
-          }
-
-          return RetestChoiceWidget(
-            inModal: true,
-            onRetest: handleRetest,
-          );
-        },
-      ),
-    );
+          onCancel: () {
+            context.pop();
+          },
+        ));
   }
 }

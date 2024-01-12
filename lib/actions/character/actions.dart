@@ -18,7 +18,7 @@ Future<List<Question>> startTest() async {
 }
 
 Future<Map<String, dynamic>> fetchTestStatus() async {
-  final response = await dio.get('/character/me/test-status/');
+  final response = await dio.get('/character/test/status/');
   return response.data;
 }
 
@@ -27,7 +27,7 @@ Future<Map<String, dynamic>> fetchPendingTest() async {
   return response.data;
 }
 
-Future<void> confirmChoice(int id) async {
+Future<void> confirmTest(int id) async {
   await dio.post('/character/test/$id/confirm/');
   return;
 }
@@ -37,8 +37,8 @@ Future<List<Character>> fetchCharacters() async {
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }
 
-Future<void> denyTestChoice(denyTestChoiceDTO dto) async {
-  await dio.post('/character/test/${dto.id}/deny/', data: {'payment': dto.payment});
+Future<void> denyTestChoice(int testId) async {
+  await dio.post('/character/v3/test/$testId/deny/');
   return;
 }
 
@@ -57,8 +57,9 @@ Future<void> readCharacterStory(int id) async {
   return;
 }
 
-Future<void> retest(String payment) async {
-  await dio.post('/character/reallocate/', data: {'payment': payment});
+Future<void> reallocate(ReallocateDTO dto) async {
+  await dio.post('/character/reallocate/',
+      data: {'payment': dto.payment, 'method': dto.method});
   return;
 }
 
@@ -67,10 +68,31 @@ Future<void> extend(String payment) async {
   return;
 }
 
-Future<Map<String, int>> getExtendCost() async {
+Future<Map<String, int>> fetchExtendCost() async {
   final response = await dio.get('/character/extend/cost/');
   return {
     'coin': response.data['coin'] as int,
     'point': response.data['point'] as int,
   };
+}
+
+Future<Map<String, dynamic>> fetchIsNewUser() async {
+  final response = await dio.get('/character/new-user-allocation/');
+  return response.data;
+}
+
+Future<void> allocateForNewUser() async {
+  await dio.post('/character/new-user-allocation/');
+  return;
+}
+
+Future<void> confirmSelection(int selectionId, int characterId) async {
+  await dio.post('/character/selection/$selectionId/confirm/',
+      data: {'character_id': characterId});
+  return;
+}
+
+Future<Map<String, dynamic>> fetchSelectionStatus() async {
+  final response = await dio.get('/character/selection/status/');
+  return response.data;
 }

@@ -10,6 +10,7 @@ import 'package:project_june_client/actions/notification/models/AppNotification.
 import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:project_june_client/globals.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/widgets/common/create_snackbar.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -61,7 +62,7 @@ class NotificationService {
   }
 
   void initializeNotificationHandlers(
-      WidgetRef ref, CharacterColors characterColors) async {
+      WidgetRef ref) async {
     if (ref.read(firebaseMessagingListenerProvider)['onTokenRefresh'] != null &&
         ref.read(firebaseMessagingListenerProvider)['onMessage'] != null &&
         ref.read(firebaseMessagingListenerProvider)['onMessageOpenedApp'] !=
@@ -91,7 +92,7 @@ class NotificationService {
       int? notificationId = int.tryParse(message.data['id'] ?? '');
       scaffoldMessengerKey.currentState?.showSnackBar(createSnackBar(
           snackBarText: snackBarText,
-          characterColors: characterColors,
+          characterColors: ref.watch(characterThemeProvider).colors!,
           onPressed: () {
             // id의 유무는 전체에게 보내면 id가 없고, 개인에게 보내면 id가 있음.
             if (notificationId == null || notificationId.isNaN) {
