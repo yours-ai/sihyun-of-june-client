@@ -2,10 +2,12 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/globals.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/create_snackbar.dart';
@@ -77,7 +79,7 @@ class AssignmentDecideMethodScreenState
           body: const SizedBox(),
           actions: MutationBuilder(
             mutation: getReallocateMutation(
-              onSuccess: (res, arg) {
+              onSuccess: (res, arg) async {
                 scaffoldMessengerKey.currentState?.showSnackBar(
                   createSnackBar(
                     snackBarText:
@@ -104,12 +106,20 @@ class AssignmentDecideMethodScreenState
                           ? ColorConstants.pink
                           : Color(ColorTheme.defaultTheme.colors!.secondary!)),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (isEnableToClick) {
                         setState(() {
                           isEnableToClick = false;
                         });
-                        mutate(makeReallocateDto('point')); // 결제
+                        final bool is30DaysFinished = await getRetrieveMeQuery()
+                            .result
+                            .then((value) => value.data!.is_30days_finished);
+                        if (is30DaysFinished == false) {
+                          await characterService.deleteSelectedCharacterId();
+                          ref.read(selectedCharacterProvider.notifier).state =
+                              await null;
+                        }
+                        await mutate(makeReallocateDto('point')); // 결제
                       }
                     },
                     child: Row(
@@ -148,12 +158,20 @@ class AssignmentDecideMethodScreenState
                           ? ColorConstants.pink
                           : Color(ColorTheme.defaultTheme.colors!.secondary!)),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (isEnableToClick) {
                         setState(() {
                           isEnableToClick = false;
                         });
-                        mutate(makeReallocateDto('coin')); // 결제
+                        final bool is30DaysFinished = await getRetrieveMeQuery()
+                            .result
+                            .then((value) => value.data!.is_30days_finished);
+                        if (is30DaysFinished == false) {
+                          await characterService.deleteSelectedCharacterId();
+                          ref.read(selectedCharacterProvider.notifier).state =
+                              await null;
+                        }
+                        await mutate(makeReallocateDto('coin')); // 결제
                       }
                     },
                     child: Row(

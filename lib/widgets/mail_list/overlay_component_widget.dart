@@ -38,6 +38,11 @@ class OverlayComponentWidget extends ConsumerWidget {
         if (isSelected) return;
 
         if (character == null) {
+          if (firstName == '') {
+            context.go('/assignment');
+            hideOverlay!();
+            return;
+          }
           final bool is30DaysFinished = await getRetrieveMeQuery()
               .result
               .then((value) => value.data!.is_30days_finished);

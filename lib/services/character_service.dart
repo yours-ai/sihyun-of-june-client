@@ -81,6 +81,9 @@ class CharacterService {
   }
 
   String getCurrentCharacterFirstName(List<Character> characterList) {
+    final currentCharacterList =
+        characterList.where((character) => character.is_current == true);
+    if (currentCharacterList.isEmpty) return '';
     return characterList
         .where((character) => character.is_current == true)
         .first

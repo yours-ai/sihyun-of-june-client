@@ -57,6 +57,12 @@ class CharacterChangeModal extends ConsumerWidget {
                     context.go('/assignment');
                     return;
                   }
+                  final firstName = characterService
+                      .getCurrentCharacterFirstName(characterList);
+                  if (firstName == '') {
+                    context.go('/assignment');
+                    return;
+                  }
                   if (state.data!.is_30days_finished == false) {
                     showModalBottomSheet(
                       context: context,
@@ -71,8 +77,7 @@ class CharacterChangeModal extends ConsumerWidget {
                     extra: {
                       'characterIds':
                           characterService.getCharacterIds(characterList),
-                      'firstName': characterService
-                          .getCurrentCharacterFirstName(characterList),
+                      'firstName': firstName,
                     },
                   );
                 },

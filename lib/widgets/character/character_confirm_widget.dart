@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
@@ -57,12 +58,15 @@ class CharacterConfirmWidgetState
               onCancel: () {
                 context.pop();
               },
-              onSubmit: () {
+              onSubmit: () async {
                 if (isEnableToClick) {
+                  await characterService.deleteSelectedCharacterId();
+                  ref.read(selectedCharacterProvider.notifier).state =
+                      await null;
                   setState(() {
                     isEnableToClick = false;
                   });
-                  getDenyTestChoiceMutation(onSuccess: (res, arg) {
+                  await getDenyTestChoiceMutation(onSuccess: (res, arg) {
                     context.go('/mails/assignment-start');
                   }, onError: (arg, error, fallback) {
                     setState(() {
