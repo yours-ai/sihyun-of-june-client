@@ -33,32 +33,26 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
 
   @override
   Widget build(context) {
-    return QueryBuilder(
-      query: getRetrieveMyCharacterQuery(),
-      builder: (context, state) {
-        if (state.status == QueryStatus.loading) {
-          return const SafeArea(
-            child: Center(child: CircularProgressIndicator.adaptive()),
-          );
-        }
-        final hasCharacter = !(state.data == null || state.data!.isEmpty);
-        return Stack(
-          children: [
-            QueryBuilder(
-              query: getIsNotificationAcceptedQuery(),
-              builder: (context, state) {
-                return state.data == false
-                    ? const RequestNotificationPermissionWidget()
-                    : const SizedBox.shrink();
-              },
-            ),
-            if (hasCharacter)
-              const MailListWidget()
-            else
-              const EmptyMailListWidget(),
-          ],
-        );
-      },
+    if (hasCharacter == null) {
+      return const SafeArea(
+        child: Center(child: CircularProgressIndicator.adaptive()),
+      );
+    }
+    return Stack(
+      children: [
+        QueryBuilder(
+          query: getIsNotificationAcceptedQuery(),
+          builder: (context, state) {
+            return state.data == false
+                ? const RequestNotificationPermissionWidget()
+                : const SizedBox.shrink();
+          },
+        ),
+        if (hasCharacter!)
+          const MailListWidget()
+        else
+          const EmptyMailListWidget(),
+      ],
     );
   }
 }

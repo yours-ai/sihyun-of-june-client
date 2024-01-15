@@ -284,7 +284,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                 height: 40,
                                 width: 40,
                                 child: ExtendedImage.network(
-                                  timeLimit:
+                                  cacheMaxAge:
                                       ref.watch(imageCacheDurationProvider),
                                   cacheKey: UniqueCacheKeyService.makeUniqueKey(
                                       mainImageSrc.src),
@@ -391,6 +391,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                               onRefresh: () async {
                                 HapticFeedback.lightImpact();
                                 await retrieveMyCharacterQuery.refetch();
+                                if (!mounted) return;
                                 await getListMailQuery(
                                         characterId: ref
                                             .watch(selectedCharacterProvider)!,

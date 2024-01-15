@@ -38,7 +38,7 @@ class CharacterChangeListWidget extends ConsumerWidget {
                 characterService
                     .getMainImage(character.character_info!.images!)
                     .src,
-                timeLimit: ref.watch(imageCacheDurationProvider),
+                cacheMaxAge: ref.watch(imageCacheDurationProvider),
                 cacheKey: UniqueCacheKeyService.makeUniqueKey(characterService
                     .getMainImage(character.character_info!.images!)
                     .src),

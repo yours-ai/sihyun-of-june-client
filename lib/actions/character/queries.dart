@@ -65,6 +65,9 @@ Query<Character> getCharacterQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
+    config: QueryConfig(
+      cacheDuration: const Duration(days: 1),
+    ),
     key: 'character/${id.toString()}',
     queryFn: () => fetchCharacterById(id),
     onError: onError,

@@ -106,7 +106,8 @@ class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
                               fit: BoxFit.fitWidth,
                               mode: ExtendedImageMode.gesture,
                               enableSlideOutPage: true,
-                              timeLimit: ref.watch(imageCacheDurationProvider),
+                              cacheMaxAge:
+                                  ref.watch(imageCacheDurationProvider),
                               cacheKey: UniqueCacheKeyService.makeUniqueKey(
                                   widget.imageList[index].src),
                             ),
@@ -140,7 +141,7 @@ class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
                         fit: BoxFit.fitWidth,
                         mode: ExtendedImageMode.gesture,
                         enableSlideOutPage: true,
-                        timeLimit: ref.watch(imageCacheDurationProvider),
+                        cacheMaxAge: ref.watch(imageCacheDurationProvider),
                         cacheKey: UniqueCacheKeyService.makeUniqueKey(
                             widget.imageList[index].src),
                         initGestureConfigHandler: (state) {

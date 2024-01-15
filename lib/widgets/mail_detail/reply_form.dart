@@ -84,8 +84,8 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
       refetchQueries: [
         'character-sent-mail/${widget.mail.id}',
       ],
-      onSuccess: (res, arg) async {
-        await mailService.deleteBeforeReply(widget.mail.id);
+      onSuccess: (res, arg) {
+        mailService.deleteBeforeReply(widget.mail.id);
       },
     );
     showConfirmModal() async {
@@ -105,6 +105,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                     isLoading = true;
                   });
                   await mutate(getReplyDTO());
+                  requestRandomlyAppReview(widget.mail.is_first_reply);
                   if (mailListInitializer != null &&
                       ref.watch(mailPageProvider) != null) {
                     getListMailQuery(
@@ -117,7 +118,6 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                     isLoading = false;
                   });
                   context.pop();
-                  requestRandomlyAppReview(widget.mail.is_first_reply);
                 },
                 cancelText: '아니요',
                 onCancel: () => context.pop(),
