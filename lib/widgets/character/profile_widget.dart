@@ -18,12 +18,14 @@ class ProfileWidget extends ConsumerStatefulWidget {
   final String? name;
   final CharacterInfo characterInfo;
   final Color primaryColor;
+  final bool? isImageUpdated;
 
   const ProfileWidget({
     super.key,
     required this.name,
     required this.characterInfo,
     required this.primaryColor,
+    required this.isImageUpdated,
   });
 
   @override
@@ -35,7 +37,9 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (ref.watch(selectedCharacterProvider) != null) {
+      if (ref.watch(selectedCharacterProvider) != null &&
+          widget.isImageUpdated != null &&
+          widget.isImageUpdated!) {
         getReadCharacterStoryMutation(
           refetchQueries: ['my-character'],
         ).mutate(ref.watch(selectedCharacterProvider));
@@ -63,8 +67,10 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
                   isScrollControlled: true,
                   context: context,
                   builder: (context) => ProfileDetailsScreen(
-                      imageList: widget.characterInfo.images!,
-                      index: stackedImageList[index].order - 1),
+                    imageList: widget.characterInfo.images!,
+                    index: stackedImageList[index].order - 1,
+                    isImageUpdated: widget.isImageUpdated,
+                  ),
                 );
               },
               child: Transform.rotate(

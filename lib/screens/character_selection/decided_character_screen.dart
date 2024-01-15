@@ -63,6 +63,7 @@ class _CharacterSelectionDecidedCharacterScreenState
                                 characterInfo: state.data!.character_info!,
                                 primaryColor:
                                     Color(state.data!.theme!.colors!.primary!),
+                                isImageUpdated: state.data!.is_image_updated,
                               ),
                             ),
                             FilledButton(

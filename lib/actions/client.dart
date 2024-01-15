@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/environments.dart';
 import 'package:project_june_client/globals.dart';
+import 'package:project_june_client/router.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 final Dio dioForShortener = Dio(
@@ -21,7 +21,7 @@ final Dio dio = Dio(
 void initServerErrorSnackbar(BuildContext context) {
   dio.interceptors.add(
     InterceptorsWrapper(
-      onError: (error, handler) {
+      onError: (error, handler) async {
         Sentry.captureException(error);
         if (error.response?.statusCode != null) {
           if (error.response!.statusCode! >= 500) {
@@ -33,7 +33,8 @@ void initServerErrorSnackbar(BuildContext context) {
               ),
             );
           } else if (error.response!.statusCode == 401) {
-            logout().then(() => context.go('/'));
+            await logout();
+            router.go('/');
             scaffoldMessengerKey.currentState?.showSnackBar(
               const SnackBar(
                 content: Text(

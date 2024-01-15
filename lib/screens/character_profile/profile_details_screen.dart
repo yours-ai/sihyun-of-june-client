@@ -13,8 +13,14 @@ import 'package:project_june_client/services/unique_cachekey_service.dart';
 class ProfileDetailsScreen extends ConsumerStatefulWidget {
   final List<CharacterImage> imageList;
   final int? index;
+  final bool? isImageUpdated;
 
-  const ProfileDetailsScreen({required this.imageList, this.index, super.key});
+  const ProfileDetailsScreen({
+    required this.imageList,
+    this.index,
+    super.key,
+    required this.isImageUpdated,
+  });
 
   @override
   ProfileDetailsScreenView createState() => ProfileDetailsScreenView();
@@ -28,7 +34,9 @@ class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
     super.initState();
     _currentPage = widget.index ?? 0;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (ref.watch(selectedCharacterProvider) != null) {
+      if (ref.watch(selectedCharacterProvider) != null &&
+          widget.isImageUpdated != null &&
+          widget.isImageUpdated!) {
         getReadCharacterStoryMutation(
           refetchQueries: ['my-character'],
         ).mutate(ref.watch(selectedCharacterProvider));

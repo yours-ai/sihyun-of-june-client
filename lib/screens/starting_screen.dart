@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
@@ -31,6 +32,8 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
 
     await _checkAppAvailability();
     await _checkUpdateAvailable();
+    if (!mounted) return;
+    initServerErrorSnackbar(context);
 
     if (isLogined == false) {
       if (!mounted) return;
