@@ -7,7 +7,10 @@ import 'package:project_june_client/widgets/character/profile_widget.dart';
 class OtherCharacterScreen extends StatelessWidget {
   final int id;
 
-  const OtherCharacterScreen({super.key, required this.id});
+  const OtherCharacterScreen({
+    super.key,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class OtherCharacterScreen extends StatelessWidget {
                   name: state.data!.name,
                   characterInfo: state.data!.character_info!,
                   primaryColor: Color(state.data!.theme!.colors!.primary!),
+                  isImageUpdated: state.data!.is_image_updated,
                 ),
               ],
             ),

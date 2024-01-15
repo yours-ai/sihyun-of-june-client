@@ -80,6 +80,7 @@ class CharacterDetailWidgetState extends ConsumerState<CharacterDetailWidget> {
                                 characterInfo: character.character_info!,
                                 primaryColor:
                                     Color(character.theme!.colors!.primary!),
+                                isImageUpdated: character.is_image_updated,
                               ),
                             ),
                             Padding(

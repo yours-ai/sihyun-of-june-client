@@ -190,7 +190,7 @@ Future<bool> loadIsLogined() async {
   return true;
 }
 
-logout() async {
+Future<void> logout() async {
   final storage = getSecureStorage();
   await storage.deleteAll();
   try {

@@ -11,7 +11,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:moment_dart/moment_dart.dart';
-import 'package:project_june_client/actions/client.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
@@ -103,7 +102,6 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
   @override
   void initState() {
     super.initState();
-    initServerErrorSnackbar(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
         if (dp.status == Status.FOUND) {

@@ -58,8 +58,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
           selectedPage = null;
         });
       };
+      redirectRetest();
     });
-    redirectRetest();
   }
 
   void initializeMailList() {
@@ -248,6 +248,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                       imageList: selectedCharacter
                                           .character_info!.images!,
                                       index: mainImageSrc.order - 1,
+                                      isImageUpdated:
+                                          selectedCharacter.is_image_updated,
                                     ),
                                   )
                                 : context.push('/mails/my-character');
