@@ -81,7 +81,7 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
                     width: 320,
                     height: 480,
                     child: ExtendedImage.network(
-                      timeLimit: ref.watch(imageCacheDurationProvider),
+                      cacheMaxAge: ref.watch(imageCacheDurationProvider),
                       cacheKey: UniqueCacheKeyService.makeUniqueKey(
                           stackedImageList[index].src),
                       stackedImageList[index].src,

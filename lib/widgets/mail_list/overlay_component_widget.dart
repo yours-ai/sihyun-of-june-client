@@ -117,7 +117,7 @@ class OverlayComponentWidget extends ConsumerWidget {
                           color: ColorConstants.neutral,
                         )
                       : ExtendedImage.network(
-                          timeLimit: ref.watch(imageCacheDurationProvider),
+                          cacheMaxAge: ref.watch(imageCacheDurationProvider),
                           cacheKey: UniqueCacheKeyService.makeUniqueKey(
                               characterService
                                   .getMainImage(

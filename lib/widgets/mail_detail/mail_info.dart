@@ -44,7 +44,7 @@ class MailInfoWidget extends ConsumerWidget {
                 width: 46,
                 height: 46,
                 child: ExtendedImage.network(
-                  timeLimit: ref.watch(imageCacheDurationProvider),
+                  cacheMaxAge: ref.watch(imageCacheDurationProvider),
                   cacheKey: UniqueCacheKeyService.makeUniqueKey(byImage!),
                   byImage!,
                   fit: BoxFit.cover,

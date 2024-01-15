@@ -116,7 +116,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               height: 132,
                               child: ExtendedImage.network(
                                 mainImageSrc.src,
-                                timeLimit:
+                                cacheMaxAge:
                                     ref.watch(imageCacheDurationProvider),
                                 cacheKey: UniqueCacheKeyService.makeUniqueKey(
                                     mainImageSrc.src),
@@ -185,7 +185,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                                             'assets/images/default_user_image.png')
                                         : ExtendedImage.network(
                                             state.data!.image!,
-                                            timeLimit: ref.watch(
+                                            cacheMaxAge: ref.watch(
                                                 imageCacheDurationProvider),
                                             cacheKey: UniqueCacheKeyService
                                                 .makeUniqueKey(
