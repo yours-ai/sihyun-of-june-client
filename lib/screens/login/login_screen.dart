@@ -9,7 +9,7 @@ import 'package:project_june_client/actions/analytics/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/providers/deep_link_provider.dart';
+import 'package:project_june_client/providers/one_link_provider.dart';
 
 import '../../actions/analytics/queries.dart';
 import '../../widgets/auth/KakaoLoginButton.dart';
@@ -33,8 +33,10 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(context) {
     UserFunnelDTO funnelDTO = UserFunnelDTO(
-        funnel: ref.watch(deepLinkProvider.notifier).state?.mediaSource,
-        refCode: ref.watch(deepLinkProvider.notifier).state?.afSub1);
+        funnel: ref.watch(oneLinkProvider)?['media_source'] ??
+            ref.watch(deepLinkProvider)?.mediaSource,
+        refCode: ref.watch(oneLinkProvider)?['af_sub1'] ??
+            ref.watch(deepLinkProvider)?.afSub1);
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -74,7 +76,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       MutationBuilder(
                         mutation: getLoginAsAppleMutation(
                           onSuccess: (res, arg) {
-                            getUserFunnelMutation().mutate(funnelDTO).then((_)=>context.go('/'));
+                            getUserFunnelMutation()
+                                .mutate(funnelDTO)
+                                .then((_) => context.go('/'));
                           },
                           onError: (arg, error, callback) {
                             ScaffoldMessenger.of(context).showSnackBar(

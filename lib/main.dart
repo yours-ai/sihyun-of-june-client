@@ -21,7 +21,7 @@ import 'firebase_options.dart';
 import 'constants.dart';
 import 'environments.dart';
 import 'globals.dart';
-import 'providers/deep_link_provider.dart';
+import 'providers/one_link_provider.dart';
 import 'router.dart';
 
 void _appRunner() {
@@ -103,6 +103,11 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      onelinkService.appsflyerSdk!.onInstallConversionData((res) {
+        if (res['status'] == 'success') {
+          ref.read(oneLinkProvider.notifier).state = res['payload'];
+        }
+      });
       onelinkService.appsflyerSdk!.onDeepLinking((DeepLinkResult dp) {
         if (dp.status == Status.FOUND) {
           ref.read(deepLinkProvider.notifier).state = dp.deepLink;

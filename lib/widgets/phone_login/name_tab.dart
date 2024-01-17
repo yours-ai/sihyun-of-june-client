@@ -7,7 +7,7 @@ import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/controllers/auth/name_form_controller.dart';
-import 'package:project_june_client/providers/deep_link_provider.dart';
+import 'package:project_june_client/providers/one_link_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
@@ -118,8 +118,10 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
   @override
   Widget build(BuildContext context) {
     UserFunnelDTO funnelDTO = UserFunnelDTO(
-        funnel: ref.watch(deepLinkProvider.notifier).state?.mediaSource,
-        refCode: ref.watch(deepLinkProvider.notifier).state?.afSub1);
+        funnel: ref.watch(oneLinkProvider)?['media_source'] ??
+            ref.watch(deepLinkProvider)?.mediaSource,
+        refCode: ref.watch(oneLinkProvider)?['af_sub1'] ??
+            ref.watch(deepLinkProvider)?.afSub1);
     return TitleLayout(
       withAppBar: true,
       title: Text(

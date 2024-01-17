@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/providers/deep_link_provider.dart';
+import 'package:project_june_client/providers/one_link_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../actions/analytics/dtos.dart';
@@ -19,12 +19,16 @@ class KakaoLoginButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     UserFunnelDTO funnelDTO = UserFunnelDTO(
-        funnel: ref.watch(deepLinkProvider.notifier).state?.mediaSource,
-        refCode: ref.watch(deepLinkProvider.notifier).state?.afSub1);
+        funnel: ref.watch(oneLinkProvider)?['media_source'] ??
+            ref.watch(deepLinkProvider)?.mediaSource,
+        refCode: ref.watch(oneLinkProvider)?['af_sub1'] ??
+            ref.watch(deepLinkProvider)?.afSub1);
     return MutationBuilder(
       mutation: getLoginAsKakaoMutation(
         onSuccess: (res, arg) {
-          getUserFunnelMutation().mutate(funnelDTO).then((_)=>context.go('/'));
+          getUserFunnelMutation()
+              .mutate(funnelDTO)
+              .then((_) => context.go('/'));
         },
         onError: (arg, error, callback) {
           if (error is PlatformException && error.code == "CANCELED") {
