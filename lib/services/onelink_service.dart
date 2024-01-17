@@ -12,7 +12,7 @@ class OnelinkService {
       afDevKey: BuildTimeEnvironments.appsFlyerDevKey,
       appId: Platform.isIOS ? AppID.ios : AppID.android,
       showDebug: !BuildTimeEnvironments.isProduction,
-      timeToWaitForATTUserAuthorization: 50,
+      timeToWaitForATTUserAuthorization: 10,
     );
     appsflyerSdk = AppsflyerSdk(appsFlyerOptions);
     await appsflyerSdk!.initSdk(

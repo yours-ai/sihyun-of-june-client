@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     final isLogined = await loadIsLogined();
     FlutterNativeSplash.remove();
 
+    await _requestAppTracking();
     await _checkAppAvailability();
     await _checkUpdateAvailable();
     if (!mounted) return;
@@ -104,6 +106,14 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
 
     if (Platform.isIOS) {
       await updateService.checkAndUpdateIOSApp(context);
+    }
+  }
+
+  _requestAppTracking() async {
+    final TrackingStatus status =
+        await AppTrackingTransparency.trackingAuthorizationStatus;
+    if (status == TrackingStatus.notDetermined) {
+      await AppTrackingTransparency.requestTrackingAuthorization();
     }
   }
 
