@@ -55,8 +55,8 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
       builder: (BuildContext context) {
         return MutationBuilder(
           mutation: getSmsTokenMutation(
-            onSuccess: (res, arg) {
-              getUserFunnelMutation()
+            onSuccess: (res, arg) async {
+              await getUserFunnelMutation()
                   .mutate(funnelDTO)
                   .then((_) => context.go('/'));
             },
@@ -119,9 +119,9 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
   Widget build(BuildContext context) {
     UserFunnelDTO funnelDTO = UserFunnelDTO(
         funnel: ref.watch(oneLinkProvider)?['media_source'] ??
-            ref.watch(deepLinkProvider)?.mediaSource,
+            ref.watch(deepLinkProvider)?.mediaSource.toString(),
         refCode: ref.watch(oneLinkProvider)?['af_sub1'] ??
-            ref.watch(deepLinkProvider)?.afSub1);
+            ref.watch(deepLinkProvider)?.afSub1.toString());
     return TitleLayout(
       withAppBar: true,
       title: Text(

@@ -10,7 +10,7 @@ Mutation<void, UserFunnelDTO> getUserFunnelMutation({
   return Mutation<void, UserFunnelDTO>(
     queryFn: (dto) async {
       await sendUserFunnel(dto.funnel);
-      if(dto.refCode != null) {
+      if (dto.refCode != null && dto.refCode!.isNotEmpty) {
         await sendUserRefCode(dto.refCode!);
       }
     },
