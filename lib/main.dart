@@ -102,6 +102,7 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       onelinkService.appsflyerSdk!.onInstallConversionData((res) {
         if (res['status'] == 'success') {
