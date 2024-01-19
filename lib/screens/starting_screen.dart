@@ -12,7 +12,9 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/actions/client.dart';
+import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/providers/character_provider.dart';
+import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
@@ -20,6 +22,8 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import '../actions/notification/actions.dart';
 import '../widgets/common/alert/alert_description_widget.dart';
 import '../widgets/common/alert/alert_widget.dart';
+
+const _IS_FIRST_INSTALL_KEY = 'IS_FIRST_INSTALL';
 
 class StartingScreen extends ConsumerStatefulWidget {
   const StartingScreen({super.key});
@@ -36,6 +40,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     await _requestAppTracking();
     await _checkAppAvailability();
     await _checkUpdateAvailable();
+    await _checkFinishTutorial();
     if (!mounted) return;
     initServerErrorSnackbar(context);
 
@@ -114,6 +119,17 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
         await AppTrackingTransparency.trackingAuthorizationStatus;
     if (status == TrackingStatus.notDetermined) {
       await AppTrackingTransparency.requestTrackingAuthorization();
+    }
+  }
+
+  _checkFinishTutorial() async {
+    final storage = getSecureStorage();
+    final String? isFirstInstall = await storage.read(key: _IS_FIRST_INSTALL_KEY);
+    if(!mounted) return;
+    if (isFirstInstall == null) {
+      ref.read(isFirstInstallProvider.notifier).state = true;
+    } else {
+      ref.read(isFirstInstallProvider.notifier).state = false;
     }
   }
 

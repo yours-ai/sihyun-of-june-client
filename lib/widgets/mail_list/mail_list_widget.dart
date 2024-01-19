@@ -379,7 +379,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                     height: 22 / 16,
                                     fontWeight: FontWeight.normal,
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),

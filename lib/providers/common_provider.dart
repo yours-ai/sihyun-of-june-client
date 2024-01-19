@@ -16,3 +16,7 @@ final firebaseMessagingListenerProvider =
     'onMessageOpenedApp': null,
   };
 });
+
+final isFirstInstallProvider = StateProvider<bool>((ref) {
+  return false;
+});
