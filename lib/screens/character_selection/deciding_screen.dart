@@ -98,7 +98,7 @@ class CharacterSelectionDecidingScreen extends ConsumerWidget {
                                       }
                                       num id = character.id;
                                       context.pushNamed(
-                                          DecidedRouteNames.character,
+                                          RouteNames.character,
                                           pathParameters: {
                                             'id': id.toString()
                                           });

@@ -12,6 +12,7 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/actions/client.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
@@ -132,7 +133,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       final isNewUser = isNewUserRawData.data!['is_available'];
       if (isNewUser) {
         if (!mounted) return;
-        context.go('/assignment');
+        context.go(RoutePaths.newUserAssignmentStarting);
       } else {
         if (!mounted) return;
         context.go('/mails');

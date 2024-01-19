@@ -73,7 +73,7 @@ class _CharacterSelectionDecidedCharacterScreenState
                                 ),
                               ),
                               onPressed: () => context.pushNamed(
-                                DecidedRouteNames.confirm,
+                                RouteNames.confirm,
                                 queryParameters: {
                                   'id': widget.id.toString(),
                                   'firstName': state.data!.first_name!,

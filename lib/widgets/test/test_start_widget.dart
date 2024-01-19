@@ -53,8 +53,6 @@ class _TestStartWidget extends State<TestStartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final query = getRetrieveMeQuery();
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorConstants.background,
@@ -63,7 +61,7 @@ class _TestStartWidget extends State<TestStartWidget> {
       ),
       body: SafeArea(
         child: QueryBuilder(
-          query: query,
+          query: getRetrieveMeQuery(),
           builder: (context, state) {
             if (state.data == null) {
               return const SizedBox.shrink();

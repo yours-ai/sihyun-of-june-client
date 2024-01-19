@@ -40,9 +40,13 @@ abstract final class TabRoutePaths {
   static String all = '/all';
 }
 
-abstract final class DecidedRouteNames {
+abstract final class RouteNames {
   static String character = 'decided-character';
   static String confirm = 'decided-confirm';
+}
+
+abstract final class RoutePaths {
+  static String newUserAssignmentStarting = '/new-user-assignment-starting';
 }
 
 abstract final class Urls {

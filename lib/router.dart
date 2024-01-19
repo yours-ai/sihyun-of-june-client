@@ -9,6 +9,7 @@ import 'package:project_june_client/screens/all_tab/point_log_screen.dart';
 import 'package:project_june_client/screens/all_tab/share_screen.dart';
 import 'package:project_june_client/screens/assignment/assignment_screen.dart';
 import 'package:project_june_client/screens/assignment/decide_method_screen.dart';
+import 'package:project_june_client/screens/assignment/new_user_assignment_starting_screen.dart';
 import 'package:project_june_client/screens/character_selection/decided_character_screen.dart';
 import 'package:project_june_client/screens/character_selection/decided_confirm_screen.dart';
 import 'package:project_june_client/screens/character_selection/deciding_screen.dart';
@@ -69,6 +70,10 @@ final router = GoRouter(
     GoRoute(
       path: '/assignment',
       builder: (context, state) => const AssignmentScreen(),
+    ),
+    GoRoute(
+      path: RoutePaths.newUserAssignmentStarting,
+      builder: (context, state) => const NewUserAssignmentStartingScreen(),
     ),
     ShellRoute(
       navigatorKey: shellNavigatorKey,
@@ -221,14 +226,14 @@ final router = GoRouter(
       routes: [
         GoRoute(
           path: 'character/:id',
-          name: DecidedRouteNames.character,
+          name: RouteNames.character,
           builder: (context, state) => CharacterSelectionDecidedCharacterScreen(
             id: int.tryParse(state.pathParameters['id']!)!,
           ),
         ),
         GoRoute(
           path: 'confirm',
-          name: DecidedRouteNames.confirm,
+          name: RouteNames.confirm,
           builder: (context, state) => CharacterSelectionDecidedConfirmScreen(
             characterId: int.tryParse(state.uri.queryParameters['id']!)!,
             firstName: state.uri.queryParameters['firstName']!,
