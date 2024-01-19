@@ -12,7 +12,7 @@ import 'package:project_june_client/screens/assignment/decide_method_screen.dart
 import 'package:project_june_client/screens/character_selection/decided_character_screen.dart';
 import 'package:project_june_client/screens/character_selection/decided_confirm_screen.dart';
 import 'package:project_june_client/screens/character_selection/deciding_screen.dart';
-import 'package:project_june_client/screens/assignment/start_screen.dart';
+import 'package:project_june_client/screens/assignment/starting_screen.dart';
 import 'package:project_june_client/screens/mail/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail/mail_detail_screen.dart';
 import 'package:project_june_client/screens/all_tab/name_change_screen.dart';
@@ -26,7 +26,7 @@ import 'package:project_june_client/screens/retest/retest_confirm_screen.dart';
 import 'package:project_june_client/screens/retest/retest_extend_screen.dart';
 import 'package:project_june_client/screens/retest/retest_info_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
-import 'package:project_june_client/screens/character_test/character_choice_screen.dart';
+import 'package:project_june_client/screens/character_test/choice_screen.dart';
 import 'package:project_june_client/screens/character_test/test_screen.dart';
 import 'package:project_june_client/screens/all_tab/withdraw_screen.dart';
 import 'constants.dart';
@@ -59,7 +59,7 @@ final router = GoRouter(
         ]),
     GoRoute(
       path: '/character-choice',
-      builder: (context, state) => const CharacterChoiceScreen(),
+      builder: (context, state) => const TestChoiceScreen(),
     ),
     GoRoute(
       path: '/other-character/:id',
@@ -104,7 +104,7 @@ final router = GoRouter(
             ),
             GoRoute(
               path: 'assignment-start',
-              builder: (context, state) => const AssignmentStartScreen(),
+              builder: (context, state) => const AssignmentStartingScreen(),
               routes: [
                 GoRoute(
                   path: 'decide-method',

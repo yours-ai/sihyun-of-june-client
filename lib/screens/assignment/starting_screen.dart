@@ -1,6 +1,5 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
@@ -12,8 +11,8 @@ import 'package:project_june_client/widgets/character/not_chosen_list_widget.dar
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
-class AssignmentStartScreen extends ConsumerWidget {
-  const AssignmentStartScreen({super.key});
+class AssignmentStartingScreen extends ConsumerWidget {
+  const AssignmentStartingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

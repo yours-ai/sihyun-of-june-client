@@ -10,12 +10,12 @@ import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
-class ProfileDetailsScreen extends ConsumerStatefulWidget {
+class CharacterPhotoScreen extends ConsumerStatefulWidget {
   final List<CharacterImage> imageList;
   final int? index;
   final bool? isImageUpdated;
 
-  const ProfileDetailsScreen({
+  const CharacterPhotoScreen({
     required this.imageList,
     this.index,
     super.key,
@@ -23,10 +23,10 @@ class ProfileDetailsScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ProfileDetailsScreenView createState() => ProfileDetailsScreenView();
+  CharacterPhotoScreenState createState() => CharacterPhotoScreenState();
 }
 
-class ProfileDetailsScreenView extends ConsumerState<ProfileDetailsScreen> {
+class CharacterPhotoScreenState extends ConsumerState<CharacterPhotoScreen> {
   int _currentPage = 0;
 
   @override

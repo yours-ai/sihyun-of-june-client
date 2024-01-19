@@ -8,9 +8,9 @@ import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/character/profile_widget.dart';
 import 'package:project_june_client/widgets/character/view_others.dart';
 
-import '../../screens/character_test/character_choice_screen.dart';
+import '../../screens/character_test/choice_screen.dart';
 
-class CharacterDetailWidget extends ConsumerStatefulWidget {
+class TestCharacterDetailWidget extends ConsumerStatefulWidget {
   final void Function(ActiveScreen) onActiveScreen;
   final void Function({
     required TestReason reason,
@@ -19,14 +19,14 @@ class CharacterDetailWidget extends ConsumerStatefulWidget {
     required int characterId,
   }) onTestInfo;
 
-  const CharacterDetailWidget(
+  const TestCharacterDetailWidget(
       {super.key, required this.onActiveScreen, required this.onTestInfo});
 
   @override
-  CharacterDetailWidgetState createState() => CharacterDetailWidgetState();
+  TestCharacterDetailWidgetState createState() => TestCharacterDetailWidgetState();
 }
 
-class CharacterDetailWidgetState extends ConsumerState<CharacterDetailWidget> {
+class TestCharacterDetailWidgetState extends ConsumerState<TestCharacterDetailWidget> {
   double _toolTipOpacity = 1.0; // 그라데이션과 메시지의 투명도
 
   void _updateOpacity(ScrollNotification notification) {

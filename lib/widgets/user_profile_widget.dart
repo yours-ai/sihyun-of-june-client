@@ -11,7 +11,7 @@ import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 import '../constants.dart';
 import '../providers/character_provider.dart';
-import '../screens/character_profile/profile_details_screen.dart';
+import '../screens/character_profile/character_photo_screen.dart';
 import '../services.dart';
 import 'character_change_modal.dart';
 
@@ -75,7 +75,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               ? showModalBottomSheet(
                                   isScrollControlled: true,
                                   context: context,
-                                  builder: (context) => ProfileDetailsScreen(
+                                  builder: (context) => CharacterPhotoScreen(
                                     imageList: selectedCharacter!
                                         .character_info!.images!,
                                     index: mainImageSrc!.order - 1,

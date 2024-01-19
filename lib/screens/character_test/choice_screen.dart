@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/character/character_confirm_widget.dart';
-import '../../widgets/character/character_detail_widget.dart';
+import '../../widgets/test/confirm_widget.dart';
+import '../../widgets/test/character_detail_widget.dart';
 
 enum ActiveScreen { detail, confirm }
 
 enum TestReason { newUser, retest }
 
-class CharacterChoiceScreen extends StatefulWidget {
-  const CharacterChoiceScreen({super.key});
+class TestChoiceScreen extends StatefulWidget {
+  const TestChoiceScreen({super.key});
 
   @override
-  _CharacterChoiceScreen createState() => _CharacterChoiceScreen();
+  _TestChoiceScreenState createState() => _TestChoiceScreenState();
 }
 
-class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
+class _TestChoiceScreenState extends State<TestChoiceScreen> {
   ActiveScreen activeScreen = ActiveScreen.detail;
   late TestReason testReason;
 
@@ -54,10 +54,10 @@ class _CharacterChoiceScreen extends State<CharacterChoiceScreen> {
   Widget _getActiveScreenContent() {
     switch (activeScreen) {
       case ActiveScreen.detail:
-        return CharacterDetailWidget(
+        return TestCharacterDetailWidget(
             onActiveScreen: handleActiveScreen, onTestInfo: handleTestInfo);
       case ActiveScreen.confirm:
-        return CharacterConfirmWidget(
+        return TestConfirmWidget(
           selectedCharacterId: selectedCharacterId!,
           onActiveScreen: handleActiveScreen,
           testReason: testReason,

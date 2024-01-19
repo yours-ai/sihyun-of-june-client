@@ -10,7 +10,7 @@ import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/providers/mail_list_provider.dart';
-import 'package:project_june_client/screens/character_profile/profile_details_screen.dart';
+import 'package:project_june_client/screens/character_profile/character_photo_screen.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/mail_list/change_character_overlay_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
@@ -244,7 +244,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                 ? showModalBottomSheet(
                                     isScrollControlled: true,
                                     context: context,
-                                    builder: (context) => ProfileDetailsScreen(
+                                    builder: (context) => CharacterPhotoScreen(
                                       imageList: selectedCharacter
                                           .character_info!.images!,
                                       index: mainImageSrc.order - 1,

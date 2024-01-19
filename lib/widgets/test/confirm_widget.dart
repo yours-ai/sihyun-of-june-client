@@ -10,18 +10,18 @@ import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import '../../constants.dart';
 import '../../globals.dart';
-import '../../screens/character_test/character_choice_screen.dart';
+import '../../screens/character_test/choice_screen.dart';
 import '../../services.dart';
 import '../common/modal/modal_description_widget.dart';
 
-class CharacterConfirmWidget extends ConsumerStatefulWidget {
+class TestConfirmWidget extends ConsumerStatefulWidget {
   final int testId;
   final int selectedCharacterId;
   final String characterFirstName;
   final TestReason testReason;
   final void Function(ActiveScreen) onActiveScreen;
 
-  const CharacterConfirmWidget(
+  const TestConfirmWidget(
       {super.key,
       required this.onActiveScreen,
       required this.selectedCharacterId,
@@ -30,13 +30,13 @@ class CharacterConfirmWidget extends ConsumerStatefulWidget {
       required this.testReason});
 
   @override
-  CharacterConfirmWidgetState createState() {
-    return CharacterConfirmWidgetState();
+  TestConfirmWidgetState createState() {
+    return TestConfirmWidgetState();
   }
 }
 
-class CharacterConfirmWidgetState
-    extends ConsumerState<CharacterConfirmWidget> {
+class TestConfirmWidgetState
+    extends ConsumerState<TestConfirmWidget> {
   bool isEnableToClick = true;
 
   @override
