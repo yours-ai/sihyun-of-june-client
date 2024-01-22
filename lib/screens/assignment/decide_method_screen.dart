@@ -84,7 +84,7 @@ class AssignmentDecideMethodScreenState
                   createSnackBar(
                     snackBarText:
                         transactionService.getPurchaseStateText(arg.payment),
-                    characterColors: ColorTheme.defaultTheme.colors!,
+                    characterColors: ColorTheme.defaultTheme.colors,
                   ),
                 );
                 context.go('/assignment');
@@ -104,7 +104,7 @@ class AssignmentDecideMethodScreenState
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(isEnableToClick
                           ? ColorConstants.pink
-                          : Color(ColorTheme.defaultTheme.colors!.secondary!)),
+                          : Color(ColorTheme.defaultTheme.colors.secondary)),
                     ),
                     onPressed: () async {
                       if (isEnableToClick) {
@@ -156,7 +156,7 @@ class AssignmentDecideMethodScreenState
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(isEnableToClick
                           ? ColorConstants.pink
-                          : Color(ColorTheme.defaultTheme.colors!.secondary!)),
+                          : Color(ColorTheme.defaultTheme.colors.secondary)),
                     ),
                     onPressed: () async {
                       if (isEnableToClick) {

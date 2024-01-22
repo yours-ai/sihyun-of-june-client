@@ -146,8 +146,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                         selectedPage == index + 1
                             ? Color(ref
                                 .watch(characterThemeProvider)
-                                .colors!
-                                .primary!)
+                                .colors
+                                .primary)
                             : ColorConstants.veryLightGray,
                       ),
                     ),
@@ -202,7 +202,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
             }
             final selectedCharacter = selectedCharacterList.first;
             final mainImageSrc = characterService
-                .getMainImage(selectedCharacter.character_info!.images!);
+                .getMainImage(selectedCharacter.character_info.images);
             if (selectedPage == null) {
               selectedPage = selectedCharacter.date_allocated!.length;
               WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -246,7 +246,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                     context: context,
                                     builder: (context) => CharacterPhotoWidget(
                                       imageList: selectedCharacter
-                                          .character_info!.images!,
+                                          .character_info.images,
                                       index: mainImageSrc.order - 1,
                                       isImageUpdated:
                                           selectedCharacter.is_image_updated,
@@ -271,8 +271,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                 color: selectedCharacter.is_image_updated!
                                     ? Color(ref
                                         .watch(characterThemeProvider)
-                                        .colors!
-                                        .primary!)
+                                        .colors
+                                        .primary)
                                     : ColorConstants.background,
                                 // 테두리 색상
                                 width: 2.0, // 테두리 두께

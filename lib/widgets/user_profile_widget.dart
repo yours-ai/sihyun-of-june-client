@@ -53,7 +53,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                     character.id == ref.watch(selectedCharacterProvider))
                 .first;
             mainImageSrc = characterService
-                .getMainImage(selectedCharacter!.character_info!.images!);
+                .getMainImage(selectedCharacter!.character_info.images);
           } else {
             selectedCharacter = null;
             mainImageSrc = null;
@@ -77,7 +77,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                                   context: context,
                                   builder: (context) => CharacterPhotoWidget(
                                     imageList: selectedCharacter!
-                                        .character_info!.images!,
+                                        .character_info.images,
                                     index: mainImageSrc!.order - 1,
                                     isImageUpdated:
                                         selectedCharacter.is_image_updated,
@@ -101,8 +101,8 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               color: selectedCharacter.is_image_updated!
                                   ? Color(ref
                                       .watch(characterThemeProvider)
-                                      .colors!
-                                      .primary!)
+                                      .colors
+                                      .primary)
                                   : ColorConstants.background,
                               // 테두리 색상
                               width: 4.0, // 테두리 두께
@@ -139,8 +139,8 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               color: selectedCharacter.is_image_updated!
                                   ? Color(ref
                                       .watch(characterThemeProvider)
-                                      .colors!
-                                      .primary!)
+                                      .colors
+                                      .primary)
                                   : ColorConstants.gray,
                               width: 1.0,
                             ),
@@ -152,8 +152,8 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                                 color: selectedCharacter.is_image_updated!
                                     ? Color(ref
                                         .watch(characterThemeProvider)
-                                        .colors!
-                                        .primary!)
+                                        .colors
+                                        .primary)
                                     : ColorConstants.gray,
                                 height: 1.0)),
                       ),

@@ -36,11 +36,11 @@ class CharacterChangeListWidget extends ConsumerWidget {
               clipBehavior: Clip.hardEdge,
               child: ExtendedImage.network(
                 characterService
-                    .getMainImage(character.character_info!.images!)
+                    .getMainImage(character.character_info.images)
                     .src,
                 cacheMaxAge: ref.watch(imageCacheDurationProvider),
                 cacheKey: UniqueCacheKeyService.makeUniqueKey(characterService
-                    .getMainImage(character.character_info!.images!)
+                    .getMainImage(character.character_info.images)
                     .src),
                 width: 40,
                 height: 40,
@@ -50,12 +50,12 @@ class CharacterChangeListWidget extends ConsumerWidget {
           ),
           Expanded(
             child: Text(
-              character.name!,
+              character.name,
               style: TextStyle(
                   fontSize: 17,
                   color: isSelected
                       ? Color(
-                          ref.watch(characterThemeProvider).colors!.primary!,
+                          ref.watch(characterThemeProvider).colors.primary,
                         )
                       : ColorConstants.primary,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
@@ -63,8 +63,7 @@ class CharacterChangeListWidget extends ConsumerWidget {
           ),
           if (isSelected)
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: IconButton(
                 onPressed: () {
                   context.pop();
@@ -72,7 +71,7 @@ class CharacterChangeListWidget extends ConsumerWidget {
                 icon: Icon(
                   PhosphorIcons.check_circle_fill,
                   color:
-                      Color(ref.watch(characterThemeProvider).colors!.primary!),
+                      Color(ref.watch(characterThemeProvider).colors.primary),
                   size: 32,
                 ),
               ),

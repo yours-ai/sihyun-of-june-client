@@ -31,8 +31,8 @@ class NewUserAssignmentStartingScreen extends StatelessWidget {
                 softWrap: true,
                 textAlign: TextAlign.center,
               ),
-              body: Center(child: Image.asset('assets/images/landing/test_image.png')
-              ),
+              body: Center(
+                  child: Image.asset('assets/images/landing/test_image.png')),
               actions: FilledButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
@@ -48,6 +48,6 @@ class NewUserAssignmentStartingScreen extends StatelessWidget {
           },
         ),
       ),
-    );;
+    );
   }
 }

@@ -39,7 +39,7 @@ class NotChosenListWidget extends ConsumerWidget {
               children: filteredCharacters.map(
                 (character) {
                   final mainImageSrc = characterService
-                      .getMainImage(character.character_info!.images!);
+                      .getMainImage(character.character_info.images);
                   return GestureDetector(
                     onTap: () {
                       if (!character.is_active) {

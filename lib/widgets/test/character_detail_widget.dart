@@ -23,10 +23,12 @@ class TestCharacterDetailWidget extends ConsumerStatefulWidget {
       {super.key, required this.onActiveScreen, required this.onTestInfo});
 
   @override
-  TestCharacterDetailWidgetState createState() => TestCharacterDetailWidgetState();
+  TestCharacterDetailWidgetState createState() =>
+      TestCharacterDetailWidgetState();
 }
 
-class TestCharacterDetailWidgetState extends ConsumerState<TestCharacterDetailWidget> {
+class TestCharacterDetailWidgetState
+    extends ConsumerState<TestCharacterDetailWidget> {
   double _toolTipOpacity = 1.0; // 그라데이션과 메시지의 투명도
 
   void _updateOpacity(ScrollNotification notification) {
@@ -50,7 +52,7 @@ class TestCharacterDetailWidgetState extends ConsumerState<TestCharacterDetailWi
         String testReason = state.data!['test_reason'];
         character = Character.fromJson(state.data!['character']);
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          ref.read(characterThemeProvider.notifier).state = character!.theme!;
+          ref.read(characterThemeProvider.notifier).state = character!.theme;
         });
         return Scaffold(
           body: Stack(
@@ -76,10 +78,10 @@ class TestCharacterDetailWidgetState extends ConsumerState<TestCharacterDetailWi
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               child: ProfileWidget(
-                                name: character.name!,
-                                characterInfo: character.character_info!,
+                                name: character.name,
+                                characterInfo: character.character_info,
                                 primaryColor:
-                                    Color(character.theme!.colors!.primary!),
+                                    Color(character.theme.colors.primary),
                                 isImageUpdated: character.is_image_updated,
                               ),
                             ),
@@ -95,7 +97,7 @@ class TestCharacterDetailWidgetState extends ConsumerState<TestCharacterDetailWi
                                         ? TestReason.newUser
                                         : TestReason.retest,
                                     testId: state.data!['test_id'],
-                                    firstName: character!.first_name!,
+                                    firstName: character!.first_name,
                                     characterId: character.id);
                                 widget.onActiveScreen(ActiveScreen.confirm);
                               },

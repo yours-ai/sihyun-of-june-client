@@ -94,8 +94,7 @@ class OverlayComponentWidget extends ConsumerWidget {
                     : 'D+${mailService.getMailDateDiff(DateTime.now(), character!.date_allocated!.first) + 1} ${character?.name}',
                 style: TextStyle(
                   color: isSelected
-                      ? Color(
-                          ref.watch(characterThemeProvider).colors!.primary!)
+                      ? Color(ref.watch(characterThemeProvider).colors.primary)
                       : ColorConstants.neutral,
                   fontSize: 20,
                   height: 1,
@@ -121,10 +120,10 @@ class OverlayComponentWidget extends ConsumerWidget {
                           cacheKey: UniqueCacheKeyService.makeUniqueKey(
                               characterService
                                   .getMainImage(
-                                      character!.character_info!.images!)
+                                      character!.character_info.images)
                                   .src),
                           characterService
-                              .getMainImage(character!.character_info!.images!)
+                              .getMainImage(character!.character_info.images)
                               .src,
                           fit: BoxFit.cover,
                           width: 40,

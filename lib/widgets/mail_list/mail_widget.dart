@@ -47,10 +47,10 @@ class MailWidget extends ConsumerWidget {
                 children: [
                   letterIcon(
                       mailState,
-                      "#${ref.watch(characterThemeProvider).colors!.primary!.toRadixString(16).toString().substring(
+                      "#${ref.watch(characterThemeProvider).colors.primary.toRadixString(16).toString().substring(
                             2,
                           )}",
-                      "#${ref.watch(characterThemeProvider).colors!.secondary!.toRadixString(16).toString().substring(
+                      "#${ref.watch(characterThemeProvider).colors.secondary.toRadixString(16).toString().substring(
                             2,
                           )}"),
                   const SizedBox(height: 1),
@@ -67,10 +67,10 @@ class MailWidget extends ConsumerWidget {
               children: [
                 letterIcon(
                     mailState,
-                    "#${ref.watch(characterThemeProvider).colors!.primary!.toRadixString(16).toString().substring(
+                    "#${ref.watch(characterThemeProvider).colors.primary.toRadixString(16).toString().substring(
                           2,
                         )}",
-                    "#${ref.watch(characterThemeProvider).colors!.secondary!.toRadixString(16).toString().substring(
+                    "#${ref.watch(characterThemeProvider).colors.secondary.toRadixString(16).toString().substring(
                           2,
                         )}"),
                 const SizedBox(height: 1),

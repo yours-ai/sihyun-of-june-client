@@ -35,8 +35,7 @@ class TestConfirmWidget extends ConsumerStatefulWidget {
   }
 }
 
-class TestConfirmWidgetState
-    extends ConsumerState<TestConfirmWidget> {
+class TestConfirmWidgetState extends ConsumerState<TestConfirmWidget> {
   bool isEnableToClick = true;
 
   @override
@@ -155,14 +154,12 @@ class TestConfirmWidgetState
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                       isEnableToClick
-                          ? Color(ref
-                              .watch(characterThemeProvider)
-                              .colors!
-                              .primary!)
+                          ? Color(
+                              ref.watch(characterThemeProvider).colors.primary)
                           : Color(ref
                               .watch(characterThemeProvider)
-                              .colors!
-                              .secondary!),
+                              .colors
+                              .secondary),
                     ),
                   ),
                   onPressed: () {

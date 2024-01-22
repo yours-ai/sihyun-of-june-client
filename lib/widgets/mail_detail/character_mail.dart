@@ -17,17 +17,19 @@ class CharacterMailWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mainImage = characterService.getMainImage(characterInMail.character_info!.images!).src;
+    final mainImage = characterService
+        .getMainImage(characterInMail.character_info.images)
+        .src;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MailInfoWidget(
           byImage: mainImage,
           toFullName: mail.to_first_name,
-          byFullName: characterInMail.first_name!,
+          byFullName: characterInMail.first_name,
           availableAt: mail.available_at,
           isMe: false,
-          primaryColorInMail: characterInMail.theme!.colors!.primary!,
+          primaryColorInMail: characterInMail.theme.colors.primary,
         ),
         const SizedBox(
           height: 22,
@@ -35,7 +37,7 @@ class CharacterMailWidget extends ConsumerWidget {
         Text(
           mail.description,
           style: TextStyle(
-            fontFamily: characterInMail.theme!.font,
+            fontFamily: characterInMail.theme.font,
             fontSize: 19,
             fontWeight: FontWeightConstants.semiBold,
             color: ColorConstants.black,

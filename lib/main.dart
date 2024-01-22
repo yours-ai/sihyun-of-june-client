@@ -168,7 +168,7 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
               fontWeight: FontWeightConstants.semiBold,
             ),
             backgroundColor:
-                Color(ref.watch(characterThemeProvider).colors!.primary!),
+                Color(ref.watch(characterThemeProvider).colors.primary),
             splashFactory: NoSplash.splashFactory,
             padding: const EdgeInsets.symmetric(
               vertical: 17.0,
@@ -220,7 +220,7 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
         ),
       ),
       scrollBehavior: SplashScrollBehavior(
-          ref.watch(characterThemeProvider).colors!.primary!),
+          ref.watch(characterThemeProvider).colors.primary),
     );
   }
 }

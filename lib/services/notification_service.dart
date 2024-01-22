@@ -90,7 +90,7 @@ class NotificationService {
       int? notificationId = int.tryParse(message.data['id'] ?? '');
       scaffoldMessengerKey.currentState?.showSnackBar(createSnackBar(
           snackBarText: snackBarText,
-          characterColors: ref.watch(characterThemeProvider).colors!,
+          characterColors: ref.watch(characterThemeProvider).colors,
           onPressed: () {
             // id의 유무는 전체에게 보내면 id가 없고, 개인에게 보내면 id가 있음.
             if (notificationId == null || notificationId.isNaN) {

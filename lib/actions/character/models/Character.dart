@@ -8,10 +8,10 @@ part 'Character.g.dart';
 class Character {
   int id;
   bool is_active;
-  String? name;
-  String? first_name;
-  CharacterInfo? character_info;
-  CharacterTheme? theme;
+  String name;
+  String first_name;
+  CharacterInfo character_info;
+  CharacterTheme theme;
   bool? is_image_updated;
   List<DateTime>? date_allocated;
   bool? is_current;

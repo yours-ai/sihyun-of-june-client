@@ -160,7 +160,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
         logout();
         return;
       }
-      final selectedCharacterTheme = selectedCharacterList.first.theme!;
+      final selectedCharacterTheme = selectedCharacterList.first.theme;
       ref.read(characterThemeProvider.notifier).state = selectedCharacterTheme;
     }
   }

@@ -50,7 +50,7 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
   @override
   Widget build(BuildContext context) {
     final stackedImageList =
-        characterService.selectStackedImageList(widget.characterInfo.images!);
+        characterService.selectStackedImageList(widget.characterInfo.images);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -67,7 +67,7 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
                   isScrollControlled: true,
                   context: context,
                   builder: (context) => CharacterPhotoWidget(
-                    imageList: widget.characterInfo.images!,
+                    imageList: widget.characterInfo.images,
                     index: stackedImageList[index].order - 1,
                     isImageUpdated: widget.isImageUpdated,
                   ),
@@ -107,7 +107,7 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
         ),
         Center(
           child: Text(
-            '${widget.characterInfo.one_line_description}',
+            widget.characterInfo.one_line_description,
             style: TextStyle(
               color: ColorConstants.primary,
               fontFamily: 'NanumJungHagSaeng',
@@ -151,7 +151,7 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
           ),
         const SizedBox(height: 10),
         Text(
-          widget.characterInfo.description!,
+          widget.characterInfo.description,
           style: TextStyle(
             fontSize: 17,
             color: ColorConstants.neutral,

@@ -90,15 +90,14 @@ class CharacterSelectionDecidingScreen extends ConsumerWidget {
                                 (character) {
                                   final mainImageSrc =
                                       characterService.getMainImage(
-                                          character.character_info!.images!);
+                                          character.character_info.images);
                                   return GestureDetector(
                                     onTap: () {
                                       if (!character.is_active) {
                                         return;
                                       }
                                       num id = character.id;
-                                      context.pushNamed(
-                                          RouteNames.character,
+                                      context.pushNamed(RouteNames.character,
                                           pathParameters: {
                                             'id': id.toString()
                                           });

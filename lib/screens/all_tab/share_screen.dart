@@ -34,7 +34,7 @@ class ShareScreen extends ConsumerWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Color(
-                        ref.watch(characterThemeProvider).colors!.primary!),
+                        ref.watch(characterThemeProvider).colors.primary),
                   ),
                   children: <TextSpan>[
                     TextSpan(

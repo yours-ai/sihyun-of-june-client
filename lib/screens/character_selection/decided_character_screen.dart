@@ -60,28 +60,28 @@ class _CharacterSelectionDecidedCharacterScreenState
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               child: ProfileWidget(
                                 name: state.data!.name,
-                                characterInfo: state.data!.character_info!,
+                                characterInfo: state.data!.character_info,
                                 primaryColor:
-                                    Color(state.data!.theme!.colors!.primary!),
+                                    Color(state.data!.theme.colors.primary),
                                 isImageUpdated: state.data!.is_image_updated,
                               ),
                             ),
                             FilledButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                  Color(state.data!.theme!.colors!.primary!),
+                                  Color(state.data!.theme.colors.primary),
                                 ),
                               ),
                               onPressed: () => context.pushNamed(
                                 RouteNames.confirm,
                                 queryParameters: {
                                   'id': widget.id.toString(),
-                                  'firstName': state.data!.first_name!,
+                                  'firstName': state.data!.first_name,
                                   'primaryColor': state
-                                      .data!.theme!.colors!.primary!
+                                      .data!.theme.colors.primary
                                       .toString(),
                                   'secondaryColor': state
-                                      .data!.theme!.colors!.secondary!
+                                      .data!.theme.colors.secondary
                                       .toString(),
                                 },
                               ),

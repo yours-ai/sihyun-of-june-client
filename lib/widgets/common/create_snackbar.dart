@@ -8,18 +8,18 @@ SnackBar createSnackBar({
   VoidCallback? onPressed,
 }) {
   return SnackBar(
-    backgroundColor: Color(characterColors.inverse_surface!), // inverse_surface
+    backgroundColor: Color(characterColors.inverse_surface), // inverse_surface
     content: Text(snackBarText,
         style: TextStyle(
           fontSize: 14,
           height: 20 / 14,
           color:
-              Color(characterColors.inverse_on_surface!), // inverse_on_surface
+              Color(characterColors.inverse_on_surface), // inverse_on_surface
         )),
     behavior: SnackBarBehavior.floating,
     action: SnackBarAction(
       label: '확인',
-      textColor: Color(characterColors.inverse_primary!), // inverse_primary
+      textColor: Color(characterColors.inverse_primary), // inverse_primary
       onPressed: onPressed ??
           () {
             scaffoldMessengerKey.currentState?.hideCurrentSnackBar();

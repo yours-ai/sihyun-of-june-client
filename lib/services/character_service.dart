@@ -73,7 +73,7 @@ class CharacterService {
   void changeCharacterByTap(WidgetRef ref, Character character) async {
     saveSelectedCharacterId(character.id);
     ref.read(selectedCharacterProvider.notifier).state = character.id;
-    ref.read(characterThemeProvider.notifier).state = character.theme!;
+    ref.read(characterThemeProvider.notifier).state = character.theme;
   }
 
   List<int> getCharacterIds(List<Character> characterList) {
@@ -87,6 +87,6 @@ class CharacterService {
     return characterList
         .where((character) => character.is_current == true)
         .first
-        .first_name!;
+        .first_name;
   }
 }

@@ -6,18 +6,19 @@ part 'CharacterInfo.g.dart';
 
 @JsonSerializable()
 class CharacterInfo {
-  num? age;
-  String? one_line_description;
-  String? description;
-  List<CharacterImage>? images;
+  num age;
+  String one_line_description;
+  String description;
+  List<CharacterImage> images;
   List<CharacterSns>? sns;
 
-  CharacterInfo(
-      {this.age,
-      this.one_line_description,
-      this.description,
-      this.images,
-      this.sns});
+  CharacterInfo({
+    required this.age,
+    required this.one_line_description,
+    required this.description,
+    required this.images,
+    this.sns,
+  });
 
   factory CharacterInfo.fromJson(Map<String, dynamic> json) =>
       _$CharacterInfoFromJson(json);
