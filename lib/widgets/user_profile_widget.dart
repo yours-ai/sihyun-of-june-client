@@ -43,7 +43,12 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
         query: widget.retrieveMyCharacterQuery,
         builder: (context, state) {
           if (state.status != QueryStatus.success) {
-            return const SizedBox.shrink();
+            return const SizedBox(
+              height: 184,
+              child: Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            );
           }
           late final Character? selectedCharacter;
           late final CharacterImage? mainImageSrc;
