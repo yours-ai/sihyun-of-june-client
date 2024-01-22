@@ -284,8 +284,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                 height: 40,
                                 width: 40,
                                 child: ExtendedImage.network(
-                                  cacheMaxAge:
-                                      ref.watch(imageCacheDurationProvider),
+                                  cacheMaxAge: CachingDuration.image,
                                   cacheKey: UniqueCacheKeyService.makeUniqueKey(
                                       mainImageSrc.src),
                                   mainImageSrc.src,

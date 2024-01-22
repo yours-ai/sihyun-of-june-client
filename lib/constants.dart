@@ -17,6 +17,13 @@ abstract final class ColorConstants {
   static Color black = const Color(0xff1a1a1a);
 }
 
+abstract final class CachingDuration {
+  static Duration image = const Duration(days: 1);
+  static Duration character = const Duration(days: 1);
+  static Duration assignment = Duration.zero;
+
+}
+
 abstract final class ColorTheme {
   static CharacterTheme defaultTheme = CharacterTheme(
     colors: CharacterColors(

@@ -106,8 +106,7 @@ class CharacterPhotoWidgetState extends ConsumerState<CharacterPhotoWidget> {
                               fit: BoxFit.fitWidth,
                               mode: ExtendedImageMode.gesture,
                               enableSlideOutPage: true,
-                              cacheMaxAge:
-                                  ref.watch(imageCacheDurationProvider),
+                              cacheMaxAge: CachingDuration.image,
                               cacheKey: UniqueCacheKeyService.makeUniqueKey(
                                   widget.imageList[index].src),
                             ),
@@ -141,7 +140,7 @@ class CharacterPhotoWidgetState extends ConsumerState<CharacterPhotoWidget> {
                         fit: BoxFit.fitWidth,
                         mode: ExtendedImageMode.gesture,
                         enableSlideOutPage: true,
-                        cacheMaxAge: ref.watch(imageCacheDurationProvider),
+                        cacheMaxAge: CachingDuration.image,
                         cacheKey: UniqueCacheKeyService.makeUniqueKey(
                             widget.imageList[index].src),
                         initGestureConfigHandler: (state) {

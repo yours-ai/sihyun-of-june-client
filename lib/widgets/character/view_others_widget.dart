@@ -68,8 +68,7 @@ class ViewOthersWidget extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(12),
                                     child: ExtendedImage.network(
                                       mainImageSrc.src,
-                                      cacheMaxAge:
-                                          ref.watch(imageCacheDurationProvider),
+                                      cacheMaxAge: CachingDuration.image,
                                       cacheKey:
                                           UniqueCacheKeyService.makeUniqueKey(
                                               mainImageSrc.src),

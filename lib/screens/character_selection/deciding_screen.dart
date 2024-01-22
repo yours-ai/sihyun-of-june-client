@@ -113,8 +113,8 @@ class CharacterSelectionDecidingScreen extends ConsumerWidget {
                                                     BorderRadius.circular(12),
                                                 child: ExtendedImage.network(
                                                   mainImageSrc.src,
-                                                  cacheMaxAge: ref.watch(
-                                                      imageCacheDurationProvider),
+                                                  cacheMaxAge:
+                                                      CachingDuration.image,
                                                   cacheKey:
                                                       UniqueCacheKeyService
                                                           .makeUniqueKey(

@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/character/actions.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
+import 'package:project_june_client/constants.dart';
 
 import 'models/Character.dart';
 import 'models/Question.dart';
@@ -33,7 +34,7 @@ Query<Map<String, dynamic>> getTestStatusQuery({
   return Query(
     key: "test-status",
     config: QueryConfig(
-      cacheDuration: Duration.zero,
+      cacheDuration: CachingDuration.assignment,
     ),
     queryFn: fetchTestStatus,
     onError: onError,
@@ -66,7 +67,7 @@ Query<Character> getCharacterQuery({
 }) {
   return Query(
     config: QueryConfig(
-      cacheDuration: const Duration(days: 1),
+      cacheDuration: CachingDuration.character,
     ),
     key: 'character/${id.toString()}',
     queryFn: () => fetchCharacterById(id),
@@ -198,7 +199,7 @@ Query<Map<String, dynamic>> getSelectionStatusQuery({
   return Query(
     key: "selection-status",
     config: QueryConfig(
-      cacheDuration: Duration.zero,
+      cacheDuration: CachingDuration.assignment,
     ),
     queryFn: fetchSelectionStatus,
     onError: onError,
