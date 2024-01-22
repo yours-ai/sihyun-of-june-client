@@ -6,7 +6,7 @@ import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/character/profile_widget.dart';
-import 'package:project_june_client/widgets/character/view_others.dart';
+import 'package:project_june_client/widgets/character/view_others_widget.dart';
 
 import '../../screens/character_test/choice_screen.dart';
 

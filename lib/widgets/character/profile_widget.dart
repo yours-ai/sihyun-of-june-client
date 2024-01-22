@@ -7,7 +7,7 @@ import 'package:project_june_client/actions/character/models/CharacterInfo.dart'
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
-import 'package:project_june_client/screens/character_profile/character_photo_screen.dart';
+import 'package:project_june_client/widgets/character/character_photo_widget.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -66,7 +66,7 @@ class ProfileWidgetState extends ConsumerState<ProfileWidget> {
                 showModalBottomSheet(
                   isScrollControlled: true,
                   context: context,
-                  builder: (context) => CharacterPhotoScreen(
+                  builder: (context) => CharacterPhotoWidget(
                     imageList: widget.characterInfo.images!,
                     index: stackedImageList[index].order - 1,
                     isImageUpdated: widget.isImageUpdated,

@@ -10,12 +10,12 @@ import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
-class CharacterPhotoScreen extends ConsumerStatefulWidget {
+class CharacterPhotoWidget extends ConsumerStatefulWidget {
   final List<CharacterImage> imageList;
   final int? index;
   final bool? isImageUpdated;
 
-  const CharacterPhotoScreen({
+  const CharacterPhotoWidget({
     required this.imageList,
     this.index,
     super.key,
@@ -23,10 +23,10 @@ class CharacterPhotoScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  CharacterPhotoScreenState createState() => CharacterPhotoScreenState();
+  CharacterPhotoWidgetState createState() => CharacterPhotoWidgetState();
 }
 
-class CharacterPhotoScreenState extends ConsumerState<CharacterPhotoScreen> {
+class CharacterPhotoWidgetState extends ConsumerState<CharacterPhotoWidget> {
   int _currentPage = 0;
 
   @override
