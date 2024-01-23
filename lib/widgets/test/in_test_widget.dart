@@ -52,15 +52,13 @@ class InTestWidgetState extends ConsumerState<InTestWidget> {
         );
       });
       mutation!.mutate();
-      characterService.deleteSelectedCharacterId();
-      ref.read(selectedCharacterProvider.notifier).state = null;
     });
   }
 
-  void addUserResponse(int question_id, int choice) {
+  void addUserResponse(int questionId, int choice) {
     setState(() {
       answerList.addAnswer(AnswerDTO(
-        question_id: question_id,
+        question_id: questionId,
         choice: choice,
       ));
     });

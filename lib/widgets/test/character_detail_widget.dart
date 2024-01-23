@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
@@ -17,6 +18,7 @@ class TestCharacterDetailWidget extends ConsumerStatefulWidget {
     required int testId,
     required String firstName,
     required int characterId,
+    required CharacterTheme characterTheme,
   }) onTestInfo;
 
   const TestCharacterDetailWidget(
@@ -41,121 +43,137 @@ class TestCharacterDetailWidgetState
 
   @override
   Widget build(BuildContext context) {
-    final query = getPendingTestQuery();
     return QueryBuilder(
-      query: query,
-      builder: (context, state) {
-        Character? character;
-        if (state.data == null) {
-          return const SizedBox.shrink();
+      query: getPendingTestQuery(),
+      builder: (context, testState) {
+        if (testState.status != QueryStatus.success || testState.data == null) {
+          return const Center(
+            child: CircularProgressIndicator.adaptive(),
+          );
         }
-        String testReason = state.data!['test_reason'];
-        character = Character.fromJson(state.data!['character']);
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          ref.read(characterThemeProvider.notifier).state = character!.theme;
-        });
-        return Scaffold(
-          body: Stack(
-            children: [
-              SafeArea(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+        return QueryBuilder(
+            query: getCharacterQuery(id: testState.data!['character_id']),
+            builder: (context, characterState) {
+              if (characterState.status != QueryStatus.success ||
+                  characterState.data == null) {
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              }
+              final Character character = characterState.data!;
+              return Scaffold(
+                body: Stack(
                   children: [
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Expanded(
-                      child: NotificationListener(
-                        onNotification: (ScrollNotification notification) {
-                          _updateOpacity(notification);
-                          return true;
-                        },
-                        child: ListView(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: ProfileWidget(
-                                name: character.name,
-                                characterInfo: character.character_info,
-                                primaryColor:
-                                    Color(character.theme.colors.primary),
-                                isImageUpdated: character.is_image_updated,
+                    SafeArea(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(
+                            height: 50,
+                          ),
+                          Expanded(
+                            child: NotificationListener(
+                              onNotification:
+                                  (ScrollNotification notification) {
+                                _updateOpacity(notification);
+                                return true;
+                              },
+                              child: ListView(
+                                padding: const EdgeInsets.fromLTRB(
+                                    20.0, 10.0, 20.0, 20.0),
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: ProfileWidget(
+                                      name: character.name,
+                                      characterInfo: character.character_info,
+                                      primaryColor:
+                                          Color(character.theme.colors.primary),
+                                      isImageUpdated:
+                                          character.is_image_updated,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: ViewOthersWidget(
+                                        excludeId: character.id),
+                                  ),
+                                  FilledButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        Color(character.theme.colors.primary),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      widget.onTestInfo(
+                                        reason: TestReason.retest,
+                                        testId: testState.data!['test_id'],
+                                        firstName: character.first_name,
+                                        characterId: character.id,
+                                        characterTheme: character.theme,
+                                      );
+                                      widget
+                                          .onActiveScreen(ActiveScreen.confirm);
+                                    },
+                                    child: const Text('다음'),
+                                  ),
+                                ],
                               ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: ViewOthersWidget(excludeId: character.id),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: IgnorePointer(
+                        ignoring: _toolTipOpacity == 0.0,
+                        child: AnimatedOpacity(
+                          opacity: _toolTipOpacity,
+                          duration: const Duration(milliseconds: 500),
+                          child: Container(
+                            padding: const EdgeInsets.all(32),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [
+                                  Colors.black.withOpacity(0.8),
+                                  Colors.transparent
+                                ],
+                              ),
                             ),
-                            FilledButton(
-                              onPressed: () {
-                                widget.onTestInfo(
-                                    reason: testReason == 'NEW_USER'
-                                        ? TestReason.newUser
-                                        : TestReason.retest,
-                                    testId: state.data!['test_id'],
-                                    firstName: character!.first_name,
-                                    characterId: character.id);
-                                widget.onActiveScreen(ActiveScreen.confirm);
-                              },
-                              child: const Text('다음'),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: ColorConstants.background,
+                                    size: 32,
+                                  ),
+                                  Text(
+                                    '다른 상대도 살펴보세요!',
+                                    style: TextStyle(
+                                      color: ColorConstants.background,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: IgnorePointer(
-                  ignoring: _toolTipOpacity == 0.0,
-                  child: AnimatedOpacity(
-                    opacity: _toolTipOpacity,
-                    duration: const Duration(milliseconds: 500),
-                    child: Container(
-                      padding: const EdgeInsets.all(32),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [
-                            Colors.black.withOpacity(0.8),
-                            Colors.transparent
-                          ],
-                        ),
-                      ),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.keyboard_arrow_down,
-                              color: ColorConstants.background,
-                              size: 32,
-                            ),
-                            Text(
-                              '다른 상대도 살펴보세요!',
-                              style: TextStyle(
-                                color: ColorConstants.background,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
+              );
+            });
       },
     );
   }

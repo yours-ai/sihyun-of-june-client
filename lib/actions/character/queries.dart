@@ -45,6 +45,9 @@ Query<Map<String, dynamic>> getPendingTestQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
+    config: QueryConfig(
+      cacheDuration: CachingDuration.assignment,
+    ),
     key: "pending-test",
     queryFn: fetchPendingTest,
     onError: onError,
@@ -55,8 +58,11 @@ Query<List<Character>> getAllCharactersQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
+    config: QueryConfig(
+      cacheDuration: CachingDuration.character,
+    ),
     key: 'characters',
-    queryFn: fetchCharacters,
+    queryFn: fetchAllCharacters,
     onError: onError,
   );
 }

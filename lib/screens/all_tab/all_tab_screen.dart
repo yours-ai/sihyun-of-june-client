@@ -214,7 +214,9 @@ class AllTabScreenState extends State<AllTabScreen>
                     query: retrieveMyCharacterQuery,
                     builder: (context, state) {
                       if (state.status != QueryStatus.success) {
-                        return const SizedBox.shrink();
+                        return const Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        );
                       }
                       return MenuWidget(
                         title: '상대 변경하기',

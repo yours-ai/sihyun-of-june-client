@@ -23,7 +23,7 @@ Future<Map<String, dynamic>> fetchTestStatus() async {
 }
 
 Future<Map<String, dynamic>> fetchPendingTest() async {
-  final response = await dio.get('/character/v3/test/pending/');
+  final response = await dio.get('/character/v4/test/pending/');
   return response.data;
 }
 
@@ -32,7 +32,7 @@ Future<void> confirmTest(int id) async {
   return;
 }
 
-Future<List<Character>> fetchCharacters() async {
+Future<List<Character>> fetchAllCharacters() async {
   final response = await dio.get('/character/v3/characters/');
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
@@ -17,17 +18,20 @@ import '../common/modal/modal_description_widget.dart';
 class TestConfirmWidget extends ConsumerStatefulWidget {
   final int testId;
   final int selectedCharacterId;
-  final String characterFirstName;
+  final String selectedCharacterFirstName;
   final TestReason testReason;
   final void Function(ActiveScreen) onActiveScreen;
+  final CharacterTheme selectedCharacterTheme;
 
-  const TestConfirmWidget(
-      {super.key,
-      required this.onActiveScreen,
-      required this.selectedCharacterId,
-      required this.testId,
-      required this.characterFirstName,
-      required this.testReason});
+  const TestConfirmWidget({
+    super.key,
+    required this.onActiveScreen,
+    required this.selectedCharacterId,
+    required this.testId,
+    required this.selectedCharacterFirstName,
+    required this.testReason,
+    required this.selectedCharacterTheme,
+  });
 
   @override
   TestConfirmWidgetState createState() {
@@ -58,26 +62,26 @@ class TestConfirmWidgetState extends ConsumerState<TestConfirmWidget> {
               },
               onSubmit: () async {
                 if (isEnableToClick) {
-                  await characterService.deleteSelectedCharacterId();
-                  ref.read(selectedCharacterProvider.notifier).state =
-                      await null;
                   setState(() {
                     isEnableToClick = false;
                   });
-                  await getDenyTestChoiceMutation(onSuccess: (res, arg) {
-                    context.go('/mails/assignment-start');
-                  }, onError: (arg, error, fallback) {
-                    setState(() {
-                      isEnableToClick = true;
-                    });
-                    scaffoldMessengerKey.currentState?.showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+                  await getDenyTestChoiceMutation(
+                    onSuccess: (res, arg) {
+                      context.go('/mails/assignment-start');
+                    },
+                    onError: (arg, error, fallback) {
+                      setState(() {
+                        isEnableToClick = true;
+                      });
+                      scaffoldMessengerKey.currentState?.showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+                          ),
                         ),
-                      ),
-                    );
-                  }).mutate(widget.testId);
+                      );
+                    },
+                  ).mutate(widget.testId);
                 }
               },
             ),
@@ -108,7 +112,7 @@ class TestConfirmWidgetState extends ConsumerState<TestConfirmWidget> {
         child: TitleLayout(
           withAppBar: true,
           title: Text(
-            '${widget.characterFirstName}이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
+            '${widget.selectedCharacterFirstName}이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
             '편지가 올 거에요 :)',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge,
@@ -132,6 +136,8 @@ class TestConfirmWidgetState extends ConsumerState<TestConfirmWidget> {
               MutationBuilder(
                 mutation: getConfirmTestMutation(
                   onSuccess: (res, arg) async {
+                    ref.read(characterThemeProvider.notifier).state =
+                        widget.selectedCharacterTheme;
                     await characterService
                         .saveSelectedCharacterId(widget.selectedCharacterId);
                     if (!mounted) return;
@@ -154,12 +160,9 @@ class TestConfirmWidgetState extends ConsumerState<TestConfirmWidget> {
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                       isEnableToClick
-                          ? Color(
-                              ref.watch(characterThemeProvider).colors.primary)
-                          : Color(ref
-                              .watch(characterThemeProvider)
-                              .colors
-                              .secondary),
+                          ? Color(widget.selectedCharacterTheme.colors.primary)
+                          : Color(
+                              widget.selectedCharacterTheme.colors.secondary),
                     ),
                   ),
                   onPressed: () {
