@@ -125,102 +125,105 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
 
   @override
   Widget build(context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      title: '유월의 시현이',
-      routerConfig: router,
-      scaffoldMessengerKey: scaffoldMessengerKey,
-      theme: ThemeData(
-        fontFamily: 'Pretendard',
-        scaffoldBackgroundColor: ColorConstants.background,
-        colorScheme: ColorScheme(
-          brightness: Brightness.light,
-          primary: ColorConstants.primary,
-          onPrimary: ColorConstants.background,
-          secondary: ColorConstants.lightPink,
-          onSecondary: ColorConstants.background,
-          error: ColorConstants.alert,
-          onError: ColorConstants.background,
-          background: ColorConstants.background,
-          onBackground: ColorConstants.neutral,
-          surface: ColorConstants.background,
-          onSurface: ColorConstants.neutral,
-        ),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        splashFactory: NoSplash.splashFactory,
-        textTheme: TextTheme(
-          titleLarge: TextStyle(
-            fontFamily: 'NanumJungHagSaeng',
-            fontSize: 39,
-            height: 36 / 39,
-            color: ColorConstants.primary,
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle.dark,
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: '유월의 시현이',
+        routerConfig: router,
+        scaffoldMessengerKey: scaffoldMessengerKey,
+        theme: ThemeData(
+          fontFamily: 'Pretendard',
+          scaffoldBackgroundColor: ColorConstants.background,
+          colorScheme: ColorScheme(
+            brightness: Brightness.light,
+            primary: ColorConstants.primary,
+            onPrimary: ColorConstants.background,
+            secondary: ColorConstants.lightPink,
+            onSecondary: ColorConstants.background,
+            error: ColorConstants.alert,
+            onError: ColorConstants.background,
+            background: ColorConstants.background,
+            onBackground: ColorConstants.neutral,
+            surface: ColorConstants.background,
+            onSurface: ColorConstants.neutral,
           ),
-          bodySmall: TextStyle(
-            color: ColorConstants.primary,
-            fontSize: 16,
-            height: 1.5,
-          ),
-        ),
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            textStyle: TextStyle(
-              fontWeight: FontWeightConstants.semiBold,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          splashFactory: NoSplash.splashFactory,
+          textTheme: TextTheme(
+            titleLarge: TextStyle(
+              fontFamily: 'NanumJungHagSaeng',
+              fontSize: 39,
+              height: 36 / 39,
+              color: ColorConstants.primary,
             ),
-            backgroundColor:
-                Color(ref.watch(characterThemeProvider).colors.primary),
-            splashFactory: NoSplash.splashFactory,
-            padding: const EdgeInsets.symmetric(
-              vertical: 17.0,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
+            bodySmall: TextStyle(
+              color: ColorConstants.primary,
+              fontSize: 16,
+              height: 1.5,
             ),
           ),
-        ),
-        textButtonTheme: TextButtonThemeData(
-          style: FilledButton.styleFrom(
-            splashFactory: NoSplash.splashFactory,
-            padding: const EdgeInsets.symmetric(
-              vertical: 17.0,
+          filledButtonTheme: FilledButtonThemeData(
+            style: FilledButton.styleFrom(
+              textStyle: TextStyle(
+                fontWeight: FontWeightConstants.semiBold,
+              ),
+              backgroundColor:
+                  Color(ref.watch(characterThemeProvider).colors.primary),
+              splashFactory: NoSplash.splashFactory,
+              padding: const EdgeInsets.symmetric(
+                vertical: 17.0,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: FilledButton.styleFrom(
+              splashFactory: NoSplash.splashFactory,
+              padding: const EdgeInsets.symmetric(
+                vertical: 17.0,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
+            ),
+          ),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: OutlinedButton.styleFrom(
+              splashFactory: NoSplash.splashFactory,
+              side: BorderSide(
+                color: ColorConstants.gray,
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 17.0,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
+            ),
+          ),
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            backgroundColor: ColorConstants.background,
+            elevation: 0,
+            unselectedItemColor: ColorConstants.primary,
+          ),
+          cardTheme: CardTheme(
+            elevation: 0,
+            color: ColorConstants.background,
+          ),
+          listTileTheme: const ListTileThemeData(
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 26,
+              vertical: 8,
             ),
           ),
         ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            splashFactory: NoSplash.splashFactory,
-            side: BorderSide(
-              color: ColorConstants.gray,
-            ),
-            padding: const EdgeInsets.symmetric(
-              vertical: 17.0,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
-            ),
-          ),
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: ColorConstants.background,
-          elevation: 0,
-          unselectedItemColor: ColorConstants.primary,
-        ),
-        cardTheme: CardTheme(
-          elevation: 0,
-          color: ColorConstants.background,
-        ),
-        listTileTheme: const ListTileThemeData(
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 26,
-            vertical: 8,
-          ),
-        ),
+        scrollBehavior: SplashScrollBehavior(
+            ref.watch(characterThemeProvider).colors.primary),
       ),
-      scrollBehavior: SplashScrollBehavior(
-          ref.watch(characterThemeProvider).colors.primary),
     );
   }
 }

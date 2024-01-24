@@ -8,6 +8,7 @@ part 'CharacterInfo.g.dart';
 class CharacterInfo {
   num age;
   String one_line_description;
+  String summary_description;
   String description;
   List<CharacterImage> images;
   List<CharacterSns>? sns;
@@ -15,6 +16,7 @@ class CharacterInfo {
   CharacterInfo({
     required this.age,
     required this.one_line_description,
+    required this.summary_description,
     required this.description,
     required this.images,
     this.sns,

@@ -13,7 +13,7 @@ class ProductWidget extends StatefulWidget {
   final bool isProcessing;
   final InAppPurchase inAppPurchase;
 
-  ProductWidget({
+  const ProductWidget({
     Key? key,
     required this.product,
     required this.isProcessing,

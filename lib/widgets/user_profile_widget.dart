@@ -75,21 +75,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                   children: [
                     Center(
                       child: GestureDetector(
-                        onTap: () {
-                          selectedCharacter!.is_image_updated!
-                              ? showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  context: context,
-                                  builder: (context) => CharacterPhotoWidget(
-                                    imageList: selectedCharacter!
-                                        .character_info.images,
-                                    index: mainImageSrc!.order - 1,
-                                    isImageUpdated:
-                                        selectedCharacter.is_image_updated,
-                                  ),
-                                )
-                              : context.push('/mails/my-character');
-                        },
+                        onTap: () => context.push('/mails/my-character'),
                         onLongPressStart: (_) {
                           HapticFeedback.heavyImpact();
                         },

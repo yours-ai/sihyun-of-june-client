@@ -1,114 +1,69 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/actions/character/models/Character.dart';
+import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/widgets/character/view_others_widget.dart';
-import 'package:project_june_client/widgets/common/back_appbar.dart';
-import '../../actions/character/queries.dart';
-import '../../widgets/character/profile_widget.dart';
+import 'package:project_june_client/services.dart';
+import 'package:project_june_client/widgets/character/profile_list_widget.dart';
 
-class MyCharacterScreen extends ConsumerStatefulWidget {
+class MyCharacterScreen extends ConsumerWidget {
   const MyCharacterScreen({super.key});
 
-  @override
-  MyCharacterScreenState createState() => MyCharacterScreenState();
-}
-
-class MyCharacterScreenState extends ConsumerState<MyCharacterScreen> {
-  double _toolTipOpacity = 1.0; // 그라데이션과 메시지의 투명도
-
-  void _updateOpacity(ScrollNotification notification) {
-    if (notification.metrics.pixels > 50) {
-      setState(() => _toolTipOpacity = 0.0);
-    } else {
-      setState(() => _toolTipOpacity = 1.0);
+  List<Character> _sortCharacterList({
+    required List<Character> allCharacterList,
+    required List<Character> myCharacterList,
+    required int selectedCharacterId,
+  }) {
+    var selectedMyCharacterList = <Character>[];
+    var notSelectedMyCharacterList = <Character>[];
+    for (final myCharacter in myCharacterList) {
+      if (myCharacter.id == selectedCharacterId) {
+        selectedMyCharacterList.add(myCharacter);
+      } else {
+        notSelectedMyCharacterList.add(myCharacter);
+      }
     }
+    final myCharacterIdList = characterService.getCharacterIds(myCharacterList);
+    final notMyCharacterList = allCharacterList
+        .where((character) => !myCharacterIdList.contains(character.id))
+        .toList();
+    return [
+      ...selectedMyCharacterList,
+      ...notSelectedMyCharacterList,
+      ...notMyCharacterList,
+    ];
   }
 
   @override
-  Widget build(context) {
-    final query = getCharacterQuery(id: ref.watch(selectedCharacterProvider)!);
+  Widget build(BuildContext context, WidgetRef ref) {
     return QueryBuilder(
-      query: query,
-      builder: (context, state) {
-        if (state.status == QueryStatus.success) {
-          return Scaffold(
-            appBar: const BackAppbar(),
-            body: Stack(
-              children: [
-                SafeArea(
-                  child: NotificationListener(
-                    onNotification: (ScrollNotification notification) {
-                      _updateOpacity(notification);
-                      return true;
-                    },
-                    child: ListView(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 28.0,
-                        vertical: 10,
-                      ),
-                      children: [
-                        ProfileWidget(
-                          name: state.data!.name,
-                          characterInfo: state.data!.character_info,
-                          primaryColor: Color(state.data!.theme.colors.primary),
-                          isImageUpdated: state.data!.is_image_updated,
-                        ),
-                        ViewOthersWidget(excludeId: state.data!.id),
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: IgnorePointer(
-                    ignoring: _toolTipOpacity == 0.0,
-                    child: AnimatedOpacity(
-                      opacity: _toolTipOpacity,
-                      duration: const Duration(milliseconds: 500),
-                      child: Container(
-                        padding: const EdgeInsets.all(32),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [
-                              Colors.black.withOpacity(0.8),
-                              Colors.transparent
-                            ],
-                          ),
-                        ),
-                        child: Center(
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.keyboard_arrow_down,
-                                color: ColorConstants.background,
-                                size: 32,
-                              ),
-                              Text(
-                                '다른 상대도 살펴보세요!',
-                                style: TextStyle(
-                                  color: ColorConstants.background,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          return const SizedBox.shrink();
+      query: getAllCharactersQuery(),
+      builder: (context, allCharacterState) {
+        if (allCharacterState.status != QueryStatus.success ||
+            allCharacterState.data == null) {
+          return const Center(child: CircularProgressIndicator());
         }
+        return QueryBuilder(
+          query: getRetrieveMyCharacterQuery(),
+          builder: (context, myCharacterState) {
+            final selectedCharacterId = ref.watch(selectedCharacterProvider);
+            if (myCharacterState.status != QueryStatus.success ||
+                myCharacterState.data == null ||
+                selectedCharacterId == null) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            final sortedCharacterList = _sortCharacterList(
+              allCharacterList: allCharacterState.data!,
+              myCharacterList: myCharacterState.data!,
+              selectedCharacterId: selectedCharacterId,
+            );
+            return ProfileListWidget(
+              profileWidgetType: ProfileWidgetType.myCharacterProfile,
+              characterList: sortedCharacterList,
+            );
+          },
+        );
       },
     );
   }
