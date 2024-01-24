@@ -5,6 +5,8 @@ PODS:
     - Amplitude (= 8.16.1)
     - Flutter
   - AnalyticsConnector (1.0.3)
+  - app_tracking_transparency (0.0.1):
+    - Flutter
   - appsflyer_sdk (6.8.0):
     - AppsFlyerFramework (= 6.12.2)
     - Flutter
@@ -188,6 +190,7 @@ PODS:
 
 DEPENDENCIES:
   - amplitude_flutter (from `.symlinks/plugins/amplitude_flutter/ios`)
+  - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
@@ -239,6 +242,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   amplitude_flutter:
     :path: ".symlinks/plugins/amplitude_flutter/ios"
+  app_tracking_transparency:
+    :path: ".symlinks/plugins/app_tracking_transparency/ios"
   appsflyer_sdk:
     :path: ".symlinks/plugins/appsflyer_sdk/ios"
   connectivity_plus:
@@ -290,6 +295,7 @@ SPEC CHECKSUMS:
   Amplitude: fe18b3bbd880f2d9174b8109b79a77cd67687e2d
   amplitude_flutter: 6216e64320d2dbe4e5be2764381d93280499211f
   AnalyticsConnector: a53214d38ae22734c6266106c0492b37832633a9
+  app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
   appsflyer_sdk: beae2edc91c51ca92cad637534b45b22ff35d287
   AppsFlyerFramework: 6eb4d89d2eb9a6632317f1055b359d9fd85fd5ff
   connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d

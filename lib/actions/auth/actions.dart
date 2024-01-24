@@ -12,6 +12,7 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/services.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'models/Token.dart';
@@ -199,6 +200,7 @@ Future<void> logout() async {
   CachedQuery.instance.deleteCache();
   dio.options.headers.clear();
   characterService.deleteSelectedCharacterId();
+  Sentry.configureScope((scope) => scope.setUser(null));
   return;
 }
 

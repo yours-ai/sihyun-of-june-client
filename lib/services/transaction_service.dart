@@ -11,19 +11,24 @@ import '../actions/transaction/queries.dart';
 enum PurchaseState { coin, point, both, impossible }
 
 class TransactionService {
-  void purchaseUpdatedListener(BuildContext context,
+  bool purchaseUpdatedListener(BuildContext context,
       PurchaseDetails purchaseDetails, InAppPurchase inAppPurchase) {
     if (purchaseDetails.status == PurchaseStatus.pending) {
       _handlePendingTransaction(context, purchaseDetails);
-    } else if (purchaseDetails.status == PurchaseStatus.error ||
-        purchaseDetails.status == PurchaseStatus.canceled) {
-      _handleErrorTransaction(context, purchaseDetails, inAppPurchase);
-    } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-      _handlePurchasedTransaction(context, purchaseDetails, inAppPurchase);
+      return true;
+    } else {
+      if (purchaseDetails.status == PurchaseStatus.error ||
+          purchaseDetails.status == PurchaseStatus.canceled) {
+        _handleErrorTransaction(context, purchaseDetails, inAppPurchase);
+      }
+      else if (purchaseDetails.status == PurchaseStatus.purchased) {
+        _handlePurchasedTransaction(context, purchaseDetails, inAppPurchase);
+      }
+      return false;
     }
   }
 
-  var currencyFormatter = NumberFormat.currency(decimalDigits: 0, name: '');
+  final currencyFormatter = NumberFormat.currency(decimalDigits: 0, name: '');
 
   void _handlePendingTransaction(
       BuildContext context, PurchaseDetails purchaseDetails) {
@@ -67,25 +72,24 @@ class TransactionService {
   }
 
   PurchaseParam setPurchaseParam(ProductDetails productDetails) {
-    late PurchaseParam purchaseParam =
-        PurchaseParam(productDetails: productDetails);
     if (Platform.isAndroid) {
-      return purchaseParam = GooglePlayPurchaseParam(
+      return GooglePlayPurchaseParam(
         productDetails: productDetails,
       );
     } else {
-      return purchaseParam = PurchaseParam(
+      return PurchaseParam(
         productDetails: productDetails,
       );
     }
   }
 
-  void initiatePurchase(ProductDetails productDetails,
-      InAppPurchase inAppPurchase, List<String> kProductIds) async {
-    var purchaseParam = setPurchaseParam(productDetails);
+  void initiatePurchase(
+      ProductDetails productDetails, InAppPurchase inAppPurchase) async {
+    final purchaseParam = setPurchaseParam(productDetails);
     if (kProductIds.contains(productDetails.id)) {
       inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
     } else {
+      // 애초에 build 되지 않아서 사용되지 않는 로직.
       inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
     }
   }
@@ -106,7 +110,7 @@ class TransactionService {
   }
 
   List<ProductDetails> productListFromJson(List<Map<String, dynamic>> json) {
-    return json
+    final defaultProductList = json
         .map((e) => ProductDetails(
               id: e['id'],
               title: e['title'],
@@ -116,6 +120,8 @@ class TransactionService {
               rawPrice: e['rawPrice'],
             ))
         .toList();
+    defaultProductList.sort((a, b) => a.rawPrice.compareTo(b.rawPrice));
+    return defaultProductList;
   }
 
   PurchaseState getPurchaseState(

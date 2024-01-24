@@ -4,7 +4,7 @@
 
 ## Dependencies
 
-- [flutter 3.13.9](https://docs.flutter.dev/release/archive)
+- [flutter 3.16.5](https://docs.flutter.dev/release/archive)
 
 ## Setup
 

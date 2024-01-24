@@ -23,9 +23,10 @@ class CoinChargeScreen extends StatefulWidget {
 
 class _CoinChargeScreenState extends State<CoinChargeScreen> {
   late StreamSubscription<List<PurchaseDetails>> _subscription;
+  bool isProcessing = false;
 
   Future<void> handlePastTransactions() async {
-    var transactions = await SKPaymentQueueWrapper().transactions();
+    final transactions = await SKPaymentQueueWrapper().transactions();
     transactions.forEach(
       (SKPaymentTransactionWrapper) {
         SKPaymentQueueWrapper().finishTransaction(SKPaymentTransactionWrapper);
@@ -58,8 +59,10 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
     purchaseDetailsList.forEach(
       (PurchaseDetails purchaseDetails) async {
-        transactionService.purchaseUpdatedListener(
-            context, purchaseDetails, InAppPurchase.instance);
+        setState(() {
+          isProcessing = transactionService.purchaseUpdatedListener(
+              context, purchaseDetails, InAppPurchase.instance);
+        });
       },
     );
   }
@@ -72,7 +75,6 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
         child: QueryBuilder(
           query: getRetrieveMeQuery(),
           builder: (context, state) {
-            bool isProcessing = false;
             return state.data == null
                 ? const SizedBox.shrink()
                 : TitleLayout(
@@ -105,17 +107,41 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
                           QueryBuilder(
                             query: getStoreInfoQuery(),
                             builder: (context, state) {
-                              return state.data == null
-                                  ? const Center(
-                                      child: CircularProgressIndicator.adaptive(),
-                                    )
-                                  : ProductWidget(
-                                      products: transactionService
-                                          .productListFromJson(state.data!),
-                                      inAppPurchase: InAppPurchase.instance,
-                                      kProductIds: kProductIds,
-                                      isProcessing: isProcessing,
-                                    );
+                              if (state.status != QueryStatus.success ||
+                                  state.data == null ||
+                                  state.data!.isEmpty) {
+                                return const Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                );
+                              }
+                              return Column(
+                                children: [
+                                  if (isProcessing)
+                                    ...[
+                                      const Center(
+                                        child: CircularProgressIndicator
+                                            .adaptive(),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      const Text(
+                                        '결제가 진행중이오니\n잠시만 기다려주세요.',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ].toList()
+                                  else
+                                    ...transactionService
+                                        .productListFromJson(state.data!)
+                                        .map((product) => ProductWidget(
+                                              product: product,
+                                              inAppPurchase:
+                                                  InAppPurchase.instance,
+                                              isProcessing: isProcessing,
+                                            ))
+                                        .toList()
+                                ],
+                              );
                             },
                           ),
                           ExpansionTile(

@@ -14,6 +14,8 @@ class BuildTimeEnvironments {
       const String.fromEnvironment('AMPLITUDE_API_KEY');
   static String appsFlyerDevKey =
       const String.fromEnvironment('APPSFLYER_DEV_KEY'); // Not required
+  static bool isProduction =
+      const bool.fromEnvironment('IS_LIVE');
 }
 
 final REQUIRED_VARIABLES = {

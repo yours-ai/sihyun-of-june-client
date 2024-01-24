@@ -64,7 +64,7 @@ class CharacterChangeListWidget extends ConsumerWidget {
           if (isSelected)
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                  const EdgeInsets.symmetric(horizontal: 24.0),
               child: IconButton(
                 onPressed: () {
                   context.pop();

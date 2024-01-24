@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +8,14 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../actions/notification/actions.dart';
 import '../widgets/common/alert/alert_description_widget.dart';
@@ -30,6 +33,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     final isLogined = await loadIsLogined();
     FlutterNativeSplash.remove();
 
+    await _requestAppTracking();
     await _checkAppAvailability();
     await _checkUpdateAvailable();
     if (!mounted) return;
@@ -41,6 +45,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       return;
     }
 
+    _setUserInfoForSentry();
     await _initializeCharacterInfo();
     await _initializeNotificationHandlerIfAccepted();
     final push = await getPushIfPushClicked();
@@ -48,6 +53,20 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       notificationService.handleFCMMessageTap(push);
       return;
     }
+  }
+
+  _setUserInfoForSentry() async {
+    final userInfoRawData = await getRetrieveMeQuery().result;
+    Sentry.configureScope(
+      (scope) => scope
+        ..setUser(
+          SentryUser(
+            id: userInfoRawData.data!.id.toString(),
+            username: userInfoRawData.data!.last_name +
+                userInfoRawData.data!.first_name,
+          ),
+        ),
+    );
   }
 
   _checkAppAvailability() async {
@@ -87,6 +106,14 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
 
     if (Platform.isIOS) {
       await updateService.checkAndUpdateIOSApp(context);
+    }
+  }
+
+  _requestAppTracking() async {
+    final TrackingStatus status =
+        await AppTrackingTransparency.trackingAuthorizationStatus;
+    if (status == TrackingStatus.notDetermined) {
+      await AppTrackingTransparency.requestTrackingAuthorization();
     }
   }
 
