@@ -9,96 +9,77 @@ import 'package:project_june_client/widgets/common/dotted_underline.dart';
 import '../../services.dart';
 
 class ProductWidget extends StatefulWidget {
-  final List<ProductDetails> products;
+  final ProductDetails product;
+  final bool isProcessing;
   final InAppPurchase inAppPurchase;
-  final List<String> kProductIds;
-  bool isProcessing;
 
-  ProductWidget(
-      {Key? key,
-      required this.products,
-      required this.inAppPurchase,
-      required this.kProductIds,
-      required this.isProcessing})
-      : super(key: key);
+  ProductWidget({
+    Key? key,
+    required this.product,
+    required this.isProcessing,
+    required this.inAppPurchase,
+  }) : super(key: key);
 
   @override
   State<ProductWidget> createState() => _ProductWidgetState();
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
-  final List<Container> productList = [];
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  var currencyFormatter = NumberFormat.currency(decimalDigits: 0, name: '');
+  final currencyFormatter = transactionService.currencyFormatter;
 
   @override
   Widget build(BuildContext context) {
-    if (productList.isEmpty) {
-      productList.addAll(
-        widget.kProductIds.map(
-          (id) {
-            var product = widget.products.firstWhere(
-                (product) => product.id == id,
-                orElse: () => widget.products.first);
-            return Container(
-                color: ColorConstants.lightGray,
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        if (widget.isProcessing == false) {
-                          widget.isProcessing = true;
-                          setState(() {});
-                          transactionService.initiatePurchase(product,
-                              widget.inAppPurchase, widget.kProductIds);
-                        }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            height: 66,
-                            padding: const EdgeInsets.only(left: 28),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              Platform.isIOS
-                                  ? product.title
-                                  : product.title.substring(0, 9),
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.primary,
-                                fontWeight: FontWeightConstants.semiBold,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(right: 28),
-                            child: Text(
-                              product.currencyCode == 'KRW'
-                                  ? ('${currencyFormatter.format(product.rawPrice)}원')
-                                  : product.price.toString(),
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: ColorConstants.primary,
-                                fontWeight: FontWeightConstants.semiBold,
-                              ),
-                            ),
-                          ),
-                        ],
+    return GestureDetector(
+      onTap: () {
+        if (!widget.isProcessing) {
+          transactionService.initiatePurchase(
+              widget.product, widget.inAppPurchase);
+        }
+      },
+      child: Container(
+          color: widget.isProcessing
+              ? ColorConstants.background
+              : ColorConstants.lightGray,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: 66,
+                    padding: const EdgeInsets.only(left: 28),
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      Platform.isIOS
+                          ? widget.product.title
+                          : widget.product.title.substring(0, 9),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: ColorConstants.primary,
+                        fontWeight: FontWeightConstants.semiBold,
                       ),
                     ),
-                    const DottedUnderline(28),
-                  ],
-                ));
-          },
-        ),
-      );
-    }
-    return Column(children: productList);
+                  ),
+                  if (widget.isProcessing)
+                    const CircularProgressIndicator.adaptive(),
+                  Container(
+                    padding: const EdgeInsets.only(right: 28),
+                    child: Text(
+                      widget.product.currencyCode == 'KRW'
+                          ? ('${currencyFormatter.format(widget.product.rawPrice)}원')
+                          : widget.product.price.toString(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: ColorConstants.primary,
+                        fontWeight: FontWeightConstants.semiBold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const DottedUnderline(28),
+            ],
+          )),
+    );
   }
 }

@@ -21,9 +21,9 @@ Future<void> googleTransactionVerify(GoogleVerificationDTO dto) async {
 }
 
 Future<List<ProductDetails>> initStoreInfo(
-    List<String> ProductIds, InAppPurchase inAppPurchase) async {
+    List<String> productIds, InAppPurchase inAppPurchase) async {
   final ProductDetailsResponse response =
-      await InAppPurchase.instance.queryProductDetails(ProductIds.toSet());
+      await InAppPurchase.instance.queryProductDetails(productIds.toSet());
   return response.productDetails.toList();
 }
 
