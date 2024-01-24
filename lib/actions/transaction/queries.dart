@@ -60,7 +60,7 @@ Query<List<Map<String, dynamic>>> getStoreInfoQuery({
   return Query(
     key: 'store-info',
     queryFn: () async {
-      var detailsList =
+      final detailsList =
           await initStoreInfo(kProductIds, InAppPurchase.instance);
       return detailsList
           .map<Map<String, dynamic>>(
