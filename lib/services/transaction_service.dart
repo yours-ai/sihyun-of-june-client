@@ -20,8 +20,7 @@ class TransactionService {
       if (purchaseDetails.status == PurchaseStatus.error ||
           purchaseDetails.status == PurchaseStatus.canceled) {
         _handleErrorTransaction(context, purchaseDetails, inAppPurchase);
-      }
-      else if (purchaseDetails.status == PurchaseStatus.purchased) {
+      } else if (purchaseDetails.status == PurchaseStatus.purchased) {
         _handlePurchasedTransaction(context, purchaseDetails, inAppPurchase);
       }
       return false;
@@ -72,14 +71,18 @@ class TransactionService {
   }
 
   PurchaseParam setPurchaseParam(ProductDetails productDetails) {
+    late PurchaseParam purchaseParam =
+        PurchaseParam(productDetails: productDetails);
     if (Platform.isAndroid) {
-      return GooglePlayPurchaseParam(
+      purchaseParam = GooglePlayPurchaseParam(
         productDetails: productDetails,
       );
+      return purchaseParam;
     } else {
-      return PurchaseParam(
+      purchaseParam = PurchaseParam(
         productDetails: productDetails,
       );
+      return purchaseParam;
     }
   }
 
