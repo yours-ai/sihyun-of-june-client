@@ -70,25 +70,9 @@ class TransactionService {
     ).mutate(purchaseDetails);
   }
 
-  PurchaseParam setPurchaseParam(ProductDetails productDetails) {
-    late PurchaseParam purchaseParam =
-        PurchaseParam(productDetails: productDetails);
-    if (Platform.isAndroid) {
-      purchaseParam = GooglePlayPurchaseParam(
-        productDetails: productDetails,
-      );
-      return purchaseParam;
-    } else {
-      purchaseParam = PurchaseParam(
-        productDetails: productDetails,
-      );
-      return purchaseParam;
-    }
-  }
-
   void initiatePurchase(
       ProductDetails productDetails, InAppPurchase inAppPurchase) async {
-    final purchaseParam = setPurchaseParam(productDetails);
+    final purchaseParam = PurchaseParam(productDetails: productDetails);
     if (kProductIds.contains(productDetails.id)) {
       inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
     } else {
