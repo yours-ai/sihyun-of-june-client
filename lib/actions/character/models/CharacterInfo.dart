@@ -11,7 +11,7 @@ class CharacterInfo {
   String summary_description;
   String description;
   List<CharacterImage> images;
-  List<CharacterSns>? sns;
+  List<CharacterSns>? sns; // TODO: CharacterCinematic 추가해야 됨
 
   CharacterInfo({
     required this.age,
