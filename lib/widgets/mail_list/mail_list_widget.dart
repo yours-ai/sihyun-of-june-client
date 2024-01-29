@@ -32,7 +32,6 @@ class MailListWidget extends ConsumerStatefulWidget {
 class MailListWidgetState extends ConsumerState<MailListWidget>
     with TickerProviderStateMixin {
   int? selectedPage;
-  List<Widget>? mailWidgetList;
   final GlobalKey _targetKey = GlobalKey();
   AnimationController? profileChangeController, reloadMailController;
   Animation<double>? reloadMailFadeAnimation;
@@ -52,20 +51,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
     reloadMailFadeAnimation =
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(initializeMailListProvider.notifier).state = () {
-        setState(() {
-          mailWidgetList = null;
-          selectedPage = null;
-        });
-      };
       redirectRetest();
-    });
-  }
-
-  void initializeMailList() {
-    setState(() {
-      mailWidgetList = null;
-      selectedPage = null;
     });
   }
 
@@ -103,6 +89,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
           offset: offset,
           characterList: characterList,
           profileChangeController: profileChangeController!,
+          initializeSelectedPage: initializeSelectedPage,
         ),
       );
       Overlay.of(context).insert(overlayEntry!);
@@ -155,7 +142,6 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                       setState(() {
                         selectedPage = index + 1;
                         ref.read(mailPageProvider.notifier).state = index + 1;
-                        mailWidgetList = null;
                       });
                       context.pop();
                     },
@@ -178,6 +164,13 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
             confirmText: '확인');
       },
     );
+  }
+
+  void initializeSelectedPage(int initializedPage) {
+    selectedPage = initializedPage;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(mailPageProvider.notifier).state = initializedPage;
+    });
   }
 
   @override
@@ -204,11 +197,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
             final mainImageSrc = characterService
                 .getMainImage(selectedCharacter.character_info.images);
             if (selectedPage == null) {
-              selectedPage = selectedCharacter.date_allocated!.length;
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                ref.read(mailPageProvider.notifier).state =
-                    selectedCharacter.date_allocated!.length;
-              });
+              initializeSelectedPage(selectedCharacter.date_allocated!.length);
             }
             return TitleLayout(
               title: Row(
@@ -290,17 +279,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                     characterId: ref.watch(selectedCharacterProvider)!,
                     page: selectedPage!),
                 builder: (context, listMailState) {
-                  if (listMailState.data != null) {
-                    if (mailWidgetList == null) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        setState(() {
-                          mailWidgetList = mailService
-                              .makeMailWidgetList(listMailState.data!);
-                        });
-                      });
-                    }
-                  }
-                  if ((selectedPage == null || mailWidgetList == null)) {
+                  if (listMailState.status != QueryStatus.success) {
                     return const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -308,101 +287,99 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                         CircularProgressIndicator.adaptive(),
                       ],
                     );
-                  } else {
-                    return Column(
-                      children: [
-                        if (selectedCharacter.date_allocated!.length > 1)
-                          GestureDetector(
-                            onTap: () => showSelectMonthAlert(
-                                selectedCharacter.date_allocated!.length),
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 20.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    mailService.makePageLabel(selectedPage!),
-                                    style: TextStyle(
-                                      fontSize: 32,
-                                      fontFamily: 'NanumJungHagSaeng',
-                                      color: ColorConstants.primary,
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.only(left: 5.0, top: 5),
-                                    child: Icon(PhosphorIcons.caret_down_bold,
-                                        size: 18),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        else
-                          const SizedBox(height: 20),
-                        if (mailWidgetList!.isEmpty == true)
-                          Expanded(
-                            child: Column(
+                  }
+                  final mailWidgetList =
+                      mailService.makeMailWidgetList(listMailState.data!);
+                  return Column(
+                    children: [
+                      if (selectedCharacter.date_allocated!.length > 1)
+                        GestureDetector(
+                          onTap: () => showSelectMonthAlert(
+                              selectedCharacter.date_allocated!.length),
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 20.0),
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  '아직 도착한 편지가 없어요!',
-                                  textAlign: TextAlign.center,
+                                  mailService.makePageLabel(selectedPage!),
                                   style: TextStyle(
+                                    fontSize: 32,
+                                    fontFamily: 'NanumJungHagSaeng',
                                     color: ColorConstants.primary,
-                                    fontSize: 21,
-                                    height: 1,
-                                    fontWeight: FontWeightConstants.semiBold,
                                   ),
                                 ),
-                                const SizedBox(height: 14),
-                                Text(
-                                  '${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요. \n 조금만 기다려 주세요 :)',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: ColorConstants.neutral,
-                                    fontSize: 16,
-                                    height: 22 / 16,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                )
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 5.0, top: 5),
+                                  child: Icon(PhosphorIcons.caret_down_bold,
+                                      size: 18),
+                                ),
                               ],
                             ),
                           ),
-                        if (mailWidgetList!.isEmpty == false) ...[
-                          mailService.calendarWeekday(),
-                          const SizedBox(height: 20),
-                          Expanded(
-                            child: RefreshIndicator.adaptive(
-                              onRefresh: () async {
-                                HapticFeedback.lightImpact();
-                                await retrieveMyCharacterQuery.refetch();
-                                if (!mounted) return;
-                                await getListMailQuery(
-                                        characterId: ref
-                                            .watch(selectedCharacterProvider)!,
-                                        page: selectedPage!)
-                                    .refetch();
-                                reloadMailController!.forward().then((_) {
-                                  setState(() {
-                                    mailWidgetList = null;
-                                  });
-                                  reloadMailController!.reverse();
-                                });
-                              },
-                              child: FadeTransition(
-                                opacity: reloadMailFadeAnimation!,
-                                child: GridView.count(
-                                  crossAxisCount: 7,
-                                  childAspectRatio: 7 / 11,
-                                  children: mailWidgetList!,
+                        )
+                      else
+                        const SizedBox(height: 20),
+                      if (mailWidgetList.isEmpty == true)
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '아직 도착한 편지가 없어요!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: ColorConstants.primary,
+                                  fontSize: 21,
+                                  height: 1,
+                                  fontWeight: FontWeightConstants.semiBold,
                                 ),
+                              ),
+                              const SizedBox(height: 14),
+                              Text(
+                                '${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요. \n 조금만 기다려 주세요 :)',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: ColorConstants.neutral,
+                                  fontSize: 16,
+                                  height: 22 / 16,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      else ...[
+                        mailService.calendarWeekday(),
+                        const SizedBox(height: 20),
+                        Expanded(
+                          child: RefreshIndicator.adaptive(
+                            onRefresh: () async {
+                              HapticFeedback.lightImpact();
+                              await retrieveMyCharacterQuery.refetch();
+                              if (!mounted) return;
+                              await getListMailQuery(
+                                      characterId:
+                                          ref.watch(selectedCharacterProvider)!,
+                                      page: selectedPage!)
+                                  .refetch();
+                              reloadMailController!
+                                  .forward()
+                                  .then((_) => reloadMailController!.reverse());
+                            },
+                            child: FadeTransition(
+                              opacity: reloadMailFadeAnimation!,
+                              child: GridView.count(
+                                crossAxisCount: 7,
+                                childAspectRatio: 7 / 11,
+                                children: mailWidgetList,
                               ),
                             ),
                           ),
-                        ],
+                        ),
                       ],
-                    );
-                  }
+                    ],
+                  );
                 },
               ),
             );

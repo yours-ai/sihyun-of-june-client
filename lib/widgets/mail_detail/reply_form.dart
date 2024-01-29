@@ -38,18 +38,12 @@ class ReplyFormWidget extends ConsumerStatefulWidget {
 class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   final controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  VoidCallback? mailListInitializer;
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     mailService.getBeforeReply(controller: controller, mailId: widget.mail.id);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        mailListInitializer = ref.watch(initializeMailListProvider);
-      });
-    });
   }
 
   @override
@@ -106,13 +100,11 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   });
                   await mutate(getReplyDTO());
                   requestRandomlyAppReview(widget.mail.is_first_reply);
-                  if (mailListInitializer != null &&
-                      ref.watch(mailPageProvider) != null) {
+                  if (ref.watch(mailPageProvider) != null) {
                     getListMailQuery(
                             characterId: widget.characterId,
                             page: ref.watch(mailPageProvider)!)
-                        .refetch()
-                        .then((_) => mailListInitializer!.call());
+                        .refetch();
                   }
                   setState(() {
                     isLoading = false;

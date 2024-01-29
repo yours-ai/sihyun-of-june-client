@@ -10,6 +10,7 @@ class ChangeCharacterOverlayWidget extends ConsumerStatefulWidget {
   final Offset offset;
   final List<Character> characterList;
   final AnimationController profileChangeController;
+  final void Function(int) initializeSelectedPage;
 
   const ChangeCharacterOverlayWidget({
     super.key,
@@ -17,6 +18,7 @@ class ChangeCharacterOverlayWidget extends ConsumerStatefulWidget {
     required this.offset,
     required this.characterList,
     required this.profileChangeController,
+    required this.initializeSelectedPage,
   });
 
   @override
@@ -78,6 +80,8 @@ class ChangeCharacterOverlayWidgetState
                             (character) => OverlayComponentWidget(
                               character: character,
                               hideOverlay: widget.hideOverlay,
+                              initializeSelectedPage:
+                                  widget.initializeSelectedPage,
                             ),
                           )
                           .toList(),

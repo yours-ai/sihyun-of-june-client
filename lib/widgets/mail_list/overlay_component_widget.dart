@@ -19,12 +19,14 @@ class OverlayComponentWidget extends ConsumerWidget {
   final VoidCallback? hideOverlay;
   final List<int>? characterIds;
   final String? firstName;
+  final void Function(int)? initializeSelectedPage;
 
   const OverlayComponentWidget({
     this.character,
     this.hideOverlay,
     this.characterIds,
     this.firstName,
+    this.initializeSelectedPage,
     super.key,
   });
 
@@ -66,7 +68,9 @@ class OverlayComponentWidget extends ConsumerWidget {
           hideOverlay!();
           return;
         }
-        ref.watch(initializeMailListProvider)!.call();
+        if (initializeSelectedPage != null) {
+          initializeSelectedPage!(character!.date_allocated!.length);
+        }
         characterService.changeCharacterByTap(ref, character!);
         hideOverlay!();
       }, // 캐릭터 전환 or 추가 배정받기
