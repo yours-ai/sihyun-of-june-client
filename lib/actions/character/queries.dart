@@ -132,7 +132,6 @@ Mutation<void, ReallocateDTO> getReallocateMutation({
   OnErrorCallback? onError,
 }) {
   return Mutation<void, ReallocateDTO>(
-    // refetchQueries: ['check-new-user', 'selection-status', 'test-status'],
     queryFn: reallocate,
     onSuccess: onSuccess,
     onError: onError,

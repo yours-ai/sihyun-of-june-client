@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
@@ -81,11 +83,29 @@ void main() async {
     print("sentry dsn이 제공되지 않아, sentry를 init하지 않습니다.");
     return _appRunner();
   }
+
+  bool checkTestError(SentryEvent event) {
+    if (event.throwable?.response?.data == '진행중인 테스트가 없습니다.') {
+      return true;
+    }
+    return false;
+  }
+
+  FutureOr<SentryEvent?> sentryBeforeSend(SentryEvent event,
+      {Hint? hint}) async {
+    final isTestError = checkTestError(event);
+    if (isTestError) {
+      return null;
+    }
+    return event;
+  }
+
   await SentryFlutter.init(
     (options) {
       options.dsn = BuildTimeEnvironments.sentryDsn;
       options.environment = BuildTimeEnvironments.sentryEnvironment;
       options.tracesSampleRate = 1.0;
+      options.beforeSend = sentryBeforeSend;
     },
     appRunner: _appRunner,
   );
