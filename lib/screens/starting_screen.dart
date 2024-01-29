@@ -48,7 +48,6 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
 
     _setUserInfoForSentry();
     await _initializeCharacterInfo();
-    await _initializeNotificationHandlerIfAccepted();
     final push = await getPushIfPushClicked();
     if (push != null) {
       notificationService.handleFCMMessageTap(push);
@@ -175,17 +174,9 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     ref.read(isEnableToRetestProvider.notifier).state = isEnableToRetest;
   }
 
-  _initializeNotificationHandlerIfAccepted() async {
-    final isAccepted = await getIsNotificationAccepted();
-    if (isAccepted == true) {
-      notificationService.initializeNotificationHandlers(ref);
-    }
-  }
-
   Future<RemoteMessage?> getPushIfPushClicked() async {
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
-
     return initialMessage;
   }
 

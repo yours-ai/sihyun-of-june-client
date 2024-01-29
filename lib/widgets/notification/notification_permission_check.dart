@@ -28,6 +28,7 @@ class RequestNotificationPermissionWidgetState
           builder: (BuildContext context) {
             final mutation = getRequestNotificationPermissionMutation(
               onSuccess: (res, arg) {
+                if (!mounted) return;
                 notificationService.initializeNotificationHandlers(ref);
                 context.pop();
               },
