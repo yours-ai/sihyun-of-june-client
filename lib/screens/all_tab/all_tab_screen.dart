@@ -156,8 +156,7 @@ class AllTabScreenState extends State<AllTabScreen>
                       children: [
                         MenuWidget(
                           title: '포인트',
-                          onPressed: () =>
-                              context.push(RoutePaths.allMyPoint),
+                          onPressed: () => context.push(RoutePaths.allMyPoint),
                           suffix: Row(
                             children: [
                               Text(
@@ -179,8 +178,7 @@ class AllTabScreenState extends State<AllTabScreen>
                         ),
                         MenuWidget(
                           title: '코인',
-                          onPressed: () =>
-                              context.push(RoutePaths.allMyCoin),
+                          onPressed: () => context.push(RoutePaths.allMyCoin),
                           suffix: Row(
                             children: [
                               Text(
@@ -211,22 +209,18 @@ class AllTabScreenState extends State<AllTabScreen>
                   },
                 ),
                 QueryBuilder(
-                    query: retrieveMyCharacterQuery,
-                    builder: (context, state) {
-                      if (state.status != QueryStatus.success) {
-                        return const Center(
-                          child: CircularProgressIndicator.adaptive(),
-                        );
+                  query: retrieveMyCharacterQuery,
+                  builder: (context, state) => MenuWidget(
+                    title: '상대 변경하기',
+                    onPressed: () {
+                      if (state.status == QueryStatus.success) {
+                        var characterList = state.data;
+                        characterList ??= [];
+                        _showMultiCharacterModal(characterList);
                       }
-                      return MenuWidget(
-                        title: '상대 변경하기',
-                        onPressed: () {
-                          var characterList = state.data;
-                          characterList ??= [];
-                          _showMultiCharacterModal(characterList);
-                        },
-                      );
-                    }),
+                    },
+                  ),
+                ),
                 const MenuTitleWidget(title: '내 정보'),
                 MenuWidget(
                   title: '이름 변경하기',
