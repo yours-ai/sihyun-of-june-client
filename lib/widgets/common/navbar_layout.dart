@@ -12,9 +12,9 @@ import 'navbar/navbar_icon.dart';
 import 'navbar/notification_icon.dart';
 
 final tabList = [
-  TabRoutePaths.mailList,
-  TabRoutePaths.notificationList,
-  TabRoutePaths.all,
+  RoutePaths.mailList,
+  RoutePaths.notificationList,
+  RoutePaths.all,
 ];
 
 class NavbarLayout extends ConsumerWidget {

@@ -32,13 +32,13 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
       getStartTestMutation(
         onSuccess: (res, arg) {
           if (!mounted) return;
-          context.go('/character-test');
+          context.go(RoutePaths.characterTest);
         },
       ).mutate(null);
       return true;
     } else if (testStatus == 'IN_PROGRESS') {
       if (!mounted) return false;
-      context.go('/character-test');
+      context.go(RoutePaths.characterTest);
       return true;
     } else if (testStatus == 'WAITING_CONFIRM') {
       if (!mounted) return false;
@@ -82,10 +82,10 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
       if (is30DaysFinished) {
         if (!mounted) return;
         context.go('/all');
-        context.push('/mails/assignment-start');
+        context.push(RoutePaths.mailListDecideAssignmentMethod);
       } else {
         if (!mounted) return;
-        context.go('/mails/assignment-start');
+        context.go(RoutePaths.mailListDecideAssignmentMethod);
       }
     }
   }

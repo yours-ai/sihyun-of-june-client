@@ -45,7 +45,7 @@ class InTestWidgetState extends ConsumerState<InTestWidget> {
               ),
             );
             logout();
-            context.go('/login');
+            context.go(RoutePaths.login);
           },
         );
       });

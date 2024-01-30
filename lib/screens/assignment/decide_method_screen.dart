@@ -15,17 +15,17 @@ import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dar
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
-class AssignmentDecideMethodScreen extends ConsumerStatefulWidget {
-  const AssignmentDecideMethodScreen({super.key});
+class DecideAssignmentMethodScreen extends ConsumerStatefulWidget {
+  const DecideAssignmentMethodScreen({super.key});
 
   @override
-  AssignmentDecideMethodScreenState createState() {
-    return AssignmentDecideMethodScreenState();
+  DecideAssignmentMethodScreenState createState() {
+    return DecideAssignmentMethodScreenState();
   }
 }
 
-class AssignmentDecideMethodScreenState
-    extends ConsumerState<AssignmentDecideMethodScreen> {
+class DecideAssignmentMethodScreenState
+    extends ConsumerState<DecideAssignmentMethodScreen> {
   bool isEnableToClick = true;
 
   void showNeedMoreGoodsModal(BuildContext context) {
@@ -39,11 +39,11 @@ class AssignmentDecideMethodScreenState
           submitText: '친구 초대하고 300P 받기',
           onCancel: () {
             context.pop();
-            context.push('${TabRoutePaths.all}/my-coin/charge');
+            context.push(RoutePaths.allMyCoinCharge);
           },
           onSubmit: () {
             context.pop();
-            context.push('${TabRoutePaths.all}/share');
+            context.push(RoutePaths.allShare);
           },
         ),
       ),
@@ -87,7 +87,7 @@ class AssignmentDecideMethodScreenState
                     characterColors: ColorTheme.defaultTheme.colors,
                   ),
                 );
-                context.go('/assignment');
+                context.go(RoutePaths.assignment);
               },
               onError: (arg, error, fallback) {
                 setState(() {

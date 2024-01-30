@@ -45,7 +45,7 @@ class NotChosenListWidget extends ConsumerWidget {
                         return;
                       }
                       num id = character.id;
-                      context.push('/other-character/$id');
+                      context.push('${RoutePaths.otherCharacter}/$id');
                     },
                     child: ClipRRect(
                       child: Padding(

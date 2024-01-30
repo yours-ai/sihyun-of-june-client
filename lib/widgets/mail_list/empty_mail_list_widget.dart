@@ -37,7 +37,7 @@ class EmptyMailListWidget extends StatelessWidget {
                 const SizedBox(height: 23),
                 FilledButton(
                   onPressed: () {
-                    context.go('/assignment');
+                    context.go(RoutePaths.assignment);
                   },
                   child: const Text('새로운 상대 만나기'),
                 ),

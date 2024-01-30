@@ -54,7 +54,7 @@ class RetestInfoScreen extends ConsumerWidget {
                 ),
             onPressed: () {
               context.push(
-                '/retest/extend',
+                RoutePaths.retestExtend,
                 extra: firstName,
               );
             },
@@ -75,7 +75,7 @@ class RetestInfoScreen extends ConsumerWidget {
                 return;
               }
               context.push(
-                '/retest/confirm',
+                RoutePaths.retestConfirm,
                 extra: firstName,
               );
             },

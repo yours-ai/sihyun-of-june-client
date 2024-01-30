@@ -68,7 +68,7 @@ class _CharacterSelectionConfirmScreenState
                           await characterService
                               .saveSelectedCharacterId(widget.characterId);
                           if (!mounted) return;
-                          context.go('/');
+                          context.go(RoutePaths.starting);
                         },
                         onError: (res, arg, error) {
                           setState(() {
@@ -81,7 +81,7 @@ class _CharacterSelectionConfirmScreenState
                               ),
                             ),
                           );
-                          context.go('/');
+                          context.go(RoutePaths.starting);
                         },
                       ),
                       builder: (context, mutationState, mutate) => FilledButton(

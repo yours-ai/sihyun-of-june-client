@@ -67,7 +67,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
     if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
         is30DaysFinished) {
       context.push(
-        "/retest",
+        RoutePaths.retest,
         extra: <String, dynamic>{
           "firstName": currentCharacter.first_name,
           "characterIds": characterService.getCharacterIds(myCharacterList),
@@ -226,7 +226,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         GestureDetector(
-                          onTap: () => context.push('/mails/my-character'),
+                          onTap: () =>
+                              context.push(RoutePaths.mailListMyCharacter),
                           onLongPressStart: (_) {
                             HapticFeedback.heavyImpact();
                           },

@@ -73,7 +73,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                   children: [
                     Center(
                       child: GestureDetector(
-                        onTap: () => context.push('/mails/my-character'),
+                        onTap: () => context.push(RoutePaths.mailListMyCharacter),
                         onLongPressStart: (_) {
                           HapticFeedback.heavyImpact();
                         },
@@ -117,7 +117,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        context.push('/mails/my-character');
+                        context.push(RoutePaths.mailListMyCharacter);
                       },
                       child: Container(
                         margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),

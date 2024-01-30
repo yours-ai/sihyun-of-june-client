@@ -61,7 +61,7 @@ class TestConfirmScreenState extends ConsumerState<TestConfirmScreen> {
                   });
                   await getDenyTestChoiceMutation(
                     onSuccess: (res, arg) {
-                      context.go('/mails/assignment-start');
+                      context.go(RoutePaths.mailListDecideAssignmentMethod);
                     },
                     onError: (arg, error, fallback) {
                       setState(() {
@@ -117,7 +117,7 @@ class TestConfirmScreenState extends ConsumerState<TestConfirmScreen> {
                     await characterService
                         .saveSelectedCharacterId(widget.selectedCharacterId);
                     if (!mounted) return;
-                    context.go('/');
+                    context.go(RoutePaths.starting);
                   },
                   onError: (arg, error, fallback) {
                     setState(() {

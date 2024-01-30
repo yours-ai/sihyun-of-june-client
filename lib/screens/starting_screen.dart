@@ -41,7 +41,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
 
     if (isLogined == false) {
       if (!mounted) return;
-      context.go('/landing');
+      context.go(RoutePaths.landing);
       return;
     }
 

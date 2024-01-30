@@ -40,7 +40,7 @@ class NewUserAssignmentStartingScreen extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  context.go('/assignment');
+                  context.go(RoutePaths.assignment);
                 },
                 child: const Text('다음'),
               ),

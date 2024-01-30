@@ -12,14 +12,14 @@ import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dar
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/name_form_widget.dart';
 
-class NameChangeScreen extends ConsumerStatefulWidget {
-  const NameChangeScreen({Key? key}) : super(key: key);
+class ChangeNameScreen extends ConsumerStatefulWidget {
+  const ChangeNameScreen({Key? key}) : super(key: key);
 
   @override
-  NameChangeScreenState createState() => NameChangeScreenState();
+  ChangeNameScreenState createState() => ChangeNameScreenState();
 }
 
-class NameChangeScreenState extends ConsumerState<NameChangeScreen> {
+class ChangeNameScreenState extends ConsumerState<ChangeNameScreen> {
   final NameFormController formController = NameFormController();
   bool isSubmitClicked = false;
   bool isValid = true;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
@@ -28,7 +29,7 @@ class RetestModalWidget extends ConsumerWidget {
           ? ModalChoiceWidget(
               submitText: '네',
               cancelText: '아니요',
-              onSubmit: () => context.go('/assignment'),
+              onSubmit: () => context.go(RoutePaths.assignment),
               onCancel: () => context.pop(),
             )
           : FilledButton(

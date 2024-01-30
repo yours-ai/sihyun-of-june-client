@@ -39,7 +39,7 @@ class OverlayComponentWidget extends ConsumerWidget {
 
         if (character == null) {
           if (firstName == '') {
-            context.go('/assignment');
+            context.go(RoutePaths.assignment);
             hideOverlay!();
             return;
           }
@@ -57,7 +57,7 @@ class OverlayComponentWidget extends ConsumerWidget {
             return;
           }
           context.push(
-            '/retest',
+            RoutePaths.retest,
             extra: {
               'characterIds': characterIds,
               'firstName': firstName,

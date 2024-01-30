@@ -98,7 +98,7 @@ class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
   Widget build(BuildContext context) {
     var tokenMutation = getSmsTokenMutation(
       onSuccess: (res, arg) {
-        context.go('/');
+        context.go(RoutePaths.starting);
       },
       onError: (arg, error, fallback) {
         ScaffoldMessenger.of(context).showSnackBar(

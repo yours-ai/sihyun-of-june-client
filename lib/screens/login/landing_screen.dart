@@ -111,7 +111,7 @@ class _LandingScreen extends State<LandingScreen> {
                             MaterialStateProperty.all(ColorConstants.pink),
                       ),
                       onPressed: () {
-                        context.go('/login');
+                        context.go(RoutePaths.login);
                       },
                       child: const Text(
                         '시작하기',

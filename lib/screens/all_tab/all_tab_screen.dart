@@ -66,7 +66,7 @@ class AllTabScreenState extends State<AllTabScreen>
             submitText: '네',
             onSubmit: () {
               logout();
-              context.go('/login');
+              context.go(RoutePaths.login);
             },
             cancelText: '아니요',
             onCancel: () => context.pop(),
@@ -113,7 +113,7 @@ class AllTabScreenState extends State<AllTabScreen>
           choiceColumn: ModalChoiceWidget(
             submitText: '네',
             onSubmit: () {
-              context.push('${TabRoutePaths.all}/withdraw');
+              context.push('${RoutePaths.all}/withdraw');
               context.pop();
             },
             cancelText: '아니요',
@@ -157,7 +157,7 @@ class AllTabScreenState extends State<AllTabScreen>
                         MenuWidget(
                           title: '포인트',
                           onPressed: () =>
-                              context.push('${TabRoutePaths.all}/my-point'),
+                              context.push(RoutePaths.allMyPoint),
                           suffix: Row(
                             children: [
                               Text(
@@ -180,7 +180,7 @@ class AllTabScreenState extends State<AllTabScreen>
                         MenuWidget(
                           title: '코인',
                           onPressed: () =>
-                              context.push('${TabRoutePaths.all}/my-coin'),
+                              context.push(RoutePaths.allMyCoin),
                           suffix: Row(
                             children: [
                               Text(
@@ -207,7 +207,7 @@ class AllTabScreenState extends State<AllTabScreen>
                 MenuWidget(
                   title: '친구 초대하고 포인트 받기',
                   onPressed: () {
-                    context.push('${TabRoutePaths.all}/share');
+                    context.push(RoutePaths.allShare);
                   },
                 ),
                 QueryBuilder(
@@ -231,7 +231,7 @@ class AllTabScreenState extends State<AllTabScreen>
                 MenuWidget(
                   title: '이름 변경하기',
                   onPressed: () =>
-                      context.push('${TabRoutePaths.all}/change-name'),
+                      context.push('${RoutePaths.all}/change-name'),
                 ),
                 MenuWidget(
                   title: '로그아웃',
@@ -268,7 +268,7 @@ class AllTabScreenState extends State<AllTabScreen>
                 ),
                 MenuWidget(
                   title: '약관 및 정책',
-                  onPressed: () => context.push('${TabRoutePaths.all}/policy'),
+                  onPressed: () => context.push('${RoutePaths.all}/policy'),
                 ),
               ],
             ),

@@ -54,13 +54,13 @@ class CharacterChangeModal extends ConsumerWidget {
               return GestureDetector(
                 onTap: () async {
                   if (characterList.isEmpty) {
-                    context.go('/assignment');
+                    context.go(RoutePaths.assignment);
                     return;
                   }
                   final firstName = characterService
                       .getCurrentCharacterFirstName(characterList);
                   if (firstName == '') {
-                    context.go('/assignment');
+                    context.go(RoutePaths.assignment);
                     return;
                   }
                   if (state.data!.is_30days_finished == false) {
@@ -73,7 +73,7 @@ class CharacterChangeModal extends ConsumerWidget {
                     return;
                   }
                   context.push(
-                    '/retest',
+                    RoutePaths.retest,
                     extra: {
                       'characterIds':
                           characterService.getCharacterIds(characterList),
