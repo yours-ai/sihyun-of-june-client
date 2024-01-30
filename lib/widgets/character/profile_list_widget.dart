@@ -8,6 +8,7 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
+import 'package:project_june_client/widgets/character/character_cinematic_widget.dart';
 import 'package:project_june_client/widgets/character/profile_card_widget.dart';
 
 import '../../actions/character/queries.dart';
@@ -21,11 +22,13 @@ enum ProfileWidgetType {
 class ProfileListWidget extends ConsumerStatefulWidget {
   final ProfileWidgetType profileWidgetType;
   final List<Character> characterList;
+  final int? testId;
 
   const ProfileListWidget({
     super.key,
     required this.profileWidgetType,
     required this.characterList,
+    this.testId,
   });
 
   @override
@@ -36,14 +39,49 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
   int selectedIndex = 0;
   final CarouselController _characterListController = CarouselController();
 
-  Widget _buildButton(ProfileWidgetType buttonType) {
+  Widget _buildButton(ProfileWidgetType buttonType, Color primaryColor) {
+    Widget buildInitialButton(String buttonText) {
+      return FilledButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(primaryColor),
+        ),
+        onPressed: () => Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder:
+                  (BuildContext pageContext, animation, secondaryAnimation) =>
+                      CharacterCinematicWidget(
+                character: widget.profileWidgetType == ProfileWidgetType.test
+                    ? widget.characterList
+                        .first // test일때 배정된 캐릭터로만 가게끔. test screen에서 list를 배정된 캐릭터를 첫번째로 보내줌.
+                    : widget.characterList[selectedIndex],
+                profileWidgetType: widget.profileWidgetType,
+                testId: widget.testId,
+              ),
+              transitionDuration: const Duration(seconds: 1),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeInOut,
+                  ),
+                  child: child,
+                );
+              },
+            )),
+        child: Text(buttonText),
+      );
+    }
+
     switch (buttonType) {
       case ProfileWidgetType.selection:
-        return FilledButton(onPressed: () {}, child: Text("캐릭터 선택"));
+        return buildInitialButton('이 친구로 선택할래요!');
       case ProfileWidgetType.test:
-        return FilledButton(onPressed: () {}, child: Text("캐릭터 랜덤 재배정"));
+        return buildInitialButton(
+            '${widget.characterList.first.first_name}이로 배정완료 하기');
       case ProfileWidgetType.myCharacterProfile:
-        return FilledButton(onPressed: () {}, child: Text("내 캐릭터 프로필 보기"));
+        return buildInitialButton('프로필 보기');
     }
   }
 
@@ -51,12 +89,16 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if(!mounted) return;
+      if (!mounted) return;
       final selectedCharacterId = ref.watch(selectedCharacterProvider);
       final isImageUpdated = widget.characterList
-              .firstWhere((character) => character.id == selectedCharacterId)
-              .is_image_updated ??
-          false;
+              .where((character) => character.id == selectedCharacterId)
+              .isNotEmpty &&
+          (widget.characterList
+                  .firstWhere(
+                      (character) => character.id == selectedCharacterId)
+                  .is_image_updated ??
+              false);
       if (widget.profileWidgetType == ProfileWidgetType.myCharacterProfile &&
           selectedCharacterId != null &&
           isImageUpdated) {
@@ -177,7 +219,13 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(28, 18, 28, 18),
-                      child: _buildButton(widget.profileWidgetType),
+                      child: _buildButton(
+                        widget.profileWidgetType,
+                        Color(
+                          widget.characterList[selectedIndex].theme.colors
+                              .primary,
+                        ),
+                      ),
                     ),
                   ],
                 ),

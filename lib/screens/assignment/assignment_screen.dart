@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/constants.dart';
 
 class AssignmentScreen extends ConsumerStatefulWidget {
   const AssignmentScreen({super.key});
@@ -41,7 +42,7 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
       return true;
     } else if (testStatus == 'WAITING_CONFIRM') {
       if (!mounted) return false;
-      context.go('/character-choice');
+      context.go(RoutePaths.testDeciding);
       return true;
     }
     return false;

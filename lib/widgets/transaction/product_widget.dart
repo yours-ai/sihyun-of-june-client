@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:intl/intl.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 

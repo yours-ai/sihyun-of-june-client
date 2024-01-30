@@ -18,7 +18,6 @@ import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../actions/notification/actions.dart';
 import '../widgets/common/alert/alert_description_widget.dart';
 import '../widgets/common/alert/alert_widget.dart';
 

@@ -1,16 +1,17 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:project_june_client/actions/character/models/CinematicBackground.dart';
 
 part 'CharacterCinematic.g.dart';
 
 @JsonSerializable()
 class CharacterCinematic {
-  CinematicBackground background;
-  List<String> text;
+  String cinematic_background_image_1;
+  String cinematic_background_image_2;
+  List<String> cinematic_description;
 
   CharacterCinematic({
-    required this.background,
-    required this.text,
+    required this.cinematic_background_image_1,
+    required this.cinematic_background_image_2,
+    required this.cinematic_description,
   });
 
   factory CharacterCinematic.fromJson(Map<String, dynamic> json) =>

@@ -1,22 +1,14 @@
-import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/providers/common_provider.dart';
-import 'package:project_june_client/widgets/character/character_photo_widget.dart';
-import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/character/profile_list_widget.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import '../../actions/character/queries.dart';
 
 const indicatorPadding = 15.0;
 
@@ -41,6 +33,8 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
   late String selectedCharacterName = widget.character.name;
   final CarouselController _imageListController = CarouselController();
   String questText = '';
+  late double initialDragPosX;
+  bool dismiss = false;
 
   void _preloadImages(List<CharacterImage> imageList) {
     for (final image in imageList) {
@@ -112,6 +106,25 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
         topRight: Radius.circular(12),
       ),
       child: GestureDetector(
+        onHorizontalDragStart: (details) {
+          initialDragPosX = details.globalPosition.dx;
+        },
+        onHorizontalDragUpdate: (details) {
+          double currentDragPosX = details.globalPosition.dx;
+          double dragOffset = currentDragPosX - initialDragPosX;
+          if (dragOffset > 0) {
+            setState(() {
+              dismiss = true;
+            });
+          }
+        },
+        onHorizontalDragEnd: (details) {
+          if (dismiss) {
+            final isCanPop = context.canPop();
+            if (!isCanPop) return;
+            context.pop();
+          }
+        },
         onTapUp: (details) {
           final double screenWidth = MediaQuery.of(context).size.width;
           final double dx = details.localPosition.dx;

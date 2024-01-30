@@ -14,6 +14,7 @@ abstract final class ColorConstants {
   static Color veryLightGray = const Color(0xffdedede);
   static Color lightGray = const Color(0xffF6F6F6);
   static Color mediumGray = const Color(0xffA7A1A1);
+  static Color darkGray = const Color(0xff101010);
   static Color black = const Color(0xff1a1a1a);
 }
 
@@ -47,13 +48,12 @@ abstract final class TabRoutePaths {
   static String all = '/all';
 }
 
-abstract final class RouteNames {
-  static String character = 'decided-character';
-  static String confirm = 'decided-confirm';
-}
-
 abstract final class RoutePaths {
   static String newUserAssignmentStarting = '/new-user-assignment-starting';
+  static String selectionDeciding = '/character-selection-deciding';
+  static String selectionConfirm = '/character-selection-confirm';
+  static String testDeciding = '/character-test-deciding';
+  static String testConfirm = '/character-test-confirm';
 }
 
 abstract final class Urls {

@@ -5,14 +5,13 @@ import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/services.dart';
-import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
-class CharacterSelectionDecidedConfirmScreen extends StatefulWidget {
+class CharacterSelectionConfirmScreen extends StatefulWidget {
   final int characterId, primaryColor, secondaryColor;
   final String firstName;
 
-  const CharacterSelectionDecidedConfirmScreen({
+  const CharacterSelectionConfirmScreen({
     super.key,
     required this.characterId,
     required this.primaryColor,
@@ -21,22 +20,20 @@ class CharacterSelectionDecidedConfirmScreen extends StatefulWidget {
   });
 
   @override
-  State<CharacterSelectionDecidedConfirmScreen> createState() =>
-      _CharacterSelectionDecidedConfirmScreenState();
+  State<CharacterSelectionConfirmScreen> createState() =>
+      _CharacterSelectionConfirmScreenState();
 }
 
-class _CharacterSelectionDecidedConfirmScreenState
-    extends State<CharacterSelectionDecidedConfirmScreen> {
+class _CharacterSelectionConfirmScreenState
+    extends State<CharacterSelectionConfirmScreen> {
   bool isEnableToClick = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const BackAppbar(),
       body: SafeArea(
         child: TitleLayout(
-          withAppBar: true,
-          title: Text(
+          body: Text(
             '${widget.firstName}이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 편지가 올 거에요 :)',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge,
@@ -46,7 +43,7 @@ class _CharacterSelectionDecidedConfirmScreenState
             children: [
               OutlinedButton(
                   onPressed: () {
-                    context.go('/character-selection-deciding');
+                    context.go(RoutePaths.selectionDeciding);
                   },
                   child: Text(
                     '다른 상대로 할게요.',
@@ -114,7 +111,6 @@ class _CharacterSelectionDecidedConfirmScreenState
                   }),
             ],
           ),
-          body: Container(),
         ),
       ),
     );

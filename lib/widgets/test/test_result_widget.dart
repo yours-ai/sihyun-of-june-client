@@ -101,7 +101,7 @@ class _TestResultWidget extends State<TestResultWidget> {
                   ? MutationBuilder(
                       mutation: getSendResponseMutation(
                         onSuccess: (res, arg) {
-                          context.go('/character-choice');
+                          context.go(RoutePaths.testDeciding);
                         },
                         onError: (arg, error, callback) {
                           setState(() {

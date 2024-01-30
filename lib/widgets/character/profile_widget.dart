@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project_june_client/actions/character/models/CharacterInfo.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/widgets/character/character_photo_widget.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';

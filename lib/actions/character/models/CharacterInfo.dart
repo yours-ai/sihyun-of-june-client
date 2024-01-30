@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:project_june_client/actions/character/models/CharacterCinematic.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/actions/character/models/CharacterSns.dart';
 
@@ -9,14 +10,16 @@ class CharacterInfo {
   num age;
   String one_line_description;
   String summary_description;
+  CharacterCinematic cinematic;
   String description;
   List<CharacterImage> images;
-  List<CharacterSns>? sns; // TODO: CharacterCinematic 추가해야 됨
+  List<CharacterSns>? sns;
 
   CharacterInfo({
     required this.age,
     required this.one_line_description,
     required this.summary_description,
+    required this.cinematic,
     required this.description,
     required this.images,
     this.sns,

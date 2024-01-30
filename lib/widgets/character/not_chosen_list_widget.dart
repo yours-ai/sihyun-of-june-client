@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 

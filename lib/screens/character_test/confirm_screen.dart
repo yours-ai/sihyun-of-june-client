@@ -1,6 +1,5 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
@@ -11,35 +10,30 @@ import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import '../../constants.dart';
 import '../../globals.dart';
-import '../../screens/character_test/choice_screen.dart';
 import '../../services.dart';
-import '../common/modal/modal_description_widget.dart';
+import '../../widgets/common/modal/modal_description_widget.dart';
 
-class TestConfirmWidget extends ConsumerStatefulWidget {
+class TestConfirmScreen extends ConsumerStatefulWidget {
   final int testId;
   final int selectedCharacterId;
   final String selectedCharacterFirstName;
-  final TestReason testReason;
-  final void Function(ActiveScreen) onActiveScreen;
   final CharacterTheme selectedCharacterTheme;
 
-  const TestConfirmWidget({
+  const TestConfirmScreen({
     super.key,
-    required this.onActiveScreen,
     required this.selectedCharacterId,
     required this.testId,
     required this.selectedCharacterFirstName,
-    required this.testReason,
     required this.selectedCharacterTheme,
   });
 
   @override
-  TestConfirmWidgetState createState() {
-    return TestConfirmWidgetState();
+  TestConfirmScreenState createState() {
+    return TestConfirmScreenState();
   }
 }
 
-class TestConfirmWidgetState extends ConsumerState<TestConfirmWidget> {
+class TestConfirmScreenState extends ConsumerState<TestConfirmScreen> {
   bool isEnableToClick = true;
 
   @override
@@ -91,27 +85,9 @@ class TestConfirmWidgetState extends ConsumerState<TestConfirmWidget> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorConstants.background,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            widget.onActiveScreen(ActiveScreen.detail);
-          },
-          icon: Container(
-            padding: const EdgeInsets.only(left: 23),
-            child: Icon(
-              PhosphorIcons.arrow_left,
-              color: ColorConstants.gray,
-              size: 32,
-            ),
-          ),
-        ),
-      ),
       body: SafeArea(
         child: TitleLayout(
-          withAppBar: true,
-          title: Text(
+          body: Text(
             '${widget.selectedCharacterFirstName}이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
             '편지가 올 거에요 :)',
             textAlign: TextAlign.center,
@@ -183,7 +159,6 @@ class TestConfirmWidgetState extends ConsumerState<TestConfirmWidget> {
               ),
             ],
           ),
-          body: Container(),
         ),
       ),
     );

@@ -10,10 +10,10 @@ import 'package:project_june_client/screens/all_tab/share_screen.dart';
 import 'package:project_june_client/screens/assignment/assignment_screen.dart';
 import 'package:project_june_client/screens/assignment/decide_method_screen.dart';
 import 'package:project_june_client/screens/assignment/new_user_assignment_starting_screen.dart';
-import 'package:project_june_client/screens/character_selection/decided_character_screen.dart';
-import 'package:project_june_client/screens/character_selection/decided_confirm_screen.dart';
 import 'package:project_june_client/screens/character_selection/deciding_screen.dart';
+import 'package:project_june_client/screens/character_selection/confirm_screen.dart';
 import 'package:project_june_client/screens/assignment/starting_screen.dart';
+import 'package:project_june_client/screens/character_test/confirm_screen.dart';
 import 'package:project_june_client/screens/mail/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail/mail_detail_screen.dart';
 import 'package:project_june_client/screens/all_tab/name_change_screen.dart';
@@ -27,9 +27,10 @@ import 'package:project_june_client/screens/retest/retest_confirm_screen.dart';
 import 'package:project_june_client/screens/retest/retest_extend_screen.dart';
 import 'package:project_june_client/screens/retest/retest_info_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
-import 'package:project_june_client/screens/character_test/choice_screen.dart';
+import 'package:project_june_client/screens/character_test/deciding_screen.dart';
 import 'package:project_june_client/screens/character_test/test_screen.dart';
 import 'package:project_june_client/screens/all_tab/withdraw_screen.dart';
+import 'actions/character/models/CharacterTheme.dart';
 import 'constants.dart';
 import 'screens/login/landing_screen.dart';
 import 'screens/login/login_screen.dart';
@@ -59,8 +60,31 @@ final router = GoRouter(
           ),
         ]),
     GoRoute(
-      path: '/character-choice',
-      builder: (context, state) => const TestChoiceScreen(),
+      path: RoutePaths.testDeciding,
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const TestDecidingScreen(),
+        transitionsBuilder:
+            (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        transitionDuration:
+        const Duration(milliseconds: 300), // 전환 지속 시간 설정
+      ),
+    ),
+    GoRoute(
+      path: RoutePaths.testConfirm,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        return TestConfirmScreen(
+          selectedCharacterId: extra['selectedCharacterId'] as int,
+          testId: extra['testId'] as int,
+          selectedCharacterFirstName: extra['selectedCharacterFirstName'],
+          selectedCharacterTheme: extra['selectedCharacterTheme'] as CharacterTheme,
+        );
+      },
     ),
     GoRoute(
       path: '/other-character/:id',
@@ -100,7 +124,18 @@ final router = GoRouter(
           routes: [
             GoRoute(
               path: 'my-character',
-              builder: (context, state) => const MyCharacterScreen(),
+              pageBuilder: (context, state) => CustomTransitionPage(
+                child: const MyCharacterScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                transitionDuration:
+                    const Duration(milliseconds: 300), // 전환 지속 시간 설정
+              ),
             ),
             GoRoute(
               path: 'detail/:id',
@@ -221,29 +256,30 @@ final router = GoRouter(
       ],
     ),
     GoRoute(
-      path: '/character-selection-deciding',
-      builder: (context, state) => const CharacterSelectionDecidingScreen(),
-      routes: [
-        GoRoute(
-          path: 'character/:id',
-          name: RouteNames.character,
-          builder: (context, state) => CharacterSelectionDecidedCharacterScreen(
-            id: int.tryParse(state.pathParameters['id']!)!,
-          ),
-        ),
-        GoRoute(
-          path: 'confirm',
-          name: RouteNames.confirm,
-          builder: (context, state) => CharacterSelectionDecidedConfirmScreen(
-            characterId: int.tryParse(state.uri.queryParameters['id']!)!,
-            firstName: state.uri.queryParameters['firstName']!,
-            primaryColor:
-                int.tryParse(state.uri.queryParameters['primaryColor']!)!,
-            secondaryColor:
-                int.tryParse(state.uri.queryParameters['secondaryColor']!)!,
-          ),
-        ),
-      ],
+      path: RoutePaths.selectionDeciding,
+      pageBuilder: (context, state) => CustomTransitionPage(
+        child: const CharacterSelectionDecidingScreen(),
+        transitionsBuilder:
+            (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+        transitionDuration:
+        const Duration(milliseconds: 300), // 전환 지속 시간 설정
+      ),
     ),
+    GoRoute(
+        path: RoutePaths.selectionConfirm,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return CharacterSelectionConfirmScreen(
+            characterId: extra['id'] as int,
+            firstName: extra['firstName'],
+            primaryColor: extra['primaryColor'] as int,
+            secondaryColor: extra['secondaryColor'] as int,
+          );
+        }),
   ],
 );
