@@ -1,16 +1,16 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/character/profile_list_widget.dart';
 
-const indicatorPadding = 15.0;
+const double indicatorPadding = 15.0;
 
 class ProfileCardWidget extends ConsumerStatefulWidget {
   final Character character;
@@ -33,8 +33,6 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
   late String selectedCharacterName = widget.character.name;
   final CarouselController _imageListController = CarouselController();
   String questText = '';
-  late double initialDragPosX;
-  bool dismiss = false;
 
   void _preloadImages(List<CharacterImage> imageList) {
     for (final image in imageList) {
@@ -106,25 +104,6 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
         topRight: Radius.circular(12),
       ),
       child: GestureDetector(
-        onHorizontalDragStart: (details) {
-          initialDragPosX = details.globalPosition.dx;
-        },
-        onHorizontalDragUpdate: (details) {
-          double currentDragPosX = details.globalPosition.dx;
-          double dragOffset = currentDragPosX - initialDragPosX;
-          if (dragOffset > 0) {
-            setState(() {
-              dismiss = true;
-            });
-          }
-        },
-        onHorizontalDragEnd: (details) {
-          if (dismiss) {
-            final isCanPop = context.canPop();
-            if (!isCanPop) return;
-            context.pop();
-          }
-        },
         onTapUp: (details) {
           final double screenWidth = MediaQuery.of(context).size.width;
           final double dx = details.localPosition.dx;

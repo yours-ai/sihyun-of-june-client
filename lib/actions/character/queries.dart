@@ -91,17 +91,6 @@ Query<List<Character>> getRetrieveMyCharacterQuery({
   );
 }
 
-Mutation<void, int> getDenyTestChoiceMutation({
-  OnSuccessCallback? onSuccess,
-  OnErrorCallback? onError,
-}) {
-  return Mutation<void, int>(
-    queryFn: denyTestChoice,
-    onSuccess: onSuccess,
-    onError: onError,
-  );
-}
-
 Mutation<void, int> getConfirmTestMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,

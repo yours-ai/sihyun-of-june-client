@@ -5,13 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
-import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import '../../constants.dart';
 import '../../globals.dart';
 import '../../services.dart';
-import '../../widgets/common/modal/modal_description_widget.dart';
 
 class TestConfirmScreen extends ConsumerStatefulWidget {
   final int testId;
@@ -38,52 +35,6 @@ class TestConfirmScreenState extends ConsumerState<TestConfirmScreen> {
 
   @override
   Widget build(BuildContext context) {
-    showDenyModal() async {
-      await showModalBottomSheet<void>(
-        context: context,
-        useRootNavigator: true,
-        builder: (BuildContext context) {
-          return ModalWidget(
-            title: '정말 다른 상대로 정해드릴까요?',
-            description: const ModalDescriptionWidget(
-              description: '다른 상대를 만나려면,\n추가로 재화를 사용하셔야 해요.',
-            ),
-            choiceColumn: ModalChoiceWidget(
-              cancelText: '아니요',
-              submitText: '네',
-              onCancel: () {
-                context.pop();
-              },
-              onSubmit: () async {
-                if (isEnableToClick) {
-                  setState(() {
-                    isEnableToClick = false;
-                  });
-                  await getDenyTestChoiceMutation(
-                    onSuccess: (res, arg) {
-                      context.go(RoutePaths.mailListDecideAssignmentMethod);
-                    },
-                    onError: (arg, error, fallback) {
-                      setState(() {
-                        isEnableToClick = true;
-                      });
-                      scaffoldMessengerKey.currentState?.showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
-                          ),
-                        ),
-                      );
-                    },
-                  ).mutate(widget.testId);
-                }
-              },
-            ),
-          );
-        },
-      );
-    }
-
     return Scaffold(
       body: SafeArea(
         child: TitleLayout(
@@ -93,46 +44,51 @@ class TestConfirmScreenState extends ConsumerState<TestConfirmScreen> {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          actions: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              OutlinedButton(
-                  onPressed: () {
-                    showDenyModal();
-                  },
-                  child: Text(
-                    '다른 상대로 해주세요.',
-                    style: TextStyle(
-                      color: ColorConstants.gray,
-                    ),
-                  )),
-              const SizedBox(
-                height: 10,
-              ),
-              MutationBuilder(
-                mutation: getConfirmTestMutation(
-                  onSuccess: (res, arg) async {
-                    ref.read(characterThemeProvider.notifier).state =
-                        widget.selectedCharacterTheme;
-                    await characterService
-                        .saveSelectedCharacterId(widget.selectedCharacterId);
-                    if (!mounted) return;
-                    context.go(RoutePaths.starting);
-                  },
-                  onError: (arg, error, fallback) {
-                    setState(() {
-                      isEnableToClick = true;
-                    });
-                    scaffoldMessengerKey.currentState?.showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
-                        ),
-                      ),
-                    );
-                  },
+          actions: MutationBuilder(mutation: getConfirmTestMutation(
+            onError: (arg, error, fallback) {
+              setState(() {
+                isEnableToClick = true;
+              });
+              scaffoldMessengerKey.currentState?.showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+                  ),
                 ),
-                builder: (context, state, mutate) => FilledButton(
+              );
+            },
+          ), builder: (context, state, mutate) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                OutlinedButton(
+                    onPressed: () async {
+                      if (isEnableToClick) {
+                        setState(() {
+                          isEnableToClick = false;
+                        });
+                        await mutate(widget.testId).then((_) async {
+                          ref.read(characterThemeProvider.notifier).state =
+                              widget.selectedCharacterTheme;
+                          ref.read(selectedCharacterProvider.notifier).state =
+                              widget.selectedCharacterId;
+                          await characterService.saveSelectedCharacterId(
+                              widget.selectedCharacterId);
+                          if (!mounted) return;
+                          context.go(RoutePaths.mailListDecideAssignmentMethod);
+                        });
+                      }
+                    },
+                    child: Text(
+                      '다른 상대로 해주세요.',
+                      style: TextStyle(
+                        color: ColorConstants.gray,
+                      ),
+                    )),
+                const SizedBox(
+                  height: 10,
+                ),
+                FilledButton(
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                       isEnableToClick
@@ -141,12 +97,21 @@ class TestConfirmScreenState extends ConsumerState<TestConfirmScreen> {
                               widget.selectedCharacterTheme.colors.secondary),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (isEnableToClick) {
                       setState(() {
                         isEnableToClick = false;
                       });
-                      mutate(widget.testId);
+                      await mutate(widget.testId).then((_) async {
+                        ref.read(characterThemeProvider.notifier).state =
+                            widget.selectedCharacterTheme;
+                        ref.read(selectedCharacterProvider.notifier).state =
+                            widget.selectedCharacterId;
+                        await characterService.saveSelectedCharacterId(
+                            widget.selectedCharacterId);
+                        if (!mounted) return;
+                        context.go(RoutePaths.starting);
+                      });
                     }
                   },
                   child: const Text(
@@ -156,9 +121,9 @@ class TestConfirmScreenState extends ConsumerState<TestConfirmScreen> {
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            );
+          }),
         ),
       ),
     );

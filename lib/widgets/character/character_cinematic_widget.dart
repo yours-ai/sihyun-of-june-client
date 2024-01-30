@@ -53,24 +53,12 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
     if (textIndex ==
         modifiedCharacterCinematic.cinematic_description.length - 2) {
       isLastPage = true;
-    }
-    setState(() {
-      textIndex += 1;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final backgroundImageSrc = isLastPage
-        ? modifiedCharacterCinematic.cinematic_background_image_2
-        : modifiedCharacterCinematic.cinematic_background_image_1;
-    if (isLastPage) {
       Future.delayed(
-        const Duration(milliseconds: 1500),
+        const Duration(milliseconds: 3000),
         () {
           if (!mounted) return;
-          if (widget.profileWidgetType case ProfileWidgetType.selection) {
-            context.go(
+          if (widget.profileWidgetType == ProfileWidgetType.selection) {
+            context.push(
               RoutePaths.selectionConfirm,
               extra: {
                 'id': widget.character.id,
@@ -79,7 +67,7 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
                 'secondaryColor': widget.character.theme.colors.secondary,
               },
             );
-          } else if (widget.profileWidgetType case ProfileWidgetType.test) {
+          } else if (widget.profileWidgetType == ProfileWidgetType.test) {
             final int testId = widget.testId ?? -1;
             if (testId == -1) {
               Sentry.captureException('testId is null');
@@ -92,7 +80,7 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
               );
               return;
             }
-            context.go(
+            context.push(
               RoutePaths.testConfirm,
               extra: {
                 'selectedCharacterId': widget.character.id,
@@ -108,6 +96,16 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
         },
       );
     }
+    setState(() {
+      textIndex += 1;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final backgroundImageSrc = isLastPage
+        ? modifiedCharacterCinematic.cinematic_background_image_2
+        : modifiedCharacterCinematic.cinematic_background_image_1;
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
       child: SafeArea(

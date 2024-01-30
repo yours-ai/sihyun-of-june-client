@@ -73,7 +73,6 @@ abstract final class RoutePaths {
   static String selectionDeciding = '/character-selection-deciding';
   static String selectionConfirm = '/character-selection-confirm';
   static String assignment = '/assignment';
-  static String otherCharacter = '/other-character';
   static String newUserAssignmentStarting = '/new-user-assignment-starting';
   static String retest = '/retest';
   static String retestExtend = '$retest/${SubRoutePaths.extend}';

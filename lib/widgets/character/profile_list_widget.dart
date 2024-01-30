@@ -2,7 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
@@ -40,10 +42,11 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
   final CarouselController _characterListController = CarouselController();
 
   Widget _buildButton(ProfileWidgetType buttonType, Color primaryColor) {
-    Widget buildInitialButton(String buttonText) {
+    Widget buildInitialButton(String buttonText, Color buttonColor) {
       return FilledButton(
+        key: ValueKey(buttonText),
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(primaryColor),
+          backgroundColor: MaterialStateProperty.all(buttonColor),
         ),
         onPressed: () => Navigator.push(
             context,
@@ -76,12 +79,14 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
 
     switch (buttonType) {
       case ProfileWidgetType.selection:
-        return buildInitialButton('이 친구로 선택할래요!');
+        return buildInitialButton('이 친구로 선택할래요!', primaryColor);
       case ProfileWidgetType.test:
         return buildInitialButton(
-            '${widget.characterList.first.first_name}이로 배정완료 하기');
+            '${widget.characterList.first.first_name}이로 선택할게요!', primaryColor);
       case ProfileWidgetType.myCharacterProfile:
-        return buildInitialButton('프로필 보기');
+        return buildInitialButton(
+            '${widget.characterList[selectedIndex].first_name}이에 대해 자세히 알아보기',
+            ColorConstants.darkGray);
     }
   }
 
@@ -145,6 +150,7 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                         enableInfiniteScroll: false,
                         viewportFraction: 0.2,
                         onPageChanged: (index, reason) {
+                          HapticFeedback.lightImpact();
                           setState(() {
                             selectedIndex = index;
                           });
@@ -219,17 +225,36 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(28, 18, 28, 18),
-                      child: _buildButton(
-                        widget.profileWidgetType,
-                        Color(
-                          widget.characterList[selectedIndex].theme.colors
-                              .primary,
-                        ),
+                      child: TweenAnimationBuilder(
+                        tween: ColorTween(
+                            begin: Color(widget.characterList[selectedIndex]
+                                .theme.colors.primary),
+                            end: Color(widget.characterList[selectedIndex].theme
+                                .colors.primary)),
+                        duration: const Duration(milliseconds: 100),
+                        builder: (BuildContext context, Color? color,
+                            Widget? child) {
+                          return _buildButton(widget.profileWidgetType, color!);
+                        },
                       ),
                     ),
                   ],
                 ),
-              )
+              ),
+              if (widget.profileWidgetType ==
+                  ProfileWidgetType.myCharacterProfile)
+                Positioned(
+                  top: indicatorPadding * 2,
+                  left: indicatorPadding / 2,
+                  child: IconButton(
+                    onPressed: () => context.pop(),
+                    icon: Icon(
+                      PhosphorIcons.arrow_left,
+                      color: ColorConstants.background,
+                      size: 32,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

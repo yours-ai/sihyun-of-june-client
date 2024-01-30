@@ -8,7 +8,7 @@ import 'package:project_june_client/screens/all_tab/point_change_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_log_screen.dart';
 import 'package:project_june_client/screens/all_tab/share_screen.dart';
 import 'package:project_june_client/screens/assignment/assignment_screen.dart';
-import 'package:project_june_client/screens/assignment/decide_method_screen.dart';
+import 'package:project_june_client/screens/mail/decide_method_screen.dart';
 import 'package:project_june_client/screens/assignment/new_user_assignment_starting_screen.dart';
 import 'package:project_june_client/screens/character_selection/deciding_screen.dart';
 import 'package:project_june_client/screens/character_selection/confirm_screen.dart';
@@ -19,8 +19,7 @@ import 'package:project_june_client/screens/all_tab/change_name_screen.dart';
 import 'package:project_june_client/screens/all_tab/my_coin_screen.dart';
 import 'package:project_june_client/screens/notification_list_screen.dart';
 import 'package:project_june_client/screens/login/phone_login_screen.dart';
-import 'package:project_june_client/screens/character_profile/other_character_screen.dart';
-import 'package:project_june_client/screens/character_profile/my_character_screen.dart';
+import 'package:project_june_client/screens/mail/my_character_screen.dart';
 import 'package:project_june_client/screens/all_tab/policy_screen.dart';
 import 'package:project_june_client/screens/retest/retest_confirm_screen.dart';
 import 'package:project_june_client/screens/retest/retest_extend_screen.dart';
@@ -182,14 +181,23 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RoutePaths.testConfirm,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final extra = state.extra as Map<String, dynamic>;
-        return TestConfirmScreen(
-          selectedCharacterId: extra['selectedCharacterId'] as int,
-          testId: extra['testId'] as int,
-          selectedCharacterFirstName: extra['selectedCharacterFirstName'],
-          selectedCharacterTheme:
-              extra['selectedCharacterTheme'] as CharacterTheme,
+        return CustomTransitionPage(
+          child: TestConfirmScreen(
+            selectedCharacterId: extra['selectedCharacterId'] as int,
+            testId: extra['testId'] as int,
+            selectedCharacterFirstName: extra['selectedCharacterFirstName'],
+            selectedCharacterTheme:
+                extra['selectedCharacterTheme'] as CharacterTheme,
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 300), // 전환 지속 시간 설정
         );
       },
     ),
@@ -208,20 +216,24 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RoutePaths.selectionConfirm,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final extra = state.extra as Map<String, dynamic>;
-        return CharacterSelectionConfirmScreen(
-          characterId: extra['id'] as int,
-          firstName: extra['firstName'],
-          primaryColor: extra['primaryColor'] as int,
-          secondaryColor: extra['secondaryColor'] as int,
+        return CustomTransitionPage(
+          child: CharacterSelectionConfirmScreen(
+            characterId: extra['id'] as int,
+            firstName: extra['firstName'],
+            primaryColor: extra['primaryColor'] as int,
+            secondaryColor: extra['secondaryColor'] as int,
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 300), // 전환 지속 시간 설정
         );
       },
-    ),
-    GoRoute(
-      path: '${RoutePaths.otherCharacter}/:id',
-      builder: (context, state) =>
-          OtherCharacterScreen(id: int.tryParse(state.pathParameters['id']!)!),
     ),
     GoRoute(
       path: RoutePaths.assignment,

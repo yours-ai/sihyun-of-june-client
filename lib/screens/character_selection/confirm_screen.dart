@@ -43,10 +43,11 @@ class _CharacterSelectionConfirmScreenState
             children: [
               OutlinedButton(
                   onPressed: () {
-                    context.go(RoutePaths.selectionDeciding);
+                    context.pop();
+                    context.pop();
                   },
                   child: Text(
-                    '다른 상대로 할게요.',
+                    '다른 상대로 해주세요.',
                     style: TextStyle(
                       color: ColorConstants.gray,
                     ),
