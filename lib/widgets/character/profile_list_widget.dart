@@ -137,7 +137,6 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                height: 176,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -146,7 +145,6 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                       itemCount: widget.characterList.length,
                       carouselController: _characterListController,
                       options: CarouselOptions(
-                        height: 78,
                         enableInfiniteScroll: false,
                         viewportFraction: 0.2,
                         onPageChanged: (index, reason) {
@@ -176,6 +174,8 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                           child: Opacity(
                             opacity: isSelected ? 0.8 : 0.3,
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Container(
                                   width: 60,
@@ -186,11 +186,11 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                                     // 원형 테두리 반경
                                     border: isSelected
                                         ? Border.all(
-                                            color: Color(
-                                                character.theme.colors.primary),
-                                            // 테두리 색상
-                                            width: 2.0, // 테두리 두께
-                                          )
+                                      color: Color(
+                                          character.theme.colors.primary),
+                                      // 테두리 색상
+                                      width: 2.0, // 테두리 두께
+                                    )
                                         : null,
                                   ),
                                   child: ClipRRect(
@@ -198,8 +198,8 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                                     child: ExtendedImage.network(
                                       cacheMaxAge: CachingDuration.image,
                                       cacheKey:
-                                          UniqueCacheKeyService.makeUniqueKey(
-                                              mainImageSrc),
+                                      UniqueCacheKeyService.makeUniqueKey(
+                                          mainImageSrc),
                                       mainImageSrc,
                                       fit: BoxFit.cover,
                                     ),
@@ -245,7 +245,7 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                   ProfileWidgetType.myCharacterProfile)
                 Positioned(
                   top: indicatorPadding * 2,
-                  left: indicatorPadding / 2,
+                  left: indicatorPadding - 10,
                   child: IconButton(
                     onPressed: () => context.pop(),
                     icon: Icon(

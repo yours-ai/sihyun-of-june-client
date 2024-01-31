@@ -51,6 +51,7 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
 
   void _onNextPage() {
     if (isLastPage) return;
+    HapticFeedback.lightImpact();
     if (textIndex ==
         modifiedCharacterCinematic.cinematic_description.length - 2) {
       isLastPage = true;

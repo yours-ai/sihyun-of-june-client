@@ -1,13 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
+import 'package:project_june_client/widgets/character/custom_story_indicator_widget.dart';
 import 'package:project_june_client/widgets/character/profile_list_widget.dart';
 
 const double indicatorPadding = 15.0;
@@ -29,7 +29,7 @@ class ProfileCardWidget extends ConsumerStatefulWidget {
 }
 
 class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
-  late int imageIndex = widget.mainImageIndex;
+  late final imageIndex = ValueNotifier(widget.mainImageIndex);
   late String selectedCharacterName = widget.character.name;
   final CarouselController _imageListController = CarouselController();
   String questText = '';
@@ -57,11 +57,12 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
       });
       _imageListController.jumpToPage(widget.mainImageIndex);
       setState(() {
-        imageIndex = widget.mainImageIndex;
+        imageIndex.value = widget.mainImageIndex;
         selectedCharacterName = widget.character.name;
-        if (widget.character.character_info.images[imageIndex].is_blurred) {
-          questText =
-              widget.character.character_info.images[imageIndex].quest_text;
+        if (widget
+            .character.character_info.images[imageIndex.value].is_blurred) {
+          questText = widget
+              .character.character_info.images[imageIndex.value].quest_text;
         } else {
           questText = '';
         }
@@ -75,24 +76,16 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _preloadImages(widget.character.character_info.images);
     });
+    imageIndex.addListener(() {
+      if (imageIndex.value == 0) return;
+      _imageListController.jumpToPage(imageIndex.value);
+    });
   }
 
-  Widget _buildIndicator(int index, int totalImageLength) {
-    const innerIndicatorMargin = 3.0;
-    final indicatorWidth =
-        (MediaQuery.of(context).size.width - 2 * indicatorPadding) /
-                totalImageLength -
-            (2 * innerIndicatorMargin);
-    return Container(
-      width: indicatorWidth,
-      height: 3.0,
-      margin: const EdgeInsets.symmetric(horizontal: innerIndicatorMargin),
-      decoration: BoxDecoration(
-        color: imageIndex >= index
-            ? ColorConstants.background
-            : ColorConstants.background.withOpacity(0.3),
-      ),
-    );
+  @override
+  void dispose() {
+    super.dispose();
+    imageIndex.dispose();
   }
 
   @override
@@ -108,20 +101,22 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
           final double screenWidth = MediaQuery.of(context).size.width;
           final double dx = details.localPosition.dx;
           if (dx < screenWidth / 2) {
-            if (imageIndex == 0) return;
-            _imageListController.jumpToPage(imageIndex - 1);
-            if (widget.character.character_info.images[imageIndex].is_blurred) {
-              questText =
-                  widget.character.character_info.images[imageIndex].quest_text;
+            if (imageIndex.value == 0) return;
+            _imageListController.jumpToPage(imageIndex.value - 1);
+            if (widget
+                .character.character_info.images[imageIndex.value].is_blurred) {
+              questText = widget
+                  .character.character_info.images[imageIndex.value].quest_text;
             } else {
               questText = '';
             }
           } else {
-            if (imageIndex == totalImageLength - 1) return;
-            _imageListController.jumpToPage(imageIndex + 1);
-            if (widget.character.character_info.images[imageIndex].is_blurred) {
-              questText =
-                  widget.character.character_info.images[imageIndex].quest_text;
+            if (imageIndex.value == totalImageLength - 1) return;
+            _imageListController.jumpToPage(imageIndex.value + 1);
+            if (widget
+                .character.character_info.images[imageIndex.value].is_blurred) {
+              questText = widget
+                  .character.character_info.images[imageIndex.value].quest_text;
             } else {
               questText = '';
             }
@@ -140,7 +135,7 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                 enableInfiniteScroll: false,
                 onPageChanged: (index, reason) {
                   setState(() {
-                    imageIndex = index;
+                    imageIndex.value = index;
                   });
                 },
               ),
@@ -162,10 +157,13 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
               right: 0,
               child: Padding(
                 padding: const EdgeInsets.all(indicatorPadding),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(totalImageLength,
-                      (index) => _buildIndicator(index, totalImageLength)),
+                child: CustomStoryIndicator(
+                  itemCount: totalImageLength,
+                  currentIndex: imageIndex,
+                  defaultColor: ColorConstants.background.withOpacity(0.3),
+                  highlightColor: ColorConstants.background,
+                  indicatorSpacing: 6.0,
+                  interval: const Duration(seconds: 3),
                 ),
               ),
             ),
