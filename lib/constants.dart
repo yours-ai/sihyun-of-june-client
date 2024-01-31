@@ -45,7 +45,7 @@ abstract final class RoutePaths {
   static String starting = '/';
   static String landing = '/landing';
   static String login = '/login';
-  static String loginByPhone = '/$login/${SubRoutePaths.byPhone}';
+  static String loginByPhone = '$login/${SubRoutePaths.byPhone}';
   static String mailList = '/mails';
   static String mailListMyCharacter = '$mailList/${SubRoutePaths.myCharacter}';
   static String mailListMailDetail = '$mailList/${SubRoutePaths.mailDetail}';

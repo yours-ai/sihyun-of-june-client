@@ -1,4 +1,5 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,7 @@ import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/create_snackbar.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
@@ -27,6 +29,22 @@ class DecideAssignmentMethodScreen extends ConsumerStatefulWidget {
 class DecideAssignmentMethodScreenState
     extends ConsumerState<DecideAssignmentMethodScreen> {
   bool isEnableToClick = true;
+
+  void showNoMoreCharacterModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => ModalWidget(
+        title: '모든 상대를 만나보셨군요!',
+        description: const ModalDescriptionWidget(
+          description: '현재 상대하고만 편지를 주고받을 수 있어요.',
+        ),
+        choiceColumn: FilledButton(
+          onPressed: () => context.pop(),
+          child: const Text('알겠어요'),
+        ),
+      ),
+    );
+  }
 
   void showNeedMoreGoodsModal(BuildContext context) {
     showModalBottomSheet(
@@ -93,7 +111,14 @@ class DecideAssignmentMethodScreenState
                 setState(() {
                   isEnableToClick = true;
                 });
-                showNeedMoreGoodsModal(context);
+                if (error is DioException) {
+                  if (error.response?.data.trim() ==
+                      '모든 캐릭터를 배정받았습니다.'.trim()) {
+                    showNoMoreCharacterModal(context);
+                  } else {
+                    showNeedMoreGoodsModal(context);
+                  }
+                }
               },
             ),
             builder: (context, state, mutate) {

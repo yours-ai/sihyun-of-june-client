@@ -33,12 +33,8 @@ class RetestModalWidget extends ConsumerWidget {
               onCancel: () => context.pop(),
             )
           : FilledButton(
-              onPressed: () {
-                context.pop();
-              },
-              child: const Text(
-                '알겠어요',
-              ),
+              onPressed: () => context.pop(),
+              child: const Text('알겠어요'),
             ),
     );
   }
