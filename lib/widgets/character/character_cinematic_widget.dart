@@ -31,6 +31,7 @@ class CharacterCinematicWidget extends StatefulWidget {
 class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
   late final CharacterCinematic modifiedCharacterCinematic;
   bool isLastPage = false;
+  bool isFocusedInButton = false;
   int textIndex = 0;
 
   @override
@@ -180,17 +181,9 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
                     duration: const Duration(milliseconds: 100),
                     child: isLastPage
                         ? const SizedBox.shrink()
-                        : FilledButton(
-                            key: ValueKey<bool>(isLastPage),
-                            style: ButtonStyle(
-                              fixedSize: MaterialStateProperty.all(
-                                  Size.fromWidth(
-                                      MediaQuery.of(context).size.width - 56)),
-                              backgroundColor: MaterialStateProperty.all(
-                                  ColorConstants.darkGray),
-                            ),
-                            onPressed: _onNextPage,
-                            child: const Text('다음'),
+                        : _AnimatedShadowButton(
+                            isLastPage: isLastPage,
+                            onNextPage: _onNextPage,
                           ),
                   ),
                 ),
@@ -230,6 +223,69 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
       text,
       style: textStyle,
       textAlign: TextAlign.center,
+    );
+  }
+}
+
+const Duration firstAnimationDuration = Duration(milliseconds: 400);
+const Duration secondAnimationDuration = Duration(milliseconds: 300);
+const double firstBoxShadowRadius = 1;
+const double secondBoxShadowRadius = 7;
+const Color boxShadowColor = Color(0x40d5d5d5);
+
+class _AnimatedShadowButton extends StatefulWidget {
+  final bool isLastPage;
+  final VoidCallback onNextPage;
+
+  const _AnimatedShadowButton(
+      {required this.isLastPage, required this.onNextPage});
+
+  @override
+  _AnimatedShadowButtonState createState() => _AnimatedShadowButtonState();
+}
+
+class _AnimatedShadowButtonState extends State<_AnimatedShadowButton> {
+  bool isFocusedInButton = false;
+
+  void _handleTap() {
+    setState(() => isFocusedInButton = true);
+    widget.onNextPage();
+    Future.delayed(firstAnimationDuration, () {
+      if (mounted) {
+        setState(() => isFocusedInButton = false);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration:
+          isFocusedInButton ? secondAnimationDuration : firstAnimationDuration,
+      curve: Curves.easeInOut,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: boxShadowColor,
+            spreadRadius: isFocusedInButton
+                ? secondBoxShadowRadius
+                : firstBoxShadowRadius,
+            blurRadius: 30,
+          ),
+        ],
+      ),
+      child: FilledButton(
+        key: ValueKey<bool>(widget.isLastPage),
+        style: ButtonStyle(
+          overlayColor: MaterialStateProperty.all(Colors.transparent),
+          fixedSize: MaterialStateProperty.all(
+              Size.fromWidth(MediaQuery.of(context).size.width - 56)),
+          backgroundColor: MaterialStateProperty.all(ColorConstants.darkGray),
+          shadowColor: MaterialStateProperty.all(Colors.white),
+        ),
+        onPressed: _handleTap,
+        child: const Text('다음'),
+      ),
     );
   }
 }
