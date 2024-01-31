@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
@@ -37,7 +36,7 @@ class EmptyMailListWidget extends StatelessWidget {
                 const SizedBox(height: 23),
                 FilledButton(
                   onPressed: () {
-                    context.go('/assignment');
+                    context.go(RoutePaths.assignment);
                   },
                   child: const Text('새로운 상대 만나기'),
                 ),

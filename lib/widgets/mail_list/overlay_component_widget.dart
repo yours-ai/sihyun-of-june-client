@@ -4,13 +4,11 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
-import 'package:project_june_client/providers/mail_list_provider.dart';
 import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
 
 import '../../actions/character/models/Character.dart';
 import '../../constants.dart';
 import '../../providers/character_provider.dart';
-import '../../providers/common_provider.dart';
 import '../../services.dart';
 import '../../services/unique_cachekey_service.dart';
 
@@ -19,12 +17,14 @@ class OverlayComponentWidget extends ConsumerWidget {
   final VoidCallback? hideOverlay;
   final List<int>? characterIds;
   final String? firstName;
+  final void Function(int)? initializeSelectedPage;
 
   const OverlayComponentWidget({
     this.character,
     this.hideOverlay,
     this.characterIds,
     this.firstName,
+    this.initializeSelectedPage,
     super.key,
   });
 
@@ -39,7 +39,7 @@ class OverlayComponentWidget extends ConsumerWidget {
 
         if (character == null) {
           if (firstName == '') {
-            context.go('/assignment');
+            context.go(RoutePaths.assignment);
             hideOverlay!();
             return;
           }
@@ -57,7 +57,7 @@ class OverlayComponentWidget extends ConsumerWidget {
             return;
           }
           context.push(
-            '/retest',
+            RoutePaths.retest,
             extra: {
               'characterIds': characterIds,
               'firstName': firstName,
@@ -66,7 +66,9 @@ class OverlayComponentWidget extends ConsumerWidget {
           hideOverlay!();
           return;
         }
-        ref.watch(initializeMailListProvider)!.call();
+        if (initializeSelectedPage != null) {
+          initializeSelectedPage!(character!.date_allocated!.length);
+        }
         characterService.changeCharacterByTap(ref, character!);
         hideOverlay!();
       }, // 캐릭터 전환 or 추가 배정받기
@@ -94,8 +96,7 @@ class OverlayComponentWidget extends ConsumerWidget {
                     : 'D+${mailService.getMailDateDiff(DateTime.now(), character!.date_allocated!.first) + 1} ${character?.name}',
                 style: TextStyle(
                   color: isSelected
-                      ? Color(
-                          ref.watch(characterThemeProvider).colors!.primary!)
+                      ? Color(ref.watch(characterThemeProvider).colors.primary)
                       : ColorConstants.neutral,
                   fontSize: 20,
                   height: 1,
@@ -117,14 +118,14 @@ class OverlayComponentWidget extends ConsumerWidget {
                           color: ColorConstants.neutral,
                         )
                       : ExtendedImage.network(
-                          cacheMaxAge: ref.watch(imageCacheDurationProvider),
+                          cacheMaxAge: CachingDuration.image,
                           cacheKey: UniqueCacheKeyService.makeUniqueKey(
                               characterService
                                   .getMainImage(
-                                      character!.character_info!.images!)
+                                      character!.character_info.images)
                                   .src),
                           characterService
-                              .getMainImage(character!.character_info!.images!)
+                              .getMainImage(character!.character_info.images)
                               .src,
                           fit: BoxFit.cover,
                           width: 40,

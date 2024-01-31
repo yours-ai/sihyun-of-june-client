@@ -12,9 +12,9 @@ import 'navbar/navbar_icon.dart';
 import 'navbar/notification_icon.dart';
 
 final tabList = [
-  TabRoutePaths.mailList,
-  TabRoutePaths.notificationList,
-  TabRoutePaths.all,
+  RoutePaths.mailList,
+  RoutePaths.notificationList,
+  RoutePaths.all,
 ];
 
 class NavbarLayout extends ConsumerWidget {
@@ -77,11 +77,11 @@ class NavbarLayout extends ConsumerWidget {
                     .isNotEmpty ??
                 false;
             final stringPrimaryColor =
-                "#${ref.watch(characterThemeProvider).colors!.primary!.toRadixString(16).toString().substring(
+                "#${ref.watch(characterThemeProvider).colors.primary.toRadixString(16).toString().substring(
                       2,
                     )}";
             final stringSecondaryColor =
-                "#${ref.watch(characterThemeProvider).colors!.secondary!.toRadixString(16).toString().substring(
+                "#${ref.watch(characterThemeProvider).colors.secondary.toRadixString(16).toString().substring(
                       2,
                     )}";
             return BottomNavigationBar(

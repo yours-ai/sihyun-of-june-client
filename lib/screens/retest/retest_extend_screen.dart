@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/retest/retest_choice_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_layout_widget.dart';
@@ -35,10 +36,10 @@ class RetestExtendScreen extends ConsumerWidget {
                     snackBarText: arg == 'coin'
                         ? '${costState.data!['coin']}코인을 사용했어요!'
                         : '${costState.data!['point']}포인트를 사용했어요!',
-                    characterColors: ref.watch(characterThemeProvider).colors!,
+                    characterColors: ref.watch(characterThemeProvider).colors,
                   ),
                 );
-                context.go('/');
+                context.go(RoutePaths.starting);
               },
             ),
             builder: (context, state, mutate) {

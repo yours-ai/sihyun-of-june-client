@@ -1,12 +1,8 @@
-import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/widgets/character/not_chosen_list_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_layout_widget.dart';
 
-import '../../actions/character/models/Character.dart';
-import '../../actions/character/queries.dart';
 import '../../constants.dart';
 import '../../providers/user_provider.dart';
 
@@ -27,23 +23,6 @@ class RetestInfoScreen extends ConsumerWidget {
       firstName: firstName,
       title:
           '$firstName이와의 시간, 즐거우셨나요?\n${isEnableToRetest ? '이제, 새로운 상대를\n만날 수 있어요.' : '조금 더 이어갈 수 있어요.'}',
-      body: QueryBuilder<List<Character>>(
-        query: getAllCharactersQuery(),
-        builder: (context, state) {
-          if (state.data != null) {
-            var filteredCharacters = isEnableToRetest
-                ? state.data!
-                    .where((character) => !characterIds.contains(character.id))
-                    .toList()
-                : state.data!;
-            return NotChosenListWidget(
-              isEnableToRetest: isEnableToRetest,
-              filteredCharacters: filteredCharacters,
-            );
-          }
-          return const SizedBox.shrink();
-        },
-      ),
       action: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -54,7 +33,7 @@ class RetestInfoScreen extends ConsumerWidget {
                 ),
             onPressed: () {
               context.push(
-                '/retest/extend',
+                RoutePaths.retestExtend,
                 extra: firstName,
               );
             },
@@ -75,7 +54,7 @@ class RetestInfoScreen extends ConsumerWidget {
                 return;
               }
               context.push(
-                '/retest/confirm',
+                RoutePaths.retestConfirm,
                 extra: firstName,
               );
             },

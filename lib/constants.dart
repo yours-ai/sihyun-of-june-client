@@ -14,7 +14,14 @@ abstract final class ColorConstants {
   static Color veryLightGray = const Color(0xffdedede);
   static Color lightGray = const Color(0xffF6F6F6);
   static Color mediumGray = const Color(0xffA7A1A1);
+  static Color darkGray = const Color(0xff101010);
   static Color black = const Color(0xff1a1a1a);
+}
+
+abstract final class CachingDuration {
+  static Duration image = const Duration(days: 1);
+  static Duration character = const Duration(days: 1);
+  static Duration assignment = Duration.zero;
 }
 
 abstract final class ColorTheme {
@@ -34,15 +41,61 @@ abstract final class AppID {
   static String android = 'team.pygmalion.project_june_client';
 }
 
-abstract final class TabRoutePaths {
+abstract final class RoutePaths {
+  static String starting = '/';
+  static String landing = '/landing';
+  static String login = '/login';
+  static String loginByPhone = '$login/${SubRoutePaths.byPhone}';
   static String mailList = '/mails';
+  static String mailListMyCharacter = '$mailList/${SubRoutePaths.myCharacter}';
+  static String mailListMailDetail = '$mailList/${SubRoutePaths.mailDetail}';
+  static String mailListDecideAssignmentMethod =
+      '$mailList/${SubRoutePaths.decideAssignmentMethod}';
   static String notificationList = '/notifications';
   static String all = '/all';
+  static String allMyPoint = '$all/${SubRoutePaths.myPoint}';
+  static String allMyPointLog =
+      '$all/${SubRoutePaths.myPoint}/${SubRoutePaths.pointLog}';
+  static String allMyPointCharge =
+      '$all/${SubRoutePaths.myPoint}/${SubRoutePaths.pointCharge}';
+  static String allMyCoin = '$all/${SubRoutePaths.myCoin}';
+  static String allMyCoinLog =
+      '$all/${SubRoutePaths.myCoin}/${SubRoutePaths.coinLog}';
+  static String allMyCoinCharge =
+      '$all/${SubRoutePaths.myCoin}/${SubRoutePaths.coinCharge}';
+  static String allShare = '$all/${SubRoutePaths.share}';
+  static String allChangeName = '$all/${SubRoutePaths.changeName}';
+  static String allWithdraw = '$all/${SubRoutePaths.withdraw}';
+  static String allPolicy = '$all/${SubRoutePaths.policy}';
+  static String characterTest = '/character-test';
+  static String testDeciding = '/character-test-deciding';
+  static String testConfirm = '/character-test-confirm';
+  static String selectionDeciding = '/character-selection-deciding';
+  static String selectionConfirm = '/character-selection-confirm';
+  static String assignment = '/assignment';
+  static String newUserAssignmentStarting = '/new-user-assignment-starting';
+  static String retest = '/retest';
+  static String retestExtend = '$retest/${SubRoutePaths.extend}';
+  static String retestConfirm = '$retest/${SubRoutePaths.confirm}';
 }
 
-abstract final class DecidedRouteNames {
-  static String character = 'decided-character';
-  static String confirm = 'decided-confirm';
+abstract final class SubRoutePaths {
+  static String myCharacter = 'my-character';
+  static String mailDetail = 'mail-detail';
+  static String myPoint = 'my-point';
+  static String pointLog = 'point-log';
+  static String pointCharge = 'point-charge';
+  static String myCoin = 'my-coin';
+  static String coinLog = 'coin-log';
+  static String coinCharge = 'coin-charge';
+  static String share = 'share';
+  static String changeName = 'change-name';
+  static String withdraw = 'withdraw';
+  static String policy = 'policy';
+  static String byPhone = 'by-phone';
+  static String decideAssignmentMethod = 'decide-assignment-method';
+  static String extend = 'extend';
+  static String confirm = 'confirm';
 }
 
 abstract final class Urls {

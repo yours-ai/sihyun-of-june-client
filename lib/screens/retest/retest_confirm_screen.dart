@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/retest/retest_layout_widget.dart';
 
@@ -18,7 +19,7 @@ class RetestConfirmScreen extends ConsumerWidget {
           submitText: '좋아요',
           cancelText: '아니요',
           onSubmit: () {
-            context.go('/assignment');
+            context.go(RoutePaths.assignment);
           },
           onCancel: () {
             context.pop();

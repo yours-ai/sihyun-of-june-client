@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:intl/intl.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../actions/transaction/queries.dart';
 
@@ -13,18 +14,20 @@ enum PurchaseState { coin, point, both, impossible }
 class TransactionService {
   bool purchaseUpdatedListener(BuildContext context,
       PurchaseDetails purchaseDetails, InAppPurchase inAppPurchase) {
-    if (purchaseDetails.status == PurchaseStatus.pending) {
-      _handlePendingTransaction(context, purchaseDetails);
-      return true;
-    } else {
-      if (purchaseDetails.status == PurchaseStatus.error ||
-          purchaseDetails.status == PurchaseStatus.canceled) {
-        _handleErrorTransaction(context, purchaseDetails, inAppPurchase);
-      } else if (purchaseDetails.status == PurchaseStatus.purchased) {
+    switch (purchaseDetails.status) {
+      case PurchaseStatus.pending:
+        _handlePendingTransaction(context, purchaseDetails);
+        return true;
+      case PurchaseStatus.error:
+        _handleErrorTransaction(context, purchaseDetails.error!);
+      case PurchaseStatus.canceled:
+        _handleCancelTransaction(context, purchaseDetails, inAppPurchase);
+      case PurchaseStatus.purchased:
         _handlePurchasedTransaction(context, purchaseDetails, inAppPurchase);
-      }
-      return false;
+      default:
+        return false;
     }
+    return false;
   }
 
   final currencyFormatter = NumberFormat.currency(decimalDigits: 0, name: '');
@@ -40,10 +43,22 @@ class TransactionService {
     );
   }
 
-  void _handleErrorTransaction(BuildContext context,
+  void _handleCancelTransaction(BuildContext context,
       PurchaseDetails purchaseDetails, InAppPurchase inAppPurchase) {
-    inAppPurchase.completePurchase(purchaseDetails);
-    handleNewTransaction();
+    if (Platform.isIOS) {
+      inAppPurchase.completePurchase(purchaseDetails);
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          '결제가 취소되었어요.',
+        ),
+      ),
+    );
+  }
+
+  void _handleErrorTransaction(BuildContext context, IAPError error) {
+    Sentry.captureException(error);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(
@@ -58,7 +73,7 @@ class TransactionService {
     verifyPurchaseMutation(
       onSuccess: (res, arg) {
         inAppPurchase.completePurchase(purchaseDetails);
-        handleNewTransaction();
+        fetchChangedCoinData();
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
@@ -70,9 +85,25 @@ class TransactionService {
     ).mutate(purchaseDetails);
   }
 
+  PurchaseParam setPurchaseParam(ProductDetails productDetails) {
+    late PurchaseParam purchaseParam =
+        PurchaseParam(productDetails: productDetails);
+    if (Platform.isAndroid) {
+      purchaseParam = GooglePlayPurchaseParam(
+        productDetails: productDetails,
+      );
+      return purchaseParam;
+    } else {
+      purchaseParam = PurchaseParam(
+        productDetails: productDetails,
+      );
+      return purchaseParam;
+    }
+  }
+
   void initiatePurchase(
       ProductDetails productDetails, InAppPurchase inAppPurchase) async {
-    final purchaseParam = PurchaseParam(productDetails: productDetails);
+    final purchaseParam = setPurchaseParam(productDetails);
     if (kProductIds.contains(productDetails.id)) {
       inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
     } else {
@@ -81,7 +112,7 @@ class TransactionService {
     }
   }
 
-  void handleNewTransaction() {
+  void fetchChangedCoinData() {
     CachedQuery.instance.refetchQueries(keys: ["retrieve-me", "coin-logs"]);
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
 
@@ -41,16 +42,16 @@ class MailWidget extends ConsumerWidget {
       child: mailState != "notSent"
           ? GestureDetector(
               onTap: () {
-                context.push('/mails/detail/${mail!.id}');
+                context.push('${RoutePaths.mailListMailDetail}/${mail!.id}');
               },
               child: Column(
                 children: [
                   letterIcon(
                       mailState,
-                      "#${ref.watch(characterThemeProvider).colors!.primary!.toRadixString(16).toString().substring(
+                      "#${ref.watch(characterThemeProvider).colors.primary.toRadixString(16).toString().substring(
                             2,
                           )}",
-                      "#${ref.watch(characterThemeProvider).colors!.secondary!.toRadixString(16).toString().substring(
+                      "#${ref.watch(characterThemeProvider).colors.secondary.toRadixString(16).toString().substring(
                             2,
                           )}"),
                   const SizedBox(height: 1),
@@ -67,10 +68,10 @@ class MailWidget extends ConsumerWidget {
               children: [
                 letterIcon(
                     mailState,
-                    "#${ref.watch(characterThemeProvider).colors!.primary!.toRadixString(16).toString().substring(
+                    "#${ref.watch(characterThemeProvider).colors.primary.toRadixString(16).toString().substring(
                           2,
                         )}",
-                    "#${ref.watch(characterThemeProvider).colors!.secondary!.toRadixString(16).toString().substring(
+                    "#${ref.watch(characterThemeProvider).colors.secondary.toRadixString(16).toString().substring(
                           2,
                         )}"),
                 const SizedBox(height: 1),

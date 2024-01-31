@@ -95,10 +95,10 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                           ReplyWidget(
                             reply: mailState.data!.replies!.first,
                             userName: mailState.data!.to_first_name,
-                            characterName: characterInMail.first_name!,
+                            characterName: characterInMail.first_name,
                             toImage: mailState.data!.to_image,
                             primaryColorInMail:
-                                characterInMail.theme!.colors!.primary!,
+                                characterInMail.theme.colors.primary,
                           )
                         ],
                         if (mailState.data!.replies!.isEmpty &&
@@ -112,8 +112,8 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                           ReplyFormWidget(
                             mail: mailState.data!,
                             primaryColorInMail:
-                                characterInMail.theme!.colors!.primary!,
-                            characterName: characterInMail.first_name!,
+                                characterInMail.theme.colors.primary,
+                            characterName: characterInMail.first_name,
                             characterId: characterInMail.id,
                           )
                         ],

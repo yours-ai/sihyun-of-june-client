@@ -5,10 +5,13 @@ part 'CharacterTheme.g.dart';
 
 @JsonSerializable()
 class CharacterTheme {
-  CharacterColors? colors;
-  String? font;
+  CharacterColors colors;
+  String font;
 
-  CharacterTheme({this.colors, this.font});
+  CharacterTheme({
+    required this.colors,
+    required this.font,
+  });
 
   factory CharacterTheme.fromJson(Map<String, dynamic> json) =>
       _$CharacterThemeFromJson(json);

@@ -129,7 +129,7 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                 await Future.delayed(const Duration(seconds: 3));
                 await logout();
                 if (!mounted) return;
-                context.go('/login');
+                context.go(RoutePaths.login);
               },
               onError: (res, arg, error) {
                 setState(() {
