@@ -4,8 +4,9 @@ import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/services.dart';
 
 import '../../actions/mails/models/Mail.dart';
-import '../../constants.dart';
 import 'mail_info.dart';
+
+const Color characterFontColor = Color(0xff4c4c4c);
 
 class CharacterMailWidget extends ConsumerWidget {
   final Mail mail;
@@ -39,10 +40,11 @@ class CharacterMailWidget extends ConsumerWidget {
           style: TextStyle(
             fontFamily: characterInMail.theme.font,
             fontSize: 19,
-            fontWeight: FontWeightConstants.semiBold,
-            color: ColorConstants.black,
-            height: 1.289,
-            letterSpacing: 1.02,
+            fontWeight: FontWeight.normal,
+            color: characterFontColor,
+            height: 1.32,
+            letterSpacing: 1,
+            wordSpacing: 0.9,
           ),
         ),
       ],

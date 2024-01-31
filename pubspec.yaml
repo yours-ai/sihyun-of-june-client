@@ -84,12 +84,8 @@ flutter:
         - asset: assets/fonts/NanumJungHagSaeng.ttf
     - family: Pretendard
       fonts:
-        - asset: assets/fonts/Pretendard-Light.ttf
-          weight: 300
         - asset: assets/fonts/Pretendard-Regular.ttf
           weight: 400
-        - asset: assets/fonts/Pretendard-Medium.ttf
-          weight: 500
         - asset: assets/fonts/Pretendard-SemiBold.ttf
           weight: 600
         - asset: assets/fonts/Pretendard-Bold.ttf
@@ -99,16 +95,16 @@ flutter:
         - asset: assets/fonts/NanumDaCaeSaRang.ttf
     - family: NanumNoRyeogHaNeunDongHee
       fonts:
-        - asset: assets/fonts/NanumNoRyeogHaNeunDongHee.ttf
+        - asset: assets/fonts/NanumNoRyeogHaNeunDongHee.otf
     - family: NanumDdarEGeEomMaGa
       fonts:
-        - asset: assets/fonts/NanumDdarEGeEomMaGa.ttf
+        - asset: assets/fonts/NanumDdarEGeEomMaGa.otf
     - family: NanumBbangGuNiMamSonGeurSsi
       fonts:
-        - asset: assets/fonts/NanumBbangGuNiMamSonGeurSsi.ttf
+        - asset: assets/fonts/NanumBbangGuNiMamSonGeurSsi.otf
     - family: NanumMiRaeNaMu
       fonts:
-        - asset: assets/fonts/NanumMiRaeNaMu.ttf
+        - asset: assets/fonts/NanumMiRaeNaMu.otf
 
 
 
