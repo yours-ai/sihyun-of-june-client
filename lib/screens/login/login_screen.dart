@@ -99,6 +99,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                             onPressed: () => mutate(null),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Icon(Icons.apple),
                                 SizedBox(width: 8),

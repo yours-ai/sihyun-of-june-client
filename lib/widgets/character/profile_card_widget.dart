@@ -161,9 +161,9 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                   itemCount: totalImageLength,
                   currentIndex: imageIndex,
                   defaultColor: ColorConstants.background.withOpacity(0.3),
-                  highlightColor: ColorConstants.background,
+                  highlightColor: ColorConstants.background.withOpacity(0.87),
                   indicatorSpacing: 6.0,
-                  interval: const Duration(seconds: 3),
+                  interval: const Duration(seconds: 4),
                 ),
               ),
             ),
@@ -211,20 +211,27 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                                   fontSize: 60,
                                 ),
                               ),
+                              const TextSpan(
+                                text: ' ',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                ),
+                              ),
                               TextSpan(
                                 text:
                                     '(${widget.character.character_info.age})',
                                 style: const TextStyle(
-                                  fontSize: 48,
+                                  fontSize: 50,
                                 ),
                               ),
                             ],
                             style: TextStyle(
-                                fontFamily: 'NanumJungHagSaeng',
-                                fontSize: 60,
-                                fontWeight: FontWeightConstants.semiBold,
-                                color: ColorConstants.background,
-                                height: 1),
+                              fontFamily: 'NanumJungHagSaeng',
+                              fontWeight: FontWeight.normal,
+                              color: ColorConstants.background,
+                              height: 1.1,
+                              letterSpacing: .8,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -234,7 +241,9 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                             style: TextStyle(
                               fontSize: 16,
                               height: 1.45,
-                              fontWeight: FontWeightConstants.semiBold,
+                              fontWeight: FontWeight.w500,
+                              wordSpacing: -0.7,
+                              letterSpacing: 0.45,
                               color: ColorConstants.background,
                             ),
                           ),
@@ -243,7 +252,9 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                           widget.character.character_info.one_line_description,
                           style: TextStyle(
                             fontFamily: 'NanumJungHagSaeng',
-                            fontSize: 32,
+                            fontSize: 35,
+                            letterSpacing: 0.5,
+                            height: 1.3,
                             fontWeight: FontWeight.normal,
                             color: ColorConstants.background,
                           ),

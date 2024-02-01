@@ -140,38 +140,43 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                Center(
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: textIndex == 0
-                        ? FutureBuilder(
-                            future: Future.delayed(
-                                const Duration(milliseconds: 2000)),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                return _buildAnimatedText(
-                                  modifiedCharacterCinematic
-                                      .cinematic_description[textIndex],
-                                  textIndex,
-                                );
-                              } else {
-                                return const SizedBox.shrink();
-                              }
-                            },
-                          )
-                        : _buildText(
-                            modifiedCharacterCinematic
-                                .cinematic_description[textIndex],
-                            textIndex,
-                          ),
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: child,
-                      );
-                    },
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 50),
+                  child: Center(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: textIndex == 0
+                          ? FutureBuilder(
+                              future: Future.delayed(
+                                  const Duration(milliseconds: 2000)),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  return _buildAnimatedText(
+                                    modifiedCharacterCinematic
+                                        .cinematic_description[textIndex]
+                                        .replaceAll("\\n", "\n"),
+                                    textIndex,
+                                  );
+                                } else {
+                                  return const SizedBox.shrink();
+                                }
+                              },
+                            )
+                          : _buildText(
+                              modifiedCharacterCinematic
+                                  .cinematic_description[textIndex]
+                                  .replaceAll("\\n", "\n"),
+                              textIndex,
+                            ),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                    ),
                   ),
                 ),
                 Positioned(
@@ -197,10 +202,13 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
   }
 
   static final textStyle = TextStyle(
-    color: ColorConstants.background,
-    fontSize: 19,
-    height: 27 / 19,
-    fontWeight: FontWeightConstants.semiBold,
+    fontFamily: 'Pretendard',
+    fontWeight: FontWeight.w500,
+    color: Colors.white.withOpacity(0.8),
+    fontSize: 18,
+    height: 30 / 19,
+    letterSpacing: 0.9,
+    wordSpacing: -1.1,
   );
 
   Widget _buildAnimatedText(String text, int index) {

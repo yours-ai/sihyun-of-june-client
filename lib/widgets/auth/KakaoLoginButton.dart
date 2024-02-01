@@ -59,16 +59,20 @@ class KakaoLoginButton extends ConsumerWidget {
           ),
           onPressed: () =>
               state.status != QueryStatus.loading ? mutate(null) : null,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/kakao_icon.png',
-                height: 15,
-              ),
-              const SizedBox(width: 8),
-              const Text('카카오로 계속하기')
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/kakao_icon.png',
+                  height: 15,
+                ),
+                const SizedBox(width: 8),
+                const Text('카카오로 계속하기')
+              ],
+            ),
           ),
         );
       },

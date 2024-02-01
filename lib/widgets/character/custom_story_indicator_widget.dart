@@ -83,6 +83,7 @@ class StoryItem extends StatefulWidget {
 
 class _StoryItemState extends State<StoryItem> with TickerProviderStateMixin {
   final double height = 3;
+  final double height = 2.5;
   late AnimationController _progressAnimationController;
   late Animation _progressAnimation;
 
