@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/character/custom_story_indicator_widget.dart';
 import 'package:project_june_client/widgets/character/profile_list_widget.dart';
@@ -16,12 +17,14 @@ class ProfileCardWidget extends ConsumerStatefulWidget {
   final Character character;
   final int mainImageIndex;
   final ProfileWidgetType profileWidgetType;
+  final List<Widget> children;
 
   const ProfileCardWidget({
     super.key,
     required this.character,
     required this.mainImageIndex,
     required this.profileWidgetType,
+    required this.children,
   });
 
   @override
@@ -30,7 +33,6 @@ class ProfileCardWidget extends ConsumerStatefulWidget {
 
 class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
   late final imageIndex = ValueNotifier(widget.mainImageIndex);
-  late String selectedCharacterName = widget.character.name;
   final CarouselController _imageListController = CarouselController();
   String questText = '';
 
@@ -51,23 +53,13 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
   @override
   void didUpdateWidget(covariant ProfileCardWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.character.name != widget.character.name) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _preloadImages(widget.character.character_info.images);
-      });
-      _imageListController.jumpToPage(widget.mainImageIndex);
-      setState(() {
-        imageIndex.value = widget.mainImageIndex;
-        selectedCharacterName = widget.character.name;
-        if (widget
-            .character.character_info.images[imageIndex.value].is_blurred) {
-          questText = widget
-              .character.character_info.images[imageIndex.value].quest_text;
-        } else {
-          questText = '';
-        }
-      });
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _preloadImages(widget.character.character_info.images);
+    });
+    _imageListController.jumpToPage(widget.mainImageIndex);
+    setState(() {
+      imageIndex.value = widget.mainImageIndex;
+    });
   }
 
   @override
@@ -77,6 +69,15 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
       _preloadImages(widget.character.character_info.images);
     });
     imageIndex.addListener(() {
+      setState(() {
+        if (widget
+            .character.character_info.images[imageIndex.value].is_blurred) {
+          questText = widget
+              .character.character_info.images[imageIndex.value].quest_text;
+        } else {
+          questText = '';
+        }
+      });
       if (imageIndex.value == 0) return;
       _imageListController.jumpToPage(imageIndex.value);
     });
@@ -88,8 +89,25 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
     imageIndex.dispose();
   }
 
+  void startStoryAnimation(List<AnimationController> controllers) {
+    for (AnimationController controller in controllers) {
+      if (controller.status == AnimationStatus.forward) {
+        controller.forward();
+      }
+    }
+  }
+
+  void stopStoryAnimation(List<AnimationController> controllers) {
+    for (AnimationController controller in controllers) {
+      if (controller.status == AnimationStatus.forward) {
+        controller.stop();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final controllers = ref.watch(animationControllersProvider);
     final totalImageLength = widget.character.character_info.images.length;
     return ClipRRect(
       borderRadius: const BorderRadius.only(
@@ -97,7 +115,11 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
         topRight: Radius.circular(12),
       ),
       child: GestureDetector(
+        onTapDown: (_) {
+          stopStoryAnimation(controllers);
+        },
         onTapUp: (details) {
+          startStoryAnimation(controllers);
           final double screenWidth = MediaQuery.of(context).size.width;
           final double dx = details.localPosition.dx;
           if (dx < screenWidth / 2) {
@@ -121,6 +143,15 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
               questText = '';
             }
           }
+        },
+        onTapCancel: () {
+          startStoryAnimation(controllers);
+        },
+        onLongPressStart: (_) {
+          stopStoryAnimation(controllers);
+        },
+        onLongPressEnd: (_) {
+          startStoryAnimation(controllers);
         },
         child: Stack(
           children: [
@@ -151,107 +182,125 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                 );
               },
             ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(indicatorPadding),
-                child: CustomStoryIndicator(
-                  itemCount: totalImageLength,
-                  currentIndex: imageIndex,
-                  defaultColor: ColorConstants.background.withOpacity(0.3),
-                  highlightColor: ColorConstants.background,
-                  indicatorSpacing: 6.0,
-                  interval: const Duration(seconds: 3),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 155,
-              child: Padding(
-                padding: const EdgeInsets.all(21),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (questText.isNotEmpty)
-                      Column(
-                        children: [
-                          Icon(
-                            PhosphorIcons.lock_bold,
-                            color: ColorConstants.background,
-                            size: 24,
-                          ),
-                          const SizedBox(height: 7),
-                          Text(
-                            questText.replaceAll("\\n", "\n"),
-                            style: TextStyle(
-                              color: ColorConstants.background,
-                              fontSize: 14,
-                              height: 19 / 14,
-                              fontWeight: FontWeightConstants.semiBold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.1),
-                        ],
+            SafeArea(
+              child: Stack(
+                children: [
+                  ...widget.children,
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(indicatorPadding),
+                      child: CustomStoryIndicator(
+                        itemCount: totalImageLength,
+                        currentIndex: imageIndex,
+                        defaultColor: ColorConstants.background.withOpacity(0.3),
+                        highlightColor: ColorConstants.background.withOpacity(0.87),
+                        indicatorSpacing: 6.0,
+                        interval: const Duration(seconds: 4),
                       ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text.rich(
-                          TextSpan(
+                    ),
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 155,
+                    child: Padding(
+                      padding: const EdgeInsets.all(21),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (questText.isNotEmpty)
+                            Column(
+                              children: [
+                                Icon(
+                                  PhosphorIcons.lock_bold,
+                                  color: ColorConstants.background,
+                                  size: 24,
+                                ),
+                                const SizedBox(height: 7),
+                                Text(
+                                  questText.replaceAll("\\n", "\n"),
+                                  style: TextStyle(
+                                    color: ColorConstants.background,
+                                    fontSize: 14,
+                                    height: 19 / 14,
+                                    fontWeight: FontWeightConstants.semiBold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(
+                                    height: MediaQuery.of(context).size.height * 0.1),
+                              ],
+                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TextSpan(
-                                text: widget.character.name,
-                                style: const TextStyle(
-                                  fontSize: 60,
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: widget.character.name,
+                                      style: const TextStyle(
+                                        fontSize: 60,
+                                      ),
+                                    ),
+                                    const TextSpan(
+                                      text: ' ',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                      '(${widget.character.character_info.age})',
+                                      style: const TextStyle(
+                                        fontSize: 50,
+                                      ),
+                                    ),
+                                  ],
+                                  style: TextStyle(
+                                    fontFamily: 'NanumJungHagSaeng',
+                                    fontWeight: FontWeight.normal,
+                                    color: ColorConstants.background,
+                                    height: 1.1,
+                                    letterSpacing: .8,
+                                  ),
                                 ),
                               ),
-                              TextSpan(
-                                text:
-                                    '(${widget.character.character_info.age})',
-                                style: const TextStyle(
-                                  fontSize: 48,
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                child: Text(
+                                  widget.character.character_info.summary_description,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    height: 1.45,
+                                    fontWeight: FontWeight.w500,
+                                    wordSpacing: -0.7,
+                                    letterSpacing: 0.45,
+                                    color: ColorConstants.background,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                widget.character.character_info.one_line_description,
+                                style: TextStyle(
+                                  fontFamily: 'NanumJungHagSaeng',
+                                  fontSize: 35,
+                                  letterSpacing: 0.5,
+                                  height: 1.3,
+                                  fontWeight: FontWeight.normal,
+                                  color: ColorConstants.background,
                                 ),
                               ),
                             ],
-                            style: TextStyle(
-                                fontFamily: 'NanumJungHagSaeng',
-                                fontSize: 60,
-                                fontWeight: FontWeightConstants.semiBold,
-                                color: ColorConstants.background,
-                                height: 1),
                           ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          child: Text(
-                            widget.character.character_info.summary_description,
-                            style: TextStyle(
-                              fontSize: 16,
-                              height: 1.45,
-                              fontWeight: FontWeightConstants.semiBold,
-                              color: ColorConstants.background,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          widget.character.character_info.one_line_description,
-                          style: TextStyle(
-                            fontFamily: 'NanumJungHagSaeng',
-                            fontSize: 32,
-                            fontWeight: FontWeight.normal,
-                            color: ColorConstants.background,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],

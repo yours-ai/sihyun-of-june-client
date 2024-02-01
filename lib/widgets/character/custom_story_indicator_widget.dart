@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_june_client/providers/common_provider.dart';
 
 class CustomStoryIndicator extends StatefulWidget {
   const CustomStoryIndicator(
       {super.key,
-        required this.itemCount,
-        required this.currentIndex,
-        this.highlightColor = Colors.blue,
-        this.defaultColor = Colors.white,
-        this.indicatorSpacing = 6,
-        this.interval = const Duration(seconds: 4)});
+      required this.itemCount,
+      required this.currentIndex,
+      this.highlightColor = Colors.blue,
+      this.defaultColor = Colors.white,
+      this.indicatorSpacing = 6,
+      this.interval = const Duration(seconds: 4)});
 
   final int itemCount;
   final ValueNotifier<int> currentIndex;
@@ -27,13 +29,13 @@ class _CustomStoryIndicatorState extends State<CustomStoryIndicator> {
     for (var i = 0; i < widget.itemCount; i++) {
       listWidget.add(Expanded(
           child: StoryItem(
-            interval: widget.interval,
-            isSelected: i == widget.currentIndex.value,
-            highlightColor: widget.highlightColor,
-            defaultColor: widget.defaultColor,
-            onComplete: _next,
-            isFill: i < widget.currentIndex.value,
-          )));
+        interval: widget.interval,
+        isSelected: i == widget.currentIndex.value,
+        highlightColor: widget.highlightColor,
+        defaultColor: widget.defaultColor,
+        onComplete: _next,
+        isFill: i < widget.currentIndex.value,
+      )));
       if (i < widget.itemCount - 1) {
         listWidget.add(SizedBox(width: widget.indicatorSpacing));
       }
@@ -46,10 +48,10 @@ class _CustomStoryIndicatorState extends State<CustomStoryIndicator> {
     return AnimatedBuilder(
         animation: widget.currentIndex,
         builder: (_, child) => Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: getListIndicator(),
-        ));
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: getListIndicator(),
+            ));
   }
 
   void _next() {
@@ -60,15 +62,15 @@ class _CustomStoryIndicatorState extends State<CustomStoryIndicator> {
   }
 }
 
-class StoryItem extends StatefulWidget {
+class StoryItem extends ConsumerStatefulWidget {
   const StoryItem(
       {super.key,
-        required this.interval,
-        this.isSelected = false,
-        this.onComplete,
-        required this.isFill,
-        this.highlightColor = Colors.blue,
-        this.defaultColor = Colors.white});
+      required this.interval,
+      this.isSelected = false,
+      this.onComplete,
+      required this.isFill,
+      this.highlightColor = Colors.blue,
+      this.defaultColor = Colors.white});
 
   final Duration interval;
   final bool isSelected;
@@ -78,11 +80,12 @@ class StoryItem extends StatefulWidget {
   final VoidCallback? onComplete;
 
   @override
-  State<StatefulWidget> createState() => _StoryItemState();
+  _StoryItemState createState() => _StoryItemState();
 }
 
-class _StoryItemState extends State<StoryItem> with TickerProviderStateMixin {
-  final double height = 3;
+class _StoryItemState extends ConsumerState<StoryItem>
+    with TickerProviderStateMixin {
+  final double height = 2.5;
   late AnimationController _progressAnimationController;
   late Animation _progressAnimation;
 
@@ -98,6 +101,9 @@ class _StoryItemState extends State<StoryItem> with TickerProviderStateMixin {
         widget.onComplete?.call();
       }
     });
+    final controllers = ref.read(animationControllersProvider);
+    controllers.add(_progressAnimationController);
+    ref.read(animationControllersProvider.notifier).state = controllers;
   }
 
   @override
