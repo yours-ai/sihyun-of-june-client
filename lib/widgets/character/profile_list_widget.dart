@@ -139,12 +139,15 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                 bottom: 0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     CarouselSlider.builder(
                       itemCount: widget.characterList.length,
                       carouselController: _characterListController,
                       options: CarouselOptions(
+                        aspectRatio:
+                            MediaQuery.of(context).size.width / carouselHeight,
                         enableInfiniteScroll: false,
                         viewportFraction: 0.2,
                         onPageChanged: (index, reason) {
@@ -174,7 +177,6 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                           child: Opacity(
                             opacity: isSelected ? 0.8 : 0.3,
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Container(
@@ -186,11 +188,11 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                                     // 원형 테두리 반경
                                     border: isSelected
                                         ? Border.all(
-                                      color: Color(
-                                          character.theme.colors.primary),
-                                      // 테두리 색상
-                                      width: 2.0, // 테두리 두께
-                                    )
+                                            color: Color(
+                                                character.theme.colors.primary),
+                                            // 테두리 색상
+                                            width: 2.0, // 테두리 두께
+                                          )
                                         : null,
                                   ),
                                   child: ClipRRect(
@@ -198,8 +200,8 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                                     child: ExtendedImage.network(
                                       cacheMaxAge: CachingDuration.image,
                                       cacheKey:
-                                      UniqueCacheKeyService.makeUniqueKey(
-                                          mainImageSrc),
+                                          UniqueCacheKeyService.makeUniqueKey(
+                                              mainImageSrc),
                                       mainImageSrc,
                                       fit: BoxFit.cover,
                                     ),
@@ -262,3 +264,5 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
     );
   }
 }
+
+const double carouselHeight = 79;
