@@ -30,7 +30,6 @@ class ProfileCardWidget extends ConsumerStatefulWidget {
 
 class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
   late final imageIndex = ValueNotifier(widget.mainImageIndex);
-  late String selectedCharacterName = widget.character.name;
   final CarouselController _imageListController = CarouselController();
   String questText = '';
 
@@ -51,23 +50,13 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
   @override
   void didUpdateWidget(covariant ProfileCardWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.character.name != widget.character.name) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _preloadImages(widget.character.character_info.images);
-      });
-      _imageListController.jumpToPage(widget.mainImageIndex);
-      setState(() {
-        imageIndex.value = widget.mainImageIndex;
-        selectedCharacterName = widget.character.name;
-        if (widget
-            .character.character_info.images[imageIndex.value].is_blurred) {
-          questText = widget
-              .character.character_info.images[imageIndex.value].quest_text;
-        } else {
-          questText = '';
-        }
-      });
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _preloadImages(widget.character.character_info.images);
+    });
+    _imageListController.jumpToPage(widget.mainImageIndex);
+    setState(() {
+      imageIndex.value = widget.mainImageIndex;
+    });
   }
 
   @override
@@ -77,6 +66,15 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
       _preloadImages(widget.character.character_info.images);
     });
     imageIndex.addListener(() {
+      setState(() {
+        if (widget
+            .character.character_info.images[imageIndex.value].is_blurred) {
+          questText = widget
+              .character.character_info.images[imageIndex.value].quest_text;
+        } else {
+          questText = '';
+        }
+      });
       if (imageIndex.value == 0) return;
       _imageListController.jumpToPage(imageIndex.value);
     });
