@@ -112,7 +112,7 @@ class DecideAssignmentMethodScreenState
                   isEnableToClick = true;
                 });
                 if (error is DioException) {
-                  if (error.response?.data.trim() ==
+                  if (error.response?.data.toString().trim() ==
                       '모든 캐릭터를 배정받았습니다.'.trim()) {
                     showNoMoreCharacterModal(context);
                   } else {
