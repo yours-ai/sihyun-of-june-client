@@ -121,144 +121,138 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
         .indexWhere((element) => element.is_main);
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.light,
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.black,
-          body: Stack(
-            children: [
-              Positioned.fill(
-                child: ProfileCardWidget(
-                  character: widget.characterList[selectedIndex],
-                  profileWidgetType: widget.profileWidgetType,
-                  mainImageIndex: mainImageIndex,
-                ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    CarouselSlider.builder(
-                      itemCount: widget.characterList.length,
-                      carouselController: _characterListController,
-                      options: CarouselOptions(
-                        aspectRatio:
-                            MediaQuery.of(context).size.width / carouselHeight,
-                        enableInfiniteScroll: false,
-                        viewportFraction: 0.2,
-                        onPageChanged: (index, reason) {
-                          HapticFeedback.lightImpact();
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: ProfileCardWidget(
+          character: widget.characterList[selectedIndex],
+          profileWidgetType: widget.profileWidgetType,
+          mainImageIndex: mainImageIndex,
+          children: [
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  CarouselSlider.builder(
+                    itemCount: widget.characterList.length,
+                    carouselController: _characterListController,
+                    options: CarouselOptions(
+                      aspectRatio:
+                      MediaQuery.of(context).size.width / carouselHeight,
+                      enableInfiniteScroll: false,
+                      viewportFraction: 0.2,
+                      onPageChanged: (index, reason) {
+                        HapticFeedback.lightImpact();
+                        setState(() {
+                          selectedIndex = index;
+                        });
+                      },
+                    ),
+                    itemBuilder: (context, index, realIndex) {
+                      final bool isSelected = index == selectedIndex;
+                      final character = widget.characterList[index];
+                      final mainImageSrc = characterService
+                          .getMainImage(character.character_info.images)
+                          .src;
+                      return GestureDetector(
+                        onTap: () {
+                          _characterListController.animateToPage(
+                            index,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
                           setState(() {
                             selectedIndex = index;
                           });
                         },
-                      ),
-                      itemBuilder: (context, index, realIndex) {
-                        final bool isSelected = index == selectedIndex;
-                        final character = widget.characterList[index];
-                        final mainImageSrc = characterService
-                            .getMainImage(character.character_info.images)
-                            .src;
-                        return GestureDetector(
-                          onTap: () {
-                            _characterListController.animateToPage(
-                              index,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                            setState(() {
-                              selectedIndex = index;
-                            });
-                          },
-                          child: Opacity(
-                            opacity: isSelected ? 0.8 : 0.3,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: 60,
-                                  height: 60,
-                                  padding: const EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(60.0),
-                                    // 원형 테두리 반경
-                                    border: isSelected
-                                        ? Border.all(
-                                            color: Color(
-                                                character.theme.colors.primary),
-                                            // 테두리 색상
-                                            width: 2.0, // 테두리 두께
-                                          )
-                                        : null,
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(60),
-                                    child: ExtendedImage.network(
-                                      cacheMaxAge: CachingDuration.image,
-                                      cacheKey:
-                                          UniqueCacheKeyService.makeUniqueKey(
-                                              mainImageSrc),
-                                      mainImageSrc,
-                                      fit: BoxFit.cover,
-                                    ),
+                        child: Opacity(
+                          opacity: isSelected ? 0.8 : 0.3,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 60,
+                                padding: const EdgeInsets.all(2),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(60.0),
+                                  // 원형 테두리 반경
+                                  border: isSelected
+                                      ? Border.all(
+                                    color: Color(
+                                        character.theme.colors.primary),
+                                    // 테두리 색상
+                                    width: 2.0, // 테두리 두께
+                                  )
+                                      : null,
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(60),
+                                  child: ExtendedImage.network(
+                                    cacheMaxAge: CachingDuration.image,
+                                    cacheKey:
+                                    UniqueCacheKeyService.makeUniqueKey(
+                                        mainImageSrc),
+                                    mainImageSrc,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  character.name,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    height: 14 / 12,
-                                    color: Colors.white,
-                                    fontWeight: isSelected
-                                        ? FontWeightConstants.semiBold
-                                        : FontWeight.normal,
-                                  ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                character.name,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  height: 14 / 12,
+                                  color: Colors.white,
+                                  fontWeight: isSelected
+                                      ? FontWeightConstants.semiBold
+                                      : FontWeight.normal,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        );
+                        ),
+                      );
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(28, 18, 28, 18),
+                    child: TweenAnimationBuilder(
+                      tween: ColorTween(
+                          begin: Color(widget.characterList[selectedIndex]
+                              .theme.colors.primary),
+                          end: Color(widget.characterList[selectedIndex].theme
+                              .colors.primary)),
+                      duration: const Duration(milliseconds: 100),
+                      builder: (BuildContext context, Color? color,
+                          Widget? child) {
+                        return _buildButton(widget.profileWidgetType, color!);
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(28, 18, 28, 18),
-                      child: TweenAnimationBuilder(
-                        tween: ColorTween(
-                            begin: Color(widget.characterList[selectedIndex]
-                                .theme.colors.primary),
-                            end: Color(widget.characterList[selectedIndex].theme
-                                .colors.primary)),
-                        duration: const Duration(milliseconds: 100),
-                        builder: (BuildContext context, Color? color,
-                            Widget? child) {
-                          return _buildButton(widget.profileWidgetType, color!);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              if (widget.profileWidgetType ==
-                  ProfileWidgetType.myCharacterProfile)
-                Positioned(
-                  top: indicatorPadding * 2,
-                  left: indicatorPadding - 10,
-                  child: IconButton(
-                    onPressed: () => context.pop(),
-                    icon: Icon(
-                      PhosphorIcons.arrow_left,
-                      color: ColorConstants.background,
-                      size: 32,
-                    ),
+            ),
+            if (widget.profileWidgetType ==
+                ProfileWidgetType.myCharacterProfile)
+              Positioned(
+                top: indicatorPadding * 2,
+                left: indicatorPadding - 10,
+                child: IconButton(
+                  onPressed: () => context.pop(),
+                  icon: Icon(
+                    PhosphorIcons.arrow_left,
+                    color: ColorConstants.background,
+                    size: 32,
                   ),
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );

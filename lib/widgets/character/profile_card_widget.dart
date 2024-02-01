@@ -17,12 +17,14 @@ class ProfileCardWidget extends ConsumerStatefulWidget {
   final Character character;
   final int mainImageIndex;
   final ProfileWidgetType profileWidgetType;
+  final List<Widget> children;
 
   const ProfileCardWidget({
     super.key,
     required this.character,
     required this.mainImageIndex,
     required this.profileWidgetType,
+    required this.children,
   });
 
   @override
@@ -180,118 +182,125 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                 );
               },
             ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(indicatorPadding),
-                child: CustomStoryIndicator(
-                  itemCount: totalImageLength,
-                  currentIndex: imageIndex,
-                  defaultColor: ColorConstants.background.withOpacity(0.3),
-                  highlightColor: ColorConstants.background.withOpacity(0.87),
-                  indicatorSpacing: 6.0,
-                  interval: const Duration(seconds: 4),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 155,
-              child: Padding(
-                padding: const EdgeInsets.all(21),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (questText.isNotEmpty)
-                      Column(
-                        children: [
-                          Icon(
-                            PhosphorIcons.lock_bold,
-                            color: ColorConstants.background,
-                            size: 24,
-                          ),
-                          const SizedBox(height: 7),
-                          Text(
-                            questText.replaceAll("\\n", "\n"),
-                            style: TextStyle(
-                              color: ColorConstants.background,
-                              fontSize: 14,
-                              height: 19 / 14,
-                              fontWeight: FontWeightConstants.semiBold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.1),
-                        ],
+            SafeArea(
+              child: Stack(
+                children: [
+                  ...widget.children,
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.all(indicatorPadding),
+                      child: CustomStoryIndicator(
+                        itemCount: totalImageLength,
+                        currentIndex: imageIndex,
+                        defaultColor: ColorConstants.background.withOpacity(0.3),
+                        highlightColor: ColorConstants.background.withOpacity(0.87),
+                        indicatorSpacing: 6.0,
+                        interval: const Duration(seconds: 4),
                       ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text.rich(
-                          TextSpan(
+                    ),
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 155,
+                    child: Padding(
+                      padding: const EdgeInsets.all(21),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (questText.isNotEmpty)
+                            Column(
+                              children: [
+                                Icon(
+                                  PhosphorIcons.lock_bold,
+                                  color: ColorConstants.background,
+                                  size: 24,
+                                ),
+                                const SizedBox(height: 7),
+                                Text(
+                                  questText.replaceAll("\\n", "\n"),
+                                  style: TextStyle(
+                                    color: ColorConstants.background,
+                                    fontSize: 14,
+                                    height: 19 / 14,
+                                    fontWeight: FontWeightConstants.semiBold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(
+                                    height: MediaQuery.of(context).size.height * 0.1),
+                              ],
+                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TextSpan(
-                                text: widget.character.name,
-                                style: const TextStyle(
-                                  fontSize: 60,
+                              Text.rich(
+                                TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: widget.character.name,
+                                      style: const TextStyle(
+                                        fontSize: 60,
+                                      ),
+                                    ),
+                                    const TextSpan(
+                                      text: ' ',
+                                      style: TextStyle(
+                                        fontSize: 22,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                      '(${widget.character.character_info.age})',
+                                      style: const TextStyle(
+                                        fontSize: 50,
+                                      ),
+                                    ),
+                                  ],
+                                  style: TextStyle(
+                                    fontFamily: 'NanumJungHagSaeng',
+                                    fontWeight: FontWeight.normal,
+                                    color: ColorConstants.background,
+                                    height: 1.1,
+                                    letterSpacing: .8,
+                                  ),
                                 ),
                               ),
-                              const TextSpan(
-                                text: ' ',
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                child: Text(
+                                  widget.character.character_info.summary_description,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    height: 1.45,
+                                    fontWeight: FontWeight.w500,
+                                    wordSpacing: -0.7,
+                                    letterSpacing: 0.45,
+                                    color: ColorConstants.background,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                widget.character.character_info.one_line_description,
                                 style: TextStyle(
-                                  fontSize: 22,
-                                ),
-                              ),
-                              TextSpan(
-                                text:
-                                    '(${widget.character.character_info.age})',
-                                style: const TextStyle(
-                                  fontSize: 50,
+                                  fontFamily: 'NanumJungHagSaeng',
+                                  fontSize: 35,
+                                  letterSpacing: 0.5,
+                                  height: 1.3,
+                                  fontWeight: FontWeight.normal,
+                                  color: ColorConstants.background,
                                 ),
                               ),
                             ],
-                            style: TextStyle(
-                              fontFamily: 'NanumJungHagSaeng',
-                              fontWeight: FontWeight.normal,
-                              color: ColorConstants.background,
-                              height: 1.1,
-                              letterSpacing: .8,
-                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          child: Text(
-                            widget.character.character_info.summary_description,
-                            style: TextStyle(
-                              fontSize: 16,
-                              height: 1.45,
-                              fontWeight: FontWeight.w500,
-                              wordSpacing: -0.7,
-                              letterSpacing: 0.45,
-                              color: ColorConstants.background,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          widget.character.character_info.one_line_description,
-                          style: TextStyle(
-                            fontFamily: 'NanumJungHagSaeng',
-                            fontSize: 35,
-                            letterSpacing: 0.5,
-                            height: 1.3,
-                            fontWeight: FontWeight.normal,
-                            color: ColorConstants.background,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
