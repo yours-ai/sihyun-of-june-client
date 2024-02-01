@@ -185,10 +185,12 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                 (character) =>
                     character.id == ref.watch(selectedCharacterProvider));
             if (selectedCharacterList.isEmpty) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                ref.read(selectedCharacterProvider.notifier).state =
-                    charactersState.data!.first.id;
-              });
+              if (charactersState.data!.isNotEmpty) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ref.read(selectedCharacterProvider.notifier).state =
+                      charactersState.data!.first.id;
+                });
+              }
               return const SizedBox();
             }
             final selectedCharacter = selectedCharacterList.first;
