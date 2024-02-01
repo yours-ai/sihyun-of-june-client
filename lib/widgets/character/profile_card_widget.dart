@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/character/custom_story_indicator_widget.dart';
 import 'package:project_june_client/widgets/character/profile_list_widget.dart';
@@ -86,8 +87,25 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
     imageIndex.dispose();
   }
 
+  void startStoryAnimation(List<AnimationController> controllers) {
+    for (AnimationController controller in controllers) {
+      if (controller.status == AnimationStatus.forward) {
+        controller.forward();
+      }
+    }
+  }
+
+  void stopStoryAnimation(List<AnimationController> controllers) {
+    for (AnimationController controller in controllers) {
+      if (controller.status == AnimationStatus.forward) {
+        controller.stop();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final controllers = ref.watch(animationControllersProvider);
     final totalImageLength = widget.character.character_info.images.length;
     return ClipRRect(
       borderRadius: const BorderRadius.only(
@@ -95,7 +113,11 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
         topRight: Radius.circular(12),
       ),
       child: GestureDetector(
+        onTapDown: (_) {
+          stopStoryAnimation(controllers);
+        },
         onTapUp: (details) {
+          startStoryAnimation(controllers);
           final double screenWidth = MediaQuery.of(context).size.width;
           final double dx = details.localPosition.dx;
           if (dx < screenWidth / 2) {
@@ -119,6 +141,15 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
               questText = '';
             }
           }
+        },
+        onTapCancel: () {
+          startStoryAnimation(controllers);
+        },
+        onLongPressStart: (_) {
+          stopStoryAnimation(controllers);
+        },
+        onLongPressEnd: (_) {
+          startStoryAnimation(controllers);
         },
         child: Stack(
           children: [
