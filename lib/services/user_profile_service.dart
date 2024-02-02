@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
@@ -70,13 +71,29 @@ class UserProfileService {
                     builder: (context, state, mutate) => TextButton(
                       onPressed: () async {
                         context.pop();
+                        scaffoldMessengerKey.currentState?.showSnackBar(
+                          const SnackBar(
+                            content: Text('프로필 변경중입니다...'),
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
                         final cropRect = editorKey.currentState?.getCropRect();
                         if (cropRect != null) {
                           Future.delayed(
                               const Duration(milliseconds: 250),
                               () => _image!.readAsBytes().then((img) =>
                                   cropImage(img, cropRect).then((croppedImg) =>
-                                      getUserImage().mutate(croppedImg))));
+                                      getUserImage().mutate(croppedImg).then(
+                                          (_) => scaffoldMessengerKey
+                                                  .currentState
+                                                  ?.showSnackBar(
+                                                const SnackBar(
+                                                  content:
+                                                      Text('프로필 변경이 완료되었어요!.'),
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                ),
+                                              )))));
                         }
                       },
                       child: Padding(

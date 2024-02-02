@@ -50,8 +50,6 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
   }
 
   void _onNextPage() {
-    if (isLastPage) return;
-    HapticFeedback.lightImpact();
     if (textIndex ==
         modifiedCharacterCinematic.cinematic_description.length - 2) {
       isLastPage = true;
@@ -122,6 +120,7 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
                 textIndex -= 1;
               });
             } else {
+              if (isLastPage) return;
               _onNextPage();
             }
           },
@@ -262,6 +261,8 @@ class _AnimatedShadowButtonState extends State<_AnimatedShadowButton> {
 
   void _handleTap() {
     setState(() => isFocusedInButton = true);
+    if (widget.isLastPage) return;
+    HapticFeedback.lightImpact();
     widget.onNextPage();
     Future.delayed(firstAnimationDuration, () {
       if (mounted) {

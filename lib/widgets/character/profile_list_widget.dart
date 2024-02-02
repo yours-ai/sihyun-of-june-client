@@ -114,6 +114,24 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
     });
   }
 
+  void changeCharacterByLeftDrag() {
+    if (selectedIndex > 0) {
+      _characterListController.previousPage();
+      setState(() {
+        selectedIndex--;
+      });
+    }
+  }
+
+  void changeCharacterByRightDrag() {
+    if (selectedIndex < widget.characterList.length - 1) {
+      _characterListController.nextPage();
+      setState(() {
+        selectedIndex++;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final mainImageIndex = widget
@@ -127,6 +145,8 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
           character: widget.characterList[selectedIndex],
           profileWidgetType: widget.profileWidgetType,
           mainImageIndex: mainImageIndex,
+          changeCharacterByLeftDrag: changeCharacterByLeftDrag,
+          changeCharacterByRightDrag: changeCharacterByRightDrag,
           children: [
             Positioned(
               left: 0,
@@ -142,7 +162,7 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                     carouselController: _characterListController,
                     options: CarouselOptions(
                       aspectRatio:
-                      MediaQuery.of(context).size.width / carouselHeight,
+                          MediaQuery.of(context).size.width / carouselHeight,
                       enableInfiniteScroll: false,
                       viewportFraction: 0.2,
                       onPageChanged: (index, reason) {
@@ -183,11 +203,11 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                                   // 원형 테두리 반경
                                   border: isSelected
                                       ? Border.all(
-                                    color: Color(
-                                        character.theme.colors.primary),
-                                    // 테두리 색상
-                                    width: 2.0, // 테두리 두께
-                                  )
+                                          color: Color(
+                                              character.theme.colors.primary),
+                                          // 테두리 색상
+                                          width: 2.0, // 테두리 두께
+                                        )
                                       : null,
                                 ),
                                 child: ClipRRect(
@@ -195,8 +215,8 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                                   child: ExtendedImage.network(
                                     cacheMaxAge: CachingDuration.image,
                                     cacheKey:
-                                    UniqueCacheKeyService.makeUniqueKey(
-                                        mainImageSrc),
+                                        UniqueCacheKeyService.makeUniqueKey(
+                                            mainImageSrc),
                                     mainImageSrc,
                                     fit: BoxFit.cover,
                                   ),
@@ -224,13 +244,13 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                     padding: const EdgeInsets.fromLTRB(28, 18, 28, 18),
                     child: TweenAnimationBuilder(
                       tween: ColorTween(
-                          begin: Color(widget.characterList[selectedIndex]
-                              .theme.colors.primary),
+                          begin: Color(widget.characterList[selectedIndex].theme
+                              .colors.primary),
                           end: Color(widget.characterList[selectedIndex].theme
                               .colors.primary)),
                       duration: const Duration(milliseconds: 100),
-                      builder: (BuildContext context, Color? color,
-                          Widget? child) {
+                      builder:
+                          (BuildContext context, Color? color, Widget? child) {
                         return _buildButton(widget.profileWidgetType, color!);
                       },
                     ),
