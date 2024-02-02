@@ -81,7 +81,7 @@ abstract final class RoutePaths {
 
 abstract final class SubRoutePaths {
   static String myCharacter = 'my-character';
-  static String mailDetail = 'mail-detail';
+  static String mailDetail = 'detail';
   static String myPoint = 'my-point';
   static String pointLog = 'point-log';
   static String pointCharge = 'point-charge';
