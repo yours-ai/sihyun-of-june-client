@@ -89,7 +89,7 @@ class UserProfileService {
                                                   ?.showSnackBar(
                                                 const SnackBar(
                                                   content:
-                                                      Text('프로필 변경이 완료되었어요!.'),
+                                                      Text('프로필 변경이 완료되었어요!'),
                                                   duration:
                                                       Duration(seconds: 1),
                                                 ),
