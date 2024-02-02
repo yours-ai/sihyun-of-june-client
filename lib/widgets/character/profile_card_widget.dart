@@ -18,6 +18,8 @@ class ProfileCardWidget extends ConsumerStatefulWidget {
   final int mainImageIndex;
   final ProfileWidgetType profileWidgetType;
   final List<Widget> children;
+  final VoidCallback changeCharacterByLeftDrag;
+  final VoidCallback changeCharacterByRightDrag;
 
   const ProfileCardWidget({
     super.key,
@@ -25,6 +27,8 @@ class ProfileCardWidget extends ConsumerStatefulWidget {
     required this.mainImageIndex,
     required this.profileWidgetType,
     required this.children,
+    required this.changeCharacterByLeftDrag,
+    required this.changeCharacterByRightDrag,
   });
 
   @override
@@ -115,6 +119,11 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
         topRight: Radius.circular(12),
       ),
       child: GestureDetector(
+        onHorizontalDragEnd: (details) {
+          details.primaryVelocity! > 0
+              ? widget.changeCharacterByLeftDrag()
+              : widget.changeCharacterByRightDrag();
+        },
         onTapDown: (_) {
           stopStoryAnimation(controllers);
         },
@@ -195,8 +204,10 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                       child: CustomStoryIndicator(
                         itemCount: totalImageLength,
                         currentIndex: imageIndex,
-                        defaultColor: ColorConstants.background.withOpacity(0.3),
-                        highlightColor: ColorConstants.background.withOpacity(0.87),
+                        defaultColor:
+                            ColorConstants.background.withOpacity(0.3),
+                        highlightColor:
+                            ColorConstants.background.withOpacity(0.87),
                         indicatorSpacing: 6.0,
                         interval: const Duration(seconds: 4),
                       ),
@@ -231,7 +242,8 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(
-                                    height: MediaQuery.of(context).size.height * 0.1),
+                                    height: MediaQuery.of(context).size.height *
+                                        0.1),
                               ],
                             ),
                           Column(
@@ -254,7 +266,7 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                                     ),
                                     TextSpan(
                                       text:
-                                      '(${widget.character.character_info.age})',
+                                          '(${widget.character.character_info.age})',
                                       style: const TextStyle(
                                         fontSize: 50,
                                       ),
@@ -272,7 +284,8 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.7,
                                 child: Text(
-                                  widget.character.character_info.summary_description,
+                                  widget.character.character_info
+                                      .summary_description,
                                   style: TextStyle(
                                     fontSize: 16,
                                     height: 1.45,
@@ -284,7 +297,8 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                                 ),
                               ),
                               Text(
-                                widget.character.character_info.one_line_description,
+                                widget.character.character_info
+                                    .one_line_description,
                                 style: TextStyle(
                                   fontFamily: 'NanumJungHagSaeng',
                                   fontSize: 35,
