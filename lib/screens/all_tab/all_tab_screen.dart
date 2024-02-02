@@ -113,7 +113,7 @@ class AllTabScreenState extends State<AllTabScreen>
           choiceColumn: ModalChoiceWidget(
             submitText: '네',
             onSubmit: () {
-              context.push('${RoutePaths.all}/withdraw');
+              context.push(RoutePaths.allWithdraw);
               context.pop();
             },
             cancelText: '아니요',
@@ -225,7 +225,7 @@ class AllTabScreenState extends State<AllTabScreen>
                 MenuWidget(
                   title: '이름 변경하기',
                   onPressed: () =>
-                      context.push('${RoutePaths.all}/change-name'),
+                      context.push(RoutePaths.allChangeName),
                 ),
                 MenuWidget(
                   title: '로그아웃',
@@ -262,7 +262,7 @@ class AllTabScreenState extends State<AllTabScreen>
                 ),
                 MenuWidget(
                   title: '약관 및 정책',
-                  onPressed: () => context.push('${RoutePaths.all}/policy'),
+                  onPressed: () => context.push(RoutePaths.allPolicy),
                 ),
               ],
             ),

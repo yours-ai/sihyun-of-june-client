@@ -60,7 +60,7 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
     if (selectionStatus == null) {
       // selection 시작 안한 상태
       if (!mounted) return false;
-      context.go('/character-selection-deciding');
+      context.go(RoutePaths.selectionDeciding);
       return true;
     }
     return false;
@@ -72,7 +72,7 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
     if (isNewUser) {
       getAllocateForNewUserMutation(
         onSuccess: (res, arg) {
-          context.go('/character-selection-deciding');
+          context.go(RoutePaths.selectionDeciding);
         },
       ).mutate(null);
     } else {
@@ -81,7 +81,7 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
           .then((value) => value.data!.is_30days_finished);
       if (is30DaysFinished) {
         if (!mounted) return;
-        context.go('/all');
+        context.go(RoutePaths.all);
         context.push(RoutePaths.mailListDecideAssignmentMethod);
       } else {
         if (!mounted) return;
