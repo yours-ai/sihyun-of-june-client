@@ -31,6 +31,7 @@ class CharacterCinematicWidget extends StatefulWidget {
 class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
   late final CharacterCinematic modifiedCharacterCinematic;
   bool isLastPage = false;
+  bool isFirstAnimationFinished = false;
   bool isFocusedInButton = false;
   int textIndex = 0;
 
@@ -50,6 +51,7 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
   }
 
   void _onNextPage() {
+    if (!isFirstAnimationFinished) return;
     if (textIndex ==
         modifiedCharacterCinematic.cinematic_description.length - 2) {
       isLastPage = true;
@@ -114,13 +116,16 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
           onTapUp: (details) {
             final double screenWidth = MediaQuery.of(context).size.width;
             final double dx = details.localPosition.dx;
+            if (isLastPage) return;
             if (dx < screenWidth / 2) {
-              if (textIndex == 0 || isLastPage) return;
+              if (textIndex == 0) return;
+              if (textIndex == 1) {
+                isFirstAnimationFinished = false;
+              }
               setState(() {
                 textIndex -= 1;
               });
             } else {
-              if (isLastPage) return;
               _onNextPage();
             }
           },
@@ -149,7 +154,7 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
                           child: textIndex == 0
                               ? FutureBuilder(
                                   future: Future.delayed(
-                                      const Duration(milliseconds: 2000)),
+                                      const Duration(milliseconds: 1500)),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.done) {
@@ -226,6 +231,10 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
         ),
       ],
       isRepeatingAnimation: false,
+      displayFullTextOnTap: true,
+      onFinished: () {
+        isFirstAnimationFinished = true;
+      },
     );
   }
 
