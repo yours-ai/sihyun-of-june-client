@@ -35,11 +35,11 @@ class RetestChoiceWidget extends ConsumerWidget {
           submitText: '친구 초대하고 300P 받기',
           onCancel: () {
             context.pop();
-            context.push('${TabRoutePaths.all}/my-coin/charge');
+            context.push(RoutePaths.allMyCoinCharge);
           },
           onSubmit: () {
             context.pop();
-            context.push('${TabRoutePaths.all}/share');
+            context.push(RoutePaths.allShare);
           },
         ),
       ),

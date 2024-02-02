@@ -78,7 +78,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                           onSuccess: (res, arg) async {
                             await getUserFunnelMutation()
                                 .mutate(funnelDTO)
-                                .then((_) => context.go('/'));
+                                .then((_) => context.go(RoutePaths.starting));
                           },
                           onError: (arg, error, callback) {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -99,6 +99,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                             onPressed: () => mutate(null),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Icon(Icons.apple),
                                 SizedBox(width: 8),
@@ -115,7 +116,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(height: 10),
                     TextButton(
                       onPressed: () {
-                        context.go('/login/by-phone');
+                        context.go(RoutePaths.loginByPhone);
                       },
                       child: Text(
                         '전화번호로 계속하기',

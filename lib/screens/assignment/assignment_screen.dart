@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/constants.dart';
 
 class AssignmentScreen extends ConsumerStatefulWidget {
   const AssignmentScreen({super.key});
@@ -31,17 +32,17 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
       getStartTestMutation(
         onSuccess: (res, arg) {
           if (!mounted) return;
-          context.go('/character-test');
+          context.go(RoutePaths.characterTest);
         },
       ).mutate(null);
       return true;
     } else if (testStatus == 'IN_PROGRESS') {
       if (!mounted) return false;
-      context.go('/character-test');
+      context.go(RoutePaths.characterTest);
       return true;
     } else if (testStatus == 'WAITING_CONFIRM') {
       if (!mounted) return false;
-      context.go('/character-choice');
+      context.go(RoutePaths.testDeciding);
       return true;
     }
     return false;
@@ -59,7 +60,7 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
     if (selectionStatus == null) {
       // selection 시작 안한 상태
       if (!mounted) return false;
-      context.go('/character-selection-deciding');
+      context.go(RoutePaths.selectionDeciding);
       return true;
     }
     return false;
@@ -71,7 +72,7 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
     if (isNewUser) {
       getAllocateForNewUserMutation(
         onSuccess: (res, arg) {
-          context.go('/character-selection-deciding');
+          context.go(RoutePaths.selectionDeciding);
         },
       ).mutate(null);
     } else {
@@ -80,11 +81,11 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
           .then((value) => value.data!.is_30days_finished);
       if (is30DaysFinished) {
         if (!mounted) return;
-        context.go('/all');
-        context.push('/mails/assignment-start');
+        context.go(RoutePaths.all);
+        context.push(RoutePaths.mailListDecideAssignmentMethod);
       } else {
         if (!mounted) return;
-        context.go('/mails/assignment-start');
+        context.go(RoutePaths.mailListDecideAssignmentMethod);
       }
     }
   }

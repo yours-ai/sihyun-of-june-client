@@ -6,12 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
-import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 import '../constants.dart';
 import '../providers/character_provider.dart';
-import '../screens/character_profile/profile_details_screen.dart';
 import '../services.dart';
 import 'character_change_modal.dart';
 
@@ -43,7 +41,12 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
         query: widget.retrieveMyCharacterQuery,
         builder: (context, state) {
           if (state.status != QueryStatus.success) {
-            return const SizedBox.shrink();
+            return const SizedBox(
+              height: 184,
+              child: Center(
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            );
           }
           late final Character? selectedCharacter;
           late final CharacterImage? mainImageSrc;
@@ -53,7 +56,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                     character.id == ref.watch(selectedCharacterProvider))
                 .first;
             mainImageSrc = characterService
-                .getMainImage(selectedCharacter!.character_info!.images!);
+                .getMainImage(selectedCharacter!.character_info.images);
           } else {
             selectedCharacter = null;
             mainImageSrc = null;
@@ -70,21 +73,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                   children: [
                     Center(
                       child: GestureDetector(
-                        onTap: () {
-                          selectedCharacter!.is_image_updated!
-                              ? showModalBottomSheet(
-                                  isScrollControlled: true,
-                                  context: context,
-                                  builder: (context) => ProfileDetailsScreen(
-                                    imageList: selectedCharacter!
-                                        .character_info!.images!,
-                                    index: mainImageSrc!.order - 1,
-                                    isImageUpdated:
-                                        selectedCharacter.is_image_updated,
-                                  ),
-                                )
-                              : context.push('/mails/my-character');
-                        },
+                        onTap: () => context.push(RoutePaths.mailListMyCharacter),
                         onLongPressStart: (_) {
                           HapticFeedback.heavyImpact();
                         },
@@ -101,8 +90,8 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               color: selectedCharacter.is_image_updated!
                                   ? Color(ref
                                       .watch(characterThemeProvider)
-                                      .colors!
-                                      .primary!)
+                                      .colors
+                                      .primary)
                                   : ColorConstants.background,
                               // 테두리 색상
                               width: 4.0, // 테두리 두께
@@ -116,8 +105,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               height: 132,
                               child: ExtendedImage.network(
                                 mainImageSrc.src,
-                                cacheMaxAge:
-                                    ref.watch(imageCacheDurationProvider),
+                                cacheMaxAge: CachingDuration.image,
                                 cacheKey: UniqueCacheKeyService.makeUniqueKey(
                                     mainImageSrc.src),
                                 fit: BoxFit.cover,
@@ -129,7 +117,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        context.push('/mails/my-character');
+                        context.push(RoutePaths.mailListMyCharacter);
                       },
                       child: Container(
                         margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
@@ -139,8 +127,8 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               color: selectedCharacter.is_image_updated!
                                   ? Color(ref
                                       .watch(characterThemeProvider)
-                                      .colors!
-                                      .primary!)
+                                      .colors
+                                      .primary)
                                   : ColorConstants.gray,
                               width: 1.0,
                             ),
@@ -152,8 +140,8 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                                 color: selectedCharacter.is_image_updated!
                                     ? Color(ref
                                         .watch(characterThemeProvider)
-                                        .colors!
-                                        .primary!)
+                                        .colors
+                                        .primary)
                                     : ColorConstants.gray,
                                 height: 1.0)),
                       ),
@@ -185,8 +173,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                                             'assets/images/default_user_image.png')
                                         : ExtendedImage.network(
                                             state.data!.image!,
-                                            cacheMaxAge: ref.watch(
-                                                imageCacheDurationProvider),
+                                            cacheMaxAge: CachingDuration.image,
                                             cacheKey: UniqueCacheKeyService
                                                 .makeUniqueKey(
                                                     state.data!.image!),

@@ -57,11 +57,11 @@ class ModalChoiceWidget extends ConsumerWidget {
                     mutationStatus != QueryStatus.loading
                 ? isDefaultButton
                     ? ColorConstants.pink
-                    : Color(ref.watch(characterThemeProvider).colors!.primary!)
+                    : Color(ref.watch(characterThemeProvider).colors.primary)
                 : isDefaultButton
-                    ? Color(ColorTheme.defaultTheme.colors!.secondary!)
+                    ? Color(ColorTheme.defaultTheme.colors.secondary)
                     : Color(
-                        ref.watch(characterThemeProvider).colors!.secondary!)),
+                        ref.watch(characterThemeProvider).colors.secondary)),
           ),
           onPressed: () {
             if (mutationStatus == null ||

@@ -1,10 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/animation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-final imageCacheDurationProvider = Provider<Duration>((ref) {
-  return const Duration(days: 1);
-});
 
 final topPaddingProvider = StateProvider<double?>((ref) => null);
 
@@ -16,3 +13,6 @@ final firebaseMessagingListenerProvider =
     'onMessageOpenedApp': null,
   };
 });
+
+final animationControllersProvider =
+    StateProvider.autoDispose<List<AnimationController>>((ref) => []);

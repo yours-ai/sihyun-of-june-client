@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/character/actions.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
+import 'package:project_june_client/constants.dart';
 
 import 'models/Character.dart';
 import 'models/Question.dart';
@@ -33,7 +34,7 @@ Query<Map<String, dynamic>> getTestStatusQuery({
   return Query(
     key: "test-status",
     config: QueryConfig(
-      cacheDuration: Duration.zero,
+      cacheDuration: CachingDuration.assignment,
     ),
     queryFn: fetchTestStatus,
     onError: onError,
@@ -44,6 +45,9 @@ Query<Map<String, dynamic>> getPendingTestQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
+    config: QueryConfig(
+      cacheDuration: CachingDuration.assignment,
+    ),
     key: "pending-test",
     queryFn: fetchPendingTest,
     onError: onError,
@@ -54,8 +58,11 @@ Query<List<Character>> getAllCharactersQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
+    config: QueryConfig(
+      cacheDuration: CachingDuration.character,
+    ),
     key: 'characters',
-    queryFn: fetchCharacters,
+    queryFn: fetchAllCharacters,
     onError: onError,
   );
 }
@@ -66,7 +73,7 @@ Query<Character> getCharacterQuery({
 }) {
   return Query(
     config: QueryConfig(
-      cacheDuration: const Duration(days: 1),
+      cacheDuration: CachingDuration.character,
     ),
     key: 'character/${id.toString()}',
     queryFn: () => fetchCharacterById(id),
@@ -80,17 +87,6 @@ Query<List<Character>> getRetrieveMyCharacterQuery({
   return Query(
     key: 'my-character',
     queryFn: fetchMyCharacter,
-    onError: onError,
-  );
-}
-
-Mutation<void, int> getDenyTestChoiceMutation({
-  OnSuccessCallback? onSuccess,
-  OnErrorCallback? onError,
-}) {
-  return Mutation<void, int>(
-    queryFn: denyTestChoice,
-    onSuccess: onSuccess,
     onError: onError,
   );
 }
@@ -125,7 +121,6 @@ Mutation<void, ReallocateDTO> getReallocateMutation({
   OnErrorCallback? onError,
 }) {
   return Mutation<void, ReallocateDTO>(
-    // refetchQueries: ['check-new-user', 'selection-status', 'test-status'],
     queryFn: reallocate,
     onSuccess: onSuccess,
     onError: onError,
@@ -198,7 +193,7 @@ Query<Map<String, dynamic>> getSelectionStatusQuery({
   return Query(
     key: "selection-status",
     config: QueryConfig(
-      cacheDuration: Duration.zero,
+      cacheDuration: CachingDuration.assignment,
     ),
     queryFn: fetchSelectionStatus,
     onError: onError,

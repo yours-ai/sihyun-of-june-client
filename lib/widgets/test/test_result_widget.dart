@@ -101,7 +101,7 @@ class _TestResultWidget extends State<TestResultWidget> {
                   ? MutationBuilder(
                       mutation: getSendResponseMutation(
                         onSuccess: (res, arg) {
-                          context.go('/character-choice');
+                          context.go(RoutePaths.testDeciding);
                         },
                         onError: (arg, error, callback) {
                           setState(() {
@@ -114,9 +114,9 @@ class _TestResultWidget extends State<TestResultWidget> {
                             backgroundColor: MaterialStateProperty.all(
                               state.status != QueryStatus.loading
                                   ? Color(
-                                      ColorTheme.defaultTheme.colors!.primary!)
-                                  : Color(ColorTheme
-                                      .defaultTheme.colors!.secondary!),
+                                      ColorTheme.defaultTheme.colors.primary)
+                                  : Color(
+                                      ColorTheme.defaultTheme.colors.secondary),
                             ),
                           ),
                           onPressed: () {

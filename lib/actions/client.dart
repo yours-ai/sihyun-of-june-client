@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/environments.dart';
 import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/router.dart';
@@ -34,7 +35,7 @@ void initServerErrorSnackbar(BuildContext context) {
             );
           } else if (error.response!.statusCode == 401) {
             await logout();
-            router.go('/');
+            router.go(RoutePaths.starting);
             scaffoldMessengerKey.currentState?.showSnackBar(
               const SnackBar(
                 content: Text(

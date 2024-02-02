@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:intl/intl.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
@@ -13,7 +12,7 @@ class ProductWidget extends StatefulWidget {
   final bool isProcessing;
   final InAppPurchase inAppPurchase;
 
-  ProductWidget({
+  const ProductWidget({
     Key? key,
     required this.product,
     required this.isProcessing,

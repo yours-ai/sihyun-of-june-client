@@ -7,8 +7,6 @@ import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/models/Question.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:word_break_text/word_break_text.dart';
 import '../../screens/character_test/test_screen.dart';
@@ -47,20 +45,18 @@ class InTestWidgetState extends ConsumerState<InTestWidget> {
               ),
             );
             logout();
-            context.go('/login');
+            context.go(RoutePaths.login);
           },
         );
       });
       mutation!.mutate();
-      characterService.deleteSelectedCharacterId();
-      ref.read(selectedCharacterProvider.notifier).state = null;
     });
   }
 
-  void addUserResponse(int question_id, int choice) {
+  void addUserResponse(int questionId, int choice) {
     setState(() {
       answerList.addAnswer(AnswerDTO(
-        question_id: question_id,
+        question_id: questionId,
         choice: choice,
       ));
     });

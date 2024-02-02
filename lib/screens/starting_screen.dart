@@ -12,12 +12,12 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/actions/client.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../actions/notification/actions.dart';
 import '../widgets/common/alert/alert_description_widget.dart';
 import '../widgets/common/alert/alert_widget.dart';
 
@@ -41,13 +41,12 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
 
     if (isLogined == false) {
       if (!mounted) return;
-      context.go('/landing');
+      context.go(RoutePaths.landing);
       return;
     }
 
     _setUserInfoForSentry();
     await _initializeCharacterInfo();
-    await _initializeNotificationHandlerIfAccepted();
     final push = await getPushIfPushClicked();
     if (push != null) {
       notificationService.handleFCMMessageTap(push);
@@ -126,16 +125,16 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       await _saveSelectedCharacterId(myCharacters.data!);
       await _setSelectedCharacterTheme(myCharacters.data!);
       if (!mounted) return;
-      context.go('/mails');
+      context.go(RoutePaths.mailList);
     } else {
       final isNewUserRawData = await getCheckNewUserQuery().result;
       final isNewUser = isNewUserRawData.data!['is_available'];
       if (isNewUser) {
         if (!mounted) return;
-        context.go('/assignment');
+        context.go(RoutePaths.newUserAssignmentStarting);
       } else {
         if (!mounted) return;
-        context.go('/mails');
+        context.go(RoutePaths.mailList);
       }
     }
   }
@@ -159,7 +158,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
         logout();
         return;
       }
-      final selectedCharacterTheme = selectedCharacterList.first.theme!;
+      final selectedCharacterTheme = selectedCharacterList.first.theme;
       ref.read(characterThemeProvider.notifier).state = selectedCharacterTheme;
     }
   }
@@ -174,17 +173,9 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     ref.read(isEnableToRetestProvider.notifier).state = isEnableToRetest;
   }
 
-  _initializeNotificationHandlerIfAccepted() async {
-    final isAccepted = await getIsNotificationAccepted();
-    if (isAccepted == true) {
-      notificationService.initializeNotificationHandlers(ref);
-    }
-  }
-
   Future<RemoteMessage?> getPushIfPushClicked() async {
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
-
     return initialMessage;
   }
 
