@@ -119,9 +119,9 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
   Widget build(BuildContext context) {
     UserFunnelDTO funnelDTO = UserFunnelDTO(
         funnel: ref.watch(oneLinkProvider)?['media_source'] ??
-            ref.watch(deepLinkProvider)?.mediaSource.toString(),
+            ref.watch(deepLinkProvider)?.mediaSource?.toString(),
         refCode: ref.watch(oneLinkProvider)?['af_sub1'] ??
-            ref.watch(deepLinkProvider)?.afSub1.toString());
+            ref.watch(deepLinkProvider)?.afSub1?.toString());
     return TitleLayout(
       withAppBar: true,
       title: Text(

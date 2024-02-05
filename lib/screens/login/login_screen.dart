@@ -34,9 +34,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(context) {
     UserFunnelDTO funnelDTO = UserFunnelDTO(
         funnel: ref.watch(oneLinkProvider)?['media_source'] ??
-            ref.watch(deepLinkProvider)?.mediaSource.toString(),
+            ref.watch(deepLinkProvider)?.mediaSource?.toString(),
         refCode: ref.watch(oneLinkProvider)?['af_sub1'] ??
-            ref.watch(deepLinkProvider)?.afSub1.toString());
+            ref.watch(deepLinkProvider)?.afSub1?.toString());
     return Scaffold(
       body: SafeArea(
         child: Stack(
