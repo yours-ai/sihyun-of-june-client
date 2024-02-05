@@ -32,7 +32,7 @@ Query<Map<String, dynamic>> getTestStatusQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: "test-status",
+    key: 'test-status',
     config: QueryConfig(
       cacheDuration: CachingDuration.assignment,
     ),
@@ -48,7 +48,7 @@ Query<Map<String, dynamic>> getPendingTestQuery({
     config: QueryConfig(
       cacheDuration: CachingDuration.assignment,
     ),
-    key: "pending-test",
+    key: 'pending-test',
     queryFn: fetchPendingTest,
     onError: onError,
   );
@@ -155,7 +155,7 @@ Query<Map<String, dynamic>> getCheckNewUserQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: "check-new-user",
+    key: 'check-new-user',
     queryFn: fetchIsNewUser,
     onSuccess: onSuccess,
     onError: onError,
@@ -191,7 +191,7 @@ Query<Map<String, dynamic>> getSelectionStatusQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: "selection-status",
+    key: 'selection-status',
     config: QueryConfig(
       cacheDuration: CachingDuration.assignment,
     ),

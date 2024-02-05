@@ -29,7 +29,7 @@ Future<void> requestNotificationPermission() async {
     sound: true,
   );
   if (!_checkIsAccepted(settings)) {
-    throw Exception("알림 동의를 받지 못했어요.");
+    throw Exception('알림 동의를 받지 못했어요.');
   }
 }
 

@@ -28,7 +28,7 @@ class RetestExtendScreen extends ConsumerWidget {
             mutation: getExtendMutation(
               refetchQueries: [
                 'my-character',
-                "retrieve-me",
+                'retrieve-me',
               ],
               onSuccess: (res, arg) {
                 scaffoldMessengerKey.currentState?.showSnackBar(

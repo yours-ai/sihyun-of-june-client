@@ -69,8 +69,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
       context.push(
         RoutePaths.retest,
         extra: <String, dynamic>{
-          "firstName": currentCharacter.first_name,
-          "characterIds": characterService.getCharacterIds(myCharacterList),
+          'firstName': currentCharacter.first_name,
+          'characterIds': characterService.getCharacterIds(myCharacterList),
         },
       );
     }
@@ -222,7 +222,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                       ],
                     ),
                   ),
-                  const TitleUnderline(titleText: "받은 편지함"),
+                  const TitleUnderline(titleText: '받은 편지함'),
                   Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,

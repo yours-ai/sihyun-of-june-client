@@ -232,7 +232,7 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                                 ),
                                 const SizedBox(height: 7),
                                 Text(
-                                  questText.replaceAll("\\n", "\n"),
+                                  questText.replaceAll('\\n', '\n'),
                                   style: TextStyle(
                                     color: ColorConstants.background,
                                     fontSize: 14,

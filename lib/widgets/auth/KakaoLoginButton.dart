@@ -31,7 +31,7 @@ class KakaoLoginButton extends ConsumerWidget {
               .then((_) => context.go(RoutePaths.starting));
         },
         onError: (arg, error, callback) {
-          if (error is PlatformException && error.code == "CANCELED") {
+          if (error is PlatformException && error.code == 'CANCELED') {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text(

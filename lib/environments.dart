@@ -27,7 +27,7 @@ final REQUIRED_VARIABLES = {
 void _assertBuildTimeEnvironments(Map<String, String> variables) {
   variables.entries.forEach((entry) {
     assert(entry.value.isNotEmpty,
-        "환경변수 ${entry.key} 값을 제공해주세요. (flutter run --dart-define ${entry.key}=...)");
+        '환경변수 ${entry.key} 값을 제공해주세요. (flutter run --dart-define ${entry.key}=...)');
   });
 }
 

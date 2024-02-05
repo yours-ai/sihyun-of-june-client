@@ -36,15 +36,15 @@ Future<AuthorizationCredentialAppleID> getAppleLoginCredential() async {
 Future<String> getServerTokenByAppleCredential(
     AuthorizationCredentialAppleID appleCredentials) async {
   Map<String, dynamic> data = {
-    "user_id": appleCredentials.userIdentifier,
+    'user_id': appleCredentials.userIdentifier,
   };
 
   if (appleCredentials.email != null) {
-    data["user"] = {
-      "email": appleCredentials.email,
-      "name": {
-        "firstName": appleCredentials.givenName,
-        "lastName": appleCredentials.familyName
+    data['user'] = {
+      'email': appleCredentials.email,
+      'name': {
+        'firstName': appleCredentials.givenName,
+        'lastName': appleCredentials.familyName
       }
     };
   }
@@ -148,7 +148,7 @@ Future<SihyunOfJuneUser> retrieveMe() async {
 }
 
 void setServerTokenOnDio(String serverToken) {
-  dio.options.headers['Authorization'] = "Token $serverToken";
+  dio.options.headers['Authorization'] = 'Token $serverToken';
 }
 
 void _setAmplitudeProps() {

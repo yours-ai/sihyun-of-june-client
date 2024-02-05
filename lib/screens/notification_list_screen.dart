@@ -64,7 +64,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
                 children: [
                   const Expanded(flex: 1, child: SizedBox()),
                   const TitleUnderline(
-                    titleText: "알림",
+                    titleText: '알림',
                   ),
                   Expanded(
                     flex: 1,
@@ -73,7 +73,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
                       children: [
                         MutationBuilder(
                           mutation: readAllNotificationMutation(
-                            refetchQueries: ["list-app-notifications"],
+                            refetchQueries: ['list-app-notifications'],
                             onError: (arg, error, fallback) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
@@ -110,7 +110,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 20),
                           child: Text(
-                            "아직 도착한 알림이 없습니다.",
+                            '아직 도착한 알림이 없습니다.',
                             style: TextStyle(
                               fontSize: 16,
                               color: ColorConstants.neutral,
