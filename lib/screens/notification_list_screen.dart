@@ -43,7 +43,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
 
   @override
   Widget build(context) {
-    final notificationQuery = getListAppNotificationQuery();
+    final notificationQuery = fetchNotificationListQuery();
     return QueryBuilder(
         query: notificationQuery,
         builder: (context, state) {

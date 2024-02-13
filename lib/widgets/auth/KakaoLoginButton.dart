@@ -24,9 +24,9 @@ class KakaoLoginButton extends ConsumerWidget {
         refCode: ref.watch(oneLinkProvider)?['af_sub1'] ??
             ref.watch(deepLinkProvider)?.afSub1?.toString());
     return MutationBuilder(
-      mutation: getLoginAsKakaoMutation(
+      mutation: loginAsKakaoMutation(
         onSuccess: (res, arg) async {
-          await getUserFunnelMutation()
+          await sendUserFunnelMutation()
               .mutate(funnelDTO)
               .then((_) => context.go(RoutePaths.starting));
         },

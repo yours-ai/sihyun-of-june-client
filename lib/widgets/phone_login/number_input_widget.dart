@@ -36,7 +36,7 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final mutation = getSmsSendMutation(
+    final mutation = sendSmsVerificationMutation(
       onSuccess: (res, arg) {
         widget.onSmsSend(getValidatedData());
       },

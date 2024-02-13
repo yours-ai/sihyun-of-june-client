@@ -66,7 +66,7 @@ class NavbarLayout extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final query = getListAppNotificationQuery();
+    final query = fetchNotificationListQuery();
     return Scaffold(
       body: child,
       bottomNavigationBar: QueryBuilder(

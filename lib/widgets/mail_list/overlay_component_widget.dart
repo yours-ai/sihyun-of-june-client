@@ -43,7 +43,7 @@ class OverlayComponentWidget extends ConsumerWidget {
             hideOverlay!();
             return;
           }
-          final bool is30DaysFinished = await getRetrieveMeQuery()
+          final bool is30DaysFinished = await fetchMeQuery()
               .result
               .then((value) => value.data!.is_30days_finished);
           if (is30DaysFinished == false) {

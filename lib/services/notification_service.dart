@@ -121,7 +121,7 @@ class NotificationService {
   Future<StreamSubscription<QueryState<List<AppNotification>>>>
       addBadgeControlListener() async {
     final supported = await FlutterAppBadger.isAppBadgeSupported();
-    final query = getListAppNotificationQuery();
+    final query = fetchNotificationListQuery();
     return query.stream.listen((state) {
       if (state.data == null) {
         return;

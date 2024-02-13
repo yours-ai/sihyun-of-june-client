@@ -4,13 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/character/profile_list_widget.dart';
 
-class TestDecidingScreen extends ConsumerWidget {
-  const TestDecidingScreen({super.key});
+class CharacterTestDecidingScreen extends ConsumerWidget {
+  const CharacterTestDecidingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return QueryBuilder(
-      query: getPendingTestQuery(),
+      query: fetchPendingTestQuery(),
       builder: (context, testState) {
         if (testState.status != QueryStatus.success || testState.data == null) {
           return const Center(
@@ -18,7 +18,7 @@ class TestDecidingScreen extends ConsumerWidget {
           );
         }
         return QueryBuilder(
-            query: getCharacterQuery(id: testState.data!['character_id']),
+            query: fetchCharacterByIdQuery(id: testState.data!['character_id']),
             builder: (context, selectedCharacterState) {
               if (selectedCharacterState.status != QueryStatus.success ||
                   selectedCharacterState.data == null) {

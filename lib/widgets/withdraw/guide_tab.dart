@@ -28,7 +28,7 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
   @override
   Widget build(BuildContext context) {
     return QueryBuilder(
-      query: getRetrieveMeQuery(),
+      query: fetchMeQuery(),
       builder: (context, state) {
         return TitleLayout(
           withAppBar: true,
@@ -123,7 +123,7 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
             ),
           ),
           actions: MutationBuilder(
-            mutation: getWithdrawUserMutation(
+            mutation: withdrawUserMutation(
               onSuccess: (res, arg) async {
                 widget.onWithdraw();
                 await Future.delayed(const Duration(seconds: 3));

@@ -67,7 +67,7 @@ class UserProfileService {
                     ),
                   ),
                   MutationBuilder(
-                    mutation: getUserImage(),
+                    mutation: uploadUserImageMutation(),
                     builder: (context, state, mutate) => TextButton(
                       onPressed: () async {
                         context.pop();
@@ -83,7 +83,7 @@ class UserProfileService {
                               const Duration(milliseconds: 250),
                               () => _image!.readAsBytes().then((img) =>
                                   cropImage(img, cropRect).then((croppedImg) =>
-                                      getUserImage().mutate(croppedImg).then(
+                                      uploadUserImageMutation().mutate(croppedImg).then(
                                           (_) => scaffoldMessengerKey
                                                   .currentState
                                                   ?.showSnackBar(
@@ -137,7 +137,7 @@ class UserProfileService {
       useRootNavigator: true,
       builder: (BuildContext context) {
         return MutationBuilder(
-          mutation: getDeleteUserImage(),
+          mutation: deleteUserImageMutation(),
           builder: (context, state, mutate) => ModalWidget(
             title: '프로필 이미지 선택',
             choiceColumn: ModalChoiceWidget(

@@ -19,13 +19,13 @@ class RetestExtendScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return QueryBuilder(
-      query: getExtendCostQuery(),
+      query: fetchExtendCostQuery(),
       builder: (context, costState) {
         return RetestLayoutWidget(
           firstName: firstName,
           title: '$firstName이와의 시간을 늘리려면,\n더 많은 비용이 필요해요.\n그래도 계속하시겠어요?',
           action: MutationBuilder(
-            mutation: getExtendMutation(
+            mutation: extendCharacterMutation(
               refetchQueries: [
                 'my-character',
                 'retrieve-me',

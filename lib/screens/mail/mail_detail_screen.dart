@@ -27,7 +27,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        mutation = getReadMailMutation(
+        mutation = readMailMutation(
           onError: (arr, err, fallback) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -43,7 +43,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
 
   @override
   Widget build(context) {
-    final query = getRetrieveMailQuery(
+    final query = fetchMailByIdQuery(
       id: widget.id,
     );
     if (mutation == null) {
@@ -56,7 +56,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
           return const Scaffold();
         }
         return QueryBuilder(
-          query: getCharacterQuery(id: mailState.data!.by),
+          query: fetchCharacterByIdQuery(id: mailState.data!.by),
           builder: (context, state) {
             if (state.data == null) {
               return const SizedBox.shrink();

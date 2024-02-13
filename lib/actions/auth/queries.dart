@@ -6,14 +6,14 @@ import 'package:project_june_client/actions/auth/dtos.dart';
 import 'actions.dart';
 import 'models/SihyunOfJuneUser.dart';
 
-Mutation<void, void> getLoginAsKakaoMutation({
+Mutation<void, void> loginAsKakaoMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, void>(
     queryFn: (void _) async {
-      final token = await getKakaoOAuthToken();
-      final serverToken = await getServerTokenByKakaoToken(token);
+      final token = await fetchKakaoOAuthToken();
+      final serverToken = await fetchServerTokenByKakaoToken(token);
       await login(serverToken);
     },
     onSuccess: onSuccess,
@@ -21,15 +21,15 @@ Mutation<void, void> getLoginAsKakaoMutation({
   );
 }
 
-Mutation<void, void> getLoginAsAppleMutation({
+Mutation<void, void> loginAsAppleMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, void>(
     queryFn: (void _) async {
-      final appleCredentials = await getAppleLoginCredential();
+      final appleCredentials = await fetchAppleLoginCredential();
       final serverToken =
-          await getServerTokenByAppleCredential(appleCredentials);
+          await fetchServerTokenByAppleCredential(appleCredentials);
       await login(serverToken);
     },
     onSuccess: onSuccess,
@@ -37,39 +37,39 @@ Mutation<void, void> getLoginAsAppleMutation({
   );
 }
 
-Mutation<void, String> getSmsSendMutation({
+Mutation<void, String> sendSmsVerificationMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, String>(
-    queryFn: smsSend,
+    queryFn: sendSmsVerification,
     onSuccess: onSuccess,
     onError: onError,
   );
 }
 
-Mutation<bool, ValidatedAuthCodeDTO> getSmsVerifyMutation({
+Mutation<bool, ValidatedAuthCodeDTO> verifySmsCodeMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<bool, ValidatedAuthCodeDTO>(
-    queryFn: smsVerify,
+    queryFn: verifySmsCode,
     onSuccess: onSuccess,
     onError: onError,
   );
 }
 
-Mutation<void, ValidatedVerifyDTO> getSmsTokenMutation({
+Mutation<void, ValidatedVerifyDTO> fetchSmsTokenMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, ValidatedVerifyDTO>(
     queryFn: (dto) async {
       if (dto is ValidatedUserDTO) {
-        final serverToken = await getServerTokenBySMS(dto);
+        final serverToken = await fetchServerTokenBySMS(dto);
         await login(serverToken);
       } else if (dto is ValidatedAuthCodeDTO) {
-        final serverToken = await getServerTokenBySMSLogin(dto);
+        final serverToken = await fetchServerTokenBySMSLogin(dto);
         await login(serverToken);
       }
     },
@@ -78,17 +78,17 @@ Mutation<void, ValidatedVerifyDTO> getSmsTokenMutation({
   );
 }
 
-Query<SihyunOfJuneUser> getRetrieveMeQuery({
+Query<SihyunOfJuneUser> fetchMeQuery({
   OnQuerySuccessCallback<SihyunOfJuneUser>? onSuccess,
 }) {
   return Query<SihyunOfJuneUser>(
-    queryFn: retrieveMe,
+    queryFn: fetchMe,
     key: 'retrieve-me',
     onSuccess: onSuccess,
   );
 }
 
-Mutation<void, UserNameDTO> getNameChangeMutation({
+Mutation<void, UserNameDTO> changeNameMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -100,7 +100,7 @@ Mutation<void, UserNameDTO> getNameChangeMutation({
   );
 }
 
-Mutation<void, QuitReasonDTO> getWithdrawUserMutation({
+Mutation<void, QuitReasonDTO> withdrawUserMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -111,7 +111,7 @@ Mutation<void, QuitReasonDTO> getWithdrawUserMutation({
   );
 }
 
-Mutation<void, Uint8List> getUserImage({
+Mutation<void, Uint8List> uploadUserImageMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -123,7 +123,7 @@ Mutation<void, Uint8List> getUserImage({
   );
 }
 
-Mutation<void, void> getDeleteUserImage({
+Mutation<void, void> deleteUserImageMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -137,11 +137,11 @@ Mutation<void, void> getDeleteUserImage({
   );
 }
 
-Query<String> getRefferalCodeQuery({
+Query<String> fetchReferralCodeQuery({
   OnQuerySuccessCallback<String>? onSuccess,
 }) {
   return Query(
-    queryFn: getRefferalCode,
+    queryFn: fetchReferralCode,
     key: 'refferal-code',
     onSuccess: onSuccess,
   );

@@ -18,7 +18,7 @@ class NewUserAssignmentStartingScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: QueryBuilder(
-          query: getRetrieveMeQuery(),
+          query: fetchMeQuery(),
           builder: (context, state) {
             if (state.data == null) {
               return const SizedBox.shrink();

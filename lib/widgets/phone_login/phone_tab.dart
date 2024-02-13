@@ -96,7 +96,7 @@ class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var tokenMutation = getSmsTokenMutation(
+    var tokenMutation = fetchSmsTokenMutation(
       onSuccess: (res, arg) {
         context.go(RoutePaths.starting);
       },
@@ -108,7 +108,7 @@ class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
         );
       },
     );
-    final mutation = getSmsVerifyMutation(
+    final mutation = verifySmsCodeMutation(
       onSuccess: (res, arg) {
         if (res == true) {
           tokenMutation.mutate(getValidatedData());

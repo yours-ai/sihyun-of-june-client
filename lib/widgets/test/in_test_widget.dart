@@ -37,7 +37,7 @@ class InTestWidgetState extends ConsumerState<InTestWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        mutation = getStartTestMutation(
+        mutation = startTestMutation(
           onError: (arg, err, fallback) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(

@@ -4,14 +4,14 @@ import 'package:project_june_client/actions/transaction/dtos.dart';
 import '../client.dart';
 import 'models/TransactionLog.dart';
 
-Future<void> appleTransactionVerify(String purchaseID) async {
+Future<void> verifyAppleTransaction(String purchaseID) async {
   await dio.post('/transaction/apple/transaction/', data: {
     'purchase_id': purchaseID,
   });
   return;
 }
 
-Future<void> googleTransactionVerify(GoogleVerificationDTO dto) async {
+Future<void> verifyGoogleTransaction(GoogleVerificationDTO dto) async {
   await dio.post('/transaction/google/transaction/', data: {
     'order_id': dto.orderId,
     'product_id': dto.productId,
@@ -27,14 +27,14 @@ Future<List<ProductDetails>> initStoreInfo(
   return response.productDetails.toList();
 }
 
-Future<List<TransactionLog>> getCoinLogs() async {
+Future<List<TransactionLog>> fetchCoinLogs() async {
   final response = await dio.get('/transaction/coin/logs/');
   return response.data
       .map<TransactionLog>((json) => TransactionLog.fromJson(json))
       .toList();
 }
 
-Future<List<TransactionLog>> getPointLogs() async {
+Future<List<TransactionLog>> fetchPointLogs() async {
   final response = await dio.get('/transaction/point/logs/');
   return response.data
       .map<TransactionLog>((json) => TransactionLog.fromJson(json))

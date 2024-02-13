@@ -56,13 +56,13 @@ class _CharacterSelectionConfirmScreenState
                 height: 10,
               ),
               QueryBuilder(
-                  query: getSelectionStatusQuery(),
+                  query: fetchSelectionStatusQuery(),
                   builder: (context, selectionState) {
                     if (selectionState.data == null) {
                       return const SizedBox.shrink();
                     }
                     return MutationBuilder(
-                      mutation: getConfirmSelectionMutation(
+                      mutation: confirmSelectionMutation(
                         characterId: widget.characterId,
                         selectionId: selectionState.data!['id'],
                         onSuccess: (res, arg) async {

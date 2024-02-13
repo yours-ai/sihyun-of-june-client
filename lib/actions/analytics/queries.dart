@@ -3,7 +3,7 @@ import 'package:project_june_client/actions/analytics/dtos.dart';
 
 import 'actions.dart';
 
-Mutation<void, UserFunnelDTO> getUserFunnelMutation({
+Mutation<void, UserFunnelDTO> sendUserFunnelMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -19,13 +19,13 @@ Mutation<void, UserFunnelDTO> getUserFunnelMutation({
   );
 }
 
-Mutation<String, String> getShorterUrlMutation({
+Mutation<String, String> convertShorterUrlMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<String, String>(
     queryFn: (url) async {
-      return await getShorterUrl(url);
+      return await convertShorterUrl(url);
     },
     onSuccess: onSuccess,
     onError: onError,

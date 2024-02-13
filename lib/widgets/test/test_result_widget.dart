@@ -99,7 +99,7 @@ class _TestResultWidget extends State<TestResultWidget> {
                 )
               : _tab == 1
                   ? MutationBuilder(
-                      mutation: getSendResponseMutation(
+                      mutation: sendTestResponseMutation(
                         onSuccess: (res, arg) {
                           context.go(RoutePaths.testDeciding);
                         },

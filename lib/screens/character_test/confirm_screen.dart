@@ -10,13 +10,13 @@ import '../../constants.dart';
 import '../../globals.dart';
 import '../../services.dart';
 
-class TestConfirmScreen extends ConsumerStatefulWidget {
+class CharacterTestConfirmScreen extends ConsumerStatefulWidget {
   final int testId;
   final int selectedCharacterId;
   final String selectedCharacterFirstName;
   final CharacterTheme selectedCharacterTheme;
 
-  const TestConfirmScreen({
+  const CharacterTestConfirmScreen({
     super.key,
     required this.selectedCharacterId,
     required this.testId,
@@ -30,7 +30,7 @@ class TestConfirmScreen extends ConsumerStatefulWidget {
   }
 }
 
-class TestConfirmScreenState extends ConsumerState<TestConfirmScreen> {
+class TestConfirmScreenState extends ConsumerState<CharacterTestConfirmScreen> {
   bool isEnableToClick = true;
 
   @override
@@ -44,7 +44,7 @@ class TestConfirmScreenState extends ConsumerState<TestConfirmScreen> {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          actions: MutationBuilder(mutation: getConfirmTestMutation(
+          actions: MutationBuilder(mutation: confirmTestMutation(
             onError: (arg, error, fallback) {
               setState(() {
                 isEnableToClick = true;

@@ -107,7 +107,7 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
       if (widget.profileWidgetType == ProfileWidgetType.myCharacterProfile &&
           selectedCharacterId != null &&
           isImageUpdated) {
-        getReadCharacterStoryMutation(
+        readCharacterStoryMutation(
           refetchQueries: ['my-character'],
         ).mutate(selectedCharacterId);
       }

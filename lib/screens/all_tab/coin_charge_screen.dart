@@ -73,7 +73,7 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
       appBar: const BackAppbar(),
       body: SafeArea(
         child: QueryBuilder(
-          query: getRetrieveMeQuery(),
+          query: fetchMeQuery(),
           builder: (context, state) {
             return state.data == null
                 ? const SizedBox.shrink()
@@ -105,7 +105,7 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
                         children: [
                           const SizedBox(height: 16),
                           QueryBuilder(
-                            query: getStoreInfoQuery(),
+                            query: fetchStoreInfoQuery(),
                             builder: (context, state) {
                               if (state.status != QueryStatus.success ||
                                   state.data == null ||

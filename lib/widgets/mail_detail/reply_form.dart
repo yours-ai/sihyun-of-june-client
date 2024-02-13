@@ -74,7 +74,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final mutation = getSendMailReplyMutation(
+    final mutation = replyMailMutation(
       refetchQueries: [
         'character-sent-mail/${widget.mail.id}',
       ],
@@ -101,7 +101,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   await mutate(getReplyDTO());
                   requestRandomlyAppReview(widget.mail.is_first_reply);
                   if (ref.watch(mailPageProvider) != null) {
-                    getListMailQuery(
+                    fetchMailListQuery(
                             characterId: widget.characterId,
                             page: ref.watch(mailPageProvider)!)
                         .refetch();

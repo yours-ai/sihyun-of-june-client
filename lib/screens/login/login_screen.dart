@@ -74,9 +74,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                   children: [
                     if (Platform.isIOS)
                       MutationBuilder(
-                        mutation: getLoginAsAppleMutation(
+                        mutation: loginAsAppleMutation(
                           onSuccess: (res, arg) async {
-                            await getUserFunnelMutation()
+                            await sendUserFunnelMutation()
                                 .mutate(funnelDTO)
                                 .then((_) => context.go(RoutePaths.starting));
                           },

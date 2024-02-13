@@ -55,7 +55,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
   }
 
   _setUserInfoForSentry() async {
-    final userInfoRawData = await getRetrieveMeQuery().result;
+    final userInfoRawData = await fetchMeQuery().result;
     Sentry.configureScope(
       (scope) => scope
         ..setUser(
@@ -117,7 +117,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
   }
 
   _initializeCharacterInfo() async {
-    final myCharacters = await getRetrieveMyCharacterQuery().result;
+    final myCharacters = await fetchMyCharacterQuery().result;
     final hasCharacter =
         myCharacters.data != null && myCharacters.data!.isNotEmpty;
     await _checkEnableToRetest(hasCharacter, myCharacters.data);
@@ -127,7 +127,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       if (!mounted) return;
       context.go(RoutePaths.mailList);
     } else {
-      final isNewUserRawData = await getCheckNewUserQuery().result;
+      final isNewUserRawData = await fetchIsNewUserQuery().result;
       final isNewUser = isNewUserRawData.data!['is_available'];
       if (isNewUser) {
         if (!mounted) return;
@@ -168,7 +168,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       ref.read(isEnableToRetestProvider.notifier).state = true;
       return;
     }
-    final allCharacters = await getAllCharactersQuery().result;
+    final allCharacters = await fetchAllCharactersQuery().result;
     final isEnableToRetest = myCharacters.length != allCharacters.data!.length;
     ref.read(isEnableToRetestProvider.notifier).state = isEnableToRetest;
   }

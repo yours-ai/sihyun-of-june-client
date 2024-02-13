@@ -55,12 +55,12 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
 
   void redirectRetest() async {
     final myCharacterList =
-        await getRetrieveMyCharacterQuery().result.then((value) => value.data);
+        await fetchMyCharacterQuery().result.then((value) => value.data);
     final currentCharacterList =
         myCharacterList!.where((character) => character.is_current == true);
     if (currentCharacterList.isEmpty) return; // current character가 없는 경우
     final currentCharacter = currentCharacterList.first;
-    final bool is30DaysFinished = await getRetrieveMeQuery()
+    final bool is30DaysFinished = await fetchMeQuery()
         .result
         .then((value) => value.data!.is_30days_finished);
     if (!mounted) return;
@@ -173,7 +173,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
 
   @override
   Widget build(context) {
-    final retrieveMyCharacterQuery = getRetrieveMyCharacterQuery();
+    final retrieveMyCharacterQuery = fetchMyCharacterQuery();
     return SafeArea(
       child: QueryBuilder(
           query: retrieveMyCharacterQuery,
@@ -276,7 +276,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                 ],
               ),
               body: QueryBuilder(
-                query: getListMailQuery(
+                query: fetchMailListQuery(
                     characterId: ref.watch(selectedCharacterProvider)!,
                     page: selectedPage!),
                 builder: (context, listMailState) {
@@ -359,7 +359,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                               HapticFeedback.lightImpact();
                               await retrieveMyCharacterQuery.refetch();
                               if (!mounted) return;
-                              await getListMailQuery(
+                              await fetchMailListQuery(
                                       characterId:
                                           ref.watch(selectedCharacterProvider)!,
                                       page: selectedPage!)

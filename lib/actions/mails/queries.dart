@@ -4,7 +4,7 @@ import 'package:project_june_client/actions/mails/dtos.dart';
 
 import 'models/Mail.dart';
 
-Query<List<Mail>> getListMailQuery(
+Query<List<Mail>> fetchMailListQuery(
     {OnQueryErrorCallback? onError,
     required int characterId,
     required int page}) {
@@ -15,7 +15,7 @@ Query<List<Mail>> getListMailQuery(
   );
 }
 
-Query<Mail> getRetrieveMailQuery(
+Query<Mail> fetchMailByIdQuery(
     {OnQueryErrorCallback? onError, required int id}) {
   return Query<Mail>(
     key: 'character-sent-mail/$id',
@@ -24,25 +24,25 @@ Query<Mail> getRetrieveMailQuery(
   );
 }
 
-Mutation<void, int> getReadMailMutation({
+Mutation<void, int> readMailMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, int>(
-    queryFn: readMailById,
+    queryFn: readMail,
     onSuccess: onSuccess,
     onError: onError,
   );
 }
 
-Mutation<void, ReplyMailDTO> getSendMailReplyMutation({
+Mutation<void, ReplyMailDTO> replyMailMutation({
   List<String> refetchQueries = const [],
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, ReplyMailDTO>(
     refetchQueries: refetchQueries,
-    queryFn: replyMailById,
+    queryFn: replyMail,
     onSuccess: onSuccess,
     onError: onError,
   );

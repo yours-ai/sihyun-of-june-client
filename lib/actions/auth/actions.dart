@@ -19,7 +19,7 @@ import 'models/Token.dart';
 
 const _SERVER_TOKEN_KEY = 'SERVER_TOKEN';
 
-Future<AuthorizationCredentialAppleID> getAppleLoginCredential() async {
+Future<AuthorizationCredentialAppleID> fetchAppleLoginCredential() async {
   try {
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
@@ -33,7 +33,7 @@ Future<AuthorizationCredentialAppleID> getAppleLoginCredential() async {
   }
 }
 
-Future<String> getServerTokenByAppleCredential(
+Future<String> fetchServerTokenByAppleCredential(
     AuthorizationCredentialAppleID appleCredentials) async {
   Map<String, dynamic> data = {
     'user_id': appleCredentials.userIdentifier,
@@ -55,13 +55,13 @@ Future<String> getServerTokenByAppleCredential(
   return response.token;
 }
 
-Future<void> smsSend(String phoneNumber) async {
+Future<void> sendSmsVerification(String phoneNumber) async {
   await dio.post('/auth/sms-auth/send/',
       data: {'phone': phoneNumber, 'country_code': '82'});
   return;
 }
 
-Future<bool> smsVerify(ValidatedAuthCodeDTO dto) async {
+Future<bool> verifySmsCode(ValidatedAuthCodeDTO dto) async {
   try {
     final response = await dio.post('/auth/sms-auth/verify/', data: {
       'phone': dto.phone,
@@ -80,7 +80,7 @@ Future<bool> smsVerify(ValidatedAuthCodeDTO dto) async {
   }
 }
 
-Future<String> getServerTokenBySMS(ValidatedUserDTO dto) async {
+Future<String> fetchServerTokenBySMS(ValidatedUserDTO dto) async {
   try {
     final response = await dio.post('/auth/sms-auth/join-or-login/', data: {
       'phone': dto.phone,
@@ -101,7 +101,7 @@ Future<String> getServerTokenBySMS(ValidatedUserDTO dto) async {
   }
 }
 
-Future<String> getServerTokenBySMSLogin(ValidatedAuthCodeDTO dto) async {
+Future<String> fetchServerTokenBySMSLogin(ValidatedAuthCodeDTO dto) async {
   try {
     final response = await dio.post('/auth/sms-auth/join-or-login/', data: {
       'phone': dto.phone,
@@ -120,7 +120,7 @@ Future<String> getServerTokenBySMSLogin(ValidatedAuthCodeDTO dto) async {
   }
 }
 
-Future<OAuthToken> getKakaoOAuthToken() async {
+Future<OAuthToken> fetchKakaoOAuthToken() async {
   if (await isKakaoTalkInstalled()) {
     try {
       return await UserApi.instance.loginWithKakaoTalk();
@@ -134,7 +134,7 @@ Future<OAuthToken> getKakaoOAuthToken() async {
   return await UserApi.instance.loginWithKakaoAccount();
 }
 
-Future<String> getServerTokenByKakaoToken(OAuthToken token) async {
+Future<String> fetchServerTokenByKakaoToken(OAuthToken token) async {
   final tokenInstance =
       await dio.post('/auth/kakao/join-or-login/by-token/', data: {
     'token': token.accessToken,
@@ -142,7 +142,7 @@ Future<String> getServerTokenByKakaoToken(OAuthToken token) async {
   return tokenInstance.token;
 }
 
-Future<SihyunOfJuneUser> retrieveMe() async {
+Future<SihyunOfJuneUser> fetchMe() async {
   return await dio.get('/auth/me/').then<SihyunOfJuneUser>(
       (response) => SihyunOfJuneUser.fromJson(response.data));
 }
@@ -152,7 +152,7 @@ void setServerTokenOnDio(String serverToken) {
 }
 
 void _setAmplitudeProps() {
-  getRetrieveMeQuery(onSuccess: (data) async {
+  fetchMeQuery(onSuccess: (data) async {
     final amplitude = Amplitude.getInstance();
     amplitude.setUserId(data.id.toString());
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -243,7 +243,7 @@ Future<void> deleteUserImage() async {
   return;
 }
 
-Future<String> getRefferalCode() async {
+Future<String> fetchReferralCode() async {
   var response = await dio.get('/auth/me/referral-code/');
   return response.data['referral_code'];
 }

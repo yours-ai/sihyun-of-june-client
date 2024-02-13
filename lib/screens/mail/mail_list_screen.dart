@@ -23,7 +23,7 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final myCharactersRawData = await getRetrieveMyCharacterQuery().result;
+      final myCharactersRawData = await fetchMyCharacterQuery().result;
       setState(() {
         hasCharacter = !(myCharactersRawData.data == null ||
             myCharactersRawData.data!.isEmpty);
@@ -41,7 +41,7 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
     return Stack(
       children: [
         QueryBuilder(
-          query: getIsNotificationAcceptedQuery(),
+          query: fetchIsNotificationAcceptedQuery(),
           builder: (context, state) {
             return state.data == false
                 ? const RequestNotificationPermissionWidget()

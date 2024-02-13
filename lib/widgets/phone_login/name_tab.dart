@@ -54,9 +54,9 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
       useRootNavigator: true,
       builder: (BuildContext context) {
         return MutationBuilder(
-          mutation: getSmsTokenMutation(
+          mutation: fetchSmsTokenMutation(
             onSuccess: (res, arg) async {
-              await getUserFunnelMutation()
+              await sendUserFunnelMutation()
                   .mutate(funnelDTO)
                   .then((_) => context.go(RoutePaths.starting));
             },
