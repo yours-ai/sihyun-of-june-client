@@ -175,8 +175,10 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
             titleLarge: TextStyle(
               fontFamily: 'NanumJungHagSaeng',
               fontSize: 39,
-              height: 36 / 39,
+              height: 38 / 40,
               color: ColorConstants.primary,
+              wordSpacing: -5.5,
+              letterSpacing: 1.3,
             ),
             bodySmall: TextStyle(
               color: ColorConstants.primary,
