@@ -162,23 +162,11 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                       ? '${controller.text.length}/1000'
                       : '',
                   hintText: '답장을 입력해주세요...',
-                  hintStyle: TextStyle(
-                    fontFamily: 'NanumDaCaeSaRang',
-                    fontSize: 19,
-                    color: ColorConstants.neutral,
-                    fontWeight: FontWeightConstants.semiBold,
-                    letterSpacing: 1.5,
-                  ),
+                  hintStyle:
+                      userMailFontStyle.copyWith(color: ColorConstants.neutral),
                   border: InputBorder.none,
                 ),
-                style: TextStyle(
-                  fontFamily: 'NanumDaCaeSaRang',
-                  fontSize: 19,
-                  color: ColorConstants.black,
-                  fontWeight: FontWeight.bold,
-                  height: 1.289,
-                  letterSpacing: 1.02,
-                ),
+                style: userMailFontStyle,
               ),
               const SizedBox(height: 10),
               Padding(
