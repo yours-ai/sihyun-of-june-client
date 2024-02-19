@@ -21,10 +21,14 @@ class MailDetailScreen extends StatefulWidget {
 
 class _MailDetailScreenState extends State<MailDetailScreen> {
   Mutation<void, int>? mutation;
+  final ScrollController _scrollController = ScrollController();
+  final FocusNode _focusNode = FocusNode();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
+    _focusNode.addListener(_scrollToFocusedField);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         mutation = readMailMutation(
@@ -39,6 +43,37 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
         mutation!.mutate(widget.id);
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_scrollToFocusedField);
+    _focusNode.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToFocusedField() {
+    if (_focusNode.hasFocus) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final RenderBox? fieldBox =
+            _formKey.currentContext?.findRenderObject() as RenderBox?;
+        if (fieldBox == null) return;
+        const textFormSpaceHeight = 150;
+        bool isAtBottom = _scrollController.offset >=
+            _scrollController.position.maxScrollExtent - textFormSpaceHeight;
+        if (isAtBottom) return;
+        final targetScrollPosition =
+            _scrollController.position.maxScrollExtent +
+                fieldBox.size.height -
+                textFormSpaceHeight;
+        _scrollController.animateTo(
+          targetScrollPosition,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
+    }
   }
 
   @override
@@ -63,12 +98,11 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
             }
             final characterInMail = state.data!;
             return Scaffold(
+              resizeToAvoidBottomInset: true,
               appBar: const BackAppbar(),
               body: SafeArea(
                 child: SingleChildScrollView(
-                  reverse: MediaQuery.of(context).viewInsets.bottom > 0
-                      ? true
-                      : false,
+                  controller: _scrollController,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 36.0,
@@ -79,7 +113,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         GestureDetector(
-                          onTap: FocusManager.instance.primaryFocus?.unfocus,
+                          onTap: _focusNode.unfocus,
                           child: CharacterMailWidget(
                             mail: mailState.data!,
                             characterInMail: characterInMail,
@@ -115,6 +149,8 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                 characterInMail.theme.colors.primary,
                             characterName: characterInMail.first_name,
                             characterId: characterInMail.id,
+                            focusNode: _focusNode,
+                            formKey: _formKey,
                           )
                         ],
                         if (mailState.data!.replies!.isEmpty &&
