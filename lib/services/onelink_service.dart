@@ -14,7 +14,7 @@ class OnelinkService {
       showDebug: !BuildTimeEnvironments.isProduction,
       timeToWaitForATTUserAuthorization: 10,
     );
-    appsflyerSdk = AppsflyerSdk(appsFlyerOptions);
+    appsflyerSdk ??= AppsflyerSdk(appsFlyerOptions);
     await appsflyerSdk!.initSdk(
       registerConversionDataCallback: true,
       registerOnAppOpenAttributionCallback: true,
