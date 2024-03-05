@@ -20,18 +20,18 @@ class KakaoLoginButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     UserFunnelDTO funnelDTO = UserFunnelDTO(
         funnel: ref.watch(oneLinkProvider)?['media_source'] ??
-            ref.watch(deepLinkProvider)?.mediaSource.toString(),
+            ref.watch(deepLinkProvider)?.mediaSource?.toString(),
         refCode: ref.watch(oneLinkProvider)?['af_sub1'] ??
-            ref.watch(deepLinkProvider)?.afSub1.toString());
+            ref.watch(deepLinkProvider)?.afSub1?.toString());
     return MutationBuilder(
-      mutation: getLoginAsKakaoMutation(
+      mutation: loginAsKakaoMutation(
         onSuccess: (res, arg) async {
-          await getUserFunnelMutation()
+          await sendUserFunnelMutation()
               .mutate(funnelDTO)
               .then((_) => context.go(RoutePaths.starting));
         },
         onError: (arg, error, callback) {
-          if (error is PlatformException && error.code == "CANCELED") {
+          if (error is PlatformException && error.code == 'CANCELED') {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text(

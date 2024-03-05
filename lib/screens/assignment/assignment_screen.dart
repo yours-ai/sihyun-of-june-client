@@ -22,14 +22,14 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
   }
 
   Future<bool> _checkTestStatus() async {
-    await getTestStatusQuery().refetch();
-    final testStatusRawData = await getTestStatusQuery().result;
+    await fetchTestStatusQuery().refetch();
+    final testStatusRawData = await fetchTestStatusQuery().result;
     if (testStatusRawData.error != null) {
       return false;
     }
     final testStatus = testStatusRawData.data?['status'];
     if (testStatus == 'NOT_STARTED') {
-      getStartTestMutation(
+      startTestMutation(
         onSuccess: (res, arg) {
           if (!mounted) return;
           context.go(RoutePaths.characterTest);
@@ -49,8 +49,8 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
   }
 
   Future<bool> _checkSelectionStatus() async {
-    await getSelectionStatusQuery().refetch();
-    final selectionStatusRawData = await getSelectionStatusQuery().result;
+    await fetchSelectionStatusQuery().refetch();
+    final selectionStatusRawData = await fetchSelectionStatusQuery().result;
     if (selectionStatusRawData.error != null) {
       return false;
     }
@@ -67,19 +67,19 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
   }
 
   _checkNewUserAndLand() async {
-    final isNewUserRawData = await getCheckNewUserQuery().result;
+    final isNewUserRawData = await fetchIsNewUserQuery().result;
     final isNewUser = isNewUserRawData.data!['is_available'];
     if (isNewUser) {
-      getAllocateForNewUserMutation(
+      allocateForNewUserMutation(
         onSuccess: (res, arg) {
           context.go(RoutePaths.selectionDeciding);
         },
       ).mutate(null);
     } else {
-      final bool is30DaysFinished = await getRetrieveMeQuery()
+      final bool is30DaysFinished = await fetchMeQuery()
           .result
           .then((value) => value.data!.is_30days_finished);
-      if (is30DaysFinished) {
+      if (is30DaysFinished) { // 30일 지난 유저 redirect 이슈로 인해 분기
         if (!mounted) return;
         context.go(RoutePaths.all);
         context.push(RoutePaths.mailListDecideAssignmentMethod);

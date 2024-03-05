@@ -37,11 +37,11 @@ class InTestWidgetState extends ConsumerState<InTestWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        mutation = getStartTestMutation(
+        mutation = startTestMutation(
           onError: (arg, err, fallback) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text("캐릭터 배정을 시작할 수 없어요. 에러가 계속되면 고객센터에 문의해주세요."),
+                content: Text('캐릭터 배정을 시작할 수 없어요. 에러가 계속되면 고객센터에 문의해주세요.'),
               ),
             );
             logout();

@@ -7,10 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/providers/mail_list_provider.dart';
 import 'package:project_june_client/services.dart';
+import 'package:project_june_client/widgets/mail_detail/character_mail.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
+import 'package:project_june_client/widgets/mail_detail/reply.dart';
 
 import '../../actions/mails/dtos.dart';
 import '../../actions/mails/models/Mail.dart';
@@ -22,6 +24,8 @@ class ReplyFormWidget extends ConsumerStatefulWidget {
   final int primaryColorInMail;
   final String characterName;
   final int characterId;
+  final FocusNode focusNode;
+  final GlobalKey<FormState> formKey;
 
   const ReplyFormWidget({
     Key? key,
@@ -29,6 +33,8 @@ class ReplyFormWidget extends ConsumerStatefulWidget {
     required this.mail,
     required this.primaryColorInMail,
     required this.characterName,
+    required this.focusNode,
+    required this.formKey,
   }) : super(key: key);
 
   @override
@@ -37,7 +43,6 @@ class ReplyFormWidget extends ConsumerStatefulWidget {
 
 class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   final controller = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   @override
@@ -74,7 +79,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final mutation = getSendMailReplyMutation(
+    final mutation = replyMailMutation(
       refetchQueries: [
         'character-sent-mail/${widget.mail.id}',
       ],
@@ -101,7 +106,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   await mutate(getReplyDTO());
                   requestRandomlyAppReview(widget.mail.is_first_reply);
                   if (ref.watch(mailPageProvider) != null) {
-                    getListMailQuery(
+                    fetchMailListQuery(
                             characterId: widget.characterId,
                             page: ref.watch(mailPageProvider)!)
                         .refetch();
@@ -133,11 +138,12 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
           primaryColorInMail: widget.primaryColorInMail,
         ),
         Form(
-          key: _formKey,
+          key: widget.formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               TextFormField(
+                focusNode: widget.focusNode,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -162,23 +168,11 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                       ? '${controller.text.length}/1000'
                       : '',
                   hintText: '답장을 입력해주세요...',
-                  hintStyle: TextStyle(
-                    fontFamily: 'NanumDaCaeSaRang',
-                    fontSize: 19,
-                    color: ColorConstants.neutral,
-                    fontWeight: FontWeightConstants.semiBold,
-                    letterSpacing: 1.5,
-                  ),
+                  hintStyle:
+                      userMailFontStyle.copyWith(color: ColorConstants.neutral),
                   border: InputBorder.none,
                 ),
-                style: TextStyle(
-                  fontFamily: 'NanumDaCaeSaRang',
-                  fontSize: 19,
-                  color: ColorConstants.black,
-                  fontWeight: FontWeight.bold,
-                  height: 1.289,
-                  letterSpacing: 1.02,
-                ),
+                style: userMailFontStyle,
               ),
               const SizedBox(height: 10),
               Padding(
@@ -189,7 +183,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                         MaterialStateProperty.all(ColorConstants.gray),
                   ),
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
+                    if (widget.formKey.currentState!.validate()) {
                       showConfirmModal();
                     }
                   },

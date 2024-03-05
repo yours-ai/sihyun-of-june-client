@@ -161,7 +161,7 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
                                       return _buildAnimatedText(
                                         modifiedCharacterCinematic
                                             .cinematic_description[textIndex]
-                                            .replaceAll("\\n", "\n"),
+                                            .replaceAll('\\n', '\n'),
                                         textIndex,
                                       );
                                     } else {
@@ -172,7 +172,7 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
                               : _buildText(
                                   modifiedCharacterCinematic
                                       .cinematic_description[textIndex]
-                                      .replaceAll("\\n", "\n"),
+                                      .replaceAll('\\n', '\n'),
                                   textIndex,
                                 ),
                           transitionBuilder:

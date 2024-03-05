@@ -34,9 +34,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(context) {
     UserFunnelDTO funnelDTO = UserFunnelDTO(
         funnel: ref.watch(oneLinkProvider)?['media_source'] ??
-            ref.watch(deepLinkProvider)?.mediaSource.toString(),
+            ref.watch(deepLinkProvider)?.mediaSource?.toString(),
         refCode: ref.watch(oneLinkProvider)?['af_sub1'] ??
-            ref.watch(deepLinkProvider)?.afSub1.toString());
+            ref.watch(deepLinkProvider)?.afSub1?.toString());
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -74,9 +74,9 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                   children: [
                     if (Platform.isIOS)
                       MutationBuilder(
-                        mutation: getLoginAsAppleMutation(
+                        mutation: loginAsAppleMutation(
                           onSuccess: (res, arg) async {
-                            await getUserFunnelMutation()
+                            await sendUserFunnelMutation()
                                 .mutate(funnelDTO)
                                 .then((_) => context.go(RoutePaths.starting));
                           },

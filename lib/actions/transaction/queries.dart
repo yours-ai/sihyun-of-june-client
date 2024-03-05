@@ -15,9 +15,9 @@ Mutation<void, PurchaseDetails> verifyPurchaseMutation({
   return Mutation<void, PurchaseDetails>(
     queryFn: (purchaseDetails) async {
       if (Platform.isIOS) {
-        await appleTransactionVerify(purchaseDetails.purchaseID!);
+        await verifyAppleTransaction(purchaseDetails.purchaseID!);
       } else {
-        await googleTransactionVerify(
+        await verifyGoogleTransaction(
           GoogleVerificationDTO(
             orderId: purchaseDetails.purchaseID!,
             productId: purchaseDetails.productID,
@@ -32,18 +32,18 @@ Mutation<void, PurchaseDetails> verifyPurchaseMutation({
   );
 }
 
-Query<List<TransactionLog>> getCoinLogsQuery({OnQueryErrorCallback? onError}) {
+Query<List<TransactionLog>> fetchCoinLogsQuery({OnQueryErrorCallback? onError}) {
   return Query<List<TransactionLog>>(
     key: 'coin-logs',
-    queryFn: getCoinLogs,
+    queryFn: fetchCoinLogs,
     onError: onError,
   );
 }
 
-Query<List<TransactionLog>> getPointLogsQuery({OnQueryErrorCallback? onError}) {
+Query<List<TransactionLog>> fetchPointLogsQuery({OnQueryErrorCallback? onError}) {
   return Query<List<TransactionLog>>(
     key: 'point-logs',
-    queryFn: getPointLogs,
+    queryFn: fetchPointLogs,
     onError: onError,
   );
 }
@@ -54,7 +54,7 @@ const List<String> kProductIds = <String>[
   'purchase_100_coins',
 ];
 
-Query<List<Map<String, dynamic>>> getStoreInfoQuery({
+Query<List<Map<String, dynamic>>> fetchStoreInfoQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(

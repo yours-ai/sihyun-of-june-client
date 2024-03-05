@@ -33,13 +33,13 @@ class NotificationService {
   void handleClickNotification(String? redirectLink, int notificationId) {
     final mutation = readNotificationMutation(
       onSuccess: (res, arg) => routeRedirectLink(redirectLink),
-      refetchQueries: ["list-app-notifications"],
+      refetchQueries: ['list-app-notifications'],
     );
     mutation.mutate(notificationId);
   }
 
   void handleNewNotification() {
-    CachedQuery.instance.refetchQueries(keys: ["list-app-notifications"]);
+    CachedQuery.instance.refetchQueries(keys: ['list-app-notifications']);
   }
 
   void handleFCMMessageTap(RemoteMessage remoteMessage) async {
@@ -48,12 +48,12 @@ class NotificationService {
     int? notificationId = int.tryParse(remoteMessage.data['id'] ?? '');
     // id의 유무는 전체에게 보내면 id가 없고, 개인에게 보내면 id가 있음.
     if (notificationId == null || notificationId.isNaN) {
-      router.go("/notifications", extra: redirectLink);
+      router.go('/notifications', extra: redirectLink);
       return;
     } else {
       final mutation = readNotificationMutation(
         onSuccess: (res, arg) {
-          router.go("/notifications", extra: redirectLink);
+          router.go('/notifications', extra: redirectLink);
         },
       );
       mutation.mutate(notificationId);
@@ -94,7 +94,7 @@ class NotificationService {
           onPressed: () {
             // id의 유무는 전체에게 보내면 id가 없고, 개인에게 보내면 id가 있음.
             if (notificationId == null || notificationId.isNaN) {
-              router.go("/notifications", extra: redirectLink);
+              router.go('/notifications', extra: redirectLink);
               return;
             } else {
               final mutation = readNotificationMutation(
@@ -104,7 +104,7 @@ class NotificationService {
                   scaffoldMessengerKey.currentState
                       ?.hideCurrentSnackBar(); // 개인한테 보냈는데, link가 없는 경우. 예) 포인트 쌓임
                 },
-                refetchQueries: ["list-app-notifications"],
+                refetchQueries: ['list-app-notifications'],
               );
               mutation.mutate(notificationId);
             }
@@ -121,7 +121,7 @@ class NotificationService {
   Future<StreamSubscription<QueryState<List<AppNotification>>>>
       addBadgeControlListener() async {
     final supported = await FlutterAppBadger.isAppBadgeSupported();
-    final query = getListAppNotificationQuery();
+    final query = fetchNotificationListQuery();
     return query.stream.listen((state) {
       if (state.data == null) {
         return;

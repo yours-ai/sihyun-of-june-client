@@ -27,7 +27,7 @@ class _CoinLogScreenState extends State<CoinLogScreen> {
             ),
           ),
           body: QueryBuilder(
-              query: getCoinLogsQuery(),
+              query: fetchCoinLogsQuery(),
               builder: (context, state) {
                 return state.data != null
                     ? state.data!.isNotEmpty

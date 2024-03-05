@@ -3,15 +3,15 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'actions.dart';
 import 'models/AppNotification.dart';
 
-Query<bool> getIsNotificationAcceptedQuery({OnQueryErrorCallback? onError}) {
+Query<bool> fetchIsNotificationAcceptedQuery({OnQueryErrorCallback? onError}) {
   return Query<bool>(
     key: 'notification-accepted',
-    queryFn: () => getIsNotificationAccepted(),
+    queryFn: () => fetchIsNotificationAccepted(),
     onError: onError,
   );
 }
 
-Mutation<void, void> getRequestNotificationPermissionMutation({
+Mutation<void, void> requestNotificationPermissionMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -22,12 +22,12 @@ Mutation<void, void> getRequestNotificationPermissionMutation({
   );
 }
 
-Query<List<AppNotification>> getListAppNotificationQuery({
+Query<List<AppNotification>> fetchNotificationListQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query<List<AppNotification>>(
     key: 'list-app-notifications',
-    queryFn: () => listAppNotifications(),
+    queryFn: () => fetchNotificationList(),
     onError: onError,
   );
 }

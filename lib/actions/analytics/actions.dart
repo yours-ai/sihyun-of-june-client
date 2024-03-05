@@ -14,7 +14,7 @@ Future<void> sendUserRefCode(String refCode) async {
   return;
 }
 
-Future<String> getShorterUrl(String url) async {
+Future<String> convertShorterUrl(String url) async {
   var response = await dioForShortener.post('/shortener/', data: {'long_url': url});
   return response.data['url'];
 }

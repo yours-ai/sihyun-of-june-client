@@ -29,7 +29,7 @@ class AlertWidget extends StatelessWidget {
           ? Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Text(
-                title ?? "",
+                title ?? '',
                 style: TextStyle(
                   fontFamily: 'Pretendard',
                   fontSize: 18,

@@ -96,7 +96,7 @@ class DecideAssignmentMethodScreenState
           ),
           body: const SizedBox(),
           actions: MutationBuilder(
-            mutation: getReallocateMutation(
+            mutation: reallocateCharacterMutation(
               onSuccess: (res, arg) async {
                 scaffoldMessengerKey.currentState?.showSnackBar(
                   createSnackBar(
@@ -136,7 +136,7 @@ class DecideAssignmentMethodScreenState
                         setState(() {
                           isEnableToClick = false;
                         });
-                        final bool is30DaysFinished = await getRetrieveMeQuery()
+                        final bool is30DaysFinished = await fetchMeQuery()
                             .result
                             .then((value) => value.data!.is_30days_finished);
                         if (is30DaysFinished == false) {
@@ -188,7 +188,7 @@ class DecideAssignmentMethodScreenState
                         setState(() {
                           isEnableToClick = false;
                         });
-                        final bool is30DaysFinished = await getRetrieveMeQuery()
+                        final bool is30DaysFinished = await fetchMeQuery()
                             .result
                             .then((value) => value.data!.is_30days_finished);
                         if (is30DaysFinished == false) {

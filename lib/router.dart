@@ -169,7 +169,7 @@ final router = GoRouter(
     GoRoute(
       path: RoutePaths.testDeciding,
       pageBuilder: (context, state) => CustomTransitionPage(
-        child: const TestDecidingScreen(),
+        child: const CharacterTestDecidingScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,
@@ -184,7 +184,7 @@ final router = GoRouter(
       pageBuilder: (context, state) {
         final extra = state.extra as Map<String, dynamic>;
         return CustomTransitionPage(
-          child: TestConfirmScreen(
+          child: CharacterTestConfirmScreen(
             selectedCharacterId: extra['selectedCharacterId'] as int,
             testId: extra['testId'] as int,
             selectedCharacterFirstName: extra['selectedCharacterFirstName'],

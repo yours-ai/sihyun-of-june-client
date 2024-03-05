@@ -126,8 +126,8 @@ class AllTabScreenState extends State<AllTabScreen>
 
   @override
   Widget build(context) {
-    final retrieveMyCharacterQuery = getRetrieveMyCharacterQuery();
-    final retrieveMeQuery = getRetrieveMeQuery();
+    final retrieveMyCharacterQuery = fetchMyCharacterQuery();
+    final retrieveMeQuery = fetchMeQuery();
     return SafeArea(
       child: TitleLayout(
         title: const Center(
@@ -249,7 +249,7 @@ class AllTabScreenState extends State<AllTabScreen>
                   onPressed: () => launchUrl(Uri.parse(Urls.ask)),
                 ),
                 QueryBuilder(
-                  query: getRefferalCodeQuery(),
+                  query: fetchReferralCodeQuery(),
                   builder: (context, state) {
                     return MenuWidget(
                       title: '의견 남기기',

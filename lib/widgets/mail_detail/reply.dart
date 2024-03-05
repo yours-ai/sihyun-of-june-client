@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/mails/models/Reply.dart';
+import 'package:project_june_client/widgets/mail_detail/character_mail.dart';
 
 import '../../constants.dart';
 import 'mail_info.dart';
@@ -39,16 +40,22 @@ class ReplyWidget extends ConsumerWidget {
         ),
         Text(
           reply.description,
-          style: TextStyle(
-            fontFamily: 'NanumDaCaeSaRang',
-            fontSize: 19,
-            fontWeight: FontWeightConstants.semiBold,
-            color: ColorConstants.black,
-            height: 1.289,
-            letterSpacing: 1.02,
-          ),
+          style: userMailFontStyle,
+        ),
+        const SizedBox(
+          height: 80,
         ),
       ],
     );
   }
 }
+
+const userMailFontStyle = TextStyle(
+  fontFamily: 'NanumDaCaeSaRang',
+  fontSize: 20,
+  fontWeight: FontWeight.normal,
+  color: characterFontColor,
+  height: 1.46,
+  letterSpacing: 1.1,
+  wordSpacing: -1.8,
+);

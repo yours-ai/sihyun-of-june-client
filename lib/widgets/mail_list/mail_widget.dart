@@ -34,12 +34,12 @@ class MailWidget extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final mailState = mail != null
         ? mail!.replies!.isEmpty
-            ? "notReplied"
-            : "replied"
-        : "notSent";
+            ? 'notReplied'
+            : 'replied'
+        : 'notSent';
 
     return Container(
-      child: mailState != "notSent"
+      child: mailState != 'notSent'
           ? GestureDetector(
               onTap: () {
                 context.push('${RoutePaths.mailListMailDetail}/${mail!.id}');
@@ -48,12 +48,12 @@ class MailWidget extends ConsumerWidget {
                 children: [
                   letterIcon(
                       mailState,
-                      "#${ref.watch(characterThemeProvider).colors.primary.toRadixString(16).toString().substring(
+                      '#${ref.watch(characterThemeProvider).colors.primary.toRadixString(16).toString().substring(
                             2,
-                          )}",
-                      "#${ref.watch(characterThemeProvider).colors.secondary.toRadixString(16).toString().substring(
+                          )}',
+                      '#${ref.watch(characterThemeProvider).colors.secondary.toRadixString(16).toString().substring(
                             2,
-                          )}"),
+                          )}'),
                   const SizedBox(height: 1),
                   Text(
                     mailService.getMailReceiveDateStr(
@@ -68,12 +68,12 @@ class MailWidget extends ConsumerWidget {
               children: [
                 letterIcon(
                     mailState,
-                    "#${ref.watch(characterThemeProvider).colors.primary.toRadixString(16).toString().substring(
+                    '#${ref.watch(characterThemeProvider).colors.primary.toRadixString(16).toString().substring(
                           2,
-                        )}",
-                    "#${ref.watch(characterThemeProvider).colors.secondary.toRadixString(16).toString().substring(
+                        )}',
+                    '#${ref.watch(characterThemeProvider).colors.secondary.toRadixString(16).toString().substring(
                           2,
-                        )}"),
+                        )}'),
                 const SizedBox(height: 1),
                 Text(
                   mailService.getMailReceiveDateStr(

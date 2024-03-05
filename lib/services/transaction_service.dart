@@ -113,7 +113,7 @@ class TransactionService {
   }
 
   void fetchChangedCoinData() {
-    CachedQuery.instance.refetchQueries(keys: ["retrieve-me", "coin-logs"]);
+    CachedQuery.instance.refetchQueries(keys: ['retrieve-me', 'coin-logs']);
   }
 
   Map<String, dynamic> productDetailsToJson(ProductDetails details) {

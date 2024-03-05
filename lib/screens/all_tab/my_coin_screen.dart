@@ -19,7 +19,7 @@ class MyCoinScreen extends StatelessWidget {
       appBar: const BackAppbar(),
       body: SafeArea(
         child: QueryBuilder(
-          query: getRetrieveMeQuery(),
+          query: fetchMeQuery(),
           builder: (context, state) {
             return state.data == null
                 ? const SizedBox.shrink()

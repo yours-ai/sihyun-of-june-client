@@ -66,7 +66,7 @@ class NavbarLayout extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final query = getListAppNotificationQuery();
+    final query = fetchNotificationListQuery();
     return Scaffold(
       body: child,
       bottomNavigationBar: QueryBuilder(
@@ -77,13 +77,13 @@ class NavbarLayout extends ConsumerWidget {
                     .isNotEmpty ??
                 false;
             final stringPrimaryColor =
-                "#${ref.watch(characterThemeProvider).colors.primary.toRadixString(16).toString().substring(
+                '#${ref.watch(characterThemeProvider).colors.primary.toRadixString(16).toString().substring(
                       2,
-                    )}";
+                    )}';
             final stringSecondaryColor =
-                "#${ref.watch(characterThemeProvider).colors.secondary.toRadixString(16).toString().substring(
+                '#${ref.watch(characterThemeProvider).colors.secondary.toRadixString(16).toString().substring(
                       2,
-                    )}";
+                    )}';
             return BottomNavigationBar(
               currentIndex: routePath != null ? tabList.indexOf(routePath!) : 0,
               showSelectedLabels: false,

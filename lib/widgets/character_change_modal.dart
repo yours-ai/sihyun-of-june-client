@@ -46,7 +46,7 @@ class CharacterChangeModal extends ConsumerWidget {
                       ref.watch(selectedCharacterProvider) == character.id))
               .toList(),
           QueryBuilder(
-            query: getRetrieveMeQuery(),
+            query: fetchMeQuery(),
             builder: (context, state) {
               if (state.data == null) {
                 return const SizedBox.shrink();

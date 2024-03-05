@@ -57,13 +57,14 @@ dependencies:
   in_app_review: ^2.0.8
   app_tracking_transparency: ^2.0.4
   animated_text_kit: ^4.2.2
+  http: ^1.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
-  build_runner: ^2.4.6
+  build_runner: ^2.4.8
   json_serializable: ^6.7.1
   sentry_dart_plugin: ^1.6.0
 
@@ -94,7 +95,7 @@ flutter:
           weight: 700
     - family: NanumDaCaeSaRang
       fonts:
-        - asset: assets/fonts/NanumDaCaeSaRang.ttf
+        - asset: assets/fonts/NanumDaCaeSaRang.otf
     - family: NanumNoRyeogHaNeunDongHee
       fonts:
         - asset: assets/fonts/NanumNoRyeogHaNeunDongHee.otf

@@ -6,7 +6,7 @@ import 'package:project_june_client/constants.dart';
 import 'models/Character.dart';
 import 'models/Question.dart';
 
-Mutation<List<Question>, void> getStartTestMutation({
+Mutation<List<Question>, void> startTestMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -17,22 +17,22 @@ Mutation<List<Question>, void> getStartTestMutation({
   );
 }
 
-Mutation<void, List<Map<String, int>>> getSendResponseMutation({
+Mutation<void, List<Map<String, int>>> sendTestResponseMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, List<Map<String, int>>>(
-    queryFn: sendResponses,
+    queryFn: sendTestResponses,
     onSuccess: onSuccess,
     onError: onError,
   );
 }
 
-Query<Map<String, dynamic>> getTestStatusQuery({
+Query<Map<String, dynamic>> fetchTestStatusQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: "test-status",
+    key: 'test-status',
     config: QueryConfig(
       cacheDuration: CachingDuration.assignment,
     ),
@@ -41,20 +41,20 @@ Query<Map<String, dynamic>> getTestStatusQuery({
   );
 }
 
-Query<Map<String, dynamic>> getPendingTestQuery({
+Query<Map<String, dynamic>> fetchPendingTestQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
     config: QueryConfig(
       cacheDuration: CachingDuration.assignment,
     ),
-    key: "pending-test",
+    key: 'pending-test',
     queryFn: fetchPendingTest,
     onError: onError,
   );
 }
 
-Query<List<Character>> getAllCharactersQuery({
+Query<List<Character>> fetchAllCharactersQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
@@ -67,7 +67,7 @@ Query<List<Character>> getAllCharactersQuery({
   );
 }
 
-Query<Character> getCharacterQuery({
+Query<Character> fetchCharacterByIdQuery({
   required int id,
   OnQueryErrorCallback? onError,
 }) {
@@ -81,7 +81,7 @@ Query<Character> getCharacterQuery({
   );
 }
 
-Query<List<Character>> getRetrieveMyCharacterQuery({
+Query<List<Character>> fetchMyCharacterQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
@@ -91,7 +91,7 @@ Query<List<Character>> getRetrieveMyCharacterQuery({
   );
 }
 
-Mutation<void, int> getConfirmTestMutation({
+Mutation<void, int> confirmTestMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -103,7 +103,7 @@ Mutation<void, int> getConfirmTestMutation({
   );
 }
 
-Mutation<void, int> getReadCharacterStoryMutation({
+Mutation<void, int> readCharacterStoryMutation({
   refetchQueries = const [],
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
@@ -116,31 +116,31 @@ Mutation<void, int> getReadCharacterStoryMutation({
   );
 }
 
-Mutation<void, ReallocateDTO> getReallocateMutation({
+Mutation<void, ReallocateDTO> reallocateCharacterMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, ReallocateDTO>(
-    queryFn: reallocate,
+    queryFn: reallocateCharacter,
     onSuccess: onSuccess,
     onError: onError,
   );
 }
 
-Mutation<void, String> getExtendMutation({
+Mutation<void, String> extendCharacterMutation({
   refetchQueries = const [],
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, String>(
     refetchQueries: refetchQueries,
-    queryFn: extend,
+    queryFn: extendCharacter,
     onSuccess: onSuccess,
     onError: onError,
   );
 }
 
-Query<Map<String, int>> getExtendCostQuery({
+Query<Map<String, int>> fetchExtendCostQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
@@ -150,19 +150,19 @@ Query<Map<String, int>> getExtendCostQuery({
   );
 }
 
-Query<Map<String, dynamic>> getCheckNewUserQuery({
+Query<Map<String, dynamic>> fetchIsNewUserQuery({
   OnQuerySuccessCallback? onSuccess,
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: "check-new-user",
+    key: 'check-new-user',
     queryFn: fetchIsNewUser,
     onSuccess: onSuccess,
     onError: onError,
   );
 }
 
-Mutation<void, void> getAllocateForNewUserMutation({
+Mutation<void, void> allocateForNewUserMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -173,7 +173,7 @@ Mutation<void, void> getAllocateForNewUserMutation({
   );
 }
 
-Mutation<void, void> getConfirmSelectionMutation({
+Mutation<void, void> confirmSelectionMutation({
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
   required int selectionId,
@@ -187,11 +187,11 @@ Mutation<void, void> getConfirmSelectionMutation({
   );
 }
 
-Query<Map<String, dynamic>> getSelectionStatusQuery({
+Query<Map<String, dynamic>> fetchSelectionStatusQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
-    key: "selection-status",
+    key: 'selection-status',
     config: QueryConfig(
       cacheDuration: CachingDuration.assignment,
     ),

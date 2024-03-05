@@ -23,15 +23,15 @@ class CharacterSelectionDecidingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return QueryBuilder(
-        query: getAllCharactersQuery(),
+        query: fetchAllCharactersQuery(),
         builder: (context, allCharacterState) {
           if (allCharacterState.status != QueryStatus.success ||
               allCharacterState.data == null) {
             return const Center(child: CircularProgressIndicator());
           }
-          getRetrieveMyCharacterQuery().refetch();
+          fetchMyCharacterQuery().refetch();
           return QueryBuilder(
-            query: getRetrieveMyCharacterQuery(),
+            query: fetchMyCharacterQuery(),
             builder: (context, myCharacterState) {
               if (myCharacterState.status != QueryStatus.success ||
                   myCharacterState.data == null) {

@@ -27,7 +27,7 @@ class _PointLogScreenState extends State<PointLogScreen> {
             ),
           ),
           body: QueryBuilder(
-              query: getPointLogsQuery(),
+              query: fetchPointLogsQuery(),
               builder: (context, state) {
                 return state.data != null && state.status == QueryStatus.success
                     ? state.data!.isNotEmpty

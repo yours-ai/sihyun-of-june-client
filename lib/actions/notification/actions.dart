@@ -10,7 +10,7 @@ bool _checkIsAccepted(NotificationSettings settings) {
       settings.authorizationStatus == AuthorizationStatus.provisional);
 }
 
-Future<bool> getIsNotificationAccepted() async {
+Future<bool> fetchIsNotificationAccepted() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   final settings = await messaging.getNotificationSettings();
   return _checkIsAccepted(settings);
@@ -29,7 +29,7 @@ Future<void> requestNotificationPermission() async {
     sound: true,
   );
   if (!_checkIsAccepted(settings)) {
-    throw Exception("알림 동의를 받지 못했어요.");
+    throw Exception('알림 동의를 받지 못했어요.');
   }
 }
 
@@ -58,7 +58,7 @@ Future<void> getOrCreateUserDevice(String token) async {
   }
 }
 
-Future<List<AppNotification>> listAppNotifications() async {
+Future<List<AppNotification>> fetchNotificationList() async {
   return await dio.get('/notification/notifications/').then((response) =>
       response.data
           .map<AppNotification>((json) => AppNotification.fromJson(json))

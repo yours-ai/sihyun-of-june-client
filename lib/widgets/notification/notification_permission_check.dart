@@ -26,10 +26,10 @@ class RequestNotificationPermissionWidgetState
           context: context,
           useRootNavigator: true,
           builder: (BuildContext context) {
-            final mutation = getRequestNotificationPermissionMutation(
+            final mutation = requestNotificationPermissionMutation(
               onSuccess: (res, arg) {
                 if (!mounted) return;
-                notificationService.initializeNotificationHandlers(ref);
+                // notificationService.initializeNotificationHandlers(ref); // login provider생기면 바꾸자.
                 context.pop();
               },
               onError: (arg, err, fallback) {

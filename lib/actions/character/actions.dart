@@ -4,7 +4,7 @@ import 'package:project_june_client/actions/character/models/Question.dart';
 
 import '../client.dart';
 
-Future<void> sendResponses(List<Map<String, int>> responses) async =>
+Future<void> sendTestResponses(List<Map<String, int>> responses) async =>
     await dio.post(
       '/character/test/end/',
       data: responses,
@@ -52,13 +52,13 @@ Future<void> readCharacterStory(int id) async {
   return;
 }
 
-Future<void> reallocate(ReallocateDTO dto) async {
+Future<void> reallocateCharacter(ReallocateDTO dto) async {
   await dio.post('/character/reallocate/',
       data: {'payment': dto.payment, 'method': dto.method});
   return;
 }
 
-Future<void> extend(String payment) async {
+Future<void> extendCharacter(String payment) async {
   await dio.post('/character/extend/', data: {'payment': payment});
   return;
 }

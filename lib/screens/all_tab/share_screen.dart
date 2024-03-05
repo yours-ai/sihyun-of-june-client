@@ -67,7 +67,7 @@ class ShareScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 60),
               QueryBuilder(
-                query: getRefferalCodeQuery(),
+                query: fetchReferralCodeQuery(),
                 builder: (context, state) => Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +103,7 @@ class ShareScreen extends ConsumerWidget {
                     ),
                     const SizedBox(width: 50),
                     MutationBuilder(
-                      mutation: getShorterUrlMutation(onSuccess: (res, arg) {
+                      mutation: convertShorterUrlMutation(onSuccess: (res, arg) {
                         Share.share(
                             '${FirebaseRemoteConfig.instance.getString('referral_text').replaceAll("\\n", "\n")}\n$res',
                             subject: '유월의 시현이 공유하기');

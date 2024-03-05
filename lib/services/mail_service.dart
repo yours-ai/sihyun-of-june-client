@@ -22,9 +22,9 @@ class MailService {
   String getNextMailReceiveTimeStr() {
     TimeOfDay now = TimeOfDay.fromDateTime(clock.now());
     if (now.compareTo(ProjectConstants.mailReceiveTime) >= 0) {
-      return "내일 저녁 9시";
+      return '내일 저녁 9시';
     }
-    return "오늘 저녁 9시";
+    return '오늘 저녁 9시';
   }
 
   int getMailDateDiff(DateTime targetDate, DateTime firstMailDate) {

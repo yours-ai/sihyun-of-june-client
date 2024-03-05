@@ -47,6 +47,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
 
     _setUserInfoForSentry();
     await _initializeCharacterInfo();
+    notificationService.initializeNotificationHandlers(ref);
     final push = await getPushIfPushClicked();
     if (push != null) {
       notificationService.handleFCMMessageTap(push);
@@ -54,8 +55,8 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     }
   }
 
-  _setUserInfoForSentry() async {
-    final userInfoRawData = await getRetrieveMeQuery().result;
+  Future<void> _setUserInfoForSentry() async {
+    final userInfoRawData = await fetchMeQuery().result;
     Sentry.configureScope(
       (scope) => scope
         ..setUser(
@@ -68,7 +69,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     );
   }
 
-  _checkAppAvailability() async {
+  Future<void> _checkAppAvailability() async {
     FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(seconds: 10),
@@ -98,7 +99,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     }
   }
 
-  _checkUpdateAvailable() async {
+  Future<void> _checkUpdateAvailable() async {
     if (Platform.isAndroid) {
       updateService.checkAndUpdateAndroidApp();
     }
@@ -108,7 +109,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     }
   }
 
-  _requestAppTracking() async {
+  Future<void> _requestAppTracking() async {
     final TrackingStatus status =
         await AppTrackingTransparency.trackingAuthorizationStatus;
     if (status == TrackingStatus.notDetermined) {
@@ -116,8 +117,8 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     }
   }
 
-  _initializeCharacterInfo() async {
-    final myCharacters = await getRetrieveMyCharacterQuery().result;
+  Future<void> _initializeCharacterInfo() async {
+    final myCharacters = await fetchMyCharacterQuery().result;
     final hasCharacter =
         myCharacters.data != null && myCharacters.data!.isNotEmpty;
     await _checkEnableToRetest(hasCharacter, myCharacters.data);
@@ -127,7 +128,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       if (!mounted) return;
       context.go(RoutePaths.mailList);
     } else {
-      final isNewUserRawData = await getCheckNewUserQuery().result;
+      final isNewUserRawData = await fetchIsNewUserQuery().result;
       final isNewUser = isNewUserRawData.data!['is_available'];
       if (isNewUser) {
         if (!mounted) return;
@@ -139,7 +140,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     }
   }
 
-  _saveSelectedCharacterId(List<Character> myCharacters) async {
+  Future<void> _saveSelectedCharacterId(List<Character> myCharacters) async {
     final selectedCharacterId = await characterService.getSelectedCharacterId();
     if (selectedCharacterId == null) {
       ref.read(selectedCharacterProvider.notifier).state = myCharacters[0].id;
@@ -163,12 +164,13 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     }
   }
 
-  _checkEnableToRetest(bool hasCharacter, List<Character>? myCharacters) async {
+  Future<void> _checkEnableToRetest(
+      bool hasCharacter, List<Character>? myCharacters) async {
     if (hasCharacter == false || myCharacters == null || myCharacters.isEmpty) {
       ref.read(isEnableToRetestProvider.notifier).state = true;
       return;
     }
-    final allCharacters = await getAllCharactersQuery().result;
+    final allCharacters = await fetchAllCharactersQuery().result;
     final isEnableToRetest = myCharacters.length != allCharacters.data!.length;
     ref.read(isEnableToRetestProvider.notifier).state = isEnableToRetest;
   }

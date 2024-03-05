@@ -37,7 +37,7 @@ class ChangeNameScreenState extends ConsumerState<ChangeNameScreen> {
       useRootNavigator: true,
       builder: (BuildContext context) {
         return MutationBuilder(
-          mutation: getNameChangeMutation(
+          mutation: changeNameMutation(
             onSuccess: (res, arg) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -92,7 +92,7 @@ class ChangeNameScreenState extends ConsumerState<ChangeNameScreen> {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               body: QueryBuilder(
-                query: getRetrieveMeQuery(),
+                query: fetchMeQuery(),
                 builder: (context, state) {
                   return state.data == null
                       ? const SizedBox.shrink()
