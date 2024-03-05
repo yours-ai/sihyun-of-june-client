@@ -29,7 +29,7 @@ class RequestNotificationPermissionWidgetState
             final mutation = requestNotificationPermissionMutation(
               onSuccess: (res, arg) {
                 if (!mounted) return;
-                notificationService.initializeNotificationHandlers(ref);
+                // notificationService.initializeNotificationHandlers(ref); // login provider생기면 바꾸자.
                 context.pop();
               },
               onError: (arg, err, fallback) {
