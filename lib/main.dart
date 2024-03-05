@@ -17,6 +17,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/common_provider.dart';
 import 'package:project_june_client/services.dart';
+import 'package:project_june_client/widgets/common/create_snackbar.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'firebase_options.dart';
 
@@ -119,6 +120,8 @@ class ProjectJuneApp extends ConsumerStatefulWidget {
 }
 
 class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
+  StreamSubscription<RemoteMessage>? _onMessageSubscription;
+
   @override
   void initState() {
     super.initState();
@@ -145,6 +148,31 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
 
   @override
   Widget build(context) {
+    ref.listen(characterThemeProvider, (previous, next) async {
+      _onMessageSubscription?.cancel();
+      final characterColors = ref.watch(characterThemeProvider).colors;
+
+      _onMessageSubscription = FirebaseMessaging.onMessage.listen(
+        (RemoteMessage message) {
+          // 포그라운드
+          notificationService.handleNewNotification();
+          String snackBarText =
+              message.notification?.body ?? message.data['body'];
+          String? redirectLink = message.data['link'];
+          int? notificationId = int.tryParse(message.data['id'] ?? '');
+          scaffoldMessengerKey.currentState?.showSnackBar(
+            createSnackBar(
+              snackBarText: snackBarText,
+              characterColors: characterColors,
+              onPressed: () => notificationService.routeOnMessage(
+                notificationId,
+                redirectLink,
+              ),
+            ),
+          );
+        },
+      );
+    });
     return AnnotatedRegion(
       value: SystemUiOverlayStyle.dark,
       child: MaterialApp.router(
