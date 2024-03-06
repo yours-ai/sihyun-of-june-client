@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/mails/models/Reply.dart';
 import 'package:project_june_client/widgets/mail_detail/character_mail.dart';
 
-import '../../constants.dart';
 import 'mail_info.dart';
 
 class ReplyWidget extends ConsumerWidget {
