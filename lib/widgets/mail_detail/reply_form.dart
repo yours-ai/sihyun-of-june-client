@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/providers/mail_list_provider.dart';
+import 'package:project_june_client/router.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
@@ -92,32 +93,36 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
         builder: (BuildContext context) {
           return MutationBuilder(
             mutation: mutation,
-            builder: (context, state, mutate) => ModalWidget(
-              title: '정말 이대로 보내시겠어요?',
-              description: const ModalDescriptionWidget(
-                  description: '답장을 보내면 수정이 불가능해요.🥲'),
-              choiceColumn: ModalChoiceWidget(
-                submitText: '네',
-                onSubmit: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  await mutate(getReplyDTO());
-                  requestRandomlyAppReview(widget.mail.is_first_reply);
-                  if (ref.watch(mailPageProvider) != null) {
-                    fetchMailListQuery(
-                            characterId: widget.characterId,
-                            page: ref.watch(mailPageProvider)!)
-                        .refetch();
-                  }
-                  setState(() {
-                    isLoading = false;
-                  });
-                  context.pop();
-                },
-                cancelText: '아니요',
-                onCancel: () => context.pop(),
-                mutationStatus: isLoading ? QueryStatus.loading : null,
+            builder: (context, state, mutate) => PopScope(
+              canPop: !isLoading,
+              child: ModalWidget(
+                title: '정말 이대로 보내시겠어요?',
+                description: const ModalDescriptionWidget(
+                    description: '답장을 보내면 수정이 불가능해요.🥲'),
+                choiceColumn: ModalChoiceWidget(
+                  submitText: '네',
+                  onSubmit: () {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    mutate(getReplyDTO()).then((_) {
+                      router.pop();
+                      if (ref.watch(mailPageProvider) != null) {
+                        fetchMailListQuery(
+                                characterId: widget.characterId,
+                                page: ref.watch(mailPageProvider)!)
+                            .refetch();
+                      }
+                      requestRandomlyAppReview(widget.mail.is_first_reply);
+                      setState(() {
+                        isLoading = false;
+                      });
+                    });
+                  },
+                  cancelText: '아니요',
+                  onCancel: () => context.pop(),
+                  mutationStatus: isLoading ? QueryStatus.loading : null,
+                ),
               ),
             ),
           );
