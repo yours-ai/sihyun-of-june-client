@@ -245,6 +245,10 @@ class AllTabScreenState extends State<AllTabScreen>
                   onPressed: () => launchUrl(Uri.parse(Urls.notice)),
                 ),
                 MenuWidget(
+                  title: '자주 묻는 질문',
+                  onPressed: () => launchUrl(Uri.parse(Urls.faq)),
+                ),
+                MenuWidget(
                   title: '문의하기',
                   onPressed: () => launchUrl(Uri.parse(Urls.ask)),
                 ),
