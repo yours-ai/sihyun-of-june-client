@@ -7,6 +7,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/actions/client.dart';
@@ -15,6 +16,7 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../widgets/common/alert/alert_description_widget.dart';
 import '../widgets/common/alert/alert_widget.dart';
@@ -43,6 +45,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       return;
     }
 
+    _setUserInfoForSentry();
     await _initializeCharacterInfo();
     await _checkNotificationPermission();
     final push = await notificationService.getPushIfPushClicked();
@@ -164,6 +167,20 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     if (isNotificationAccepted.data == true) {
       notificationService.initializeNotificationHandlers();
     }
+  }
+
+  Future<void> _setUserInfoForSentry() async {
+    final userInfoRawData = await fetchMeQuery().result;
+    Sentry.configureScope(
+      (scope) => scope
+        ..setUser(
+          SentryUser(
+            id: userInfoRawData.data!.id.toString(),
+            username: userInfoRawData.data!.last_name +
+                userInfoRawData.data!.first_name,
+          ),
+        ),
+    );
   }
 
   @override
