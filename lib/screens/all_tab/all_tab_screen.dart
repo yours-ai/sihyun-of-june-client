@@ -46,7 +46,7 @@ class AllTabScreenState extends State<AllTabScreen>
 
   void _showMultiCharacterModal(List<Character> characterList) {
     showModalBottomSheet(
-      backgroundColor: ColorConstants.lightGray,
+      backgroundColor: ColorConstants.veryLightGray,
       context: context,
       showDragHandle: true,
       builder: (context) {

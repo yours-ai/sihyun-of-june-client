@@ -76,11 +76,11 @@ class OverlayComponentWidget extends ConsumerWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? ColorConstants.background
-              : ColorConstants.veryLightGray,
+              : ColorConstants.lightGray,
           border: Border(
             top: BorderSide(
               width: 1,
-              color: ColorConstants.veryLightGray,
+              color: ColorConstants.lightGray,
             ),
           ),
         ),

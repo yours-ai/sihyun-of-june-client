@@ -83,7 +83,7 @@ class RetestChoiceWidget extends ConsumerWidget {
                             : '${extendCost!['coin']}코인',
                         style: TextStyle(
                           fontSize: 14,
-                          color: ColorConstants.lightGray.withOpacity(0.5),
+                          color: ColorConstants.veryLightGray.withOpacity(0.5),
                           fontWeight: FontWeight.bold,
                           height: 1.0,
                         ),
@@ -122,7 +122,7 @@ class RetestChoiceWidget extends ConsumerWidget {
                             : '${extendCost!['point']}P',
                         style: TextStyle(
                           fontSize: 14,
-                          color: ColorConstants.lightGray.withOpacity(0.5),
+                          color: ColorConstants.veryLightGray.withOpacity(0.5),
                           fontWeight: FontWeight.bold,
                           height: 1.0,
                         ),

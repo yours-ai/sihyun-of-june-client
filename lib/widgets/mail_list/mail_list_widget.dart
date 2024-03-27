@@ -133,7 +133,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                 .watch(characterThemeProvider)
                                 .colors
                                 .primary)
-                            : ColorConstants.veryLightGray,
+                            : ColorConstants.lightGray,
                       ),
                     ),
                     onPressed: () async {

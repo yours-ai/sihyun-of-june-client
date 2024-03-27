@@ -30,7 +30,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
       },
       child: Container(
         color: widget.notification.is_read == false
-            ? ColorConstants.lightGray
+            ? ColorConstants.veryLightGray
             : ColorConstants.background,
         child: Column(
           children: [

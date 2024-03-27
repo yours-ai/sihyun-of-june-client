@@ -11,8 +11,8 @@ abstract final class ColorConstants {
   static Color pink = const Color(0xffFF5574);
   static Color neutral = const Color(0xffc0bebb);
   static Color alert = const Color.fromRGBO(254, 49, 64, 1);
-  static Color veryLightGray = const Color(0xffdedede);
-  static Color lightGray = const Color(0xffF6F6F6);
+  static Color veryLightGray = const Color(0xffF6F6F6);
+  static Color lightGray = const Color(0xffdedede);
   static Color mediumGray = const Color(0xffA7A1A1);
   static Color darkGray = const Color(0xff101010);
   static Color black = const Color(0xff1a1a1a);

@@ -38,7 +38,7 @@ class _ProductWidgetState extends State<ProductWidget> {
       child: Container(
           color: widget.isProcessing
               ? ColorConstants.background
-              : ColorConstants.lightGray,
+              : ColorConstants.veryLightGray,
           child: Column(
             children: [
               Row(

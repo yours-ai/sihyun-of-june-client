@@ -88,7 +88,7 @@ class ModalChoiceWidget extends ConsumerWidget {
                         submitSuffix!,
                         style: TextStyle(
                           fontSize: 14,
-                          color: ColorConstants.lightGray.withOpacity(0.5),
+                          color: ColorConstants.veryLightGray.withOpacity(0.5),
                           fontWeight: FontWeight.bold,
                           height: 1.0,
                         ),

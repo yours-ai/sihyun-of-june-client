@@ -26,7 +26,7 @@ class UserProfileWidget extends ConsumerStatefulWidget {
 class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
   void _showMultiCharacterModal(List<Character> characterList) {
     showModalBottomSheet(
-      backgroundColor: ColorConstants.lightGray,
+      backgroundColor: ColorConstants.veryLightGray,
       context: context,
       showDragHandle: true,
       builder: (context) {

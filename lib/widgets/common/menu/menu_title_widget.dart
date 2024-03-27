@@ -12,7 +12,7 @@ class MenuTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorConstants.lightGray,
+      color: ColorConstants.veryLightGray,
       child: Container(
         height: 71,
         padding: const EdgeInsets.only(left: 25),

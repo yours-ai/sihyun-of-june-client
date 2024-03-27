@@ -47,7 +47,7 @@ class RetestInfoScreen extends ConsumerWidget {
                 ? null
                 : Theme.of(context).filledButtonTheme.style!.copyWith(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          ColorConstants.veryLightGray),
+                          ColorConstants.lightGray),
                     ),
             onPressed: () {
               if (!isEnableToRetest) {

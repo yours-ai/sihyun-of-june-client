@@ -150,7 +150,7 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                   backgroundColor: MaterialStateProperty.all(
                     state.status != QueryStatus.loading
                         ? ColorConstants.background
-                        : ColorConstants.lightGray,
+                        : ColorConstants.veryLightGray,
                   ),
                 ),
                 onPressed: () {

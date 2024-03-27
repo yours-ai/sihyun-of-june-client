@@ -165,7 +165,7 @@ class DecideAssignmentMethodScreenState
                             '100P',
                             style: TextStyle(
                               fontSize: 14,
-                              color: ColorConstants.lightGray.withOpacity(0.5),
+                              color: ColorConstants.veryLightGray.withOpacity(0.5),
                               fontWeight: FontWeight.bold,
                               height: 1.0,
                             ),
@@ -217,7 +217,7 @@ class DecideAssignmentMethodScreenState
                             '50코인',
                             style: TextStyle(
                               fontSize: 14,
-                              color: ColorConstants.lightGray.withOpacity(0.5),
+                              color: ColorConstants.veryLightGray.withOpacity(0.5),
                               fontWeight: FontWeight.bold,
                               height: 1.0,
                             ),
