@@ -1,5 +1,4 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
@@ -9,9 +8,8 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/mail_list_provider.dart';
-import 'package:project_june_client/services/unique_cachekey_service.dart';
+import 'package:project_june_client/widgets/common/top_navbar.dart';
 import 'package:project_june_client/widgets/mail_list/change_character_overlay_widget.dart';
-import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 import '../../actions/character/models/Character.dart';
@@ -55,9 +53,9 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
 
   void redirectRetest() async {
     final myCharacterList =
-        await fetchMyCharacterQuery().result.then((value) => value.data);
+    await fetchMyCharacterQuery().result.then((value) => value.data);
     final currentCharacterList =
-        myCharacterList!.where((character) => character.is_current == true);
+    myCharacterList!.where((character) => character.is_current == true);
     if (currentCharacterList.isEmpty) return; // current character가 없는 경우
     final currentCharacter = currentCharacterList.first;
     final bool is30DaysFinished = await fetchMeQuery()
@@ -78,7 +76,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
 
   void changeProfileList(List<Character> characterList) {
     final RenderObject? renderBox =
-        _targetKey.currentContext?.findRenderObject();
+    _targetKey.currentContext?.findRenderObject();
     if (renderBox is RenderBox) {
       final Offset offset = renderBox.localToGlobal(Offset.zero);
       overlayEntry = OverlayEntry(
@@ -130,9 +128,9 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                       backgroundColor: MaterialStateProperty.all<Color>(
                         selectedPage == index + 1
                             ? Color(ref
-                                .watch(characterThemeProvider)
-                                .colors
-                                .primary)
+                            .watch(characterThemeProvider)
+                            .colors
+                            .primary)
                             : ColorConstants.lightGray,
                       ),
                     ),
@@ -182,8 +180,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
               return const SizedBox();
             }
             final selectedCharacterList = charactersState.data!.where(
-                (character) =>
-                    character.id == ref.watch(selectedCharacterProvider));
+                    (character) =>
+                character.id == ref.watch(selectedCharacterProvider));
             if (selectedCharacterList.isEmpty) {
               if (charactersState.data!.isNotEmpty) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -194,86 +192,13 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
               return const SizedBox();
             }
             final selectedCharacter = selectedCharacterList.first;
-            final mainImageSrc = characterService
-                .getMainImage(selectedCharacter.character_info.images);
             if (selectedPage == null) {
               initializeSelectedPage(selectedCharacter.date_allocated!.length);
             }
             return TitleLayout(
-              title: Row(
-                children: [
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 10),
-                        Text(
-                          '${selectedCharacter.first_name}이와의\n${mailService.getDDay(selectedCharacter.date_allocated!.last)}',
-                          style: TextStyle(
-                            fontFamily: 'NanumJungHagSaeng',
-                            color: ColorConstants.primary,
-                            fontSize: 21,
-                            height: 15 / 18.5,
-                            letterSpacing: 2,
-                            fontWeight: FontWeightConstants.semiBold,
-                          ),
-                          textAlign: TextAlign.start,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const TitleUnderline(titleText: '받은 편지함'),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: () =>
-                              context.push(RoutePaths.mailListMyCharacter),
-                          onLongPressStart: (_) {
-                            HapticFeedback.heavyImpact();
-                          },
-                          onLongPressEnd: (_) {
-                            HapticFeedback.heavyImpact();
-                            changeProfileList(charactersState.data!);
-                          },
-                          child: Container(
-                            key: _targetKey,
-                            padding: const EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(70.0),
-                              // 원형 테두리 반경
-                              border: Border.all(
-                                color: selectedCharacter.is_image_updated!
-                                    ? Color(ref
-                                        .watch(characterThemeProvider)
-                                        .colors
-                                        .primary)
-                                    : ColorConstants.background,
-                                // 테두리 색상
-                                width: 2.0, // 테두리 두께
-                              ),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: SizedBox(
-                                height: 40,
-                                width: 40,
-                                child: ExtendedImage.network(
-                                  cacheMaxAge: CachingDuration.image,
-                                  cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                                      mainImageSrc.src),
-                                  mainImageSrc.src,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+              title: TopNavbarWidget(
+                selectedCharacter: selectedCharacter,
+                titleText: '받은 편지함',
               ),
               body: QueryBuilder(
                 query: fetchMailListQuery(
@@ -290,7 +215,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                     );
                   }
                   final mailWidgetList =
-                      mailService.makeMailWidgetList(listMailState.data!);
+                  mailService.makeMailWidgetList(listMailState.data!);
                   return Column(
                     children: [
                       if (selectedCharacter.date_allocated!.length > 1)
@@ -360,9 +285,9 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                               await retrieveMyCharacterQuery.refetch();
                               if (!mounted) return;
                               await fetchMailListQuery(
-                                      characterId:
-                                          ref.watch(selectedCharacterProvider)!,
-                                      page: selectedPage!)
+                                  characterId:
+                                  ref.watch(selectedCharacterProvider)!,
+                                  page: selectedPage!)
                                   .refetch();
                               reloadMailController!
                                   .forward()

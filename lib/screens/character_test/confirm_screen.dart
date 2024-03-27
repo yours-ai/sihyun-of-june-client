@@ -75,7 +75,7 @@ class TestConfirmScreenState extends ConsumerState<CharacterTestConfirmScreen> {
                           await characterService.saveSelectedCharacterId(
                               widget.selectedCharacterId);
                           if (!mounted) return;
-                          context.go(RoutePaths.mailListDecideAssignmentMethod);
+                          context.go(RoutePaths.homeDecideAssignmentMethod);
                         });
                       }
                     },

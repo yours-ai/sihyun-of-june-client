@@ -202,10 +202,10 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
           textTheme: TextTheme(
             titleLarge: TextStyle(
               fontFamily: 'NanumJungHagSaeng',
-              fontSize: 39,
+              fontSize: 34,
               height: 38 / 40,
               color: ColorConstants.primary,
-              wordSpacing: -5.5,
+              wordSpacing: -7.5,
               letterSpacing: 1.3,
             ),
             bodySmall: TextStyle(

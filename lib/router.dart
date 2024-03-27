@@ -61,17 +61,37 @@ final router = GoRouter(
       ],
     ),
     GoRoute(
-      path: RoutePaths.home,
-      pageBuilder: (context, state) {
-        return NoTransitionPage(
-          key: state.pageKey,
-          child: NavbarLayout(
-            routePath: state.matchedLocation,
-            child: const HomeScreen(),
+        path: RoutePaths.home,
+        pageBuilder: (context, state) {
+          return NoTransitionPage(
+            key: state.pageKey,
+            child: NavbarLayout(
+              routePath: state.matchedLocation,
+              child: const HomeScreen(),
+            ),
+          );
+        },
+        routes: [
+          GoRoute(
+            path: SubRoutePaths.myCharacter,
+            pageBuilder: (context, state) => CustomTransitionPage(
+              child: const MyCharacterScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              transitionDuration:
+                  const Duration(milliseconds: 300), // 전환 지속 시간 설정
+            ),
           ),
-        );
-      },
-    ),
+          GoRoute(
+            path: SubRoutePaths.decideAssignmentMethod,
+            builder: (context, state) => const DecideAssignmentMethodScreen(),
+          ),
+        ]),
     GoRoute(
       path: RoutePaths.between,
       pageBuilder: (context, state) {
@@ -103,28 +123,9 @@ final router = GoRouter(
       },
       routes: [
         GoRoute(
-          path: SubRoutePaths.myCharacter,
-          pageBuilder: (context, state) => CustomTransitionPage(
-            child: const MyCharacterScreen(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-            transitionDuration:
-                const Duration(milliseconds: 300), // 전환 지속 시간 설정
-          ),
-        ),
-        GoRoute(
           path: '${SubRoutePaths.mailDetail}/:id',
           builder: (context, state) =>
               MailDetailScreen(id: int.tryParse(state.pathParameters['id']!)!),
-        ),
-        GoRoute(
-          path: SubRoutePaths.decideAssignmentMethod,
-          builder: (context, state) => const DecideAssignmentMethodScreen(),
         ),
       ],
     ),

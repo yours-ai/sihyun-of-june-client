@@ -112,7 +112,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       await _saveSelectedCharacterId(myCharacters.data!);
       await _setSelectedCharacterTheme(myCharacters.data!);
       if (!mounted) return;
-      context.go(RoutePaths.mailList);
+      context.go(RoutePaths.home);
     } else {
       final isNewUserRawData = await fetchIsNewUserQuery().result;
       final isNewUser = isNewUserRawData.data!['is_available'];
@@ -121,7 +121,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
         context.go(RoutePaths.newUserAssignmentStarting);
       } else {
         if (!mounted) return;
-        context.go(RoutePaths.mailList);
+        context.go(RoutePaths.home);
       }
     }
   }

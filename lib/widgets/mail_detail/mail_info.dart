@@ -34,7 +34,7 @@ class MailInfoWidget extends ConsumerWidget {
           GestureDetector(
             onTap: () {
               if (!isMe) {
-                context.push(RoutePaths.mailListMyCharacter);
+                context.push(RoutePaths.homeMyCharacter);
               }
             },
             child: ClipRRect(

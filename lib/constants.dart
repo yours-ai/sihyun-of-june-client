@@ -47,13 +47,13 @@ abstract final class RoutePaths {
   static String login = '/login';
   static String loginByPhone = '$login/${SubRoutePaths.byPhone}';
   static String home = '/home';
+  static String homeMyCharacter = '$home/${SubRoutePaths.myCharacter}';
+  static String homeDecideAssignmentMethod =
+      '$home/${SubRoutePaths.decideAssignmentMethod}';
   static String between = '/between';
   static String betweenRelationship = '$between/${SubRoutePaths.relationship}';
   static String mailList = '/mails';
-  static String mailListMyCharacter = '$mailList/${SubRoutePaths.myCharacter}';
   static String mailListMailDetail = '$mailList/${SubRoutePaths.mailDetail}';
-  static String mailListDecideAssignmentMethod =
-      '$mailList/${SubRoutePaths.decideAssignmentMethod}';
   static String notificationList = '/notifications';
   static String all = '/all';
   static String allMyPoint = '$all/${SubRoutePaths.myPoint}';
