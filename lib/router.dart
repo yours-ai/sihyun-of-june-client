@@ -8,6 +8,8 @@ import 'package:project_june_client/screens/all_tab/point_change_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_log_screen.dart';
 import 'package:project_june_client/screens/all_tab/share_screen.dart';
 import 'package:project_june_client/screens/assignment/assignment_screen.dart';
+import 'package:project_june_client/screens/between/between_screen.dart';
+import 'package:project_june_client/screens/home/home_screen.dart';
 import 'package:project_june_client/screens/mail/decide_method_screen.dart';
 import 'package:project_june_client/screens/assignment/new_user_assignment_starting_screen.dart';
 import 'package:project_june_client/screens/character_selection/deciding_screen.dart';
@@ -58,6 +60,30 @@ final router = GoRouter(
       ],
     ),
     GoRoute(
+      path: RoutePaths.home,
+      pageBuilder: (context, state) {
+        return NoTransitionPage(
+          key: state.pageKey,
+          child: NavbarLayout(
+            routePath: state.matchedLocation,
+            child: const HomeScreen(),
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.between,
+      pageBuilder: (context, state) {
+        return NoTransitionPage(
+          key: state.pageKey,
+          child: NavbarLayout(
+            routePath: state.matchedLocation,
+            child: const BetweenScreen(),
+          ),
+        );
+      },
+    ),
+    GoRoute(
       path: RoutePaths.mailList,
       pageBuilder: (context, state) {
         return NoTransitionPage(
@@ -97,15 +123,9 @@ final router = GoRouter(
     ),
     GoRoute(
       path: RoutePaths.notificationList,
-      pageBuilder: (context, state) {
+      builder: (context, state) {
         final redirectLink = state.extra as String?;
-        return NoTransitionPage(
-          key: state.pageKey,
-          child: NavbarLayout(
-            routePath: state.matchedLocation,
-            child: NotificationListScreen(redirectLink),
-          ),
-        );
+        return NotificationListScreen(redirectLink);
       },
     ),
     GoRoute(
