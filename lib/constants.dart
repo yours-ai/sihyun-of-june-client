@@ -48,6 +48,7 @@ abstract final class RoutePaths {
   static String loginByPhone = '$login/${SubRoutePaths.byPhone}';
   static String home = '/home';
   static String between = '/between';
+  static String betweenRelationship = '$between/${SubRoutePaths.relationship}';
   static String mailList = '/mails';
   static String mailListMyCharacter = '$mailList/${SubRoutePaths.myCharacter}';
   static String mailListMailDetail = '$mailList/${SubRoutePaths.mailDetail}';
@@ -98,6 +99,7 @@ abstract final class SubRoutePaths {
   static String decideAssignmentMethod = 'decide-assignment-method';
   static String extend = 'extend';
   static String confirm = 'confirm';
+  static String relationship = 'relationship';
 }
 
 abstract final class Urls {

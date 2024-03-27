@@ -3,12 +3,12 @@ import 'package:project_june_client/constants.dart';
 
 class NotificationIconWidget extends StatelessWidget {
   final bool hasUnread;
-  final Widget svg;
+  final Widget icon;
 
   const NotificationIconWidget({
     super.key,
     required this.hasUnread,
-    required this.svg,
+    required this.icon,
   });
 
   @override
@@ -19,15 +19,15 @@ class NotificationIconWidget extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: svg,
+            child: icon,
           ),
           if (hasUnread)
             Positioned(
-              top: 3,
+              top: 0,
               right: 5,
               child: Container(
-                height: 7,
-                width: 7,
+                height: 10,
+                width: 10,
                 decoration: BoxDecoration(
                   color: ColorConstants.alert,
                   borderRadius: BorderRadius.circular(5),

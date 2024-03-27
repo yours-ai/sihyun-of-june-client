@@ -32,6 +32,7 @@ import 'package:project_june_client/screens/character_test/test_screen.dart';
 import 'package:project_june_client/screens/all_tab/withdraw_screen.dart';
 import 'actions/character/models/CharacterTheme.dart';
 import 'constants.dart';
+import 'screens/between/relationship_screen.dart';
 import 'screens/login/landing_screen.dart';
 import 'screens/login/login_screen.dart';
 import 'widgets/common/navbar_layout.dart';
@@ -82,6 +83,12 @@ final router = GoRouter(
           ),
         );
       },
+      routes: [
+        GoRoute(
+          path: SubRoutePaths.relationship,
+          builder: (context, state) => const RelationshipScreen(),
+        ),
+      ],
     ),
     GoRoute(
       path: RoutePaths.mailList,

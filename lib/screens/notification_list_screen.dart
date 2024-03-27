@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
@@ -44,25 +45,43 @@ class _NotificationListScreenState extends State<NotificationListScreen>
   @override
   Widget build(context) {
     final notificationQuery = fetchNotificationListQuery();
-    return QueryBuilder(
+    return Scaffold(
+      body: QueryBuilder(
         query: notificationQuery,
         builder: (context, state) {
           if (state.data == null) {
             return const SizedBox.shrink();
           }
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (state.data!.isNotEmpty) {
-              setState(() {
-                isAllRead =
-                    state.data!.every((notification) => notification.is_read!);
-              });
-            }
-          });
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) {
+              if (state.data!.isNotEmpty) {
+                setState(() {
+                  isAllRead = state.data!
+                      .every((notification) => notification.is_read!);
+                });
+              }
+            },
+          );
           return SafeArea(
             child: TitleLayout(
               title: Row(
                 children: [
-                  const Expanded(flex: 1, child: SizedBox()),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton(
+                          onPressed: () => context.pop(),
+                          icon: Icon(
+                            PhosphorIcons.arrow_left,
+                            color: ColorConstants.primary,
+                            size: 32,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   const TitleUnderline(
                     titleText: '알림',
                   ),
@@ -82,19 +101,32 @@ class _NotificationListScreenState extends State<NotificationListScreen>
                               );
                             },
                           ),
-                          builder: (context, state, mutate) => IconButton(
+                          builder: (context, state, mutate) => TextButton(
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 5,
+                                vertical: 2,
+                              ),
+                              minimumSize: Size.zero,
+                              backgroundColor: isAllRead
+                                  ? ColorConstants.veryLightGray
+                                  : ColorConstants.lightGray,
+                            ),
                             onPressed: () {
                               if (isAllRead) {
                                 return;
                               }
                               mutate(null);
                             },
-                            icon: Icon(
-                              PhosphorIcons.list_checks,
-                              color: isAllRead
-                                  ? ColorConstants.neutral
-                                  : ColorConstants.primary,
-                              size: 32,
+                            child: Text(
+                              '모두 읽음',
+                              style: TextStyle(
+                                color: isAllRead
+                                    ? ColorConstants.neutral
+                                    : ColorConstants.primary,
+                                fontSize: 12,
+                                fontWeight: FontWeightConstants.semiBold,
+                              ),
                             ),
                           ),
                         ),
@@ -143,6 +175,8 @@ class _NotificationListScreenState extends State<NotificationListScreen>
                     ),
             ),
           );
-        });
+        },
+      ),
+    );
   }
 }
