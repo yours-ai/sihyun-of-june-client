@@ -135,7 +135,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                           ),
                         ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
                         child: Text(
-                            '${selectedCharacter.is_image_updated! ? '새 ' : ''}프로필 보기',
+                            '${selectedCharacter.is_image_updated! ? '새로운 ' : ''}사진 확인하기',
                             style: TextStyle(
                                 color: selectedCharacter.is_image_updated!
                                     ? Color(ref

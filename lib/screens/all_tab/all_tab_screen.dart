@@ -132,7 +132,7 @@ class AllTabScreenState extends State<AllTabScreen>
       child: TitleLayout(
         title: const Center(
           child: TitleUnderline(
-            titleText: '전체',
+            titleText: '설정',
           ),
         ),
         body: RefreshIndicator.adaptive(
