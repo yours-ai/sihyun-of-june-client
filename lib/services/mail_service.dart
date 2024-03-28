@@ -1,9 +1,11 @@
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/mails/models/Mail.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
+import 'package:project_june_client/screens/mail/mail_detail_screen.dart';
 import 'package:project_june_client/widgets/mail_list/mail_widget.dart';
 
 extension TimeOfDayExtension on TimeOfDay {
@@ -183,5 +185,24 @@ class MailService {
     List<Widget> emptyCellsForWeekDay =
         getEmptyCells(firstMailDate); //첫 번째 날짜의 요일에 따라 빈 칸을 채움
     return emptyCellsForWeekDay + modifiedWidgetList;
+  }
+
+  UserStateInMail checkUserStateInMail(Mail mail, Character character) {
+    if (mail.replies!.isNotEmpty) {
+      return UserStateInMail.replied;
+    }
+    final recentAssignedAt = character.date_allocated!.last;
+    final isRecentCharacterMail = mail.available_at.isAfter(
+      recentAssignedAt,
+    );
+    if (isRecentCharacterMail) {
+      if (mail.replies!.isEmpty && mail.is_latest) {
+        return UserStateInMail.canReply;
+      } else {
+        return UserStateInMail.cannotReplyCurrentMonth;
+      }
+    } else {
+      return UserStateInMail.cannotReplyPastMonth;
+    }
   }
 }

@@ -1,14 +1,23 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 import 'package:project_june_client/widgets/mail_detail/character_mail.dart';
-import 'package:project_june_client/widgets/mail_detail/reply.dart';
+import 'package:project_june_client/widgets/mail_detail/replied.dart';
 import 'package:project_june_client/widgets/mail_detail/reply_form.dart';
 
 import '../../actions/mails/queries.dart';
+
+enum UserStateInMail {
+  canReply,
+  replied,
+  cannotReplyCurrentMonth,
+  cannotReplyPastMonth,
+}
 
 class MailDetailScreen extends StatefulWidget {
   final int id;
@@ -91,12 +100,18 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
           return const Scaffold();
         }
         return QueryBuilder(
-          query: fetchCharacterByIdQuery(id: mailState.data!.by),
-          builder: (context, state) {
-            if (state.data == null) {
+          query: fetchMyCharacterQuery(),
+          builder: (context, characterState) {
+            if (characterState.data == null) {
               return const SizedBox.shrink();
             }
-            final characterInMail = state.data!;
+            final Character characterInMail = characterState.data!
+                .firstWhere((character) => character.id == mailState.data!.by);
+            final UserStateInMail userStateInMail =
+                mailService.checkUserStateInMail(
+              mailState.data!,
+              characterInMail,
+            );
             return Scaffold(
               resizeToAvoidBottomInset: true,
               appBar: const BackAppbar(),
@@ -119,14 +134,13 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                             characterInMail: characterInMail,
                           ),
                         ),
-                        if (mailState.data!.replies!.isNotEmpty) ...[
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 30),
-                            height: 1,
-                            color: ColorConstants.lightGray,
-                            child: const DottedUnderline(0),
-                          ),
-                          ReplyWidget(
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 30),
+                          height: 1,
+                          child: const DottedUnderline(0),
+                        ),
+                        if (userStateInMail == UserStateInMail.replied) ...[
+                          RepliedWidget(
                             reply: mailState.data!.replies!.first,
                             userName: mailState.data!.to_first_name,
                             characterName: characterInMail.first_name,
@@ -135,14 +149,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                                 characterInMail.theme.colors.primary,
                           )
                         ],
-                        if (mailState.data!.replies!.isEmpty &&
-                            mailState.data!.is_latest) ...[
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 30),
-                            height: 1,
-                            color: ColorConstants.lightGray,
-                            child: const DottedUnderline(0),
-                          ),
+                        if (userStateInMail == UserStateInMail.canReply) ...[
                           ReplyFormWidget(
                             mail: mailState.data!,
                             primaryColorInMail:
@@ -153,17 +160,27 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                             formKey: _formKey,
                           )
                         ],
-                        if (mailState.data!.replies!.isEmpty &&
-                            !mailState.data!.is_latest) ...[
-                          Container(
-                            margin: const EdgeInsets.only(top: 30, bottom: 45),
-                            height: 1,
-                            color: ColorConstants.lightGray,
-                            child: const DottedUnderline(0),
-                          ),
+                        if (userStateInMail ==
+                            UserStateInMail.cannotReplyCurrentMonth) ...[
                           Center(
                             child: Text(
                               '답장 가능한 시간이 지났어요.🥲\n최근 편지에만 답장이 가능해요.',
+                              style: TextStyle(
+                                height: 1.5,
+                                fontSize: 16,
+                                color: ColorConstants.neutral,
+                                fontWeight: FontWeightConstants.semiBold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(height: 40),
+                        ],
+                        if (userStateInMail ==
+                            UserStateInMail.cannotReplyPastMonth) ...[
+                          Center(
+                            child: Text(
+                              '지난 달에는 답장이 불가능해요 🥲\n이번 달 편지에만 답장이 가능해요.',
                               style: TextStyle(
                                 height: 1.5,
                                 fontSize: 16,
