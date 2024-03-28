@@ -8,7 +8,7 @@ import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
-import 'package:project_june_client/widgets/common/notification_icon.dart';
+import 'package:project_june_client/widgets/common/unread_dot.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 
 class TopNavbarWidget extends StatelessWidget {
@@ -68,37 +68,34 @@ class TopNavbarWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: QueryBuilder(
-                      query: fetchNotificationListQuery(),
-                      builder: (context, notificationState) {
-                        late bool hasUnreadNotification;
-                        if (notificationState.data == null) {
-                          hasUnreadNotification = false;
-                          return const SizedBox();
-                        }
-                        hasUnreadNotification = notificationState.data!
-                            .any((notification) => !notification.is_read!);
-                        return NotificationIconWidget(
-                          icon: Icon(
-                            PhosphorIcons.bell_simple_fill,
-                            size: 30,
-                            color: ColorConstants.gray,
-                          ),
-                          hasUnread: hasUnreadNotification,
-                        );
-                      }),
+                    query: fetchNotificationListQuery(),
+                    builder: (context, notificationState) {
+                      late bool hasUnreadNotification;
+                      if (notificationState.data == null) {
+                        hasUnreadNotification = false;
+                        return const SizedBox();
+                      }
+                      hasUnreadNotification = notificationState.data!
+                          .any((notification) => !notification.is_read!);
+                      return UnreadDotContainer(
+                        hasUnread: hasUnreadNotification,
+                        child: Icon(
+                          PhosphorIcons.bell_simple_fill,
+                          size: 30,
+                          color: ColorConstants.gray,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
               GestureDetector(
                 onTap: () => context.push(RoutePaths.homeMyCharacter),
-                child: Container(
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(35.0),
-                    border: Border.all(
-                      color: ColorConstants.background,
-                      width: 2.0,
-                    ),
-                  ),
+                child: UnreadDotContainer(
+                  hasUnread: selectedCharacter.is_image_updated!,
+                  dotRightPosition: -3,
+                  boxWidth: 30,
+                  boxHeight: 30,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: SizedBox(

@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
+import 'package:project_june_client/widgets/common/unread_dot.dart';
 
 import '../constants.dart';
 import '../providers/character_provider.dart';
@@ -66,6 +67,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                 (selectedCharacter != null && mainImageSrc != null)
                     ? MainAxisAlignment.spaceEvenly
                     : MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (selectedCharacter != null && mainImageSrc != null)
                 Column(
@@ -82,19 +84,12 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                           _showMultiCharacterModal(state.data!);
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(1.5), // 내부 패딩
+                          padding: const EdgeInsets.all(1.5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(70.0),
-                            // 원형 테두리 반경
                             border: Border.all(
-                              color: selectedCharacter.is_image_updated!
-                                  ? Color(ref
-                                      .watch(characterThemeProvider)
-                                      .colors
-                                      .primary)
-                                  : ColorConstants.background,
-                              // 테두리 색상
-                              width: 4.0, // 테두리 두께
+                              color: ColorConstants.background,
+                              width: 4.0,
                             ),
                           ),
                           child: ClipRRect(
@@ -119,31 +114,44 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                       onTap: () {
                         context.push(RoutePaths.homeMyCharacter);
                       },
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: selectedCharacter.is_image_updated!
-                                  ? Color(ref
-                                      .watch(characterThemeProvider)
-                                      .colors
-                                      .primary)
-                                  : ColorConstants.gray,
-                              width: 1.0,
-                            ),
-                          ),
-                        ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
-                        child: Text(
-                            '${selectedCharacter.is_image_updated! ? '새로운 ' : ''}사진 확인하기',
-                            style: TextStyle(
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: selectedCharacter.is_image_updated!
+                                      ? Color(ref
+                                          .watch(characterThemeProvider)
+                                          .colors
+                                          .primary)
+                                      : ColorConstants.gray,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
+                            child: Text(
+                              '${selectedCharacter.is_image_updated! ? '새로운 ' : ''}사진 확인하기',
+                              style: TextStyle(
                                 color: selectedCharacter.is_image_updated!
                                     ? Color(ref
                                         .watch(characterThemeProvider)
                                         .colors
                                         .primary)
                                     : ColorConstants.gray,
-                                height: 1.0)),
+                                height: 1.0,
+                              ),
+                            ),
+                          ),
+                          if (selectedCharacter.is_image_updated!)
+                            const UnreadDotWidget(
+                              dotTopPosition: 0,
+                              dotRightPosition: -10,
+                              dotRadius: 5,
+                            )
+                        ],
                       ),
                     ),
                   ],
