@@ -58,8 +58,11 @@ class MailWidget extends ConsumerWidget {
                   Text(
                     mailService.getMailReceiveDateStr(
                         mail!.available_at, (mailNumber!) % 30 == 0),
-                    style:
-                        const TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
+                    textScaler: TextScaler.noScaling,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontFamily: 'GowunDodum',
+                    ),
                   )
                 ],
               ),
@@ -79,8 +82,11 @@ class MailWidget extends ConsumerWidget {
                   mailService.getMailReceiveDateStr(
                       firstMailDate!.add(Duration(days: mailNumber!)),
                       (mailNumber!) % 30 == 0),
-                  style:
-                      const TextStyle(fontSize: 11, fontFamily: 'GowunDodum'),
+                  textScaler: TextScaler.noScaling,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontFamily: 'GowunDodum',
+                  ),
                 ),
               ],
             ),

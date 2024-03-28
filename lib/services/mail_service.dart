@@ -78,6 +78,7 @@ class MailService {
           Expanded(
             child: Text(
               day,
+              textScaler: TextScaler.noScaling,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: ColorConstants.gray,
