@@ -5,14 +5,14 @@ import 'package:project_june_client/widgets/mail_detail/character_mail.dart';
 
 import 'mail_info.dart';
 
-class ReplyWidget extends ConsumerWidget {
+class RepliedWidget extends ConsumerWidget {
   final String characterName;
   final String userName;
   final Reply reply;
   final String? toImage;
   final int primaryColorInMail;
 
-  const ReplyWidget({
+  const RepliedWidget({
     Key? key,
     required this.reply,
     required this.characterName,
