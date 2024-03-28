@@ -137,7 +137,6 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                         Container(
                           margin: const EdgeInsets.symmetric(vertical: 30),
                           height: 1,
-                          color: ColorConstants.veryLightGray,
                           child: const DottedUnderline(0),
                         ),
                         if (userStateInMail == UserStateInMail.replied) ...[
