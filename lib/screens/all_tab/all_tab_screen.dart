@@ -64,12 +64,11 @@ class AllTabScreenState extends State<AllTabScreen>
           title: '정말 로그아웃하시겠어요?',
           choiceColumn: ModalChoiceWidget(
             submitText: '네',
-            onSubmit: () {
-              logout();
-              context.go(RoutePaths.login);
+            onSubmit: () async {
+              await logout().then((_) => context.go(RoutePaths.login));
             },
             cancelText: '아니요',
-            onCancel: () => context.pop(),
+            onCancel: () async => context.pop(),
           ),
         );
       },
@@ -112,12 +111,11 @@ class AllTabScreenState extends State<AllTabScreen>
           ),
           choiceColumn: ModalChoiceWidget(
             submitText: '네',
-            onSubmit: () {
+            onSubmit: () async {
               context.push(RoutePaths.allWithdraw);
-              context.pop();
             },
             cancelText: '아니요',
-            onCancel: () => context.pop(),
+            onCancel: () async => context.pop(),
           ),
         );
       },
@@ -224,8 +222,7 @@ class AllTabScreenState extends State<AllTabScreen>
                 const MenuTitleWidget(title: '내 정보'),
                 MenuWidget(
                   title: '이름 변경하기',
-                  onPressed: () =>
-                      context.push(RoutePaths.allChangeName),
+                  onPressed: () => context.push(RoutePaths.allChangeName),
                 ),
                 MenuWidget(
                   title: '로그아웃',

@@ -1,4 +1,4 @@
-import 'package:cached_query_flutter/cached_query_flutter.dart';
+import 'package:async_button_builder/async_button_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/constants.dart';
@@ -6,9 +6,8 @@ import 'package:project_june_client/providers/character_provider.dart';
 
 class ModalChoiceWidget extends ConsumerWidget {
   final String submitText, cancelText;
-  final VoidCallback onSubmit, onCancel;
+  final Future<void> Function() onSubmit, onCancel;
   final String? submitSuffix;
-  final QueryStatus? mutationStatus;
   final bool isDefaultButton;
 
   const ModalChoiceWidget({
@@ -18,7 +17,6 @@ class ModalChoiceWidget extends ConsumerWidget {
     required this.onSubmit,
     required this.onCancel,
     this.submitSuffix,
-    this.mutationStatus,
     this.isDefaultButton = false,
   });
 
@@ -27,78 +25,92 @@ class ModalChoiceWidget extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        OutlinedButton(
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all(ColorConstants.background),
-          ),
-          onPressed: () {
-            if (mutationStatus == null ||
-                mutationStatus != QueryStatus.loading) {
-              onCancel();
-            }
-          },
-          child: Text(
-            cancelText,
-            style: TextStyle(
-              fontSize: 16,
-              color: ColorConstants.gray,
-              fontWeight: FontWeightConstants.semiBold,
-              height: 1.0,
-            ),
-          ),
-        ),
+        AsyncButtonBuilder(
+            onPressed: onCancel,
+            builder: (context, child, callback, buttonState) {
+              return OutlinedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(ColorConstants.background),
+                  ),
+                  onPressed: callback,
+                  child: child);
+            },
+            child: Text(
+              cancelText,
+              style: TextStyle(
+                fontSize: 16,
+                color: ColorConstants.gray,
+                fontWeight: FontWeightConstants.semiBold,
+                height: 1.0,
+              ),
+            )),
         const SizedBox(
           height: 13,
         ),
-        FilledButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(mutationStatus == null ||
-                    mutationStatus != QueryStatus.loading
-                ? isDefaultButton
-                    ? ColorConstants.pink
-                    : Color(ref.watch(characterThemeProvider).colors.primary)
-                : isDefaultButton
-                    ? Color(ColorTheme.defaultTheme.colors.secondary)
-                    : Color(
-                        ref.watch(characterThemeProvider).colors.secondary)),
-          ),
-          onPressed: () {
-            if (mutationStatus == null ||
-                mutationStatus != QueryStatus.loading) {
-              onSubmit();
-            }
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                submitText,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeightConstants.semiBold,
-                  height: 1.0,
+        AsyncButtonBuilder(
+          onPressed: onSubmit,
+          builder: (context, child, callback, buttonState) {
+            return FilledButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                    isDefaultButton
+                        ? Color(ColorTheme.defaultTheme.colors.primary)
+                        : Color(
+                            ref.watch(characterThemeProvider).colors.primary),
+                  ),
                 ),
-              ),
-              submitSuffix != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: 6.0),
-                      child: Text(
-                        submitSuffix!,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: ColorConstants.veryLightGray.withOpacity(0.5),
-                          fontWeight: FontWeight.bold,
-                          height: 1.0,
-                        ),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            ],
-          ),
+                onPressed: callback,
+                child: child);
+          },
+          child: submitSuffix == null
+              ? Text(
+                  submitText,
+                  style: modalTextStyle,
+                )
+              : TextWithSuffix(
+                  buttonText: submitText,
+                  suffixText: submitSuffix!,
+                ),
         ),
       ],
     );
   }
 }
+
+class TextWithSuffix extends Row {
+  TextWithSuffix({
+    super.key,
+    required String buttonText,
+    required String suffixText,
+    TextStyle? textStyle,
+    TextStyle? suffixStyle,
+  }) : super(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              buttonText,
+              style: modalTextStyle,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 6.0),
+              child: Text(
+                suffixText,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: ColorConstants.veryLightGray.withOpacity(0.5),
+                  fontWeight: FontWeight.bold,
+                  height: 1.0,
+                ),
+              ),
+            )
+          ],
+        );
+}
+
+final modalTextStyle = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeightConstants.semiBold,
+  height: 1.0,
+);

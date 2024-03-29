@@ -22,7 +22,7 @@ class UpdateWidget extends ConsumerWidget {
         submitText: '업데이트 하기',
         onSubmit: () => launchUrl(Uri.parse(Urls.appstore)),
         cancelText: '나중에 할게요',
-        onCancel: () => context.pop(),
+        onCancel: () async => context.pop(),
       ),
     );
   }

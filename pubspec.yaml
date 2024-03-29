@@ -58,6 +58,7 @@ dependencies:
   app_tracking_transparency: ^2.0.4
   animated_text_kit: ^4.2.2
   http: ^1.2.0
+  async_button_builder: ^3.0.0+1
 
 dev_dependencies:
   flutter_test:

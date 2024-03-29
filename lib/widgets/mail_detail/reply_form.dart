@@ -101,27 +101,36 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                     description: '답장을 보내면 수정이 불가능해요.🥲'),
                 choiceColumn: ModalChoiceWidget(
                   submitText: '네',
-                  onSubmit: () {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    mutate(getReplyDTO()).then((_) {
-                      router.pop();
-                      if (ref.watch(mailPageProvider) != null) {
-                        fetchMailListQuery(
-                                characterId: widget.characterId,
-                                page: ref.watch(mailPageProvider)!)
-                            .refetch();
-                      }
-                      requestRandomlyAppReview(widget.mail.is_first_reply);
+                  onSubmit: () async {
+                    if (!isLoading) {
                       setState(() {
-                        isLoading = false;
+                        isLoading = true;
                       });
-                    });
+                      mutate(getReplyDTO()).then((_) {
+                        router.pop();
+                        if (ref.watch(mailPageProvider) != null) {
+                          fetchMailListQuery(
+                                  characterId: widget.characterId,
+                                  page: ref.watch(mailPageProvider)!)
+                              .refetch();
+                        }
+                        requestRandomlyAppReview(widget.mail.is_first_reply);
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
+                    } else {
+                      await Future.delayed(const Duration(seconds: 5));
+                    }
                   },
                   cancelText: '아니요',
-                  onCancel: () => context.pop(),
-                  mutationStatus: isLoading ? QueryStatus.loading : null,
+                  onCancel: () async {
+                    if (!isLoading) {
+                      context.pop();
+                    } else {
+                      await Future.delayed(const Duration(seconds: 5));
+                    }
+                  },
                 ),
               ),
             ),

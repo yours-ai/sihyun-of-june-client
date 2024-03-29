@@ -1,3 +1,4 @@
+import 'package:async_button_builder/async_button_builder.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,19 +12,12 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../actions/auth/actions.dart';
 import '../../constants.dart';
 
-class GuideTabWidget extends StatefulWidget {
+class GuideTabWidget extends StatelessWidget {
   const GuideTabWidget(
       {super.key, required this.onWithdraw, required this.dto});
 
   final void Function() onWithdraw;
   final QuitReasonDTO dto;
-
-  @override
-  _GuideTabWidgetState createState() => _GuideTabWidgetState();
-}
-
-class _GuideTabWidgetState extends State<GuideTabWidget> {
-  bool isEnableToClick = true;
 
   @override
   Widget build(BuildContext context) {
@@ -124,17 +118,7 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
           ),
           actions: MutationBuilder(
             mutation: withdrawUserMutation(
-              onSuccess: (res, arg) async {
-                widget.onWithdraw();
-                await Future.delayed(const Duration(seconds: 3));
-                await logout();
-                if (!mounted) return;
-                context.go(RoutePaths.login);
-              },
               onError: (res, arg, error) {
-                setState(() {
-                  isEnableToClick = true;
-                });
                 scaffoldMessengerKey.currentState?.showSnackBar(
                   const SnackBar(
                     content: Text(
@@ -145,21 +129,13 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
               },
             ),
             builder: (context, state, mutate) {
-              return OutlinedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    state.status != QueryStatus.loading
-                        ? ColorConstants.background
-                        : ColorConstants.veryLightGray,
-                  ),
-                ),
-                onPressed: () {
-                  if (isEnableToClick) {
-                    setState(() {
-                      isEnableToClick = false;
-                    });
-                    mutate(widget.dto);
-                  }
+              return AsyncButtonBuilder(
+                onPressed: () async {
+                  await mutate(dto);
+                  onWithdraw();
+                  await Future.delayed(const Duration(seconds: 3));
+                  await logout();
+                  context.go(RoutePaths.login);
                 },
                 child: Text(
                   '탈퇴하기',
@@ -168,6 +144,17 @@ class _GuideTabWidgetState extends State<GuideTabWidget> {
                     color: ColorConstants.gray,
                   ),
                 ),
+                builder: (context, child, callback, buttonState) {
+                  return OutlinedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        ColorConstants.background,
+                      ),
+                    ),
+                    onPressed: callback,
+                    child: child,
+                  );
+                },
               );
             },
           ),

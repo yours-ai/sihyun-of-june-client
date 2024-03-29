@@ -29,8 +29,8 @@ class RetestModalWidget extends ConsumerWidget {
           ? ModalChoiceWidget(
               submitText: '네',
               cancelText: '아니요',
-              onSubmit: () => context.go(RoutePaths.assignment),
-              onCancel: () => context.pop(),
+              onSubmit: () async => context.go(RoutePaths.assignment),
+              onCancel: () async => context.pop(),
             )
           : FilledButton(
               onPressed: () => context.pop(),

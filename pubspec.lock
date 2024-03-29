@@ -97,6 +97,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  async_button_builder:
+    dependency: "direct main"
+    description:
+      name: async_button_builder
+      sha256: "51221ec05e48b14c2c346071e2fb968207f6120cc9fe5d727b251987bbafe869"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0+1"
   boolean_selector:
     dependency: transitive
     description:
@@ -664,6 +672,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  freezed_annotation:
+    dependency: transitive
+    description:
+      name: freezed_annotation
+      sha256: c3fd9336eb55a38cc1bbd79ab17573113a8deccd0ecbbf926cca3c62803b5c2d
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.1"
   frontend_server_client:
     dependency: transitive
     description:

@@ -1,3 +1,4 @@
+import 'package:async_button_builder/async_button_builder.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -99,57 +100,76 @@ class _NumberInputWidgetState extends State<NumberInputWidget> {
                       style: TextStyle(
                         fontSize: 17,
                         height: 1.2,
-                        color: widget.isSubmitted ? ColorConstants.neutral : ColorConstants.primary,
+                        color: widget.isSubmitted
+                            ? ColorConstants.neutral
+                            : ColorConstants.primary,
                       ),
                     ),
                   ),
                   const SizedBox(width: 10.0),
                   widget.isSubmitted == false
-                      ? FilledButton(
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(ColorConstants.pink),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6.0),
-                              ),
-                            ),
-                            padding: MaterialStateProperty.all(
-                              const EdgeInsets.symmetric(
-                                vertical: 14.0,
-                                horizontal: 20.0,
-                              ),
+                      ? AsyncButtonBuilder(
+                          child: const Text(
+                            '인증요청',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              mutate(getValidatedData().phone);
+                              await mutate(getValidatedData().phone);
                             }
                           },
-                          child: const Text('인증요청',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.normal)),
-                        )
-                      : TextButton(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: ColorConstants.gray,
-                                  width: 1.0,
+                          builder: (context, child, callback, buttonState) {
+                            return FilledButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    ColorConstants.pink),
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6.0),
+                                  ),
+                                ),
+                                padding: MaterialStateProperty.all(
+                                  const EdgeInsets.symmetric(
+                                    vertical: 14.0,
+                                    horizontal: 20.0,
+                                  ),
                                 ),
                               ),
-                            ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
-                            child: Text('인증번호 재발송',
-                                style: TextStyle(
-                                    color: ColorConstants.gray, height: 1.0)),
+                              onPressed: callback,
+                              child: child,
+                            );
+                          })
+                      : AsyncButtonBuilder(
+                          child: Text(
+                            '인증번호 재발송',
+                            style: TextStyle(
+                                color: ColorConstants.gray, height: 1.0),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              mutate(getValidatedData().phone);
+                              await mutate(getValidatedData().phone);
                             }
                           },
-                        ),
+                          builder: (context, child, callback, buttonState) {
+                            return TextButton(
+                              onPressed: callback,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: ColorConstants.gray,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                ),
+                                // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
+                                child: child,
+                              ),
+                            );
+                          }),
                 ],
               ),
             ),

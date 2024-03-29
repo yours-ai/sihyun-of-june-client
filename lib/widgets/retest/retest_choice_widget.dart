@@ -33,11 +33,11 @@ class RetestChoiceWidget extends ConsumerWidget {
         choiceColumn: ModalChoiceWidget(
           cancelText: '코인 구매하러 가기',
           submitText: '친구 초대하고 300P 받기',
-          onCancel: () {
+          onCancel: () async {
             context.pop();
             context.push(RoutePaths.allMyCoinCharge);
           },
-          onSubmit: () {
+          onSubmit: () async {
             context.pop();
             context.push(RoutePaths.allShare);
           },
@@ -153,7 +153,7 @@ class RetestChoiceWidget extends ConsumerWidget {
         return ModalChoiceWidget(
           submitText: '좋아요',
           cancelText: '아니요',
-          onSubmit: () {
+          onSubmit: () async {
             switch (purchaseState) {
               case PurchaseState.coin:
                 onRetest('coin');
@@ -169,7 +169,7 @@ class RetestChoiceWidget extends ConsumerWidget {
                 break;
             }
           },
-          onCancel: () {
+          onCancel: () async {
             context.pop();
           },
           submitSuffix: extendCost == null

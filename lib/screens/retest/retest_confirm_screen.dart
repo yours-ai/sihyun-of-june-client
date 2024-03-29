@@ -18,10 +18,10 @@ class RetestConfirmScreen extends ConsumerWidget {
         action: ModalChoiceWidget(
           submitText: '좋아요',
           cancelText: '아니요',
-          onSubmit: () {
+          onSubmit: () async {
             context.go(RoutePaths.assignment);
           },
-          onCancel: () {
+          onCancel: () async {
             context.pop();
           },
         ));

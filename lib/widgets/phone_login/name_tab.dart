@@ -100,7 +100,7 @@ class NameTabWidgetState extends ConsumerState<NameTabWidget> {
               isDefaultButton: true,
               cancelText: '취소하기',
               submitText: '동의하고 시작하기',
-              onCancel: () => context.pop(),
+              onCancel: () async => context.pop(),
               onSubmit: () => mutate(dto),
             ),
           ),

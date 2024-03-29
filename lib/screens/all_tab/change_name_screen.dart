@@ -57,13 +57,13 @@ class ChangeNameScreenState extends ConsumerState<ChangeNameScreen> {
           ),
           builder: (context, state, mutate) => ModalWidget(
             title: '이렇게 불러드릴까요?',
-            description: const ModalDescriptionWidget(description: '이름을 바꾸신 다음 날부터 편지에 적용되어요!'),
+            description: const ModalDescriptionWidget(
+                description: '이름을 바꾸신 다음 날부터 편지에 적용되어요!'),
             choiceColumn: ModalChoiceWidget(
               submitText: '네',
               onSubmit: () => mutate(dto),
               cancelText: '아니요',
-              onCancel: () => context.pop(),
-              mutationStatus: state.status,
+              onCancel: () async => context.pop(),
             ),
           ),
         );
