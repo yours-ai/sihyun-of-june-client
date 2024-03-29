@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:project_june_client/constants.dart';
 
 Widget getSettingIcon(bool isActivated) {
@@ -80,11 +80,15 @@ class NavbarLayout extends StatelessWidget {
               width: 48,
               height: 48,
             ),
-            activeIcon: SvgPicture.asset(
-              'assets/images/navbar/home.svg',
-              width: 48,
-              height: 48,
-              color: ColorConstants.darkGray,
+            activeIcon: IconWithCircle(
+              icon: SvgPicture.asset(
+                'assets/images/navbar/home.svg',
+                width: 48,
+                height: 48,
+                color: ColorConstants.darkGray,
+              ),
+              topPosition: -4,
+              leftPosition: -2,
             ),
             label: '',
           ),
@@ -94,26 +98,67 @@ class NavbarLayout extends StatelessWidget {
               width: 48,
               height: 48,
             ),
-            activeIcon: SvgPicture.asset(
-              'assets/images/navbar/between.svg',
-              width: 48,
-              height: 48,
-              color: ColorConstants.darkGray,
+            activeIcon: IconWithCircle(
+              icon: SvgPicture.asset(
+                'assets/images/navbar/between.svg',
+                width: 48,
+                height: 48,
+                color: ColorConstants.darkGray,
+              ),
+              topPosition: -3,
+              leftPosition: -4,
             ),
             label: '',
           ),
           BottomNavigationBarItem(
             icon: getMailListIcon(false),
-            activeIcon: getMailListIcon(true),
+            activeIcon: IconWithCircle(
+              icon: getMailListIcon(true),
+              topPosition: -7,
+              leftPosition: -7,
+              lottieWidth: 62,
+              lottieHeight: 62,
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
             icon: getSettingIcon(false),
-            activeIcon: getSettingIcon(true),
+            activeIcon: IconWithCircle(
+              icon: getSettingIcon(true),
+              topPosition: -4,
+              leftPosition: -3,
+            ),
             label: '',
           ),
         ],
       ),
     );
   }
+}
+
+class IconWithCircle extends Stack {
+  IconWithCircle(
+      {required Widget icon,
+      required double topPosition,
+      required double leftPosition,
+      double lottieWidth = 54,
+      double lottieHeight = 54,
+      super.key})
+      : super(
+          clipBehavior: Clip.none,
+          children: [
+            icon,
+            Positioned(
+              top: topPosition,
+              left: leftPosition,
+              child: Lottie.asset(
+                'assets/lotties/nav_circle.json',
+                width: lottieWidth,
+                height: lottieHeight,
+                animate: true,
+                repeat: false,
+              ),
+            )
+          ],
+        );
 }
