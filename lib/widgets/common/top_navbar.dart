@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
@@ -56,10 +57,13 @@ class TopNavbarWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(5.0),
                 child: GestureDetector(
                   onTap: () => context.push(RoutePaths.betweenRelationship),
-                  child: Icon(
-                    PhosphorIcons.heart_fill,
-                    size: 30,
-                    color: ColorConstants.gray,
+                  child: SvgPicture.asset(
+                    'assets/images/heart.svg',
+                    width: 32,
+                    height: 32,
+                    theme: SvgTheme(
+                      currentColor: ColorConstants.lightGray,
+                    ),
                   ),
                 ),
               ),
@@ -79,10 +83,13 @@ class TopNavbarWidget extends StatelessWidget {
                           .any((notification) => !notification.is_read!);
                       return UnreadDotContainer(
                         hasUnread: hasUnreadNotification,
-                        child: Icon(
-                          PhosphorIcons.bell_simple_fill,
-                          size: 30,
-                          color: ColorConstants.gray,
+                        child: SvgPicture.asset(
+                          'assets/images/bell.svg',
+                          width: 32,
+                          height: 32,
+                          theme: SvgTheme(
+                            currentColor: ColorConstants.lightGray,
+                          ),
                         ),
                       );
                     },

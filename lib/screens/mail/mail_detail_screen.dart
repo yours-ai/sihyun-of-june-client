@@ -180,7 +180,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
                             UserStateInMail.cannotReplyPastMonth) ...[
                           Center(
                             child: Text(
-                              '지난 달에 편지에는 답장이 불가능해요 🥲\n이번 달 편지에만 답장이 가능해요.',
+                              '지난 달 편지에는 답장이 불가능해요 🥲\n이번 달 편지에만 답장이 가능해요.',
                               style: TextStyle(
                                 height: 1.5,
                                 fontSize: 16,
