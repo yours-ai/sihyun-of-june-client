@@ -123,10 +123,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               border: Border(
                                 bottom: BorderSide(
                                   color: selectedCharacter.is_image_updated!
-                                      ? Color(ref
-                                          .watch(characterThemeProvider)
-                                          .colors
-                                          .primary)
+                                      ? ColorConstants.pink
                                       : ColorConstants.gray,
                                   width: 1.0,
                                 ),
@@ -136,10 +133,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               '${selectedCharacter.is_image_updated! ? '새로운 ' : ''}사진 확인하기',
                               style: TextStyle(
                                 color: selectedCharacter.is_image_updated!
-                                    ? Color(ref
-                                        .watch(characterThemeProvider)
-                                        .colors
-                                        .primary)
+                                    ? ColorConstants.pink
                                     : ColorConstants.gray,
                                 height: 1.0,
                               ),
