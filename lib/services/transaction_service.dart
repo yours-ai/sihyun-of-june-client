@@ -2,11 +2,16 @@ import 'dart:io';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:intl/intl.dart';
+import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/router.dart';
+import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-
+import 'package:async_button_builder/async_button_builder.dart';
 import '../actions/transaction/queries.dart';
 
 enum PurchaseState { coin, point, both, impossible }
@@ -157,5 +162,60 @@ class TransactionService {
 
   String getPurchaseStateText(String userPayment) {
     return userPayment == 'coin' ? '50코인을 사용했어요!' : '100포인트를 사용했어요!';
+  }
+
+  void showChargeForReadMail(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      useRootNavigator: true,
+      builder: (BuildContext context) {
+        return ModalWidget(
+          title: '10일 이후부터는 편지를 읽기 위해서는\n5코인이 필요해요.', //TODO: n일, n코인 동적
+          titleStyle: TextStyle(
+            fontSize: 18,
+            height: 28 / 18,
+            fontWeight: FontWeightConstants.semiBold,
+            letterSpacing: 0.5,
+          ),
+          choiceColumn: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              AsyncButtonBuilder(
+                  child: TextWithSuffix(
+                    buttonText: '오늘의 편지 읽기',
+                    suffixText: '5코인',
+                  ),
+                  onPressed: () async {
+                    await Future.delayed(Duration(seconds: 1))
+                        .then((_) => context.go(RoutePaths.between));
+                  },
+                  builder: (context, child, callback, buttonState) {
+                    return FilledButton(
+                      onPressed: callback,
+                      child: child,
+                    );
+                  }),
+              const SizedBox(
+                height: 13,
+              ),
+              AsyncButtonBuilder(
+                  child: TextWithSuffix(
+                    buttonText: '이달의 편지 모두 읽기',
+                    suffixText: '50코인',
+                  ),
+                  onPressed: () async {
+                    await Future.delayed(Duration(seconds: 1));
+                  },
+                  builder: (context, child, callback, buttonState) {
+                    return FilledButton(
+                      onPressed: callback,
+                      child: child,
+                    );
+                  }),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
