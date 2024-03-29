@@ -2,7 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/widgets/mail_list/empty_mail_list_widget.dart';
+import 'package:project_june_client/widgets/mail_list/empty_character.dart';
 import 'package:project_june_client/widgets/mail_list/mail_list_widget.dart';
 import 'package:project_june_client/widgets/notification/notification_permission_check.dart';
 
@@ -51,7 +51,7 @@ class MailListScreenState extends ConsumerState<MailListScreen> {
         if (hasCharacter!)
           const MailListWidget()
         else
-          const EmptyMailListWidget(),
+          const EmptyCharacterWidget("받은 편지함"),
       ],
     );
   }
