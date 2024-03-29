@@ -104,13 +104,13 @@ class _NotificationListScreenState extends State<NotificationListScreen>
                           builder: (context, state, mutate) => TextButton(
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 5,
-                                vertical: 2,
+                                horizontal: 8,
+                                vertical: 6,
                               ),
                               minimumSize: Size.zero,
                               backgroundColor: isAllRead
-                                  ? ColorConstants.veryLightGray
-                                  : ColorConstants.lightGray,
+                                  ? const Color(0xffF4F4F4)
+                                  : const Color(0xffEEEEEE),
                             ),
                             onPressed: () {
                               if (isAllRead) {
@@ -122,7 +122,7 @@ class _NotificationListScreenState extends State<NotificationListScreen>
                               '모두 읽음',
                               style: TextStyle(
                                 color: isAllRead
-                                    ? ColorConstants.neutral
+                                    ? const Color(0xffBABABA)
                                     : ColorConstants.primary,
                                 fontSize: 12,
                                 fontWeight: FontWeightConstants.semiBold,
