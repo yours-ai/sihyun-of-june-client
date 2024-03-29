@@ -71,7 +71,10 @@ class BetweenScreen extends ConsumerWidget {
                               TextSpan(
                                 text: '아는 사이', //TODO: 무슨 사이인지 동적으로 바꿔야함
                                 style: TextStyle(
-                                  color: ColorConstants.pink,
+                                  color: Color(ref
+                                      .watch(characterThemeProvider)
+                                      .colors
+                                      .primary),
                                 ),
                               ),
                             ],

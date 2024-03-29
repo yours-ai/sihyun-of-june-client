@@ -83,7 +83,10 @@ class RelationshipScreen extends ConsumerWidget {
                             TextSpan(
                               text: '아는 사이', //TODO: 무슨 사이인지 동적으로 바꿔야함
                               style: TextStyle(
-                                color: ColorConstants.pink,
+                                color: Color(ref
+                                    .watch(characterThemeProvider)
+                                    .colors
+                                    .primary),
                               ),
                             ),
                           ],
@@ -127,19 +130,34 @@ class RelationshipScreen extends ConsumerWidget {
                         Text(
                           '아는 사이',
                           style: TextStyle(
-                            color: ColorConstants.gray,
+                            color: Color(ref
+                                .watch(characterThemeProvider)
+                                .colors
+                                .primary),
                             fontFamily: 'Pretendard',
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(width: 5),
-                        ..._buildRelationshipProgress(9, 4),
+                        ..._buildRelationshipProgress(
+                          fullCount: 9,
+                          currentCount: 4,
+                          filledColor: Color(
+                              ref.watch(characterThemeProvider).colors.primary),
+                          emptyColor: Color(ref
+                              .watch(characterThemeProvider)
+                              .colors
+                              .inverse_on_surface),
+                        ),
                         const SizedBox(width: 5),
                         Text(
                           '친한 사이',
                           style: TextStyle(
-                            color: ColorConstants.gray,
+                            color: Color(ref
+                                .watch(characterThemeProvider)
+                                .colors
+                                .primary),
                             fontFamily: 'Pretendard',
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -148,96 +166,71 @@ class RelationshipScreen extends ConsumerWidget {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    Column(
-                      children: [
-                        const SizedBox(height: 30),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 90),
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 30),
+                          Text.rich(
+                            textAlign: TextAlign.center,
+                            TextSpan(
+                              text: '내가 볼때 지금 둘의 사이는 딱 ',
+                              style: relationshipTextStyle,
                               children: [
-                                SizedBox(
-                                  width: 110,
-                                  child: Text.rich(
-                                    textAlign: TextAlign.center,
-                                    TextSpan(
-                                      text: '내가 볼때 지금 둘의 사이는 딱\n',
-                                      style: relationshipTextStyle,
-                                      children: [
-                                        TextSpan(
-                                          text: '아는 사이',
-                                          //TODO: 무슨 사이인지 동적으로 바꿔야함
-                                          style: TextStyle(
-                                            color: ColorConstants.pink,
-                                            decoration:
-                                                TextDecoration.underline,
-                                            decorationColor:
-                                                ColorConstants.pink,
-                                            decorationThickness: 1,
-                                          ),
-                                        ),
-                                        const TextSpan(
-                                          text: '야.',
-                                        ),
-                                      ],
-                                    ),
+                                TextSpan(
+                                  text: '아는 사이',
+                                  //TODO: 무슨 사이인지 동적으로 바꿔야함
+                                  style: TextStyle(
+                                    color: Color(ref
+                                        .watch(characterThemeProvider)
+                                        .colors
+                                        .primary),
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Color(ref
+                                        .watch(characterThemeProvider)
+                                        .colors
+                                        .primary),
+                                    decorationThickness: 1,
                                   ),
                                 ),
-                              ],
-                            ),
-                            const SizedBox(width: 40),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                const SizedBox(height: 45),
-                                SizedBox(
-                                  width: 170,
-                                  child: WordBreakText(
-                                    '학교 다닐 때, 서로 알고는 있지만 졸업하고 나면 다시는 볼 일 없는 그런 친구 있잖아? 그런 사이라고 할 수 있지.',
-                                    style: relationshipTextStyle,
-                                    textAlign: TextAlign.center,
-                                    wrapAlignment: WrapAlignment.center,
-                                  ),
+                                const TextSpan(
+                                  text: '야.',
                                 ),
                               ],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 140,
-                              child: WordBreakText(
-                                '가볍게 서로에 대해 물어보면서 친해지는 건 어때?',
-                                style: relationshipTextStyle,
-                                textAlign: TextAlign.center,
-                                wrapAlignment: WrapAlignment.center,
-                              ),
-                            ),
-                            const SizedBox(width: 90),
-                          ],
-                        ),
-                        const SizedBox(height: 30),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            '어떤 사이가 있는지 궁금하다면?',
-                            style: TextStyle(
-                              color: ColorConstants.mediumGray,
-                              fontFamily: 'Pretendard',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                              decorationColor: ColorConstants.mediumGray,
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 1,
                             ),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 36),
+                          WordBreakText(
+                            '학교 다닐 때, 서로 알고는 있지만 졸업하고 나면 다시는 볼 일 없는 그런 친구 있잖아? 그런 사이라고 할 수 있지.',
+                            style: relationshipTextStyle,
+                            textAlign: TextAlign.center,
+                            wrapAlignment: WrapAlignment.center,
+                          ),
+                          const SizedBox(height: 36),
+                          WordBreakText(
+                            '가볍게 서로에 대해 물어보면서 친해지는 건 어때?',
+                            style: relationshipTextStyle,
+                            textAlign: TextAlign.center,
+                            wrapAlignment: WrapAlignment.center,
+                          ),
+                          const SizedBox(height: 36),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              '어떤 사이가 있는지 궁금하다면?',
+                              style: TextStyle(
+                                color: ColorConstants.mediumGray,
+                                fontFamily: 'Pretendard',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                decorationColor: ColorConstants.mediumGray,
+                                decoration: TextDecoration.underline,
+                                decorationThickness: 1,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -250,15 +243,18 @@ class RelationshipScreen extends ConsumerWidget {
   }
 }
 
-List<Widget> _buildRelationshipProgress(int fullCount, int currentCount) {
+List<Widget> _buildRelationshipProgress({
+  required int fullCount,
+  required int currentCount,
+  required Color filledColor,
+  required Color emptyColor,
+}) {
   final List<Widget> progressList = [];
   for (int i = 0; i < fullCount; i++) {
     progressList.add(
       Icon(
         PhosphorIcons.circle_fill,
-        color: i < currentCount
-            ? ColorConstants.mediumGray
-            : ColorConstants.lightGray,
+        color: i < currentCount ? filledColor : emptyColor,
         size: 16,
       ),
     );
@@ -269,6 +265,7 @@ List<Widget> _buildRelationshipProgress(int fullCount, int currentCount) {
 final relationshipTextStyle = TextStyle(
   color: ColorConstants.primary,
   fontFamily: 'NanumJungHagSaeng',
-  fontSize: 22,
+  fontSize: 28,
   fontWeight: FontWeight.w400,
+  height: 1,
 );
