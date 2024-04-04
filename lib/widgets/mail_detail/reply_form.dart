@@ -5,7 +5,8 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/providers/mail_list_provider.dart';
+import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/router.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
@@ -15,12 +16,11 @@ import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/mail_detail/replied.dart';
 
 import '../../actions/mails/dtos.dart';
-import '../../actions/mails/models/MailInList.dart';
 import '../../actions/mails/queries.dart';
 import '../../constants.dart';
 
 class ReplyFormWidget extends ConsumerStatefulWidget {
-  final Mail mail;
+  final MailInDetail mail;
   final int primaryColorInMail;
   final String characterName;
   final int characterId;
@@ -108,12 +108,8 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                       });
                       mutate(getReplyDTO()).then((_) {
                         router.pop();
-                        if (ref.watch(mailPageProvider) != null) {
-                          fetchMailListQuery(
-                                  characterId: widget.characterId,
-                                  page: ref.watch(mailPageProvider)!)
-                              .refetch();
-                        }
+                        fetchMailListQuery(assignedId: widget.mail.assign)
+                            .refetch();
                         requestRandomlyAppReview(widget.mail.is_first_reply);
                         setState(() {
                           isLoading = false;

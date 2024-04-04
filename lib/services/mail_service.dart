@@ -2,6 +2,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
+import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
 import 'package:project_june_client/actions/mails/models/MailInList.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
@@ -188,7 +189,7 @@ class MailService {
     return emptyCellsForWeekDay + modifiedWidgetList;
   }
 
-  UserStateInMail checkUserStateInMail(Mail mail, Character character) {
+  UserStateInMail checkUserStateInMail(MailInDetail mail, Character character) {
     if (mail.replies!.isNotEmpty) {
       return UserStateInMail.replied;
     }
