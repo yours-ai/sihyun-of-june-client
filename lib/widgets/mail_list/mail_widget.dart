@@ -6,7 +6,7 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
 
-import '../../actions/mails/models/Mail.dart';
+import '../../actions/mails/models/MailInList.dart';
 
 class MailWidget extends ConsumerWidget {
   final Mail? mail;

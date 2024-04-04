@@ -1,23 +1,24 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/mails/actions.dart';
 import 'package:project_june_client/actions/mails/dtos.dart';
+import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
 
-import 'models/Mail.dart';
+import 'models/MailInList.dart';
 
-Query<List<Mail>> fetchMailListQuery(
-    {OnQueryErrorCallback? onError,
-    required int characterId,
-    required int page}) {
-  return Query<List<Mail>>(
-    key: 'character-sent-mail-list/$characterId/$page',
-    queryFn: () => fetchMailList(characterId: characterId, page: page),
+Query<List<MailInList>> fetchMailListQuery({
+  OnQueryErrorCallback? onError,
+  required int assignedId,
+}) {
+  return Query<List<MailInList>>(
+    key: 'character-sent-mail-list/$assignedId',
+    queryFn: () => fetchMailList(assignedId),
     onError: onError,
   );
 }
 
-Query<Mail> fetchMailByIdQuery(
+Query<MailInDetail> fetchMailByIdQuery(
     {OnQueryErrorCallback? onError, required int id}) {
-  return Query<Mail>(
+  return Query<MailInDetail>(
     key: 'character-sent-mail/$id',
     queryFn: () => fetchMailById(id),
     onError: onError,

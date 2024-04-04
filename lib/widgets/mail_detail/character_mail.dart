@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/services.dart';
 
-import '../../actions/mails/models/Mail.dart';
+import '../../actions/mails/models/MailInList.dart';
 import 'mail_info.dart';
 
 const Color characterFontColor = Color(0xff4c4c4c);

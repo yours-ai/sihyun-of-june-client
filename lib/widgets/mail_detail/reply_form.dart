@@ -15,7 +15,7 @@ import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/mail_detail/replied.dart';
 
 import '../../actions/mails/dtos.dart';
-import '../../actions/mails/models/Mail.dart';
+import '../../actions/mails/models/MailInList.dart';
 import '../../actions/mails/queries.dart';
 import '../../constants.dart';
 

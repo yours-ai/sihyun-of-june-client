@@ -1,20 +1,22 @@
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/actions/mails/dtos.dart';
-import 'package:project_june_client/actions/mails/models/Mail.dart';
+import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
+import 'package:project_june_client/actions/mails/models/MailInList.dart';
 
-Future<List<Mail>> fetchMailList(
-    {required int characterId, required int page}) async {
+Future<List<MailInList>> fetchMailList(int assignedId) async {
   final response = await dio.get(
-    '/mail/v3/character-sent-mails?char=$characterId&page=$page',
+    '/mail/v4/character-sent-mails?character_selected_by_user_id=$assignedId',
   );
-  return response.data.map<Mail>((json) => Mail.fromJson(json)).toList();
+  return response.data
+      .map<MailInList>((json) => MailInList.fromJson(json))
+      .toList();
 }
 
-Future<Mail> fetchMailById(int id) async {
+Future<MailInDetail> fetchMailById(int id) async {
   final response = await dio.get(
-    '/mail/v3/character-sent-mails/$id/',
+    '/mail/v4/character-sent-mails/$id/',
   );
-  return Mail.fromJson(response.data);
+  return MailInDetail.fromJson(response.data);
 }
 
 Future<void> replyMail(ReplyMailDTO dto) async {
