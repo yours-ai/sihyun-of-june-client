@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:project_june_client/actions/character/models/AssignedCharacter.dart';
 import 'package:project_june_client/actions/character/models/CharacterInfo.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 
@@ -13,7 +14,7 @@ class Character {
   CharacterInfo character_info;
   CharacterTheme theme;
   bool? is_image_updated;
-  List<DateTime>? date_allocated;
+  List<AssignedCharacter>? assigned_characters;
   bool? is_current;
 
   Character(
@@ -24,7 +25,7 @@ class Character {
       required this.character_info,
       required this.theme,
       this.is_image_updated,
-      this.date_allocated,
+      this.assigned_characters,
       this.is_current});
 
   factory Character.fromJson(Map<String, dynamic> json) =>

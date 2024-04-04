@@ -34,7 +34,7 @@ class TopNavbarWidget extends StatelessWidget {
             children: [
               const SizedBox(width: 10),
               Text(
-                '${selectedCharacter.first_name}이와의\n${mailService.getDDay(selectedCharacter.date_allocated!.last)}',
+                '${selectedCharacter.first_name}이와의\n${mailService.getDDay(selectedCharacter.assigned_characters!.last.first_mail_available_at)}',
                 style: TextStyle(
                   fontFamily: 'NanumJungHagSaeng',
                   color: ColorConstants.primary,

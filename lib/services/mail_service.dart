@@ -192,7 +192,7 @@ class MailService {
     if (mail.replies!.isNotEmpty) {
       return UserStateInMail.replied;
     }
-    final recentAssignedAt = character.date_allocated!.last;
+    final recentAssignedAt = character.assigned_characters!.last.first_mail_available_at;
     final isRecentCharacterMail = mail.available_at.isAfter(
       recentAssignedAt,
     );

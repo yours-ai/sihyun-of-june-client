@@ -193,7 +193,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
             }
             final selectedCharacter = selectedCharacterList.first;
             if (selectedPage == null) {
-              initializeSelectedPage(selectedCharacter.date_allocated!.length);
+              initializeSelectedPage(selectedCharacter.assigned_characters!.length);
             }
             return TitleLayout(
               title: TopNavbarWidget(
@@ -218,10 +218,10 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                   mailService.makeMailWidgetList(listMailState.data!);
                   return Column(
                     children: [
-                      if (selectedCharacter.date_allocated!.length > 1)
+                      if (selectedCharacter.assigned_characters!.length > 1)
                         GestureDetector(
                           onTap: () => showSelectMonthAlert(
-                              selectedCharacter.date_allocated!.length),
+                              selectedCharacter.assigned_characters!.length),
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 20.0),
                             child: Row(

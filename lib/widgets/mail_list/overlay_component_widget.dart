@@ -67,16 +67,15 @@ class OverlayComponentWidget extends ConsumerWidget {
           return;
         }
         if (initializeSelectedPage != null) {
-          initializeSelectedPage!(character!.date_allocated!.length);
+          initializeSelectedPage!(character!.assigned_characters!.length);
         }
         characterService.changeCharacterByTap(ref, character!);
         hideOverlay!();
       }, // 캐릭터 전환 or 추가 배정받기
       child: Container(
         decoration: BoxDecoration(
-          color: isSelected
-              ? ColorConstants.background
-              : ColorConstants.lightGray,
+          color:
+              isSelected ? ColorConstants.background : ColorConstants.lightGray,
           border: Border(
             top: BorderSide(
               width: 1,
@@ -93,7 +92,7 @@ class OverlayComponentWidget extends ConsumerWidget {
               child: Text(
                 character == null
                     ? '새 친구 만나기'
-                    : 'D+${mailService.getMailDateDiff(DateTime.now(), character!.date_allocated!.first) + 1} ${character?.name}',
+                    : 'D+${mailService.getMailDateDiff(DateTime.now(), character!.assigned_characters!.first.first_mail_available_at) + 1} ${character?.name}',
                 style: TextStyle(
                   color: isSelected
                       ? Color(ref.watch(characterThemeProvider).colors.primary)
