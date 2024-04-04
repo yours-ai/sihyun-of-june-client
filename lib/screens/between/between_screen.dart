@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/screens/between/between_widget.dart';
-import 'package:project_june_client/screens/home/home_widget.dart';
 import 'package:project_june_client/widgets/mail_list/empty_character.dart';
 
 class BetweenScreen extends ConsumerStatefulWidget {

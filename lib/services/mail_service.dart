@@ -143,13 +143,13 @@ class MailService {
     await storage.delete(key: 'MAIL_REPLY_$mailId');
   }
 
-  int checkMailNumber(List<Mail> mails, DateTime firstMailDate) {
+  int checkMailNumber(List<MailInList> mails, DateTime firstMailDate) {
     final lastMailDate = mails.first.available_at;
     final totalMailNumber = getMailDateDiff(lastMailDate, firstMailDate) + 1;
     return totalMailNumber;
   }
 
-  List<Widget> makeMailWidgetList(List<Mail> mails) {
+  List<Widget> makeMailWidgetList(List<MailInList> mails) {
     if (mails.isEmpty) {
       return [];
     }

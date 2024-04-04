@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/providers/mail_list_provider.dart';
 import 'package:project_june_client/widgets/common/top_navbar.dart';
 import 'package:project_june_client/widgets/mail_list/change_character_overlay_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
@@ -53,9 +52,9 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
 
   void redirectRetest() async {
     final myCharacterList =
-    await fetchMyCharacterQuery().result.then((value) => value.data);
+        await fetchMyCharacterQuery().result.then((value) => value.data);
     final currentCharacterList =
-    myCharacterList!.where((character) => character.is_current == true);
+        myCharacterList!.where((character) => character.is_current == true);
     if (currentCharacterList.isEmpty) return; // current character가 없는 경우
     final currentCharacter = currentCharacterList.first;
     final bool is30DaysFinished = await fetchMeQuery()
@@ -76,7 +75,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
 
   void changeProfileList(List<Character> characterList) {
     final RenderObject? renderBox =
-    _targetKey.currentContext?.findRenderObject();
+        _targetKey.currentContext?.findRenderObject();
     if (renderBox is RenderBox) {
       final Offset offset = renderBox.localToGlobal(Offset.zero);
       overlayEntry = OverlayEntry(
@@ -128,16 +127,15 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                       backgroundColor: MaterialStateProperty.all<Color>(
                         selectedPage == index + 1
                             ? Color(ref
-                            .watch(characterThemeProvider)
-                            .colors
-                            .primary)
+                                .watch(characterThemeProvider)
+                                .colors
+                                .primary)
                             : ColorConstants.lightGray,
                       ),
                     ),
                     onPressed: () async {
                       setState(() {
                         selectedPage = index + 1;
-                        ref.read(mailPageProvider.notifier).state = index + 1;
                       });
                       context.pop();
                     },
@@ -164,9 +162,6 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
 
   void initializeSelectedPage(int initializedPage) {
     selectedPage = initializedPage;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(mailPageProvider.notifier).state = initializedPage;
-    });
   }
 
   @override
@@ -180,8 +175,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
               return const SizedBox();
             }
             final selectedCharacterList = charactersState.data!.where(
-                    (character) =>
-                character.id == ref.watch(selectedCharacterProvider));
+                (character) =>
+                    character.id == ref.watch(selectedCharacterProvider));
             if (selectedCharacterList.isEmpty) {
               if (charactersState.data!.isNotEmpty) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -193,7 +188,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
             }
             final selectedCharacter = selectedCharacterList.first;
             if (selectedPage == null) {
-              initializeSelectedPage(selectedCharacter.assigned_characters!.length);
+              initializeSelectedPage(
+                  selectedCharacter.assigned_characters!.length);
             }
             return TitleLayout(
               title: TopNavbarWidget(
@@ -202,8 +198,9 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
               ),
               body: QueryBuilder(
                 query: fetchMailListQuery(
-                    characterId: ref.watch(selectedCharacterProvider)!,
-                    page: selectedPage!),
+                    assignedId: selectedCharacter
+                        .assigned_characters![selectedPage! - 1]
+                        .assigned_character_id),
                 builder: (context, listMailState) {
                   if (listMailState.status != QueryStatus.success) {
                     return const Column(
@@ -215,7 +212,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                     );
                   }
                   final mailWidgetList =
-                  mailService.makeMailWidgetList(listMailState.data!);
+                      mailService.makeMailWidgetList(listMailState.data!);
                   return Column(
                     children: [
                       if (selectedCharacter.assigned_characters!.length > 1)
@@ -285,9 +282,10 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                               await retrieveMyCharacterQuery.refetch();
                               if (!mounted) return;
                               await fetchMailListQuery(
-                                  characterId:
-                                  ref.watch(selectedCharacterProvider)!,
-                                  page: selectedPage!)
+                                      assignedId: selectedCharacter
+                                          .assigned_characters![
+                                              selectedPage! - 1]
+                                          .assigned_character_id)
                                   .refetch();
                               reloadMailController!
                                   .forward()

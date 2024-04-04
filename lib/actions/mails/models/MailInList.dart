@@ -10,7 +10,7 @@ class MailInList {
   DateTime available_at;
   List<Reply>? replies;
   int days;
-  bool has_permisson;
+  bool has_permission;
 
   MailInList(
       {required this.id,
@@ -18,7 +18,7 @@ class MailInList {
       required this.available_at,
       required this.replies,
       required this.days,
-      required this.has_permisson
+      required this.has_permission
       });
 
   factory MailInList.fromJson(Map<String, dynamic> json) => _$MailInListFromJson(json);

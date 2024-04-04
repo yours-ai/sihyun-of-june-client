@@ -9,7 +9,7 @@ import 'package:project_june_client/services.dart';
 import '../../actions/mails/models/MailInList.dart';
 
 class MailWidget extends ConsumerWidget {
-  final Mail? mail;
+  final MailInList? mail;
   final int? mailNumber;
   final DateTime? firstMailDate;
 

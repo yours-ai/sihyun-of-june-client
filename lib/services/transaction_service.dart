@@ -7,7 +7,6 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:intl/intl.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/router.dart';
 import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
