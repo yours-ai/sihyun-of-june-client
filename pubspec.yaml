@@ -19,8 +19,8 @@ dependencies:
   cached_storage: ^1.0.0
   dio: ^5.3.2
   json_annotation: ^4.8.1
-  kakao_flutter_sdk_user: ^1.4.1
-  kakao_flutter_sdk_share: ^1.4.1
+  kakao_flutter_sdk_user: ^1.9.1+2
+  kakao_flutter_sdk_share: ^1.9.1+2
   flutter_riverpod: ^2.3.10
   flutter_secure_storage: ^9.0.0
   lottie: ^2.6.0
