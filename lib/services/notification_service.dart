@@ -64,7 +64,7 @@ class NotificationService {
   }
 
   Future<void> initializeNotificationHandlers() async {
-    await FirebaseMessaging.instance
+    FirebaseMessaging.instance
         .getToken()
         .then((token) => token != null ? getOrCreateUserDevice(token) : null);
     FirebaseMessaging.instance.onTokenRefresh
