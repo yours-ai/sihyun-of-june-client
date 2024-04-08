@@ -47,7 +47,8 @@ Future<void> buyMonthlyMailTicket(int assignedId) async {
 }
 
 Future<bool> checkMonthlyMailTicket(int assignedId) async {
-  final response = await dio.get('/mail/monthly-mail-ticket/$assignedId/');
+  final response =
+      await dio.get('/mail/monthly-mail-ticket/possession/$assignedId/');
   return response.data['possession'];
 }
 

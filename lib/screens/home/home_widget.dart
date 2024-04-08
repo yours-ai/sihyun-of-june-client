@@ -99,7 +99,7 @@ class HomeWidget extends ConsumerWidget {
                     backgroundColor: ColorConstants.black,
                   ),
                   onPressed: () {
-                    transactionService.showChargeForReadMail(context);
+                   // TODO: 열기 및 결제 로직 추가
                   },
                   child: Text(
                     '열기',

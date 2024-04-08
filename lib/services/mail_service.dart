@@ -2,8 +2,11 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
+import 'package:project_june_client/actions/character/models/CharacterColors.dart';
 import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
 import 'package:project_june_client/actions/mails/models/MailInList.dart';
+import 'package:project_june_client/actions/mails/models/MailTicketInfo.dart';
+import 'package:project_june_client/actions/mails/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/screens/mail/mail_detail_screen.dart';
@@ -143,43 +146,89 @@ class MailService {
     await storage.delete(key: 'MAIL_REPLY_$mailId');
   }
 
-  int checkMailNumber(List<MailInList> mails, DateTime firstMailDate) {
-    final lastMailDate = mails.first.available_at;
-    final totalMailNumber = getMailDateDiff(lastMailDate, firstMailDate) + 1;
+  int checkMailNumber(
+      DateTime firstMailAvailableAt, DateTime lastMailAvailableAt) {
+    final totalMailNumber =
+        getMailDateDiff(lastMailAvailableAt, firstMailAvailableAt) + 1;
     return totalMailNumber;
   }
 
-  List<Widget> makeMailWidgetList(List<MailInList> mails) {
+  List<Widget> makeMailWidgetList({
+    required List<MailInList> mails,
+    required MailTicketInfo mailTicketInfo,
+    required CharacterColors characterColors,
+    required int assignedId,
+    required bool hasMonthlyMailTicket,
+  }) {
     if (mails.isEmpty) {
       return [];
     }
-    final firstMailDate = mails.last.available_at;
-    final mailCount = checkMailNumber(mails, firstMailDate);
-    List<MailWidget> modifiedMailList = [];
-    if (mailCount <= 30) {
-      modifiedMailList = List.generate(
-          30,
-          (index) => MailWidget(
-                mailNumber: index,
-                firstMailDate: firstMailDate,
-              ));
-    } else {
-      modifiedMailList = List.generate(
-          mailCount,
-          (index) => MailWidget(
-                mailNumber: index,
-                firstMailDate: firstMailDate,
-              ));
-    }
+    final firstMailAvailableAt = mails.last.available_at;
+    final lastMail = mails.first;
+    final lastMailAvailableAt = lastMail.available_at;
+    final lastMailDay = lastMail.day;
+    final mailCount =
+        checkMailNumber(firstMailAvailableAt, lastMailAvailableAt);
+    List<MailWidget> modifiedMailList = makeEmptyMailList(
+      firstMailAvailableAt: firstMailAvailableAt,
+      mailCount: mailCount,
+      lastMailDay: lastMailDay,
+      assignedId: assignedId,
+      characterColors: characterColors,
+      mailTicketInfo: mailTicketInfo,
+      hasMonthlyMailTicket: hasMonthlyMailTicket,
+    );
     for (var mail in mails) {
-      int mailDateDiff = getMailDateDiff(mail.available_at, firstMailDate);
-      modifiedMailList[mailDateDiff] = MailWidget(
-        mail: mail,
-        mailNumber: mailDateDiff,
-        firstMailDate: firstMailDate,
-      );
+      modifiedMailList[mail.day - 1].mail = mail;
+      modifiedMailList[mail.day - 1].hasPermission = mail.has_permission;
     }
-    return fillMailList(modifiedMailList, firstMailDate);
+    return fillMailList(modifiedMailList, firstMailAvailableAt);
+  }
+
+  List<MailWidget> makeEmptyMailList({
+    required DateTime firstMailAvailableAt,
+    required int mailCount,
+    required int lastMailDay,
+    required CharacterColors characterColors,
+    required MailTicketInfo mailTicketInfo,
+    required int assignedId,
+    required bool hasMonthlyMailTicket,
+  }) {
+    List<MailWidget> emptyMailList = [];
+    final limitMailCount = mailCount <= 30 ? 30 : mailCount;
+    emptyMailList = List.generate(
+      mailTicketInfo.free_mail_read_days,
+      (index) => MailWidget(
+        mailIndex: index,
+        firstMailDate: firstMailAvailableAt,
+        hasPermission: true,
+        isFuture: lastMailDay < index + 1 ? true : false,
+        characterColors: characterColors,
+        mailTicketInfo: mailTicketInfo,
+        assignedId: assignedId,
+      ),
+    );
+    emptyMailList.addAll(
+      List.generate(
+        limitMailCount - mailTicketInfo.free_mail_read_days,
+        (index) => MailWidget(
+          mailIndex: index + mailTicketInfo.free_mail_read_days,
+          firstMailDate: firstMailAvailableAt,
+          hasPermission: hasMonthlyMailTicket
+              ? true
+              : lastMailDay > mailTicketInfo.free_mail_read_days
+                  ? false
+                  : true,
+          isFuture: lastMailDay < index + mailTicketInfo.free_mail_read_days + 1
+              ? true
+              : false,
+          characterColors: characterColors,
+          mailTicketInfo: mailTicketInfo,
+          assignedId: assignedId,
+        ),
+      ),
+    );
+    return emptyMailList;
   }
 
   List<Widget> fillMailList(
@@ -193,7 +242,8 @@ class MailService {
     if (mail.replies!.isNotEmpty) {
       return UserStateInMail.replied;
     }
-    final recentAssignedAt = character.assigned_characters!.last.first_mail_available_at;
+    final recentAssignedAt =
+        character.assigned_characters!.last.first_mail_available_at;
     final isRecentCharacterMail = mail.available_at.isAfter(
       recentAssignedAt,
     );

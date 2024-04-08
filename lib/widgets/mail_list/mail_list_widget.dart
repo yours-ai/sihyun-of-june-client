@@ -197,115 +197,159 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                 titleText: '받은 편지함',
               ),
               body: QueryBuilder(
-                query: fetchMailListQuery(
-                    assignedId: selectedCharacter
-                        .assigned_characters![selectedPage! - 1]
-                        .assigned_character_id),
-                builder: (context, listMailState) {
-                  if (listMailState.status != QueryStatus.success) {
-                    return const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator.adaptive(),
-                      ],
-                    );
-                  }
-                  final mailWidgetList =
-                      mailService.makeMailWidgetList(listMailState.data!);
-                  return Column(
-                    children: [
-                      if (selectedCharacter.assigned_characters!.length > 1)
-                        GestureDetector(
-                          onTap: () => showSelectMonthAlert(
-                              selectedCharacter.assigned_characters!.length),
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 20.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  mailService.makePageLabel(selectedPage!),
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontFamily: 'NanumJungHagSaeng',
-                                    color: ColorConstants.primary,
-                                  ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 5.0, top: 5),
-                                  child: Icon(PhosphorIcons.caret_down_bold,
-                                      size: 18),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      else
-                        const SizedBox(height: 20),
-                      if (mailWidgetList.isEmpty == true)
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '아직 도착한 편지가 없어요!',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: ColorConstants.primary,
-                                  fontSize: 21,
-                                  height: 1,
-                                  fontWeight: FontWeightConstants.semiBold,
-                                ),
-                              ),
-                              const SizedBox(height: 14),
-                              Text(
-                                '${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요. \n 조금만 기다려 주세요 :)',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: ColorConstants.neutral,
-                                  fontSize: 16,
-                                  height: 22 / 16,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      else ...[
-                        mailService.calendarWeekday(),
-                        const SizedBox(height: 20),
-                        Expanded(
-                          child: RefreshIndicator.adaptive(
-                            onRefresh: () async {
-                              HapticFeedback.lightImpact();
-                              await retrieveMyCharacterQuery.refetch();
-                              if (!mounted) return;
-                              await fetchMailListQuery(
-                                      assignedId: selectedCharacter
-                                          .assigned_characters![
-                                              selectedPage! - 1]
-                                          .assigned_character_id)
-                                  .refetch();
-                              reloadMailController!
-                                  .forward()
-                                  .then((_) => reloadMailController!.reverse());
+                  query: checkMonthlyMailTicketQuery(
+                      assignedId: selectedCharacter
+                          .assigned_characters![selectedPage! - 1]
+                          .assigned_character_id),
+                  builder: (context, monthlyTicketState) {
+                    if (monthlyTicketState.status != QueryStatus.success) {
+                      return const SizedBox.shrink();
+                    }
+                    return QueryBuilder(
+                        query: fetchMailTicketInfoQuery(),
+                        builder: (context, mailTicketInfoState) {
+                          if (mailTicketInfoState.status !=
+                              QueryStatus.success) {
+                            return const SizedBox.shrink();
+                          }
+                          return QueryBuilder(
+                            query: fetchMailListQuery(
+                                assignedId: selectedCharacter
+                                    .assigned_characters![selectedPage! - 1]
+                                    .assigned_character_id),
+                            builder: (context, listMailState) {
+                              if (listMailState.status != QueryStatus.success) {
+                                return const Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CircularProgressIndicator.adaptive(),
+                                  ],
+                                );
+                              }
+                              final mailWidgetList =
+                                  mailService.makeMailWidgetList(
+                                mailTicketInfo: mailTicketInfoState.data!,
+                                mails: listMailState.data!,
+                                assignedId: selectedCharacter
+                                    .assigned_characters![selectedPage! - 1]
+                                    .assigned_character_id,
+                                characterColors:
+                                    ref.watch(characterThemeProvider).colors,
+                                hasMonthlyMailTicket: monthlyTicketState.data!,
+                              );
+                              return Column(
+                                children: [
+                                  if (selectedCharacter
+                                          .assigned_characters!.length >
+                                      1)
+                                    GestureDetector(
+                                      onTap: () => showSelectMonthAlert(
+                                          selectedCharacter
+                                              .assigned_characters!.length),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 20.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              mailService
+                                                  .makePageLabel(selectedPage!),
+                                              style: TextStyle(
+                                                fontSize: 32,
+                                                fontFamily: 'NanumJungHagSaeng',
+                                                color: ColorConstants.primary,
+                                              ),
+                                            ),
+                                            const Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: 5.0, top: 5),
+                                              child: Icon(
+                                                  PhosphorIcons.caret_down_bold,
+                                                  size: 18),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  else
+                                    const SizedBox(height: 20),
+                                  if (mailWidgetList.isEmpty == true)
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            '아직 도착한 편지가 없어요!',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: ColorConstants.primary,
+                                              fontSize: 21,
+                                              height: 1,
+                                              fontWeight:
+                                                  FontWeightConstants.semiBold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 14),
+                                          Text(
+                                            '${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요. \n 조금만 기다려 주세요 :)',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: ColorConstants.neutral,
+                                              fontSize: 16,
+                                              height: 22 / 16,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  else ...[
+                                    mailService.calendarWeekday(),
+                                    const SizedBox(height: 20),
+                                    Expanded(
+                                      child: RefreshIndicator.adaptive(
+                                        onRefresh: () async {
+                                          HapticFeedback.lightImpact();
+                                          await retrieveMyCharacterQuery
+                                              .refetch();
+                                          await checkMonthlyMailTicketQuery(
+                                                  assignedId: selectedCharacter
+                                                      .assigned_characters![
+                                                          selectedPage! - 1]
+                                                      .assigned_character_id)
+                                              .refetch();
+                                          if (!mounted) return;
+                                          await fetchMailListQuery(
+                                                  assignedId: selectedCharacter
+                                                      .assigned_characters![
+                                                          selectedPage! - 1]
+                                                      .assigned_character_id)
+                                              .refetch();
+                                          reloadMailController!.forward().then(
+                                              (_) => reloadMailController!
+                                                  .reverse());
+                                        },
+                                        child: FadeTransition(
+                                          opacity: reloadMailFadeAnimation!,
+                                          child: GridView.count(
+                                            crossAxisCount: 7,
+                                            childAspectRatio: 7 / 11,
+                                            children: mailWidgetList,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ],
+                              );
                             },
-                            child: FadeTransition(
-                              opacity: reloadMailFadeAnimation!,
-                              child: GridView.count(
-                                crossAxisCount: 7,
-                                childAspectRatio: 7 / 11,
-                                children: mailWidgetList,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ],
-                  );
-                },
-              ),
+                          );
+                        });
+                  }),
             );
           }),
     );
