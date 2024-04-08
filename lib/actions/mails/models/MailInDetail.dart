@@ -13,7 +13,6 @@ class MailInDetail extends MailInList {
   int by;
   String description;
   bool is_latest;
-  bool is_first_reply;
 
   MailInDetail({
     required this.to,
@@ -22,12 +21,11 @@ class MailInDetail extends MailInList {
     required this.by,
     required this.description,
     required this.is_latest,
-    required this.is_first_reply,
     required super.id,
     required super.assign,
     required super.available_at,
     required super.replies,
-    required super.days,
+    required super.day,
     required super.has_permission,
   });
 

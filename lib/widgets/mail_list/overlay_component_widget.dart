@@ -10,7 +10,7 @@ import '../../actions/character/models/Character.dart';
 import '../../constants.dart';
 import '../../providers/character_provider.dart';
 import '../../services.dart';
-import '../../services/unique_cachekey_service.dart';
+import '../../services/common_service.dart';
 
 class OverlayComponentWidget extends ConsumerWidget {
   final Character? character;
@@ -118,7 +118,7 @@ class OverlayComponentWidget extends ConsumerWidget {
                         )
                       : ExtendedImage.network(
                           cacheMaxAge: CachingDuration.image,
-                          cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                          cacheKey: commonService.makeUniqueKey(
                               characterService
                                   .getMainImage(
                                       character!.character_info.images)

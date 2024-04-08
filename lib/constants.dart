@@ -27,11 +27,12 @@ abstract final class CachingDuration {
 abstract final class ColorTheme {
   static CharacterTheme defaultTheme = CharacterTheme(
     colors: CharacterColors(
-        primary: 4294923379,
-        secondary: 4294932624,
-        inverse_primary: 4294947513,
-        inverse_surface: 4281741103,
-        inverse_on_surface: 4294700782),
+      primary: 4294923379,
+      secondary: 4294932624,
+      inverse_primary: 4294947513,
+      inverse_surface: 4281741103,
+      inverse_on_surface: 4294700782,
+    ),
     font: 'NanumNoRyeogHaNeunDongHee',
   );
 }

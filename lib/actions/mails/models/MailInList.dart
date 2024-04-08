@@ -9,7 +9,7 @@ class MailInList {
   int assign;
   DateTime available_at;
   List<Reply>? replies;
-  int days;
+  int day;
   bool has_permission;
 
   MailInList(
@@ -17,7 +17,7 @@ class MailInList {
       required this.assign,
       required this.available_at,
       required this.replies,
-      required this.days,
+      required this.day,
       required this.has_permission
       });
 

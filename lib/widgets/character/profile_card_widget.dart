@@ -7,7 +7,7 @@ import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/common_provider.dart';
-import 'package:project_june_client/services/unique_cachekey_service.dart';
+import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/character/custom_story_indicator_widget.dart';
 import 'package:project_june_client/widgets/character/profile_list_widget.dart';
 
@@ -47,7 +47,7 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
           image.src,
           cache: true,
           cacheMaxAge: CachingDuration.image,
-          cacheKey: UniqueCacheKeyService.makeUniqueKey(image.src),
+          cacheKey: commonService.makeUniqueKey(image.src),
         ),
         context,
       );
@@ -186,7 +186,7 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
                   imageSrc,
                   cacheMaxAge: CachingDuration.image,
                   enableLoadState: false,
-                  cacheKey: UniqueCacheKeyService.makeUniqueKey(imageSrc),
+                  cacheKey: commonService.makeUniqueKey(imageSrc),
                   fit: BoxFit.cover,
                 );
               },

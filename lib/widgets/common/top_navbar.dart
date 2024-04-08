@@ -7,7 +7,6 @@ import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
-import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/common/unread_dot.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 
@@ -109,7 +108,7 @@ class TopNavbarWidget extends StatelessWidget {
                       width: 30,
                       child: ExtendedImage.network(
                         cacheMaxAge: CachingDuration.image,
-                        cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                        cacheKey: commonService.makeUniqueKey(
                             mainImageSrc.src),
                         mainImageSrc.src,
                         fit: BoxFit.cover,

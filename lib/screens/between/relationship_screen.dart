@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/services/unique_cachekey_service.dart';
+import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:word_break_text/word_break_text.dart';
@@ -97,7 +97,7 @@ class RelationshipScreen extends ConsumerWidget {
                     ExtendedImage.network(
                       selectedCharacter.character_info.images.first.src,
                       cacheMaxAge: CachingDuration.image,
-                      cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                      cacheKey: commonService.makeUniqueKey(
                           selectedCharacter.character_info.images.first.src),
                       width: 200,
                       height: 200,

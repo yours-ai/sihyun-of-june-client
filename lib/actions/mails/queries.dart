@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/mails/actions.dart';
 import 'package:project_june_client/actions/mails/dtos.dart';
 import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
+import 'package:project_june_client/actions/mails/models/MailTicketInfo.dart';
 
 import 'models/MailInList.dart';
 
@@ -44,6 +45,53 @@ Mutation<void, ReplyMailDTO> replyMailMutation({
   return Mutation<void, ReplyMailDTO>(
     refetchQueries: refetchQueries,
     queryFn: replyMail,
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Query<MailTicketInfo> fetchMailTicketInfoQuery({
+  OnQueryErrorCallback? onError,
+}) {
+  return Query(
+    key: 'mail-ticket-info',
+    queryFn: fetchMailTicketInfo,
+    onError: onError,
+  );
+}
+
+Mutation<void, int> buyMonthlyMailTicketMutation({
+  List<String> refetchQueries = const [],
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, int>(
+    refetchQueries: refetchQueries,
+    queryFn: buyMonthlyMailTicket,
+    onSuccess: onSuccess,
+    onError: onError,
+  );
+}
+
+Query<bool> checkMonthlyMailTicketQuery({
+  OnQueryErrorCallback? onError,
+  required int assignedId,
+}) {
+  return Query(
+    key: 'monthly-mail-ticket/$assignedId',
+    queryFn: () => checkMonthlyMailTicket(assignedId),
+    onError: onError,
+  );
+}
+
+Mutation<void, int> buySingleMailTicketMutation({
+  List<String> refetchQueries = const [],
+  OnSuccessCallback? onSuccess,
+  OnErrorCallback? onError,
+}) {
+  return Mutation<void, int>(
+    refetchQueries: refetchQueries,
+    queryFn: buySingleMailTicket,
     onSuccess: onSuccess,
     onError: onError,
   );

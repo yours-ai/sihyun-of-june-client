@@ -9,7 +9,6 @@ import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
-import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/character/character_cinematic_widget.dart';
 import 'package:project_june_client/widgets/character/profile_card_widget.dart';
 
@@ -214,9 +213,8 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                                   borderRadius: BorderRadius.circular(60),
                                   child: ExtendedImage.network(
                                     cacheMaxAge: CachingDuration.image,
-                                    cacheKey:
-                                        UniqueCacheKeyService.makeUniqueKey(
-                                            mainImageSrc),
+                                    cacheKey: commonService
+                                        .makeUniqueKey(mainImageSrc),
                                     mainImageSrc,
                                     fit: BoxFit.cover,
                                   ),

@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
-import 'package:project_june_client/services/unique_cachekey_service.dart';
+import 'package:project_june_client/services/common_service.dart';
 import 'package:project_june_client/widgets/common/unread_dot.dart';
 
 import '../constants.dart';
@@ -101,7 +101,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               child: ExtendedImage.network(
                                 mainImageSrc.src,
                                 cacheMaxAge: CachingDuration.image,
-                                cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                                cacheKey: commonService.makeUniqueKey(
                                     mainImageSrc.src),
                                 fit: BoxFit.cover,
                               ),
@@ -176,7 +176,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                                         : ExtendedImage.network(
                                             state.data!.image!,
                                             cacheMaxAge: CachingDuration.image,
-                                            cacheKey: UniqueCacheKeyService
+                                            cacheKey: commonService
                                                 .makeUniqueKey(
                                                     state.data!.image!),
                                             fit: BoxFit.cover,

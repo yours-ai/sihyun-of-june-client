@@ -6,7 +6,6 @@ import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
-import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/top_navbar.dart';
 
@@ -79,7 +78,7 @@ class HomeWidget extends ConsumerWidget {
                   height: 200,
                   child: ExtendedImage.network(
                     cacheMaxAge: CachingDuration.image,
-                    cacheKey: UniqueCacheKeyService.makeUniqueKey(
+                    cacheKey: commonService.makeUniqueKey(
                         characterService
                             .getMainImage(
                                 selectedCharacter.character_info.images)

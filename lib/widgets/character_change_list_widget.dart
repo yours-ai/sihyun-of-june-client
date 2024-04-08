@@ -8,7 +8,6 @@ import 'package:project_june_client/services.dart';
 
 import '../actions/character/models/Character.dart';
 import '../providers/character_provider.dart';
-import '../services/unique_cachekey_service.dart';
 
 class CharacterChangeListWidget extends ConsumerWidget {
   final Character character;
@@ -38,7 +37,7 @@ class CharacterChangeListWidget extends ConsumerWidget {
                     .getMainImage(character.character_info.images)
                     .src,
                 cacheMaxAge: CachingDuration.image,
-                cacheKey: UniqueCacheKeyService.makeUniqueKey(characterService
+                cacheKey: commonService.makeUniqueKey(characterService
                     .getMainImage(character.character_info.images)
                     .src),
                 width: 40,
