@@ -1,8 +1,10 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
@@ -19,16 +21,16 @@ enum UserStateInMail {
   cannotReplyPastMonth,
 }
 
-class MailDetailScreen extends StatefulWidget {
+class MailDetailScreen extends ConsumerStatefulWidget {
   final int id;
 
   const MailDetailScreen({super.key, required this.id});
 
   @override
-  State<MailDetailScreen> createState() => _MailDetailScreenState();
+  MailDetailScreenState createState() => MailDetailScreenState();
 }
 
-class _MailDetailScreenState extends State<MailDetailScreen> {
+class MailDetailScreenState extends ConsumerState<MailDetailScreen> {
   Mutation<void, int>? mutation;
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
@@ -100,18 +102,23 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
           return const Scaffold();
         }
         return QueryBuilder(
-          query: fetchMyCharactersQuery(),
+          query: fetchCharacterByIdQuery(id: mailState.data!.by),
           builder: (context, characterState) {
             if (characterState.data == null) {
               return const SizedBox.shrink();
             }
-            final Character characterInMail = characterState.data!
-                .firstWhere((character) => character.id == mailState.data!.by);
+            final isActiveCharacter = mailState.data!.assign ==
+                ref
+                    .watch(activeCharacterProvider)
+                    ?.assigned_characters
+                    ?.last
+                    .assigned_character_id;
             final UserStateInMail userStateInMail =
                 mailService.checkUserStateInMail(
               mailState.data!,
-              characterInMail,
+              isActiveCharacter,
             );
+            final characterInMail = characterState.data!;
             return Scaffold(
               resizeToAvoidBottomInset: true,
               appBar: const BackAppbar(),

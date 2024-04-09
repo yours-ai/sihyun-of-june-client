@@ -237,16 +237,11 @@ class MailService {
     return emptyCellsForWeekDay + modifiedWidgetList;
   }
 
-  UserStateInMail checkUserStateInMail(MailInDetail mail, Character character) {
+  UserStateInMail checkUserStateInMail(MailInDetail mail, bool isActiveCharacter) {
     if (mail.replies!.isNotEmpty) {
       return UserStateInMail.replied;
     }
-    final recentAssignedAt =
-        character.assigned_characters!.last.first_mail_available_at;
-    final isRecentCharacterMail = mail.available_at.isAfter(
-      recentAssignedAt,
-    );
-    if (isRecentCharacterMail) {
+    if (isActiveCharacter) {
       if (mail.replies!.isEmpty && mail.is_latest) {
         return UserStateInMail.canReply;
       } else {
