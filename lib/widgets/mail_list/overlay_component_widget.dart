@@ -45,14 +45,14 @@ class OverlayComponentWidget extends ConsumerWidget {
           final bool is30DaysFinished = await fetchMeQuery()
               .result
               .then((value) => value.data!.is_30days_finished);
-          final bool isEnableToRetest =
-              await characterService.checkEnableToRetest();
+          final bool canRetest =
+              await characterService.checkCanRetest();
           if (is30DaysFinished == false) {
             showModalBottomSheet(
               context: context,
               builder: (context) => RetestModalWidget(
                 firstName: firstName,
-                isEnableToRetest: isEnableToRetest,
+                canRetest: canRetest,
               ),
             );
             hideOverlay!();

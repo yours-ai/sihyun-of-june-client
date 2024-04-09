@@ -124,7 +124,7 @@ class AllTabScreenState extends State<AllTabScreen>
 
   @override
   Widget build(context) {
-    final retrieveMyCharacterQuery = fetchMyCharactersQuery();
+    final myCharactersQuery = fetchMyCharactersQuery();
     final retrieveMeQuery = fetchMeQuery();
     return SafeArea(
       child: TitleLayout(
@@ -137,7 +137,7 @@ class AllTabScreenState extends State<AllTabScreen>
           onRefresh: () async {
             HapticFeedback.lightImpact();
             reloadAllController!.forward().then((_) async {
-              await retrieveMyCharacterQuery.refetch();
+              await myCharactersQuery.refetch();
               await retrieveMeQuery.refetch();
               reloadAllController!.reverse();
             });
@@ -146,7 +146,7 @@ class AllTabScreenState extends State<AllTabScreen>
             opacity: reloadAllFadeAnimation!,
             child: ListView(
               children: [
-                UserProfileWidget(retrieveMyCharacterQuery, retrieveMeQuery),
+                UserProfileWidget(myCharactersQuery, retrieveMeQuery),
                 QueryBuilder(
                   query: retrieveMeQuery,
                   builder: (context, state) {
@@ -207,7 +207,7 @@ class AllTabScreenState extends State<AllTabScreen>
                   },
                 ),
                 QueryBuilder(
-                  query: retrieveMyCharacterQuery,
+                  query: myCharactersQuery,
                   builder: (context, state) => MenuWidget(
                     title: '상대 변경하기',
                     onPressed: () {

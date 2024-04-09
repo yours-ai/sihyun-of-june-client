@@ -14,9 +14,9 @@ import '../services.dart';
 import 'character_change_modal.dart';
 
 class UserProfileWidget extends ConsumerStatefulWidget {
-  final Query retrieveMyCharacterQuery, retrieveMeQuery;
+  final Query myCharactersQuery, retrieveMeQuery;
 
-  const UserProfileWidget(this.retrieveMyCharacterQuery, this.retrieveMeQuery,
+  const UserProfileWidget(this.myCharactersQuery, this.retrieveMeQuery,
       {super.key});
 
   @override
@@ -38,7 +38,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
   @override
   Widget build(BuildContext context) {
     return QueryBuilder(
-        query: widget.retrieveMyCharacterQuery,
+        query: widget.myCharactersQuery,
         builder: (context, state) {
           if (state.status != QueryStatus.success) {
             return const SizedBox(
@@ -53,7 +53,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
           if (state.data != null && state.data!.isNotEmpty) {
             selectedCharacter = state.data!
                 .where((character) =>
-                    character.id == ref.watch(selectedCharacterProvider))
+                    character.id == ref.watch(selectedCharacterProvider)!.id)
                 .first;
             mainImageSrc = characterService
                 .getMainImage(selectedCharacter!.character_info.images);
@@ -100,8 +100,8 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               child: ExtendedImage.network(
                                 mainImageSrc.src,
                                 cacheMaxAge: CachingDuration.image,
-                                cacheKey: commonService.makeUniqueKey(
-                                    mainImageSrc.src),
+                                cacheKey: commonService
+                                    .makeUniqueKey(mainImageSrc.src),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -175,8 +175,8 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                                         : ExtendedImage.network(
                                             state.data!.image!,
                                             cacheMaxAge: CachingDuration.image,
-                                            cacheKey: commonService
-                                                .makeUniqueKey(
+                                            cacheKey:
+                                                commonService.makeUniqueKey(
                                                     state.data!.image!),
                                             fit: BoxFit.cover,
                                           ),

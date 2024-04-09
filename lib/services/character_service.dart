@@ -55,7 +55,7 @@ class CharacterService {
     return characterList.map((character) => character.id).toList();
   }
 
-  Future<bool> checkEnableToRetest() async {
+  Future<bool> checkCanRetest() async {
     final myCharactersQuery = await fetchMyCharactersQuery().result;
     final hasCharacter =
         myCharactersQuery.data != null && myCharactersQuery.data!.isNotEmpty;
@@ -64,8 +64,8 @@ class CharacterService {
       return true;
     }
     final allCharacters = await fetchAllCharactersQuery().result;
-    final isEnableToRetest = myCharacters.length != allCharacters.data!.length;
-    return isEnableToRetest;
+    final canRetest = myCharacters.length != allCharacters.data!.length;
+    return canRetest;
   }
 
   Future<void> refreshActiveCharacter(WidgetRef ref) async {
