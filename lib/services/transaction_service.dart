@@ -173,7 +173,7 @@ class TransactionService {
     required MailTicketInfo mailTicketInfo,
     required CharacterColors characterColors,
     required int mailId,
-    required int assignedId,
+    required int assignId,
   }) async {
     await showModalBottomSheet<void>(
       context: context,
@@ -194,7 +194,7 @@ class TransactionService {
               MutationBuilder(
                   mutation: buySingleMailTicketMutation(
                     onSuccess: (res, arg) {
-                      fetchMailListQuery(assignedId: assignedId).refetch();
+                      fetchMailListQuery(assignId: assignId).refetch();
                       context.pop();
                       context.push('${RoutePaths.mailListMailDetail}/$mailId');
                       scaffoldMessengerKey.currentState?.showSnackBar(
@@ -238,7 +238,7 @@ class TransactionService {
               ),
               _buildBuyMonthlyTicketMutation(
                 context: context,
-                assignedId: assignedId,
+                assignId: assignId,
                 requiredCoin:
                     mailTicketInfo.mail_ticket_prices.monthly_mail_ticket_coin,
                 characterColors: characterColors,
@@ -254,7 +254,7 @@ class TransactionService {
     required BuildContext context,
     required MailTicketInfo mailTicketInfo,
     required CharacterColors characterColors,
-    required int assignedId,
+    required int assignId,
   }) async {
     await showModalBottomSheet<void>(
       context: context,
@@ -274,7 +274,7 @@ class TransactionService {
             children: [
               _buildBuyMonthlyTicketMutation(
                 context: context,
-                assignedId: assignedId,
+                assignId: assignId,
                 requiredCoin:
                     mailTicketInfo.mail_ticket_prices.monthly_mail_ticket_coin,
                 characterColors: characterColors,
@@ -325,14 +325,14 @@ class TransactionService {
 
   MutationBuilder _buildBuyMonthlyTicketMutation({
     required BuildContext context,
-    required int assignedId,
+    required int assignId,
     required int requiredCoin,
     required CharacterColors characterColors,
   }) {
     return MutationBuilder(
         mutation: buyMonthlyMailTicketMutation(
           onSuccess: (res, arg) {
-            checkMonthlyMailTicketQuery(assignedId: assignedId).refetch();
+            checkMonthlyMailTicketQuery(assignId: assignId).refetch();
             context.pop();
             scaffoldMessengerKey.currentState?.showSnackBar(
               createSnackBar(
@@ -359,7 +359,7 @@ class TransactionService {
                 suffixText: '$requiredCoin코인',
               ),
               onPressed: () async {
-                await mutate(assignedId);
+                await mutate(assignId);
               },
               builder: (context, child, callback, buttonState) {
                 return FilledButton(

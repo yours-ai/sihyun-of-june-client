@@ -5,9 +5,9 @@ import 'package:project_june_client/actions/mails/models/MailInList.dart';
 
 import 'models/MailTicketInfo.dart';
 
-Future<List<MailInList>> fetchMailList(int assignedId) async {
+Future<List<MailInList>> fetchMailList(int assignId) async {
   final response = await dio.get(
-    '/mail/v4/character-sent-mails?character_selected_by_user_id=$assignedId',
+    '/mail/v4/character-sent-mails?character_selected_by_user_id=$assignId',
   );
   return response.data
       .map<MailInList>((json) => MailInList.fromJson(json))
@@ -41,14 +41,14 @@ Future<MailTicketInfo> fetchMailTicketInfo() async {
   return MailTicketInfo.fromJson(response.data);
 }
 
-Future<void> buyMonthlyMailTicket(int assignedId) async {
-  await dio.post('/mail/monthly-mail-ticket/$assignedId/');
+Future<void> buyMonthlyMailTicket(int assignId) async {
+  await dio.post('/mail/monthly-mail-ticket/$assignId/');
   return;
 }
 
-Future<bool> checkMonthlyMailTicket(int assignedId) async {
+Future<bool> checkMonthlyMailTicket(int assignId) async {
   final response =
-      await dio.get('/mail/monthly-mail-ticket/possession/$assignedId/');
+      await dio.get('/mail/monthly-mail-ticket/possession/$assignId/');
   return response.data['possession'];
 }
 

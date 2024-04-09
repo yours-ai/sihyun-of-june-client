@@ -198,7 +198,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
               ),
               body: QueryBuilder(
                   query: checkMonthlyMailTicketQuery(
-                      assignedId: selectedCharacter
+                      assignId: selectedCharacter
                           .assigned_characters![selectedPage! - 1]
                           .assigned_character_id),
                   builder: (context, monthlyTicketState) {
@@ -214,7 +214,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                           }
                           return QueryBuilder(
                             query: fetchMailListQuery(
-                                assignedId: selectedCharacter
+                                assignId: selectedCharacter
                                     .assigned_characters![selectedPage! - 1]
                                     .assigned_character_id),
                             builder: (context, listMailState) {
@@ -231,7 +231,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                   mailService.makeMailWidgetList(
                                 mailTicketInfo: mailTicketInfoState.data!,
                                 mails: listMailState.data!,
-                                assignedId: selectedCharacter
+                                assignId: selectedCharacter
                                     .assigned_characters![selectedPage! - 1]
                                     .assigned_character_id,
                                 characterColors:
@@ -317,14 +317,14 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                           await retrieveMyCharacterQuery
                                               .refetch();
                                           await checkMonthlyMailTicketQuery(
-                                                  assignedId: selectedCharacter
+                                                  assignId: selectedCharacter
                                                       .assigned_characters![
                                                           selectedPage! - 1]
                                                       .assigned_character_id)
                                               .refetch();
                                           if (!mounted) return;
                                           await fetchMailListQuery(
-                                                  assignedId: selectedCharacter
+                                                  assignId: selectedCharacter
                                                       .assigned_characters![
                                                           selectedPage! - 1]
                                                       .assigned_character_id)

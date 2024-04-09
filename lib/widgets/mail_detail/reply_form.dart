@@ -107,7 +107,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                       });
                       mutate(getReplyDTO()).then((_) {
                         router.pop();
-                        fetchMailListQuery(assignedId: widget.mail.assign)
+                        fetchMailListQuery(assignId: widget.mail.assign)
                             .refetch();
                         requestRandomlyAppReview(widget.mail.is_first_reply);
                         setState(() {

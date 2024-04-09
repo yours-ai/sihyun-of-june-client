@@ -157,7 +157,7 @@ class MailService {
     required List<MailInList> mails,
     required MailTicketInfo mailTicketInfo,
     required CharacterColors characterColors,
-    required int assignedId,
+    required int assignId,
     required bool hasMonthlyMailTicket,
   }) {
     if (mails.isEmpty) {
@@ -173,7 +173,7 @@ class MailService {
       firstMailAvailableAt: firstMailAvailableAt,
       mailCount: mailCount,
       lastMailDay: lastMailDay,
-      assignedId: assignedId,
+      assignId: assignId,
       characterColors: characterColors,
       mailTicketInfo: mailTicketInfo,
       hasMonthlyMailTicket: hasMonthlyMailTicket,
@@ -191,7 +191,7 @@ class MailService {
     required int lastMailDay,
     required CharacterColors characterColors,
     required MailTicketInfo mailTicketInfo,
-    required int assignedId,
+    required int assignId,
     required bool hasMonthlyMailTicket,
   }) {
     List<MailWidget> emptyMailList = [];
@@ -205,7 +205,7 @@ class MailService {
         isFuture: lastMailDay < index + 1 ? true : false,
         characterColors: characterColors,
         mailTicketInfo: mailTicketInfo,
-        assignedId: assignedId,
+        assignId: assignId,
       ),
     );
     emptyMailList.addAll(
@@ -224,7 +224,7 @@ class MailService {
               : false,
           characterColors: characterColors,
           mailTicketInfo: mailTicketInfo,
-          assignedId: assignedId,
+          assignId: assignId,
         ),
       ),
     );

@@ -23,7 +23,7 @@ class MailWidget extends ConsumerWidget {
   final bool isFuture;
   final CharacterColors characterColors;
   final MailTicketInfo mailTicketInfo;
-  final int assignedId;
+  final int assignId;
 
   MailWidget({
     super.key,
@@ -34,7 +34,7 @@ class MailWidget extends ConsumerWidget {
     required this.isFuture,
     required this.characterColors,
     required this.mailTicketInfo,
-    required this.assignedId,
+    required this.assignId,
   });
 
   Widget getLetterIcon(MailState mailState, int primaryColor,
@@ -95,7 +95,7 @@ class MailWidget extends ConsumerWidget {
                 mailTicketInfo: mailTicketInfo,
                 characterColors: characterColors,
                 mailId: mail!.id,
-                assignedId: assignedId,);
+                assignId: assignId,);
             }
           }
         } else if (!hasPermission) {
@@ -103,7 +103,7 @@ class MailWidget extends ConsumerWidget {
               context: context,
               mailTicketInfo: mailTicketInfo,
               characterColors: characterColors,
-              assignedId: assignedId);
+              assignId: assignId);
         }
       },
       child: Column(

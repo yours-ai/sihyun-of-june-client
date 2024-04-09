@@ -8,11 +8,11 @@ import 'models/MailInList.dart';
 
 Query<List<MailInList>> fetchMailListQuery({
   OnQueryErrorCallback? onError,
-  required int assignedId,
+  required int assignId,
 }) {
   return Query<List<MailInList>>(
-    key: 'character-sent-mail-list/$assignedId',
-    queryFn: () => fetchMailList(assignedId),
+    key: 'character-sent-mail-list/$assignId',
+    queryFn: () => fetchMailList(assignId),
     onError: onError,
   );
 }
@@ -75,11 +75,11 @@ Mutation<void, int> buyMonthlyMailTicketMutation({
 
 Query<bool> checkMonthlyMailTicketQuery({
   OnQueryErrorCallback? onError,
-  required int assignedId,
+  required int assignId,
 }) {
   return Query(
-    key: 'monthly-mail-ticket/$assignedId',
-    queryFn: () => checkMonthlyMailTicket(assignedId),
+    key: 'monthly-mail-ticket/$assignId',
+    queryFn: () => checkMonthlyMailTicket(assignId),
     onError: onError,
   );
 }
