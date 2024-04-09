@@ -8,6 +8,7 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
@@ -69,6 +70,7 @@ class DecideAssignmentMethodScreenState
 
   @override
   Widget build(BuildContext context) {
+    final storage = getSecureStorage();
     ReallocateDTO makeReallocateDto(String payment) {
       if (payment == 'coin') {
         return ReallocateDTO(
@@ -134,7 +136,8 @@ class DecideAssignmentMethodScreenState
                             .result
                             .then((value) => value.data!.is_30days_finished);
                         if (is30DaysFinished == false) {
-                          await characterService.deleteSelectedCharacterId();
+                          await storage.delete(
+                              key: StorageKeyConstants.characterId);
                           ref.read(selectedCharacterProvider.notifier).state =
                               await null;
                         }
@@ -170,7 +173,8 @@ class DecideAssignmentMethodScreenState
                             .result
                             .then((value) => value.data!.is_30days_finished);
                         if (is30DaysFinished == false) {
-                          await characterService.deleteSelectedCharacterId();
+                          await storage.delete(
+                              key: StorageKeyConstants.characterId);
                           ref.read(selectedCharacterProvider.notifier).state =
                               await null;
                         }

@@ -6,16 +6,18 @@ import 'package:project_june_client/widgets/common/modal/modal_choice_widget.dar
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 
-import '../../providers/user_provider.dart';
-
-class RetestModalWidget extends ConsumerWidget {
+class RetestModalWidget extends StatelessWidget {
   final String? firstName;
+  final bool isEnableToRetest;
 
-  const RetestModalWidget({super.key, required this.firstName});
+  const RetestModalWidget({
+    super.key,
+    required this.firstName,
+    required this.isEnableToRetest,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    bool isEnableToRetest = ref.read(isEnableToRetestProvider);
+  Widget build(BuildContext context) {
     return ModalWidget(
       title: isEnableToRetest
           ? '아직 $firstName이와의 시간이 남았어요.\n그래도 새 친구를 만나시겠어요?'

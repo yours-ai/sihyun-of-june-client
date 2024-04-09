@@ -159,6 +159,9 @@ Query<Map<String, dynamic>> fetchIsNewUserQuery({
     queryFn: fetchIsNewUser,
     onSuccess: onSuccess,
     onError: onError,
+    config: QueryConfig(
+      cacheDuration: CachingDuration.newUser,
+    ),
   );
 }
 

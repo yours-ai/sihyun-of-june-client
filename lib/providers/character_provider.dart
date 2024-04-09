@@ -7,3 +7,5 @@ final characterThemeProvider = StateProvider<CharacterTheme>((ref) {
 });
 
 final selectedCharacterProvider = StateProvider<int?>((ref) => null);
+
+final selectedAssignProvider = StateProvider<int?>((ref) => null);

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import '../../constants.dart';
@@ -27,6 +28,7 @@ class CharacterTestConfirmScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final storage = getSecureStorage();
     return Scaffold(
       body: SafeArea(
         child: TitleLayout(
@@ -66,8 +68,10 @@ class CharacterTestConfirmScreen extends ConsumerWidget {
                               selectedCharacterTheme;
                           ref.read(selectedCharacterProvider.notifier).state =
                               selectedCharacterId;
-                          await characterService
-                              .saveSelectedCharacterId(selectedCharacterId);
+                          await storage.write(
+                            key: StorageKeyConstants.characterId,
+                            value: selectedCharacterId.toString(),
+                          );
                           context.go(RoutePaths.homeDecideAssignmentMethod);
                         },
                       );
@@ -96,8 +100,10 @@ class CharacterTestConfirmScreen extends ConsumerWidget {
                               selectedCharacterTheme;
                           ref.read(selectedCharacterProvider.notifier).state =
                               selectedCharacterId;
-                          await characterService
-                              .saveSelectedCharacterId(selectedCharacterId);
+                          await storage.write(
+                            key: StorageKeyConstants.characterId,
+                            value: selectedCharacterId.toString(),
+                          );
                           context.go(RoutePaths.starting);
                         },
                       );

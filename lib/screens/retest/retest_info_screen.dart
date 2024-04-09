@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/retest/retest_layout_widget.dart';
 
 import '../../constants.dart';
-import '../../providers/user_provider.dart';
 
-class RetestInfoScreen extends ConsumerWidget {
+class RetestInfoScreen extends StatefulWidget {
   final String firstName;
   final List<int> characterIds;
 
@@ -17,12 +16,24 @@ class RetestInfoScreen extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    bool isEnableToRetest = ref.watch(isEnableToRetestProvider);
+  State<RetestInfoScreen> createState() => _RetestInfoScreenState();
+}
+
+class _RetestInfoScreenState extends State<RetestInfoScreen> {
+  late bool isEnableToRetest;
+
+  @override
+  void initState() async {
+    super.initState();
+    isEnableToRetest = await characterService.checkEnableToRetest();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return RetestLayoutWidget(
-      firstName: firstName,
+      firstName: widget.firstName,
       title:
-          '$firstName이와의 시간, 즐거우셨나요?\n${isEnableToRetest ? '이제, 새로운 상대를\n만날 수 있어요.' : '조금 더 이어갈 수 있어요.'}',
+          '${widget.firstName}이와의 시간, 즐거우셨나요?\n${isEnableToRetest ? '이제, 새로운 상대를\n만날 수 있어요.' : '조금 더 이어갈 수 있어요.'}',
       action: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -34,10 +45,10 @@ class RetestInfoScreen extends ConsumerWidget {
             onPressed: () {
               context.push(
                 RoutePaths.retestExtend,
-                extra: firstName,
+                extra: widget.firstName,
               );
             },
-            child: Text('$firstName이와의 시간 이어가기'),
+            child: Text('${widget.firstName}이와의 시간 이어가기'),
           ),
           const SizedBox(
             height: 13,
@@ -55,7 +66,7 @@ class RetestInfoScreen extends ConsumerWidget {
               }
               context.push(
                 RoutePaths.retestConfirm,
-                extra: firstName,
+                extra: widget.firstName,
               );
             },
             child: Text(

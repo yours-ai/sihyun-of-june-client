@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
+import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 
 class CharacterService {
   const CharacterService();
 
-  static const _CHARACTER_ID_KEY = 'CHARACTER_ID';
 
   List<CharacterImage> selectStackedImageList(List<CharacterImage> imageList) {
     final revealedImageList =
@@ -52,28 +53,18 @@ class CharacterService {
     ];
   }
 
-  Future<int?> getSelectedCharacterId() async {
-    final storage = getSecureStorage();
-    final selectedCharacterId = await storage.read(key: _CHARACTER_ID_KEY);
-    if (selectedCharacterId == null) return null;
-    return int.parse(selectedCharacterId);
-  }
-
-  Future<void> saveSelectedCharacterId(int selectedCharacterId) async {
+  Future<void> _saveSelectedCharacterId(int selectedCharacterId) async {
     final storage = getSecureStorage();
     await storage.write(
-        key: _CHARACTER_ID_KEY, value: selectedCharacterId.toString());
-  }
-
-  Future<void> deleteSelectedCharacterId() async {
-    final storage = getSecureStorage();
-    await storage.delete(key: _CHARACTER_ID_KEY);
+        key: StorageKeyConstants.characterId, value: selectedCharacterId.toString());
   }
 
   void changeCharacterByTap(WidgetRef ref, Character character) async {
-    saveSelectedCharacterId(character.id);
+    _saveSelectedCharacterId(character.id);
     ref.read(selectedCharacterProvider.notifier).state = character.id;
     ref.read(characterThemeProvider.notifier).state = character.theme;
+    ref.read(selectedAssignProvider.notifier).state =
+        character.assigned_characters!.last.assigned_character_id;
   }
 
   List<int> getCharacterIds(List<Character> characterList) {
@@ -88,5 +79,18 @@ class CharacterService {
         .where((character) => character.is_current == true)
         .first
         .first_name;
+  }
+
+  Future<bool> checkEnableToRetest() async {
+    final myCharactersQuery = await fetchMyCharacterQuery().result;
+    final hasCharacter =
+        myCharactersQuery.data != null && myCharactersQuery.data!.isNotEmpty;
+    final myCharacters = myCharactersQuery.data;
+    if (hasCharacter == false || myCharacters == null || myCharacters.isEmpty) {
+      return true;
+    }
+    final allCharacters = await fetchAllCharactersQuery().result;
+    final isEnableToRetest = myCharacters.length != allCharacters.data!.length;
+    return isEnableToRetest;
   }
 }

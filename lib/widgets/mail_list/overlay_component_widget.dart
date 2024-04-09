@@ -46,11 +46,14 @@ class OverlayComponentWidget extends ConsumerWidget {
           final bool is30DaysFinished = await fetchMeQuery()
               .result
               .then((value) => value.data!.is_30days_finished);
+          final bool isEnableToRetest =
+              await characterService.checkEnableToRetest();
           if (is30DaysFinished == false) {
             showModalBottomSheet(
               context: context,
               builder: (context) => RetestModalWidget(
                 firstName: firstName,
+                isEnableToRetest: isEnableToRetest,
               ),
             );
             hideOverlay!();
@@ -118,11 +121,9 @@ class OverlayComponentWidget extends ConsumerWidget {
                         )
                       : ExtendedImage.network(
                           cacheMaxAge: CachingDuration.image,
-                          cacheKey: commonService.makeUniqueKey(
-                              characterService
-                                  .getMainImage(
-                                      character!.character_info.images)
-                                  .src),
+                          cacheKey: commonService.makeUniqueKey(characterService
+                              .getMainImage(character!.character_info.images)
+                              .src),
                           characterService
                               .getMainImage(character!.character_info.images)
                               .src,

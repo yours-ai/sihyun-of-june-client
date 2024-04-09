@@ -64,11 +64,15 @@ class CharacterChangeModal extends ConsumerWidget {
                     return;
                   }
                   if (state.data!.is_30days_finished == false) {
+                    final isEnableToRetest =
+                        await characterService.checkEnableToRetest();
                     showModalBottomSheet(
                       context: context,
                       builder: (context) => RetestModalWidget(
-                          firstName: characterService
-                              .getCurrentCharacterFirstName(characterList)),
+                        firstName: characterService
+                            .getCurrentCharacterFirstName(characterList),
+                        isEnableToRetest: isEnableToRetest,
+                      ),
                     );
                     return;
                   }

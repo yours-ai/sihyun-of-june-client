@@ -22,6 +22,7 @@ abstract final class CachingDuration {
   static Duration image = const Duration(days: 1);
   static Duration character = const Duration(days: 1);
   static Duration assignment = Duration.zero;
+  static Duration newUser = const Duration(days: 1);
 }
 
 abstract final class ColorTheme {
@@ -123,4 +124,10 @@ abstract final class ProjectConstants {
 
 abstract final class FontWeightConstants {
   static FontWeight semiBold = FontWeight.w600;
+}
+
+abstract final class StorageKeyConstants {
+  static String characterId = 'CHARACTER_ID';
+  static String assignId = 'ASSIGN_ID';
+  static String serverToken = 'SERVER_TOKEN';
 }

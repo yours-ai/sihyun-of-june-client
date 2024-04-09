@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
@@ -64,8 +65,11 @@ class CharacterSelectionConfirmScreen extends StatelessWidget {
                       characterId: characterId,
                       selectionId: selectionState.data!['id'],
                       onSuccess: (res, arg) async {
-                        await characterService
-                            .saveSelectedCharacterId(characterId);
+                        final storage = getSecureStorage();
+                        await storage.write(
+                          key: StorageKeyConstants.characterId,
+                          value: characterId.toString(),
+                        );
                         context.go(RoutePaths.starting);
                       },
                       onError: (res, arg, error) {

@@ -5,6 +5,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
@@ -13,8 +14,8 @@ import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -104,61 +105,64 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
   }
 
   Future<void> _initializeCharacterInfo() async {
-    final myCharacters = await fetchMyCharacterQuery().result;
-    final hasCharacter =
-        myCharacters.data != null && myCharacters.data!.isNotEmpty;
-    await _checkEnableToRetest(hasCharacter, myCharacters.data);
-    if (hasCharacter) {
-      await _saveSelectedCharacterId(myCharacters.data!);
-      await _setSelectedCharacterTheme(myCharacters.data!);
+    final storage = getSecureStorage();
+    final isNewUserRawData = await fetchIsNewUserQuery().result;
+    final isNewUser = isNewUserRawData.data!['is_available'];
+    if (isNewUser) {
+      if (!mounted) return;
+      context.go(RoutePaths.newUserAssignmentStarting);
+    } else {
+      final isSaved = await _checkIsCharacterSaved(storage);
+      if (!isSaved) {
+        final myCharacters = await fetchMyCharacterQuery().result;
+        final hasCharacter =
+            myCharacters.data != null && myCharacters.data!.isNotEmpty;
+        if (hasCharacter) {
+          await _saveInitialSelectedCharacter(
+              storage, myCharacters.data!.first);
+        }
+      }
       if (!mounted) return;
       context.go(RoutePaths.home);
-    } else {
-      final isNewUserRawData = await fetchIsNewUserQuery().result;
-      final isNewUser = isNewUserRawData.data!['is_available'];
-      if (isNewUser) {
-        if (!mounted) return;
-        context.go(RoutePaths.newUserAssignmentStarting);
-      } else {
-        if (!mounted) return;
-        context.go(RoutePaths.home);
-      }
     }
   }
 
-  Future<void> _saveSelectedCharacterId(List<Character> myCharacters) async {
-    final selectedCharacterId = await characterService.getSelectedCharacterId();
-    if (selectedCharacterId == null) {
-      ref.read(selectedCharacterProvider.notifier).state = myCharacters[0].id;
-      await characterService.saveSelectedCharacterId(myCharacters[0].id);
-    } else {
-      ref.read(selectedCharacterProvider.notifier).state = selectedCharacterId;
+  Future<bool> _checkIsCharacterSaved(FlutterSecureStorage storage) async {
+    final selectedCharacterId =
+        await storage.read(key: StorageKeyConstants.characterId);
+    final selectedAssignId =
+        await storage.read(key: StorageKeyConstants.assignId);
+    if (selectedCharacterId == null || selectedAssignId == null) {
+      return false;
     }
+    final characterId = int.parse(selectedCharacterId);
+    final selectedCharacterRawData =
+        await fetchCharacterByIdQuery(id: characterId).result;
+    if (selectedCharacterRawData.error != null) {
+      Sentry.captureException(selectedCharacterRawData.error!);
+      return false;
+    }
+    final selectedCharacterTheme = selectedCharacterRawData.data!.theme;
+    ref.read(characterThemeProvider.notifier).state = selectedCharacterTheme;
+    ref.read(selectedCharacterProvider.notifier).state = characterId;
+    ref.read(selectedAssignProvider.notifier).state =
+        int.parse(selectedAssignId);
+    return true;
   }
 
-  Future<void> _setSelectedCharacterTheme(List<Character> myCharacters) async {
-    final selectedCharacterId = await characterService.getSelectedCharacterId();
-    if (selectedCharacterId != null) {
-      final selectedCharacterList = myCharacters
-          .where((character) => character.id == selectedCharacterId);
-      if (selectedCharacterList.isEmpty) {
-        logout();
-        return;
-      }
-      final selectedCharacterTheme = selectedCharacterList.first.theme;
-      ref.read(characterThemeProvider.notifier).state = selectedCharacterTheme;
-    }
-  }
-
-  Future<void> _checkEnableToRetest(
-      bool hasCharacter, List<Character>? myCharacters) async {
-    if (hasCharacter == false || myCharacters == null || myCharacters.isEmpty) {
-      ref.read(isEnableToRetestProvider.notifier).state = true;
-      return;
-    }
-    final allCharacters = await fetchAllCharactersQuery().result;
-    final isEnableToRetest = myCharacters.length != allCharacters.data!.length;
-    ref.read(isEnableToRetestProvider.notifier).state = isEnableToRetest;
+  Future<void> _saveInitialSelectedCharacter(
+      FlutterSecureStorage storage, Character myCharacter) async {
+    final characterId = myCharacter.id;
+    ref.read(selectedCharacterProvider.notifier).state = characterId;
+    ref.read(selectedAssignProvider.notifier).state =
+        myCharacter.assigned_characters!.last.assigned_character_id;
+    await storage.write(
+        key: StorageKeyConstants.characterId, value: characterId.toString());
+    await storage.write(
+        key: StorageKeyConstants.assignId,
+        value: myCharacter.assigned_characters!.last.assigned_character_id
+            .toString());
+    ref.read(characterThemeProvider.notifier).state = myCharacter.theme;
   }
 
   Future<void> _checkNotificationPermission() async {

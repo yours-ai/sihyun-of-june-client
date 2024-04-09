@@ -10,14 +10,13 @@ import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/models/SihyunOfJuneUser.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/client.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'models/Token.dart';
-
-const _SERVER_TOKEN_KEY = 'SERVER_TOKEN';
 
 Future<AuthorizationCredentialAppleID> fetchAppleLoginCredential() async {
   try {
@@ -173,19 +172,20 @@ Future<void> login(String serverToken, {bool? saveTokenToClient}) async {
   setServerTokenOnDio(serverToken);
   if (saveTokenToClient) {
     final storage = getSecureStorage();
-    await storage.write(key: _SERVER_TOKEN_KEY, value: serverToken);
+    await storage.write(
+        key: StorageKeyConstants.serverToken, value: serverToken);
   }
   _setAmplitudeProps();
 }
 
 Future<String?> getServerToken() async {
   final storage = getSecureStorage();
-  return await storage.read(key: _SERVER_TOKEN_KEY);
+  return await storage.read(key: StorageKeyConstants.serverToken);
 }
 
 Future<bool> loadIsLogined() async {
   final storage = getSecureStorage();
-  final loaded = await storage.read(key: _SERVER_TOKEN_KEY);
+  final loaded = await storage.read(key: StorageKeyConstants.serverToken);
   if (loaded == null) return false;
   login(loaded, saveTokenToClient: false);
   return true;
@@ -199,7 +199,7 @@ Future<void> logout() async {
   } catch (error) {}
   CachedQuery.instance.deleteCache();
   dio.options.headers.clear();
-  characterService.deleteSelectedCharacterId();
+  await storage.delete(key: StorageKeyConstants.characterId);
   Sentry.configureScope((scope) => scope.setUser(null));
   return;
 }
