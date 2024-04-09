@@ -10,7 +10,6 @@ import '../../actions/character/models/Character.dart';
 import '../../constants.dart';
 import '../../providers/character_provider.dart';
 import '../../services.dart';
-import '../../services/common_service.dart';
 
 class OverlayComponentWidget extends ConsumerWidget {
   final Character? character;
@@ -30,7 +29,7 @@ class OverlayComponentWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final int characterId = ref.watch(selectedCharacterProvider)!;
+    final int characterId = ref.watch(selectedCharacterProvider)!.id;
     final bool isSelected = characterId == character?.id;
     return GestureDetector(
       behavior: HitTestBehavior.deferToChild,
@@ -72,7 +71,7 @@ class OverlayComponentWidget extends ConsumerWidget {
         if (initializeSelectedPage != null) {
           initializeSelectedPage!(character!.assigned_characters!.length);
         }
-        characterService.changeCharacterByTap(ref, character!);
+        ref.read(selectedCharacterProvider.notifier).state = character;
         hideOverlay!();
       }, // 캐릭터 전환 or 추가 배정받기
       child: Container(
@@ -98,7 +97,12 @@ class OverlayComponentWidget extends ConsumerWidget {
                     : 'D+${mailService.getMailDateDiff(DateTime.now(), character!.assigned_characters!.first.first_mail_available_at) + 1} ${character?.name}',
                 style: TextStyle(
                   color: isSelected
-                      ? Color(ref.watch(characterThemeProvider).colors.primary)
+                      ? Color(ref
+                              .watch(selectedCharacterProvider)
+                              ?.theme
+                              .colors
+                              .primary ??
+                          ProjectConstants.defaultTheme.colors.primary)
                       : ColorConstants.neutral,
                   fontSize: 20,
                   height: 1,

@@ -55,9 +55,15 @@ class ModalChoiceWidget extends ConsumerWidget {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                     isDefaultButton
-                        ? Color(ColorTheme.defaultTheme.colors.primary)
+                        ? Color(ProjectConstants.defaultTheme.colors.primary)
                         : Color(
-                            ref.watch(characterThemeProvider).colors.primary),
+                            ref
+                                    .watch(selectedCharacterProvider)
+                                    ?.theme
+                                    .colors
+                                    .primary ??
+                                ProjectConstants.defaultTheme.colors.primary,
+                          ),
                   ),
                 ),
                 onPressed: callback,

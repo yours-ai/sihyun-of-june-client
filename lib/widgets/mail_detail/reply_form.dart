@@ -109,7 +109,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                         router.pop();
                         fetchMailListQuery(assignId: widget.mail.assign)
                             .refetch();
-                        requestRandomlyAppReview(widget.mail.is_first_reply);
+                        // TODO:api 바꾸기 requestRandomlyAppReview(widget.mail.is_first_reply);
                         setState(() {
                           isLoading = false;
                         });

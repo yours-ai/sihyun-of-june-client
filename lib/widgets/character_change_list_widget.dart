@@ -21,7 +21,7 @@ class CharacterChangeListWidget extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         if (isSelected) return;
-        characterService.changeCharacterByTap(ref, character);
+        ref.read(selectedCharacterProvider.notifier).state = character;
         context.pop();
       },
       child: Row(
@@ -52,9 +52,12 @@ class CharacterChangeListWidget extends ConsumerWidget {
               style: TextStyle(
                   fontSize: 17,
                   color: isSelected
-                      ? Color(
-                          ref.watch(characterThemeProvider).colors.primary,
-                        )
+                      ? Color(ref
+                              .watch(selectedCharacterProvider)
+                              ?.theme
+                              .colors
+                              .primary ??
+                          ProjectConstants.defaultTheme.colors.primary)
                       : ColorConstants.primary,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
             ),
@@ -68,8 +71,12 @@ class CharacterChangeListWidget extends ConsumerWidget {
                 },
                 icon: Icon(
                   PhosphorIcons.check_circle_fill,
-                  color:
-                      Color(ref.watch(characterThemeProvider).colors.primary),
+                  color: Color(ref
+                          .watch(selectedCharacterProvider)
+                          ?.theme
+                          .colors
+                          .primary ??
+                      ProjectConstants.defaultTheme.colors.primary),
                   size: 32,
                 ),
               ),

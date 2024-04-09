@@ -100,7 +100,7 @@ class _MailDetailScreenState extends State<MailDetailScreen> {
           return const Scaffold();
         }
         return QueryBuilder(
-          query: fetchMyCharacterQuery(),
+          query: fetchMyCharactersQuery(),
           builder: (context, characterState) {
             if (characterState.data == null) {
               return const SizedBox.shrink();

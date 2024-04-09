@@ -369,4 +369,27 @@ class TransactionService {
               });
         });
   }
+
+  void checkMailTicketAndRedirect({
+    required BuildContext context,
+    required mailId,
+    required assignId,
+    required characterColors,
+  }) async {
+    final mailRaw = await fetchMailByIdQuery(id: mailId).result;
+    final mailTickInfoRaw = await fetchMailTicketInfoQuery().result;
+    final mail = mailRaw.data;
+    final mailTicketInfo = mailTickInfoRaw.data;
+    if (mail != null && mailTicketInfo != null) {
+      if (!mail.has_permission) {
+        showBuyBothTicketModal(
+          context: context,
+          mailTicketInfo: mailTicketInfo,
+          characterColors: characterColors,
+          mailId: mailId,
+          assignId: assignId,
+        );
+      }
+    }
+  }
 }

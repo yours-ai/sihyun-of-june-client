@@ -12,7 +12,6 @@ import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
-import 'package:project_june_client/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -199,7 +198,6 @@ Future<void> logout() async {
   } catch (error) {}
   CachedQuery.instance.deleteCache();
   dio.options.headers.clear();
-  await storage.delete(key: StorageKeyConstants.characterId);
   Sentry.configureScope((scope) => scope.setUser(null));
   return;
 }

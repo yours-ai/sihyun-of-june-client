@@ -81,12 +81,12 @@ Query<Character> fetchCharacterByIdQuery({
   );
 }
 
-Query<List<Character>> fetchMyCharacterQuery({
+Query<List<Character>> fetchMyCharactersQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
     key: 'my-character',
-    queryFn: fetchMyCharacter,
+    queryFn: fetchMyCharacters,
     onError: onError,
   );
 }

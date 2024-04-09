@@ -31,19 +31,19 @@ class CharacterChangeModal extends ConsumerWidget {
         children: [
           ...characterList
               .where((character) =>
-                  ref.watch(selectedCharacterProvider) == character.id)
+                  ref.watch(selectedCharacterProvider)!.id == character.id)
               .map((character) => CharacterChangeListWidget(
                   character: character,
                   isSelected:
-                      ref.watch(selectedCharacterProvider) == character.id))
+                      ref.watch(selectedCharacterProvider)!.id == character.id))
               .toList(),
           ...characterList
               .where((character) =>
-                  ref.watch(selectedCharacterProvider) != character.id)
+                  ref.watch(selectedCharacterProvider)!.id != character.id)
               .map((character) => CharacterChangeListWidget(
                   character: character,
                   isSelected:
-                      ref.watch(selectedCharacterProvider) == character.id))
+                      ref.watch(selectedCharacterProvider)!.id == character.id))
               .toList(),
           QueryBuilder(
             query: fetchMeQuery(),
@@ -57,8 +57,7 @@ class CharacterChangeModal extends ConsumerWidget {
                     context.go(RoutePaths.assignment);
                     return;
                   }
-                  final firstName = characterService
-                      .getCurrentCharacterFirstName(characterList);
+                  final firstName = ref.watch(activeCharacterProvider)!.first_name;
                   if (firstName == '') {
                     context.go(RoutePaths.assignment);
                     return;
@@ -69,8 +68,7 @@ class CharacterChangeModal extends ConsumerWidget {
                     showModalBottomSheet(
                       context: context,
                       builder: (context) => RetestModalWidget(
-                        firstName: characterService
-                            .getCurrentCharacterFirstName(characterList),
+                        firstName: ref.watch(activeCharacterProvider)!.first_name,
                         isEnableToRetest: isEnableToRetest,
                       ),
                     );

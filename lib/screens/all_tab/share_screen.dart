@@ -33,8 +33,12 @@ class ShareScreen extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Color(
-                        ref.watch(characterThemeProvider).colors.primary),
+                    color: Color(ref
+                            .watch(selectedCharacterProvider)
+                            ?.theme
+                            .colors
+                            .primary ??
+                        ProjectConstants.defaultTheme.colors.primary),
                   ),
                   children: <TextSpan>[
                     TextSpan(
@@ -103,7 +107,8 @@ class ShareScreen extends ConsumerWidget {
                     ),
                     const SizedBox(width: 50),
                     MutationBuilder(
-                      mutation: convertShorterUrlMutation(onSuccess: (res, arg) {
+                      mutation:
+                          convertShorterUrlMutation(onSuccess: (res, arg) {
                         Share.share(
                             '${FirebaseRemoteConfig.instance.getString('referral_text').replaceAll("\\n", "\n")}\n$res',
                             subject: '유월의 시현이 공유하기');

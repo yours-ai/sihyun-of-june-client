@@ -124,7 +124,7 @@ class AllTabScreenState extends State<AllTabScreen>
 
   @override
   Widget build(context) {
-    final retrieveMyCharacterQuery = fetchMyCharacterQuery();
+    final retrieveMyCharacterQuery = fetchMyCharactersQuery();
     final retrieveMeQuery = fetchMeQuery();
     return SafeArea(
       child: TitleLayout(

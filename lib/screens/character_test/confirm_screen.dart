@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/CharacterTheme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/contrib/flutter_secure_storage.dart';
-import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import '../../constants.dart';
 import '../../globals.dart';
@@ -14,13 +12,11 @@ import '../../services.dart';
 
 class CharacterTestConfirmScreen extends ConsumerWidget {
   final int testId;
-  final int selectedCharacterId;
   final String selectedCharacterFirstName;
   final CharacterTheme selectedCharacterTheme;
 
   const CharacterTestConfirmScreen({
     super.key,
-    required this.selectedCharacterId,
     required this.testId,
     required this.selectedCharacterFirstName,
     required this.selectedCharacterTheme,
@@ -28,12 +24,11 @@ class CharacterTestConfirmScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final storage = getSecureStorage();
     return Scaffold(
       body: SafeArea(
         child: TitleLayout(
           body: Text(
-            '${selectedCharacterFirstName}이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
+            '$selectedCharacterFirstName이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
             '편지가 올 거에요 :)',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge,
@@ -64,14 +59,7 @@ class CharacterTestConfirmScreen extends ConsumerWidget {
                     onPressed: () async {
                       await mutate(testId).then(
                         (_) async {
-                          ref.read(characterThemeProvider.notifier).state =
-                              selectedCharacterTheme;
-                          ref.read(selectedCharacterProvider.notifier).state =
-                              selectedCharacterId;
-                          await storage.write(
-                            key: StorageKeyConstants.characterId,
-                            value: selectedCharacterId.toString(),
-                          );
+                          await characterService.refreshActiveCharacter(ref);
                           context.go(RoutePaths.homeDecideAssignmentMethod);
                         },
                       );
@@ -96,14 +84,6 @@ class CharacterTestConfirmScreen extends ConsumerWidget {
                     onPressed: () async {
                       await mutate(testId).then(
                         (_) async {
-                          ref.read(characterThemeProvider.notifier).state =
-                              selectedCharacterTheme;
-                          ref.read(selectedCharacterProvider.notifier).state =
-                              selectedCharacterId;
-                          await storage.write(
-                            key: StorageKeyConstants.characterId,
-                            value: selectedCharacterId.toString(),
-                          );
                           context.go(RoutePaths.starting);
                         },
                       );

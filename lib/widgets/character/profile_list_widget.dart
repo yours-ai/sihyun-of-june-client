@@ -94,7 +94,7 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      final selectedCharacterId = ref.watch(selectedCharacterProvider);
+      final selectedCharacterId = ref.watch(selectedCharacterProvider)?.id;
       final isImageUpdated = widget.characterList
               .where((character) => character.id == selectedCharacterId)
               .isNotEmpty &&

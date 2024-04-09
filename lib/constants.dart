@@ -25,19 +25,6 @@ abstract final class CachingDuration {
   static Duration newUser = const Duration(days: 1);
 }
 
-abstract final class ColorTheme {
-  static CharacterTheme defaultTheme = CharacterTheme(
-    colors: CharacterColors(
-      primary: 4294923379,
-      secondary: 4294932624,
-      inverse_primary: 4294947513,
-      inverse_surface: 4281741103,
-      inverse_on_surface: 4294700782,
-    ),
-    font: 'NanumNoRyeogHaNeunDongHee',
-  );
-}
-
 abstract final class AppID {
   static String ios = '6463772803';
   static String android = 'team.pygmalion.project_june_client';
@@ -120,6 +107,16 @@ abstract final class Urls {
 abstract final class ProjectConstants {
   static TimeOfDay mailReceiveTime = const TimeOfDay(hour: 21, minute: 0);
   static TimeOfDay mailSendDueTime = const TimeOfDay(hour: 9, minute: 0);
+  static CharacterTheme defaultTheme = CharacterTheme(
+    colors: CharacterColors(
+      primary: 4294923379,
+      secondary: 4294932624,
+      inverse_primary: 4294947513,
+      inverse_surface: 4281741103,
+      inverse_on_surface: 4294700782,
+    ),
+    font: 'NanumNoRyeogHaNeunDongHee',
+  );
 }
 
 abstract final class FontWeightConstants {
@@ -127,7 +124,5 @@ abstract final class FontWeightConstants {
 }
 
 abstract final class StorageKeyConstants {
-  static String characterId = 'CHARACTER_ID';
-  static String assignId = 'ASSIGN_ID';
   static String serverToken = 'SERVER_TOKEN';
 }

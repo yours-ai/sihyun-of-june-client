@@ -6,7 +6,6 @@ import 'package:project_june_client/actions/character/models/CharacterColors.dar
 import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
 import 'package:project_june_client/actions/mails/models/MailInList.dart';
 import 'package:project_june_client/actions/mails/models/MailTicketInfo.dart';
-import 'package:project_june_client/actions/mails/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/screens/mail/mail_detail_screen.dart';

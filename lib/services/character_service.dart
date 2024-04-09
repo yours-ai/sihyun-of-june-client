@@ -5,13 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/providers/character_provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class CharacterService {
   const CharacterService();
-
 
   List<CharacterImage> selectStackedImageList(List<CharacterImage> imageList) {
     final revealedImageList =
@@ -53,36 +51,12 @@ class CharacterService {
     ];
   }
 
-  Future<void> _saveSelectedCharacterId(int selectedCharacterId) async {
-    final storage = getSecureStorage();
-    await storage.write(
-        key: StorageKeyConstants.characterId, value: selectedCharacterId.toString());
-  }
-
-  void changeCharacterByTap(WidgetRef ref, Character character) async {
-    _saveSelectedCharacterId(character.id);
-    ref.read(selectedCharacterProvider.notifier).state = character.id;
-    ref.read(characterThemeProvider.notifier).state = character.theme;
-    ref.read(selectedAssignProvider.notifier).state =
-        character.assigned_characters!.last.assigned_character_id;
-  }
-
   List<int> getCharacterIds(List<Character> characterList) {
     return characterList.map((character) => character.id).toList();
   }
 
-  String getCurrentCharacterFirstName(List<Character> characterList) {
-    final currentCharacterList =
-        characterList.where((character) => character.is_current == true);
-    if (currentCharacterList.isEmpty) return '';
-    return characterList
-        .where((character) => character.is_current == true)
-        .first
-        .first_name;
-  }
-
   Future<bool> checkEnableToRetest() async {
-    final myCharactersQuery = await fetchMyCharacterQuery().result;
+    final myCharactersQuery = await fetchMyCharactersQuery().result;
     final hasCharacter =
         myCharactersQuery.data != null && myCharactersQuery.data!.isNotEmpty;
     final myCharacters = myCharactersQuery.data;
@@ -92,5 +66,26 @@ class CharacterService {
     final allCharacters = await fetchAllCharactersQuery().result;
     final isEnableToRetest = myCharacters.length != allCharacters.data!.length;
     return isEnableToRetest;
+  }
+
+  Future<void> refreshActiveCharacter(WidgetRef ref) async {
+    final myCharactersRawData = await fetchMyCharactersQuery().result;
+    if (myCharactersRawData.error != null) {
+      Sentry.captureException(myCharactersRawData.error!);
+      return;
+    }
+    final myCharacters = myCharactersRawData.data;
+    if (myCharacters == null || myCharacters.isEmpty) {
+      ref.read(activeCharacterProvider.notifier).state = null;
+      ref.read(selectedCharacterProvider.notifier).state = null;
+      return;
+    }
+    final activeCharacter = myCharacters.firstWhere(
+      (character) => character.assigned_characters!
+          .any((assignedCharacter) => assignedCharacter.is_active),
+      orElse: () => throw Exception('Active character not found.'),
+    );
+    ref.read(activeCharacterProvider.notifier).state = activeCharacter;
+    ref.read(selectedCharacterProvider.notifier).state = activeCharacter;
   }
 }

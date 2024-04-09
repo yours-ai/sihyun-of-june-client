@@ -87,8 +87,7 @@ class ChangeCharacterOverlayWidgetState
                           .toList(),
                       OverlayComponentWidget(
                         hideOverlay: widget.hideOverlay,
-                        firstName: characterService
-                            .getCurrentCharacterFirstName(widget.characterList),
+                        firstName: ref.watch(activeCharacterProvider)!.first_name,
                         characterIds: characterService
                             .getCharacterIds(widget.characterList),
                       ),

@@ -148,9 +148,11 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
 
   @override
   Widget build(context) {
-    ref.listen(characterThemeProvider, (previous, next) async {
+    ref.listen(selectedCharacterProvider, (previous, next) async {
       _onMessageSubscription?.cancel();
-      final characterColors = ref.watch(characterThemeProvider).colors;
+      final characterColors =
+          ref.watch(selectedCharacterProvider)?.theme.colors ??
+              ProjectConstants.defaultTheme.colors;
 
       _onMessageSubscription = FirebaseMessaging.onMessage.listen(
         (RemoteMessage message) {
@@ -219,8 +221,9 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
               textStyle: TextStyle(
                 fontWeight: FontWeightConstants.semiBold,
               ),
-              backgroundColor:
-                  Color(ref.watch(characterThemeProvider).colors.primary),
+              backgroundColor: Color(
+                  ref.watch(selectedCharacterProvider)?.theme.colors.primary ??
+                      ProjectConstants.defaultTheme.colors.primary),
               splashFactory: NoSplash.splashFactory,
               padding: const EdgeInsets.symmetric(
                 vertical: 17.0,
@@ -272,7 +275,8 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
           ),
         ),
         scrollBehavior: SplashScrollBehavior(
-            ref.watch(characterThemeProvider).colors.primary),
+            ref.watch(selectedCharacterProvider)?.theme.colors.primary ??
+                ProjectConstants.defaultTheme.colors.primary),
       ),
     );
   }

@@ -85,7 +85,6 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
             context.push(
               RoutePaths.testConfirm,
               extra: {
-                'selectedCharacterId': widget.character.id,
                 'testId': widget.testId,
                 'selectedCharacterFirstName': widget.character.first_name,
                 'selectedCharacterTheme': widget.character.theme,

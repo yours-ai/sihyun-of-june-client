@@ -4,13 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/globals.dart';
-import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/create_snackbar.dart';
@@ -70,7 +67,6 @@ class DecideAssignmentMethodScreenState
 
   @override
   Widget build(BuildContext context) {
-    final storage = getSecureStorage();
     ReallocateDTO makeReallocateDto(String payment) {
       if (payment == 'coin') {
         return ReallocateDTO(
@@ -99,11 +95,12 @@ class DecideAssignmentMethodScreenState
           actions: MutationBuilder(
             mutation: reallocateCharacterMutation(
               onSuccess: (res, arg) async {
+                await characterService.refreshActiveCharacter(ref);
                 scaffoldMessengerKey.currentState?.showSnackBar(
                   createSnackBar(
                     snackBarText:
                         transactionService.getPurchaseStateText(arg.payment),
-                    characterColors: ColorTheme.defaultTheme.colors,
+                    characterColors: ProjectConstants.defaultTheme.colors,
                   ),
                 );
                 context.go(RoutePaths.assignment);
@@ -132,15 +129,6 @@ class DecideAssignmentMethodScreenState
                         setState(() {
                           isEnableToClick = false;
                         });
-                        final bool is30DaysFinished = await fetchMeQuery()
-                            .result
-                            .then((value) => value.data!.is_30days_finished);
-                        if (is30DaysFinished == false) {
-                          await storage.delete(
-                              key: StorageKeyConstants.characterId);
-                          ref.read(selectedCharacterProvider.notifier).state =
-                              await null;
-                        }
                         await mutate(makeReallocateDto('point')); // 결제
                       }
                     },
@@ -148,7 +136,7 @@ class DecideAssignmentMethodScreenState
                       return FilledButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                            Color(ColorTheme.defaultTheme.colors.primary),
+                            Color(ProjectConstants.defaultTheme.colors.primary),
                           ),
                         ),
                         onPressed: callback,
@@ -169,15 +157,6 @@ class DecideAssignmentMethodScreenState
                         setState(() {
                           isEnableToClick = false;
                         });
-                        final bool is30DaysFinished = await fetchMeQuery()
-                            .result
-                            .then((value) => value.data!.is_30days_finished);
-                        if (is30DaysFinished == false) {
-                          await storage.delete(
-                              key: StorageKeyConstants.characterId);
-                          ref.read(selectedCharacterProvider.notifier).state =
-                              await null;
-                        }
                         await mutate(makeReallocateDto('coin')); // 결제
                       }
                     },
@@ -185,7 +164,7 @@ class DecideAssignmentMethodScreenState
                       return FilledButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
-                            Color(ColorTheme.defaultTheme.colors.primary),
+                            Color(ProjectConstants.defaultTheme.colors.primary),
                           ),
                         ),
                         onPressed: callback,

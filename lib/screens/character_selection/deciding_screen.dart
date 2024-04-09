@@ -29,9 +29,9 @@ class CharacterSelectionDecidingScreen extends ConsumerWidget {
               allCharacterState.data == null) {
             return const Center(child: CircularProgressIndicator());
           }
-          fetchMyCharacterQuery().refetch();
+          fetchMyCharactersQuery().refetch();
           return QueryBuilder(
-            query: fetchMyCharacterQuery(),
+            query: fetchMyCharactersQuery(),
             builder: (context, myCharacterState) {
               if (myCharacterState.status != QueryStatus.success ||
                   myCharacterState.data == null) {

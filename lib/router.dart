@@ -213,7 +213,6 @@ final router = GoRouter(
         final extra = state.extra as Map<String, dynamic>;
         return CustomTransitionPage(
           child: CharacterTestConfirmScreen(
-            selectedCharacterId: extra['selectedCharacterId'] as int,
             testId: extra['testId'] as int,
             selectedCharacterFirstName: extra['selectedCharacterFirstName'],
             selectedCharacterTheme:

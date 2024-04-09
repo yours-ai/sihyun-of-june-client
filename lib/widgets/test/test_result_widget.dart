@@ -120,7 +120,8 @@ class _TestResultWidget extends State<TestResultWidget> {
                           return FilledButton(
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                Color(ColorTheme.defaultTheme.colors.primary),
+                                Color(ProjectConstants
+                                    .defaultTheme.colors.primary),
                               ),
                             ),
                             onPressed: callback,
