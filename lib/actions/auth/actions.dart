@@ -1,14 +1,9 @@
-import 'dart:io';
-
-import 'package:amplitude_flutter/amplitude.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/models/SihyunOfJuneUser.dart';
-import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
@@ -149,23 +144,6 @@ void setServerTokenOnDio(String serverToken) {
   dio.options.headers['Authorization'] = 'Token $serverToken';
 }
 
-void _setAmplitudeProps() {
-  fetchMeQuery(onSuccess: (data) async {
-    final amplitude = Amplitude.getInstance();
-    amplitude.setUserId(data.id.toString());
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    if (Platform.isAndroid) {
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      amplitude.setDeviceId(androidInfo.id);
-    } else if (Platform.isIOS) {
-      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      if (iosInfo.identifierForVendor != null) {
-        amplitude.setDeviceId(iosInfo.identifierForVendor!);
-      }
-    }
-  }).result;
-}
-
 Future<void> login(String serverToken, {bool? saveTokenToClient}) async {
   saveTokenToClient ??= true;
   setServerTokenOnDio(serverToken);
@@ -174,7 +152,6 @@ Future<void> login(String serverToken, {bool? saveTokenToClient}) async {
     await storage.write(
         key: StorageKeyConstants.serverToken, value: serverToken);
   }
-  _setAmplitudeProps();
 }
 
 Future<String?> getServerToken() async {
