@@ -104,12 +104,10 @@ Mutation<void, int> confirmTestMutation({
 }
 
 Mutation<void, int> readCharacterStoryMutation({
-  refetchQueries = const [],
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, int>(
-    refetchQueries: refetchQueries,
     queryFn: readCharacterStory,
     onSuccess: onSuccess,
     onError: onError,

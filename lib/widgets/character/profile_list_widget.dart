@@ -24,12 +24,14 @@ class ProfileListWidget extends ConsumerStatefulWidget {
   final ProfileWidgetType profileWidgetType;
   final List<Character> characterList;
   final int? testId;
+  final WidgetRef? parentRef;
 
   const ProfileListWidget({
     super.key,
     required this.profileWidgetType,
     required this.characterList,
     this.testId,
+    this.parentRef,
   });
 
   @override
@@ -94,7 +96,7 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      final selectedCharacterId = ref.watch(selectedCharacterProvider)?.id;
+      final selectedCharacterId = widget.characterList.first.id;
       final isImageUpdated = widget.characterList
               .where((character) => character.id == selectedCharacterId)
               .isNotEmpty &&
@@ -104,11 +106,10 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                   .is_image_updated ??
               false);
       if (widget.profileWidgetType == ProfileWidgetType.myCharacterProfile &&
-          selectedCharacterId != null &&
           isImageUpdated) {
-        readCharacterStoryMutation(
-          refetchQueries: ['my-character'],
-        ).mutate(selectedCharacterId);
+        readCharacterStoryMutation(onSuccess: (res, arg) {
+          characterService.refreshActiveCharacter(widget.parentRef!);
+        }).mutate(selectedCharacterId);
       }
     });
   }

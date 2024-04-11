@@ -61,6 +61,7 @@ class MyCharacterScreen extends ConsumerWidget {
             return ProfileListWidget(
               profileWidgetType: ProfileWidgetType.myCharacterProfile,
               characterList: sortedCharacterList,
+              parentRef: ref,
             );
           },
         );

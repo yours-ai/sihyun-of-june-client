@@ -69,12 +69,8 @@ class CharacterService {
   }
 
   Future<void> refreshActiveCharacter(WidgetRef ref) async {
-    final myCharactersRawData = await fetchMyCharactersQuery().result;
-    if (myCharactersRawData.error != null) {
-      Sentry.captureException(myCharactersRawData.error!);
-      return;
-    }
-    final myCharacters = myCharactersRawData.data;
+    final myCharacters =
+        await fetchMyCharactersQuery().refetch().then((value) => value.data);
     if (myCharacters == null || myCharacters.isEmpty) {
       ref.read(activeCharacterProvider.notifier).state = null;
       ref.read(selectedCharacterProvider.notifier).state = null;
