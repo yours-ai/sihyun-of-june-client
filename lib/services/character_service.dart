@@ -67,13 +67,38 @@ class CharacterService {
     return canRetest;
   }
 
-  Future<void> refreshActiveCharacter(WidgetRef ref) async {
+  Future<void> resetProviderOfCharacter(WidgetRef ref) async {
+    final characterList = await _getCharacterListAndActiveCharacter(ref);
+    if (characterList[0] == null || characterList[1] == null) {
+      return;
+    }
+    final activeCharacter = characterList[1];
+    ref.read(selectedCharacterProvider.notifier).state = activeCharacter;
+  }
+
+  Future<void> refreshProviderOfCharacter(WidgetRef ref) async {
+    final characterList = await _getCharacterListAndActiveCharacter(ref);
+    if (characterList[0] == null || characterList[1] == null) {
+      return;
+    }
+    final myCharacters = characterList[0];
+    if (ref.read(selectedCharacterProvider) != null) {
+      final selectedCharacter = myCharacters.firstWhere(
+        (character) => character.id == ref.read(selectedCharacterProvider)!.id,
+        orElse: () => throw Exception('Selected character maybe be deleted.'),
+      );
+      ref.read(selectedCharacterProvider.notifier).state = selectedCharacter;
+    }
+  }
+
+  Future<List<dynamic>> _getCharacterListAndActiveCharacter(
+      WidgetRef ref) async {
     final myCharacters =
         await fetchMyCharactersQuery().refetch().then((value) => value.data);
     if (myCharacters == null || myCharacters.isEmpty) {
       ref.read(activeCharacterProvider.notifier).state = null;
       ref.read(selectedCharacterProvider.notifier).state = null;
-      return;
+      return [null, null];
     }
     final activeCharacter = myCharacters.firstWhere(
       (character) => character.assigned_characters!
@@ -81,6 +106,6 @@ class CharacterService {
       orElse: () => throw Exception('Active character not found.'),
     );
     ref.read(activeCharacterProvider.notifier).state = activeCharacter;
-    ref.read(selectedCharacterProvider.notifier).state = activeCharacter;
+    return [myCharacters, activeCharacter];
   }
 }

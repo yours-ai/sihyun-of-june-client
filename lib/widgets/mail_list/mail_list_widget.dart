@@ -308,7 +308,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                                     selectedPage! - 1]
                                                 .assigned_character_id)
                                         .refetch();
-                                    await characterService.refreshActiveCharacter(ref);
+                                    await characterService
+                                        .refreshProviderOfCharacter(ref);
                                     reloadMailController!.forward().then(
                                         (_) => reloadMailController!.reverse());
                                   },

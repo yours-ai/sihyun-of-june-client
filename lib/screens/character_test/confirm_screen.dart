@@ -59,7 +59,7 @@ class CharacterTestConfirmScreen extends ConsumerWidget {
                     onPressed: () async {
                       await mutate(testId).then(
                         (_) async {
-                          await characterService.refreshActiveCharacter(ref);
+                          await characterService.resetProviderOfCharacter(ref);
                           context.go(RoutePaths.homeDecideAssignmentMethod);
                         },
                       );

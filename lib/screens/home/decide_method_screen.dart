@@ -95,7 +95,7 @@ class DecideAssignmentMethodScreenState
           actions: MutationBuilder(
             mutation: reallocateCharacterMutation(
               onSuccess: (res, arg) async {
-                await characterService.refreshActiveCharacter(ref);
+                await characterService.resetProviderOfCharacter(ref);
                 scaffoldMessengerKey.currentState?.showSnackBar(
                   createSnackBar(
                     snackBarText:

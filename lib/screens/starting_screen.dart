@@ -112,7 +112,7 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       if (!mounted) return;
       context.go(RoutePaths.newUserAssignmentStarting);
     } else {
-      await characterService.refreshActiveCharacter(ref);
+      await characterService.resetProviderOfCharacter(ref);
       if (!mounted) return;
       context.go(RoutePaths.home);
     }
