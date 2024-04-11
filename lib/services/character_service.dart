@@ -6,7 +6,6 @@ import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 class CharacterService {
   const CharacterService();

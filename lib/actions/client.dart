@@ -19,7 +19,7 @@ final Dio dio = Dio(
   ),
 );
 
-void initServerErrorSnackbar(BuildContext context) {
+void initServerErrorSnackbar() {
   dio.interceptors.add(
     InterceptorsWrapper(
       onError: (error, handler) async {

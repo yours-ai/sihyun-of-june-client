@@ -27,14 +27,12 @@ class StartingScreen extends ConsumerStatefulWidget {
 
 class StartingScreenState extends ConsumerState<StartingScreen> {
   _checkAuthAndLand() async {
+    initServerErrorSnackbar();
     final isLogined = await loadIsLogined();
     FlutterNativeSplash.remove();
 
-    await _requestAppTracking();
     await _checkAppAvailability();
     await _checkUpdateAvailable();
-    if (!mounted) return;
-    initServerErrorSnackbar(context);
 
     if (isLogined == false) {
       if (!mounted) return;
@@ -43,12 +41,17 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     }
 
     _setUserInfoForSentry();
+    await _requestAppTracking();
+
     await _initializeCharacterInfo();
-    await _checkNotificationPermission();
+    _checkNotificationPermission();
+    _redirectIfClickedPush();
+  }
+
+  Future<void> _redirectIfClickedPush() async {
     final push = await notificationService.getPushIfPushClicked();
     if (push != null) {
       notificationService.handleFCMMessageTap(push);
-      return;
     }
   }
 
