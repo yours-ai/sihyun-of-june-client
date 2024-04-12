@@ -13,6 +13,7 @@ class AppNotification {
   bool? is_read;
   bool is_all;
   int user;
+  Map<String, dynamic>? payload;
 
   AppNotification({
     required this.id,
@@ -24,6 +25,7 @@ class AppNotification {
     this.is_read,
     required this.is_all,
     required this.user,
+    this.payload,
   });
 
   factory AppNotification.fromJson(Map<String, dynamic> json) =>

@@ -372,16 +372,16 @@ class TransactionService {
 
   void checkMailTicketAndRedirect({
     required BuildContext context,
-    required mailId,
-    required assignId,
-    required characterColors,
+    required int mailId,
+    required CharacterColors characterColors,
+    required int assignId,
   }) async {
     final mailRaw = await fetchMailByIdQuery(id: mailId).result;
-    final mailTickInfoRaw = await fetchMailTicketInfoQuery().result;
-    final mail = mailRaw.data;
-    final mailTicketInfo = mailTickInfoRaw.data;
-    if (mail != null && mailTicketInfo != null) {
-      if (!mail.has_permission) {
+    final hasPermission = mailRaw.error?.response?.statusCode != 403;
+    final mailTicketInfo =
+        await fetchMailTicketInfoQuery().result.then((value) => value.data);
+    if (mailTicketInfo != null) {
+      if (!hasPermission) {
         showBuyBothTicketModal(
           context: context,
           mailTicketInfo: mailTicketInfo,
@@ -389,6 +389,8 @@ class TransactionService {
           mailId: mailId,
           assignId: assignId,
         );
+      } else {
+        context.push('${RoutePaths.mailListMailDetail}/$mailId');
       }
     }
   }

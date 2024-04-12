@@ -39,11 +39,12 @@ abstract final class RoutePaths {
   static String homeMyCharacter = '$home/${SubRoutePaths.myCharacter}';
   static String homeDecideAssignmentMethod =
       '$home/${SubRoutePaths.decideAssignmentMethod}';
+  static String homeNotificationList =
+      '$home/${SubRoutePaths.notificationList}';
   static String between = '/between';
   static String betweenRelationship = '$between/${SubRoutePaths.relationship}';
   static String mailList = '/mails';
   static String mailListMailDetail = '$mailList/${SubRoutePaths.mailDetail}';
-  static String notificationList = '/notifications';
   static String all = '/all';
   static String allMyPoint = '$all/${SubRoutePaths.myPoint}';
   static String allMyPointLog =
@@ -89,6 +90,7 @@ abstract final class SubRoutePaths {
   static String extend = 'extend';
   static String confirm = 'confirm';
   static String relationship = 'relationship';
+  static String notificationList = 'notification-list';
 }
 
 abstract final class Urls {

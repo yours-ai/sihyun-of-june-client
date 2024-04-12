@@ -154,14 +154,16 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
           String snackBarText =
               message.notification?.body ?? message.data['body'];
           String? redirectLink = message.data['link'];
-          int? notificationId = int.tryParse(message.data['id'] ?? '');
+          int? notificationId = int.tryParse(message.data['id']);
           scaffoldMessengerKey.currentState?.showSnackBar(
             createSnackBar(
               snackBarText: snackBarText,
               characterColors: characterColors,
               onPressed: () => notificationService.routeOnMessage(
-                notificationId,
-                redirectLink,
+                notificationId: notificationId,
+                redirectLink: redirectLink,
+                characterColors: characterColors,
+                fcmData: message.data,
               ),
             ),
           );

@@ -66,7 +66,7 @@ class TopNavbarWidget extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () => context.push(RoutePaths.notificationList),
+                onTap: () => context.push(RoutePaths.homeNotificationList),
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: QueryBuilder(

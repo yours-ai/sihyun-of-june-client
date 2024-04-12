@@ -61,37 +61,45 @@ final router = GoRouter(
       ],
     ),
     GoRoute(
-        path: RoutePaths.home,
-        pageBuilder: (context, state) {
-          return NoTransitionPage(
-            key: state.pageKey,
-            child: NavbarLayout(
-              routePath: state.matchedLocation,
-              child: const HomeScreen(),
-            ),
-          );
-        },
-        routes: [
-          GoRoute(
-            path: SubRoutePaths.myCharacter,
-            pageBuilder: (context, state) => CustomTransitionPage(
-              child: const MyCharacterScreen(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              },
-              transitionDuration:
-                  const Duration(milliseconds: 300), // 전환 지속 시간 설정
-            ),
+      path: RoutePaths.home,
+      pageBuilder: (context, state) {
+        return NoTransitionPage(
+          key: state.pageKey,
+          child: NavbarLayout(
+            routePath: state.matchedLocation,
+            child: const HomeScreen(),
           ),
-          GoRoute(
-            path: SubRoutePaths.decideAssignmentMethod,
-            builder: (context, state) => const DecideAssignmentMethodScreen(),
+        );
+      },
+      routes: [
+        GoRoute(
+          path: SubRoutePaths.myCharacter,
+          pageBuilder: (context, state) => CustomTransitionPage(
+            child: const MyCharacterScreen(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+            transitionDuration:
+                const Duration(milliseconds: 300), // 전환 지속 시간 설정
           ),
-        ]),
+        ),
+        GoRoute(
+          path: SubRoutePaths.decideAssignmentMethod,
+          builder: (context, state) => const DecideAssignmentMethodScreen(),
+        ),
+        GoRoute(
+          path: SubRoutePaths.notificationList,
+          builder: (context, state) {
+            final fcmData = state.extra as Map<String, dynamic>?;
+            return NotificationListScreen(fcmData);
+          },
+        ),
+      ],
+    ),
     GoRoute(
       path: RoutePaths.between,
       pageBuilder: (context, state) {
@@ -128,13 +136,6 @@ final router = GoRouter(
               MailDetailScreen(id: int.tryParse(state.pathParameters['id']!)!),
         ),
       ],
-    ),
-    GoRoute(
-      path: RoutePaths.notificationList,
-      builder: (context, state) {
-        final redirectLink = state.extra as String?;
-        return NotificationListScreen(redirectLink);
-      },
     ),
     GoRoute(
       path: RoutePaths.all,
