@@ -75,8 +75,8 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
         mailService.deleteBeforeReply(widget.mail.id);
       },
     );
-    showConfirmModal() async {
-      await showModalBottomSheet(
+    showConfirmModal() {
+      showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
           return MutationBuilder(
@@ -95,7 +95,6 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                         isLoading = true;
                       });
                       mutate(getReplyDTO()).then((_) {
-                        router.pop();
                         fetchMailListQuery(assignId: widget.mail.assign)
                             .refetch();
                         mailService.requestRandomlyAppReview();
@@ -103,16 +102,13 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                           isLoading = false;
                         });
                       });
-                    } else {
-                      await Future.delayed(const Duration(seconds: 5));
+                      router.pop();
                     }
                   },
                   cancelText: '아니요',
                   onCancel: () async {
                     if (!isLoading) {
                       context.pop();
-                    } else {
-                      await Future.delayed(const Duration(seconds: 5));
                     }
                   },
                 ),
@@ -180,17 +176,23 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                         MaterialStateProperty.all(ColorConstants.gray),
                   ),
                   onPressed: () {
+                    if (isLoading) return;
                     if (widget.formKey.currentState!.validate()) {
                       showConfirmModal();
                     }
                   },
-                  child: const Text(
-                    '답장 보내기',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: 16,
-                    ),
-                  ),
+                  child: Builder(builder: (context) {
+                    if (isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return const Text(
+                      '답장 보내기',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: 16,
+                      ),
+                    );
+                  }),
                 ),
               ),
               const SizedBox(height: 10),
