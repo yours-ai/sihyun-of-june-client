@@ -56,9 +56,11 @@ class DecideAssignmentMethodScreenState
           submitText: '친구 초대하고 300P 받기',
           onCancel: () async {
             context.push(RoutePaths.allMyCoinCharge);
+            context.pop();
           },
           onSubmit: () async {
             context.push(RoutePaths.allShare);
+            context.pop();
           },
         ),
       ),

@@ -127,4 +127,5 @@ abstract final class FontWeightConstants {
 
 abstract final class StorageKeyConstants {
   static String serverToken = 'SERVER_TOKEN';
+  static String mailReply = 'MAIL_REPLY';
 }

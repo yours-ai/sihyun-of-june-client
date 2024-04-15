@@ -125,7 +125,8 @@ class MailService {
     required int mailId,
   }) async {
     final storage = getSecureStorage();
-    final beforeReply = await storage.read(key: 'MAIL_REPLY_$mailId');
+    final beforeReply =
+        await storage.read(key: '${StorageKeyConstants.mailReply}_$mailId');
     if (beforeReply != null) {
       controller.text = beforeReply;
     }
@@ -136,12 +137,13 @@ class MailService {
     required int mailId,
   }) async {
     final storage = getSecureStorage();
-    await storage.write(key: 'MAIL_REPLY_$mailId', value: reply);
+    await storage.write(
+        key: '${StorageKeyConstants.mailReply}_$mailId', value: reply);
   }
 
   Future<void> deleteBeforeReply(int mailId) async {
     final storage = getSecureStorage();
-    await storage.delete(key: 'MAIL_REPLY_$mailId');
+    await storage.delete(key: '${StorageKeyConstants.mailReply}_$mailId');
   }
 
   int checkMailNumber(
@@ -236,7 +238,8 @@ class MailService {
     return emptyCellsForWeekDay + modifiedWidgetList;
   }
 
-  UserStateInMail checkUserStateInMail(MailInDetail mail, bool isActiveCharacter) {
+  UserStateInMail checkUserStateInMail(
+      MailInDetail mail, bool isActiveCharacter) {
     if (mail.replies!.isNotEmpty) {
       return UserStateInMail.replied;
     }

@@ -35,7 +35,6 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     await _checkUpdateAvailable();
 
     if (isLogined == false) {
-      if (!mounted) return;
       context.go(RoutePaths.landing);
       return;
     }
@@ -65,7 +64,6 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     );
     await remoteConfig.fetchAndActivate();
     if (remoteConfig.getBool('app_available') == false) {
-      if (!mounted) return;
       return showDialog(
         barrierDismissible: false,
         context: context,
@@ -82,7 +80,6 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
         },
       );
     } else {
-      if (!mounted) return;
       await updateService.forceUpdateByRemoteConfig(context, remoteConfig);
     }
   }
@@ -109,11 +106,9 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     final isNewUserRawData = await fetchIsNewUserQuery().result;
     final isNewUser = isNewUserRawData.data!['is_available'];
     if (isNewUser) {
-      if (!mounted) return;
       context.go(RoutePaths.newUserAssignmentStarting);
     } else {
       await characterService.resetProviderOfCharacter(ref);
-      if (!mounted) return;
       context.go(RoutePaths.home);
     }
   }
