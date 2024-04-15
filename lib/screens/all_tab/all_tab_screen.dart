@@ -5,7 +5,6 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/common/menu/menu_title_widget.dart';
@@ -17,10 +16,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../actions/auth/actions.dart';
 import '../../actions/auth/queries.dart';
-import '../../actions/character/models/Character.dart';
 import '../../constants.dart';
 import '../../services.dart';
-import '../../widgets/character_change_modal.dart';
 import '../../widgets/common/title_layout.dart';
 
 class AllTabScreen extends ConsumerStatefulWidget {

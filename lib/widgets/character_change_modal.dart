@@ -1,7 +1,6 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
@@ -9,7 +8,6 @@ import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
 import '../actions/auth/queries.dart';
 import '../actions/character/models/Character.dart';
 import '../constants.dart';
-import '../providers/character_provider.dart';
 import 'character_change_list_widget.dart';
 
 class CharacterChangeModal extends StatelessWidget {

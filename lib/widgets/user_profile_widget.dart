@@ -11,7 +11,6 @@ import 'package:project_june_client/widgets/common/unread_dot.dart';
 import '../constants.dart';
 import '../providers/character_provider.dart';
 import '../services.dart';
-import 'character_change_modal.dart';
 
 class UserProfileWidget extends ConsumerStatefulWidget {
   final Query myCharactersQuery, retrieveMeQuery;
