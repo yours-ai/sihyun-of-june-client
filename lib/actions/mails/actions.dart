@@ -2,6 +2,7 @@ import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/actions/mails/dtos.dart';
 import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
 import 'package:project_june_client/actions/mails/models/MailInList.dart';
+import 'package:project_june_client/services.dart';
 
 import 'models/MailTicketInfo.dart';
 
@@ -9,9 +10,11 @@ Future<List<MailInList>> fetchMailList(int assignId) async {
   final response = await dio.get(
     '/mail/v4/character-sent-mails?character_selected_by_user_id=$assignId',
   );
-  return response.data
+  final rawMailList = response.data
       .map<MailInList>((json) => MailInList.fromJson(json))
       .toList();
+  final mailList = mailService.validateAndFilterMails(rawMailList);
+  return mailList;
 }
 
 Future<MailInDetail> fetchMailById(int id) async {

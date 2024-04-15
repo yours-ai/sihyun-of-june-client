@@ -250,4 +250,25 @@ class MailService {
       return UserStateInMail.cannotReplyPastMonth;
     }
   }
+
+  List<MailInList> validateAndFilterMails(List<MailInList> mailList) {
+    final groupedByDay = <int, List<MailInList>>{};
+
+    for (final mail in mailList) {
+      int day = mail.day;
+      if (!groupedByDay.containsKey(day)) {
+        groupedByDay[day] = [];
+      }
+      groupedByDay[day]!.add(mail);
+    }
+
+    List<MailInList> filteredList = [];
+    for (final group in groupedByDay.values) {
+      final smallestIdItem = group
+          .reduce((current, next) => current.id < next.id ? current : next);
+      filteredList.add(smallestIdItem);
+    }
+
+    return filteredList;
+  }
 }
