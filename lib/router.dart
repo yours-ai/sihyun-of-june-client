@@ -275,10 +275,7 @@ final router = GoRouter(
       path: RoutePaths.retest,
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>;
-        return RetestInfoScreen(
-          characterIds: extra['characterIds'] as List<int>,
-          firstName: extra['firstName'] as String,
-        );
+        return RetestInfoScreen(extra['firstName'] as String);
       },
       routes: [
         GoRoute(

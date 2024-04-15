@@ -24,17 +24,6 @@ class UserProfileWidget extends ConsumerStatefulWidget {
 }
 
 class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
-  void _showMultiCharacterModal(List<Character> characterList) {
-    showModalBottomSheet(
-      backgroundColor: ColorConstants.veryLightGray,
-      context: context,
-      showDragHandle: true,
-      builder: (context) {
-        return CharacterChangeModal(characterList: characterList);
-      },
-    );
-  } //3.0작업
-
   @override
   Widget build(BuildContext context) {
     return QueryBuilder(
@@ -80,7 +69,11 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                         },
                         onLongPressEnd: (_) {
                           HapticFeedback.heavyImpact();
-                          _showMultiCharacterModal(state.data!);
+                          characterService.showCharacterChangeModal(
+                            characterList: state.data!,
+                            context: context,
+                            ref: ref,
+                          );
                         },
                         child: Container(
                           padding: const EdgeInsets.all(1.5),

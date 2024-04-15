@@ -4,11 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/auth/queries.dart';
-import 'package:project_june_client/actions/character/queries.dart';
-import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/top_navbar.dart';
-import 'package:project_june_client/widgets/mail_list/change_character_overlay_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
 import '../../actions/character/models/Character.dart';
@@ -29,18 +25,12 @@ class MailListWidget extends ConsumerStatefulWidget {
 class MailListWidgetState extends ConsumerState<MailListWidget>
     with TickerProviderStateMixin {
   int? selectedPage;
-  final GlobalKey _targetKey = GlobalKey();
-  AnimationController? profileChangeController, reloadMailController;
+  AnimationController? reloadMailController;
   Animation<double>? reloadMailFadeAnimation;
-  OverlayEntry? overlayEntry;
 
   @override
   void initState() {
     super.initState();
-    profileChangeController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 100), // 애니메이션 지속 시간
-    );
     reloadMailController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300), // 애니메이션 지속 시간
@@ -48,55 +38,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
     reloadMailFadeAnimation =
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      redirectRetest();
-    });
-  }
-
-  void redirectRetest() async {
-    final myCharacterList =
-        await fetchMyCharactersQuery().result.then((value) => value.data);
-    final activeCharacter = ref.read(activeCharacterProvider);
-    if (myCharacterList == null || activeCharacter == null) {
-      return; // active assign character가 없는 경우
-    }
-    final bool is30DaysFinished = await fetchMeQuery()
-        .result
-        .then((value) => value.data!.is_30days_finished);
-    if (!mounted) return;
-    if (activeCharacter.id == ref.read(selectedCharacterProvider)?.id &&
-        is30DaysFinished) {
-      context.push(
-        RoutePaths.retest,
-        extra: <String, dynamic>{
-          'firstName': activeCharacter.first_name,
-          'characterIds': characterService.getCharacterIds(myCharacterList),
-        },
-      );
-    }
-  }
-
-  void changeProfileList(List<Character> characterList) {
-    final RenderObject? renderBox =
-        _targetKey.currentContext?.findRenderObject();
-    if (renderBox is RenderBox) {
-      final Offset offset = renderBox.localToGlobal(Offset.zero);
-      overlayEntry = OverlayEntry(
-        builder: (context) => ChangeCharacterOverlayWidget(
-          hideOverlay: hideOverlay,
-          offset: offset,
-          characterList: characterList,
-          profileChangeController: profileChangeController!,
-          initializeSelectedPage: initializeSelectedPage,
-        ),
-      );
-      Overlay.of(context).insert(overlayEntry!);
-      profileChangeController!.forward();
-    }
-  }
-
-  void hideOverlay() {
-    profileChangeController!.reverse().then((_) {
-      overlayEntry!.remove();
+      characterService.redirectRetest(ref, context);
     });
   }
 

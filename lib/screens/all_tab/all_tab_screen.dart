@@ -2,8 +2,10 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 import 'package:project_june_client/widgets/common/menu/menu_title_widget.dart';
@@ -21,14 +23,14 @@ import '../../services.dart';
 import '../../widgets/character_change_modal.dart';
 import '../../widgets/common/title_layout.dart';
 
-class AllTabScreen extends StatefulWidget {
+class AllTabScreen extends ConsumerStatefulWidget {
   const AllTabScreen({super.key});
 
   @override
   AllTabScreenState createState() => AllTabScreenState();
 }
 
-class AllTabScreenState extends State<AllTabScreen>
+class AllTabScreenState extends ConsumerState<AllTabScreen>
     with SingleTickerProviderStateMixin {
   AnimationController? reloadAllController;
   Animation<double>? reloadAllFadeAnimation;
@@ -43,17 +45,6 @@ class AllTabScreenState extends State<AllTabScreen>
     reloadAllFadeAnimation =
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadAllController!);
   }
-
-  void _showMultiCharacterModal(List<Character> characterList) {
-    showModalBottomSheet(
-      backgroundColor: ColorConstants.veryLightGray,
-      context: context,
-      showDragHandle: true,
-      builder: (context) {
-        return CharacterChangeModal(characterList: characterList);
-      },
-    );
-  } //3.0작업
 
   void _showLogoutModal() async {
     await showModalBottomSheet<void>(
@@ -214,7 +205,11 @@ class AllTabScreenState extends State<AllTabScreen>
                       if (state.status == QueryStatus.success) {
                         var characterList = state.data;
                         characterList ??= [];
-                        _showMultiCharacterModal(characterList);
+                        characterService.showCharacterChangeModal(
+                          characterList: characterList,
+                          context: context,
+                          ref: ref,
+                        );
                       }
                     },
                   ),

@@ -7,13 +7,8 @@ import '../../constants.dart';
 
 class RetestInfoScreen extends StatefulWidget {
   final String firstName;
-  final List<int> characterIds;
 
-  const RetestInfoScreen({
-    super.key,
-    required this.firstName,
-    required this.characterIds,
-  });
+  const RetestInfoScreen(this.firstName, {super.key});
 
   @override
   State<RetestInfoScreen> createState() => _RetestInfoScreenState();

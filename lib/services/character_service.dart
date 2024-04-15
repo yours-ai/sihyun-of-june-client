@@ -2,10 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
+import 'package:project_june_client/widgets/character_change_modal.dart';
 
 class CharacterService {
   const CharacterService();
@@ -107,5 +111,47 @@ class CharacterService {
     );
     ref.read(activeCharacterProvider.notifier).state = activeCharacter;
     return [myCharacters, activeCharacter];
+  }
+
+  void redirectRetest(WidgetRef ref, BuildContext context) async {
+    final activeCharacter = ref.read(activeCharacterProvider);
+    if (activeCharacter == null) return;
+    final bool is30DaysFinished = await fetchMeQuery()
+        .result
+        .then((value) => value.data!.is_30days_finished);
+    if (activeCharacter.id == ref.read(selectedCharacterProvider)?.id &&
+        is30DaysFinished) {
+      context.push(
+        RoutePaths.retest,
+        extra: <String, dynamic>{
+          'firstName': activeCharacter.first_name,
+        },
+      );
+    }
+  }
+
+  void showCharacterChangeModal({
+    required List<Character> characterList,
+    required BuildContext context,
+    required WidgetRef ref,
+  }) {
+    final selectedCharacter = ref.read(selectedCharacterProvider);
+    final activeCharacterFirstName =
+        ref.read(activeCharacterProvider)?.first_name;
+    final unselectedCharacterList = characterList
+        .where((character) => character.id != selectedCharacter?.id)
+        .toList();
+    showModalBottomSheet(
+      backgroundColor: ColorConstants.veryLightGray,
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return CharacterChangeModal(
+          selectedCharacter: selectedCharacter,
+          unselectedCharacterList: unselectedCharacterList,
+          activeCharacterFirstName: activeCharacterFirstName,
+        );
+      },
+    );
   }
 }
