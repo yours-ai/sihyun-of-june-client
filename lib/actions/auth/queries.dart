@@ -146,3 +146,10 @@ Query<String> fetchReferralCodeQuery({
     onSuccess: onSuccess,
   );
 }
+
+Query<int> fetchNumOfRepliesQuery() {
+  return Query(
+    queryFn: fetchNumOfReplies,
+    key: 'num-of-replies',
+  );
+}

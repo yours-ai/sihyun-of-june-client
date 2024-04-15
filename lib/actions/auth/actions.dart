@@ -1,23 +1,16 @@
-import 'dart:io';
-
-import 'package:amplitude_flutter/amplitude.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/actions/auth/models/SihyunOfJuneUser.dart';
-import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/client.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
-import 'package:project_june_client/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'models/Token.dart';
-
-const _SERVER_TOKEN_KEY = 'SERVER_TOKEN';
 
 Future<AuthorizationCredentialAppleID> fetchAppleLoginCredential() async {
   try {
@@ -151,41 +144,24 @@ void setServerTokenOnDio(String serverToken) {
   dio.options.headers['Authorization'] = 'Token $serverToken';
 }
 
-void _setAmplitudeProps() {
-  fetchMeQuery(onSuccess: (data) async {
-    final amplitude = Amplitude.getInstance();
-    amplitude.setUserId(data.id.toString());
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    if (Platform.isAndroid) {
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      amplitude.setDeviceId(androidInfo.id);
-    } else if (Platform.isIOS) {
-      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      if (iosInfo.identifierForVendor != null) {
-        amplitude.setDeviceId(iosInfo.identifierForVendor!);
-      }
-    }
-  }).result;
-}
-
 Future<void> login(String serverToken, {bool? saveTokenToClient}) async {
   saveTokenToClient ??= true;
   setServerTokenOnDio(serverToken);
   if (saveTokenToClient) {
     final storage = getSecureStorage();
-    await storage.write(key: _SERVER_TOKEN_KEY, value: serverToken);
+    await storage.write(
+        key: StorageKeyConstants.serverToken, value: serverToken);
   }
-  _setAmplitudeProps();
 }
 
 Future<String?> getServerToken() async {
   final storage = getSecureStorage();
-  return await storage.read(key: _SERVER_TOKEN_KEY);
+  return await storage.read(key: StorageKeyConstants.serverToken);
 }
 
 Future<bool> loadIsLogined() async {
   final storage = getSecureStorage();
-  final loaded = await storage.read(key: _SERVER_TOKEN_KEY);
+  final loaded = await storage.read(key: StorageKeyConstants.serverToken);
   if (loaded == null) return false;
   login(loaded, saveTokenToClient: false);
   return true;
@@ -199,7 +175,6 @@ Future<void> logout() async {
   } catch (error) {}
   CachedQuery.instance.deleteCache();
   dio.options.headers.clear();
-  characterService.deleteSelectedCharacterId();
   Sentry.configureScope((scope) => scope.setUser(null));
   return;
 }
@@ -246,4 +221,9 @@ Future<void> deleteUserImage() async {
 Future<String> fetchReferralCode() async {
   var response = await dio.get('/auth/me/referral-code/');
   return response.data['referral_code'];
+}
+
+Future<int> fetchNumOfReplies() async {
+  var response = await dio.get('/auth/me/num-of-replies/');
+  return response.data['num_of_replies'];
 }

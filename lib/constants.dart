@@ -11,8 +11,8 @@ abstract final class ColorConstants {
   static Color pink = const Color(0xffFF5574);
   static Color neutral = const Color(0xffc0bebb);
   static Color alert = const Color.fromRGBO(254, 49, 64, 1);
-  static Color veryLightGray = const Color(0xffdedede);
-  static Color lightGray = const Color(0xffF6F6F6);
+  static Color veryLightGray = const Color(0xffF6F6F6);
+  static Color lightGray = const Color(0xffe1e1e1);
   static Color mediumGray = const Color(0xffA7A1A1);
   static Color darkGray = const Color(0xff101010);
   static Color black = const Color(0xff1a1a1a);
@@ -22,18 +22,7 @@ abstract final class CachingDuration {
   static Duration image = const Duration(days: 1);
   static Duration character = const Duration(days: 1);
   static Duration assignment = Duration.zero;
-}
-
-abstract final class ColorTheme {
-  static CharacterTheme defaultTheme = CharacterTheme(
-    colors: CharacterColors(
-        primary: 4294923379,
-        secondary: 4294932624,
-        inverse_primary: 4294947513,
-        inverse_surface: 4281741103,
-        inverse_on_surface: 4294700782),
-    font: 'NanumNoRyeogHaNeunDongHee',
-  );
+  static Duration newUser = const Duration(days: 1);
 }
 
 abstract final class AppID {
@@ -46,12 +35,16 @@ abstract final class RoutePaths {
   static String landing = '/landing';
   static String login = '/login';
   static String loginByPhone = '$login/${SubRoutePaths.byPhone}';
+  static String home = '/home';
+  static String homeMyCharacter = '$home/${SubRoutePaths.myCharacter}';
+  static String homeDecideAssignmentMethod =
+      '$home/${SubRoutePaths.decideAssignmentMethod}';
+  static String homeNotificationList =
+      '$home/${SubRoutePaths.notificationList}';
+  static String between = '/between';
+  static String betweenRelationship = '$between/${SubRoutePaths.relationship}';
   static String mailList = '/mails';
-  static String mailListMyCharacter = '$mailList/${SubRoutePaths.myCharacter}';
   static String mailListMailDetail = '$mailList/${SubRoutePaths.mailDetail}';
-  static String mailListDecideAssignmentMethod =
-      '$mailList/${SubRoutePaths.decideAssignmentMethod}';
-  static String notificationList = '/notifications';
   static String all = '/all';
   static String allMyPoint = '$all/${SubRoutePaths.myPoint}';
   static String allMyPointLog =
@@ -96,6 +89,8 @@ abstract final class SubRoutePaths {
   static String decideAssignmentMethod = 'decide-assignment-method';
   static String extend = 'extend';
   static String confirm = 'confirm';
+  static String relationship = 'relationship';
+  static String notificationList = 'notification-list';
 }
 
 abstract final class Urls {
@@ -114,8 +109,23 @@ abstract final class Urls {
 abstract final class ProjectConstants {
   static TimeOfDay mailReceiveTime = const TimeOfDay(hour: 21, minute: 0);
   static TimeOfDay mailSendDueTime = const TimeOfDay(hour: 9, minute: 0);
+  static CharacterTheme defaultTheme = CharacterTheme(
+    colors: CharacterColors(
+      primary: 4294923379,
+      secondary: 4294932624,
+      inverse_primary: 4294947513,
+      inverse_surface: 4281741103,
+      inverse_on_surface: 4294700782,
+    ),
+    font: 'NanumNoRyeogHaNeunDongHee',
+  );
 }
 
 abstract final class FontWeightConstants {
   static FontWeight semiBold = FontWeight.w600;
+}
+
+abstract final class StorageKeyConstants {
+  static String serverToken = 'SERVER_TOKEN';
+  static String mailReply = 'MAIL_REPLY';
 }

@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/providers/mail_list_provider.dart';
+import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
 import 'package:project_june_client/router.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
@@ -15,12 +13,11 @@ import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/mail_detail/replied.dart';
 
 import '../../actions/mails/dtos.dart';
-import '../../actions/mails/models/Mail.dart';
 import '../../actions/mails/queries.dart';
 import '../../constants.dart';
 
 class ReplyFormWidget extends ConsumerStatefulWidget {
-  final Mail mail;
+  final MailInDetail mail;
   final int primaryColorInMail;
   final String characterName;
   final int characterId;
@@ -68,15 +65,6 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
     );
   }
 
-  void requestRandomlyAppReview(bool isFirstReply) {
-    if (isFirstReply) {
-      return;
-    }
-    if (Random().nextInt(100) <= 50) {
-      notificationService.requestAppReview();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final mutation = replyMailMutation(
@@ -87,8 +75,8 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
         mailService.deleteBeforeReply(widget.mail.id);
       },
     );
-    showConfirmModal() async {
-      await showModalBottomSheet(
+    showConfirmModal() {
+      showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
           return MutationBuilder(
@@ -101,27 +89,28 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                     description: '답장을 보내면 수정이 불가능해요.🥲'),
                 choiceColumn: ModalChoiceWidget(
                   submitText: '네',
-                  onSubmit: () {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    mutate(getReplyDTO()).then((_) {
-                      router.pop();
-                      if (ref.watch(mailPageProvider) != null) {
-                        fetchMailListQuery(
-                                characterId: widget.characterId,
-                                page: ref.watch(mailPageProvider)!)
-                            .refetch();
-                      }
-                      requestRandomlyAppReview(widget.mail.is_first_reply);
+                  onSubmit: () async {
+                    if (!isLoading) {
                       setState(() {
-                        isLoading = false;
+                        isLoading = true;
                       });
-                    });
+                      mutate(getReplyDTO()).then((_) {
+                        fetchMailListQuery(assignId: widget.mail.assign)
+                            .refetch();
+                        mailService.requestRandomlyAppReview();
+                        setState(() {
+                          isLoading = false;
+                        });
+                      });
+                      router.pop();
+                    }
                   },
                   cancelText: '아니요',
-                  onCancel: () => context.pop(),
-                  mutationStatus: isLoading ? QueryStatus.loading : null,
+                  onCancel: () async {
+                    if (!isLoading) {
+                      context.pop();
+                    }
+                  },
                 ),
               ),
             ),
@@ -187,17 +176,23 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                         MaterialStateProperty.all(ColorConstants.gray),
                   ),
                   onPressed: () {
+                    if (isLoading) return;
                     if (widget.formKey.currentState!.validate()) {
                       showConfirmModal();
                     }
                   },
-                  child: const Text(
-                    '답장 보내기',
-                    style: TextStyle(
-                      fontFamily: 'Pretendard',
-                      fontSize: 16,
-                    ),
-                  ),
+                  child: Builder(builder: (context) {
+                    if (isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return const Text(
+                      '답장 보내기',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: 16,
+                      ),
+                    );
+                  }),
                 ),
               ),
               const SizedBox(height: 10),

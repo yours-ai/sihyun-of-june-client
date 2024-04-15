@@ -28,12 +28,12 @@ class PointChangeScreen extends StatelessWidget {
             title: '앗, 코인이 부족해요 🥲\n조금 더 구매하시겠어요?',
             choiceColumn: ModalChoiceWidget(
               submitText: '코인 구매하러 가기',
-              onSubmit: () {
+              onSubmit: () async {
                 context.push(RoutePaths.allMyCoinCharge);
                 context.pop();
               },
               cancelText: '아니요',
-              onCancel: () => context.pop(),
+              onCancel: () async => context.pop(),
             ),
           );
         },
@@ -46,18 +46,21 @@ class PointChangeScreen extends StatelessWidget {
         useRootNavigator: true,
         builder: (BuildContext context) {
           return MutationBuilder(
-            mutation:
-                exchangeCoinToPointMutation(refetchQueries: ['retrieve-me']),
+            mutation: exchangeCoinToPointMutation(
+              refetchQueries: ['retrieve-me'],
+              onSuccess: (res, arg) {
+                context.pop();
+              },
+            ),
             builder: (context, state, mutate) => ModalWidget(
               title: '정말 $coin코인을 $point포인트로 \n전환하시겠어요?',
               choiceColumn: ModalChoiceWidget(
                 submitText: '네',
-                onSubmit: () {
+                onSubmit: () async {
                   mutate(coin);
-                  context.pop();
                 },
                 cancelText: '아니요',
-                onCancel: () => context.pop(),
+                onCancel: () async => context.pop(),
               ),
             ),
           );

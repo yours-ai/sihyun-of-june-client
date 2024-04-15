@@ -6,17 +6,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
-import 'package:project_june_client/services/unique_cachekey_service.dart';
+import 'package:project_june_client/widgets/common/unread_dot.dart';
 
 import '../constants.dart';
 import '../providers/character_provider.dart';
 import '../services.dart';
-import 'character_change_modal.dart';
 
 class UserProfileWidget extends ConsumerStatefulWidget {
-  final Query retrieveMyCharacterQuery, retrieveMeQuery;
+  final Query myCharactersQuery, retrieveMeQuery;
 
-  const UserProfileWidget(this.retrieveMyCharacterQuery, this.retrieveMeQuery,
+  const UserProfileWidget(this.myCharactersQuery, this.retrieveMeQuery,
       {super.key});
 
   @override
@@ -24,21 +23,10 @@ class UserProfileWidget extends ConsumerStatefulWidget {
 }
 
 class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
-  void _showMultiCharacterModal(List<Character> characterList) {
-    showModalBottomSheet(
-      backgroundColor: ColorConstants.lightGray,
-      context: context,
-      showDragHandle: true,
-      builder: (context) {
-        return CharacterChangeModal(characterList: characterList);
-      },
-    );
-  } //3.0작업
-
   @override
   Widget build(BuildContext context) {
     return QueryBuilder(
-        query: widget.retrieveMyCharacterQuery,
+        query: widget.myCharactersQuery,
         builder: (context, state) {
           if (state.status != QueryStatus.success) {
             return const SizedBox(
@@ -53,7 +41,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
           if (state.data != null && state.data!.isNotEmpty) {
             selectedCharacter = state.data!
                 .where((character) =>
-                    character.id == ref.watch(selectedCharacterProvider))
+                    character.id == ref.watch(selectedCharacterProvider)!.id)
                 .first;
             mainImageSrc = characterService
                 .getMainImage(selectedCharacter!.character_info.images);
@@ -66,6 +54,7 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                 (selectedCharacter != null && mainImageSrc != null)
                     ? MainAxisAlignment.spaceEvenly
                     : MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (selectedCharacter != null && mainImageSrc != null)
                 Column(
@@ -73,28 +62,25 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                   children: [
                     Center(
                       child: GestureDetector(
-                        onTap: () => context.push(RoutePaths.mailListMyCharacter),
+                        onTap: () => context.push(RoutePaths.homeMyCharacter),
                         onLongPressStart: (_) {
                           HapticFeedback.heavyImpact();
                         },
                         onLongPressEnd: (_) {
                           HapticFeedback.heavyImpact();
-                          _showMultiCharacterModal(state.data!);
+                          characterService.showCharacterChangeModal(
+                            characterList: state.data!,
+                            context: context,
+                            ref: ref,
+                          );
                         },
                         child: Container(
-                          padding: const EdgeInsets.all(1.5), // 내부 패딩
+                          padding: const EdgeInsets.all(1.5),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(70.0),
-                            // 원형 테두리 반경
                             border: Border.all(
-                              color: selectedCharacter.is_image_updated!
-                                  ? Color(ref
-                                      .watch(characterThemeProvider)
-                                      .colors
-                                      .primary)
-                                  : ColorConstants.background,
-                              // 테두리 색상
-                              width: 4.0, // 테두리 두께
+                              color: ColorConstants.background,
+                              width: 4.0,
                             ),
                           ),
                           child: ClipRRect(
@@ -106,8 +92,8 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                               child: ExtendedImage.network(
                                 mainImageSrc.src,
                                 cacheMaxAge: CachingDuration.image,
-                                cacheKey: UniqueCacheKeyService.makeUniqueKey(
-                                    mainImageSrc.src),
+                                cacheKey: commonService
+                                    .makeUniqueKey(mainImageSrc.src),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -117,33 +103,40 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        context.push(RoutePaths.mailListMyCharacter);
+                        context.push(RoutePaths.homeMyCharacter);
                       },
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: selectedCharacter.is_image_updated!
-                                  ? Color(ref
-                                      .watch(characterThemeProvider)
-                                      .colors
-                                      .primary)
-                                  : ColorConstants.gray,
-                              width: 1.0,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 10, 0, 15),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: selectedCharacter.is_image_updated!
+                                      ? ColorConstants.pink
+                                      : ColorConstants.gray,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
+                            child: Text(
+                              '${selectedCharacter.is_image_updated! ? '새로운 ' : ''}사진 확인하기',
+                              style: TextStyle(
+                                color: selectedCharacter.is_image_updated!
+                                    ? ColorConstants.pink
+                                    : ColorConstants.gray,
+                                height: 1.0,
+                              ),
                             ),
                           ),
-                        ), // Text에 underline을 추가하면, 한글 이슈로 빈칸과 높낮이가 안 맞음.
-                        child: Text(
-                            '${selectedCharacter.is_image_updated! ? '새 ' : ''}프로필 보기',
-                            style: TextStyle(
-                                color: selectedCharacter.is_image_updated!
-                                    ? Color(ref
-                                        .watch(characterThemeProvider)
-                                        .colors
-                                        .primary)
-                                    : ColorConstants.gray,
-                                height: 1.0)),
+                          if (selectedCharacter.is_image_updated!)
+                            const UnreadDotWidget(
+                              dotTopPosition: 0,
+                              dotRightPosition: -10,
+                              dotRadius: 5,
+                            )
+                        ],
                       ),
                     ),
                   ],
@@ -174,8 +167,8 @@ class UserProfileWidgetState extends ConsumerState<UserProfileWidget> {
                                         : ExtendedImage.network(
                                             state.data!.image!,
                                             cacheMaxAge: CachingDuration.image,
-                                            cacheKey: UniqueCacheKeyService
-                                                .makeUniqueKey(
+                                            cacheKey:
+                                                commonService.makeUniqueKey(
                                                     state.data!.image!),
                                             fit: BoxFit.cover,
                                           ),

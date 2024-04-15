@@ -7,9 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
-import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/character/character_cinematic_widget.dart';
 import 'package:project_june_client/widgets/character/profile_card_widget.dart';
 
@@ -25,12 +23,14 @@ class ProfileListWidget extends ConsumerStatefulWidget {
   final ProfileWidgetType profileWidgetType;
   final List<Character> characterList;
   final int? testId;
+  final WidgetRef? parentRef;
 
   const ProfileListWidget({
     super.key,
     required this.profileWidgetType,
     required this.characterList,
     this.testId,
+    this.parentRef,
   });
 
   @override
@@ -95,7 +95,7 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      final selectedCharacterId = ref.watch(selectedCharacterProvider);
+      final selectedCharacterId = widget.characterList.first.id;
       final isImageUpdated = widget.characterList
               .where((character) => character.id == selectedCharacterId)
               .isNotEmpty &&
@@ -105,11 +105,10 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                   .is_image_updated ??
               false);
       if (widget.profileWidgetType == ProfileWidgetType.myCharacterProfile &&
-          selectedCharacterId != null &&
           isImageUpdated) {
-        readCharacterStoryMutation(
-          refetchQueries: ['my-character'],
-        ).mutate(selectedCharacterId);
+        readCharacterStoryMutation(onSuccess: (res, arg) {
+          characterService.refreshProviderOfCharacter(widget.parentRef!);
+        }).mutate(selectedCharacterId);
       }
     });
   }
@@ -214,9 +213,8 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
                                   borderRadius: BorderRadius.circular(60),
                                   child: ExtendedImage.network(
                                     cacheMaxAge: CachingDuration.image,
-                                    cacheKey:
-                                        UniqueCacheKeyService.makeUniqueKey(
-                                            mainImageSrc),
+                                    cacheKey: commonService
+                                        .makeUniqueKey(mainImageSrc),
                                     mainImageSrc,
                                     fit: BoxFit.cover,
                                   ),

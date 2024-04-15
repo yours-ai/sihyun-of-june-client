@@ -45,9 +45,9 @@ class MyCharacterScreen extends ConsumerWidget {
           return const Center(child: CircularProgressIndicator());
         }
         return QueryBuilder(
-          query: fetchMyCharacterQuery(),
+          query: fetchMyCharactersQuery(),
           builder: (context, myCharacterState) {
-            final selectedCharacterId = ref.watch(selectedCharacterProvider);
+            final selectedCharacterId = ref.watch(selectedCharacterProvider)?.id;
             if (myCharacterState.status != QueryStatus.success ||
                 myCharacterState.data == null ||
                 selectedCharacterId == null) {
@@ -61,6 +61,7 @@ class MyCharacterScreen extends ConsumerWidget {
             return ProfileListWidget(
               profileWidgetType: ProfileWidgetType.myCharacterProfile,
               characterList: sortedCharacterList,
+              parentRef: ref,
             );
           },
         );

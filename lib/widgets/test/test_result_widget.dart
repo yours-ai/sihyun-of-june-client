@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:async_button_builder/async_button_builder.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -109,21 +110,25 @@ class _TestResultWidget extends State<TestResultWidget> {
                           });
                         },
                       ),
-                      builder: (context, state, mutate) => FilledButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              state.status != QueryStatus.loading
-                                  ? Color(
-                                      ColorTheme.defaultTheme.colors.primary)
-                                  : Color(
-                                      ColorTheme.defaultTheme.colors.secondary),
+                      builder: (context, state, mutate) => AsyncButtonBuilder(
+                        child: Text(tabList[_tab].button),
+                        onPressed: () async {
+                          if (state.status == QueryStatus.loading) return;
+                          mutate(widget.responses.toJsonList());
+                        },
+                        builder: (context, child, callback, buttonState) {
+                          return FilledButton(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                Color(ProjectConstants
+                                    .defaultTheme.colors.primary),
+                              ),
                             ),
-                          ),
-                          onPressed: () {
-                            if (state.status == QueryStatus.loading) return;
-                            mutate(widget.responses.toJsonList());
-                          },
-                          child: Text(tabList[_tab].button)),
+                            onPressed: callback,
+                            child: child,
+                          );
+                        },
+                      ),
                     )
                   : FilledButton(
                       style: ButtonStyle(

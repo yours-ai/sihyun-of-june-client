@@ -81,12 +81,12 @@ Query<Character> fetchCharacterByIdQuery({
   );
 }
 
-Query<List<Character>> fetchMyCharacterQuery({
+Query<List<Character>> fetchMyCharactersQuery({
   OnQueryErrorCallback? onError,
 }) {
   return Query(
     key: 'my-character',
-    queryFn: fetchMyCharacter,
+    queryFn: fetchMyCharacters,
     onError: onError,
   );
 }
@@ -104,12 +104,10 @@ Mutation<void, int> confirmTestMutation({
 }
 
 Mutation<void, int> readCharacterStoryMutation({
-  refetchQueries = const [],
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
   return Mutation<void, int>(
-    refetchQueries: refetchQueries,
     queryFn: readCharacterStory,
     onSuccess: onSuccess,
     onError: onError,
@@ -159,6 +157,9 @@ Query<Map<String, dynamic>> fetchIsNewUserQuery({
     queryFn: fetchIsNewUser,
     onSuccess: onSuccess,
     onError: onError,
+    config: QueryConfig(
+      cacheDuration: CachingDuration.newUser,
+    ),
   );
 }
 

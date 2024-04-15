@@ -3,11 +3,18 @@ import 'package:project_june_client/constants.dart';
 
 class ModalWidget extends StatelessWidget {
   final String title;
+  final TextStyle titleStyle;
   final Widget description, choiceColumn;
 
   const ModalWidget({
     Key? key,
     required this.title,
+    this.titleStyle = const TextStyle(
+      fontSize: 21,
+      height: 28 / 21,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 0.5,
+    ),
     this.description = const SizedBox(),
     this.choiceColumn = const SizedBox(),
   }) : super(key: key);
@@ -24,18 +31,13 @@ class ModalWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-                alignment: Alignment.center,
-                child: Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 21,
-                    height: 28/21,
-                    fontWeight: FontWeight.bold,
-                    color: ColorConstants.primary,
-                    letterSpacing: 0.5,
-                  ),
-                )),
+              alignment: Alignment.center,
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: titleStyle.copyWith(color: ColorConstants.primary),
+              ),
+            ),
             description,
             const SizedBox(
               height: 26,

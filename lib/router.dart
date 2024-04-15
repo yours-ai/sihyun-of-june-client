@@ -8,7 +8,9 @@ import 'package:project_june_client/screens/all_tab/point_change_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_log_screen.dart';
 import 'package:project_june_client/screens/all_tab/share_screen.dart';
 import 'package:project_june_client/screens/assignment/assignment_screen.dart';
-import 'package:project_june_client/screens/mail/decide_method_screen.dart';
+import 'package:project_june_client/screens/between/between_screen.dart';
+import 'package:project_june_client/screens/home/home_screen.dart';
+import 'package:project_june_client/screens/home/decide_method_screen.dart';
 import 'package:project_june_client/screens/assignment/new_user_assignment_starting_screen.dart';
 import 'package:project_june_client/screens/character_selection/deciding_screen.dart';
 import 'package:project_june_client/screens/character_selection/confirm_screen.dart';
@@ -19,7 +21,7 @@ import 'package:project_june_client/screens/all_tab/change_name_screen.dart';
 import 'package:project_june_client/screens/all_tab/my_coin_screen.dart';
 import 'package:project_june_client/screens/notification_list_screen.dart';
 import 'package:project_june_client/screens/login/phone_login_screen.dart';
-import 'package:project_june_client/screens/mail/my_character_screen.dart';
+import 'package:project_june_client/screens/home/my_character_screen.dart';
 import 'package:project_june_client/screens/all_tab/policy_screen.dart';
 import 'package:project_june_client/screens/retest/retest_confirm_screen.dart';
 import 'package:project_june_client/screens/retest/retest_extend_screen.dart';
@@ -30,6 +32,7 @@ import 'package:project_june_client/screens/character_test/test_screen.dart';
 import 'package:project_june_client/screens/all_tab/withdraw_screen.dart';
 import 'actions/character/models/CharacterTheme.dart';
 import 'constants.dart';
+import 'screens/between/relationship_screen.dart';
 import 'screens/login/landing_screen.dart';
 import 'screens/login/login_screen.dart';
 import 'widgets/common/navbar_layout.dart';
@@ -58,13 +61,13 @@ final router = GoRouter(
       ],
     ),
     GoRoute(
-      path: RoutePaths.mailList,
+      path: RoutePaths.home,
       pageBuilder: (context, state) {
         return NoTransitionPage(
           key: state.pageKey,
           child: NavbarLayout(
             routePath: state.matchedLocation,
-            child: const MailListScreen(),
+            child: const HomeScreen(),
           ),
         );
       },
@@ -85,28 +88,54 @@ final router = GoRouter(
           ),
         ),
         GoRoute(
-          path: '${SubRoutePaths.mailDetail}/:id',
-          builder: (context, state) =>
-              MailDetailScreen(id: int.tryParse(state.pathParameters['id']!)!),
-        ),
-        GoRoute(
           path: SubRoutePaths.decideAssignmentMethod,
           builder: (context, state) => const DecideAssignmentMethodScreen(),
+        ),
+        GoRoute(
+          path: SubRoutePaths.notificationList,
+          builder: (context, state) {
+            final fcmData = state.extra as Map<String, dynamic>?;
+            return NotificationListScreen(fcmData);
+          },
         ),
       ],
     ),
     GoRoute(
-      path: RoutePaths.notificationList,
+      path: RoutePaths.between,
       pageBuilder: (context, state) {
-        final redirectLink = state.extra as String?;
         return NoTransitionPage(
           key: state.pageKey,
           child: NavbarLayout(
             routePath: state.matchedLocation,
-            child: NotificationListScreen(redirectLink),
+            child: const BetweenScreen(),
           ),
         );
       },
+      routes: [
+        GoRoute(
+          path: SubRoutePaths.relationship,
+          builder: (context, state) => const RelationshipScreen(),
+        ),
+      ],
+    ),
+    GoRoute(
+      path: RoutePaths.mailList,
+      pageBuilder: (context, state) {
+        return NoTransitionPage(
+          key: state.pageKey,
+          child: NavbarLayout(
+            routePath: state.matchedLocation,
+            child: const MailListScreen(),
+          ),
+        );
+      },
+      routes: [
+        GoRoute(
+          path: '${SubRoutePaths.mailDetail}/:id',
+          builder: (context, state) =>
+              MailDetailScreen(id: int.tryParse(state.pathParameters['id']!)!),
+        ),
+      ],
     ),
     GoRoute(
       path: RoutePaths.all,
@@ -185,7 +214,6 @@ final router = GoRouter(
         final extra = state.extra as Map<String, dynamic>;
         return CustomTransitionPage(
           child: CharacterTestConfirmScreen(
-            selectedCharacterId: extra['selectedCharacterId'] as int,
             testId: extra['testId'] as int,
             selectedCharacterFirstName: extra['selectedCharacterFirstName'],
             selectedCharacterTheme:
@@ -247,10 +275,7 @@ final router = GoRouter(
       path: RoutePaths.retest,
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>;
-        return RetestInfoScreen(
-          characterIds: extra['characterIds'] as List<int>,
-          firstName: extra['firstName'] as String,
-        );
+        return RetestInfoScreen(extra['firstName'] as String);
       },
       routes: [
         GoRoute(

@@ -16,7 +16,7 @@ class TransactionLogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: ColorConstants.lightGray,
+      color: ColorConstants.veryLightGray,
       child: Column(
         children: [
           ListTile(

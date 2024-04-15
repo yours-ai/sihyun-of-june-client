@@ -33,13 +33,13 @@ class RetestChoiceWidget extends ConsumerWidget {
         choiceColumn: ModalChoiceWidget(
           cancelText: '코인 구매하러 가기',
           submitText: '친구 초대하고 300P 받기',
-          onCancel: () {
-            context.pop();
+          onCancel: () async {
             context.push(RoutePaths.allMyCoinCharge);
-          },
-          onSubmit: () {
             context.pop();
+          },
+          onSubmit: () async {
             context.push(RoutePaths.allShare);
+            context.pop();
           },
         ),
       ),
@@ -83,7 +83,7 @@ class RetestChoiceWidget extends ConsumerWidget {
                             : '${extendCost!['coin']}코인',
                         style: TextStyle(
                           fontSize: 14,
-                          color: ColorConstants.lightGray.withOpacity(0.5),
+                          color: ColorConstants.veryLightGray.withOpacity(0.5),
                           fontWeight: FontWeight.bold,
                           height: 1.0,
                         ),
@@ -122,7 +122,7 @@ class RetestChoiceWidget extends ConsumerWidget {
                             : '${extendCost!['point']}P',
                         style: TextStyle(
                           fontSize: 14,
-                          color: ColorConstants.lightGray.withOpacity(0.5),
+                          color: ColorConstants.veryLightGray.withOpacity(0.5),
                           fontWeight: FontWeight.bold,
                           height: 1.0,
                         ),
@@ -153,7 +153,7 @@ class RetestChoiceWidget extends ConsumerWidget {
         return ModalChoiceWidget(
           submitText: '좋아요',
           cancelText: '아니요',
-          onSubmit: () {
+          onSubmit: () async {
             switch (purchaseState) {
               case PurchaseState.coin:
                 onRetest('coin');
@@ -169,7 +169,7 @@ class RetestChoiceWidget extends ConsumerWidget {
                 break;
             }
           },
-          onCancel: () {
+          onCancel: () async {
             context.pop();
           },
           submitSuffix: extendCost == null

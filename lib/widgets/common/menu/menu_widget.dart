@@ -23,7 +23,7 @@ class MenuWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        color: ColorConstants.lightGray,
+        color: ColorConstants.veryLightGray,
         child: Column(
           children: [
             Row(

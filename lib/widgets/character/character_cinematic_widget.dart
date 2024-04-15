@@ -7,7 +7,7 @@ import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterCinematic.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/globals.dart';
-import 'package:project_june_client/services/unique_cachekey_service.dart';
+import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/character/profile_list_widget.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -85,7 +85,6 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
             context.push(
               RoutePaths.testConfirm,
               extra: {
-                'selectedCharacterId': widget.character.id,
                 'testId': widget.testId,
                 'selectedCharacterFirstName': widget.character.first_name,
                 'selectedCharacterTheme': widget.character.theme,
@@ -138,8 +137,7 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
                   key: ValueKey<bool>(isLastPage),
                   cacheMaxAge: CachingDuration.image,
                   enableLoadState: false,
-                  cacheKey:
-                      UniqueCacheKeyService.makeUniqueKey(backgroundImageSrc),
+                  cacheKey: commonService.makeUniqueKey(backgroundImageSrc),
                   fit: BoxFit.cover,
                 ),
               ),

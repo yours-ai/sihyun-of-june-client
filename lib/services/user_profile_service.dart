@@ -83,8 +83,9 @@ class UserProfileService {
                               const Duration(milliseconds: 250),
                               () => _image!.readAsBytes().then((img) =>
                                   cropImage(img, cropRect).then((croppedImg) =>
-                                      uploadUserImageMutation().mutate(croppedImg).then(
-                                          (_) => scaffoldMessengerKey
+                                      uploadUserImageMutation()
+                                          .mutate(croppedImg)
+                                          .then((_) => scaffoldMessengerKey
                                                   .currentState
                                                   ?.showSnackBar(
                                                 const SnackBar(
@@ -150,7 +151,7 @@ class UserProfileService {
                 }
               },
               cancelText: '기본 이미지 설정',
-              onCancel: () {
+              onCancel: () async {
                 if (state.status == QueryStatus.loading) return;
                 mutate(null).then((_) => context.pop());
               },

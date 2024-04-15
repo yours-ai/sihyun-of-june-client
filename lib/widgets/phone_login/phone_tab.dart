@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:async_button_builder/async_button_builder.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -191,18 +192,24 @@ class PhoneTabWidgetState extends ConsumerState<PhoneTabWidget> {
             ],
           ),
           actions: isSubmitted == true
-              ? FilledButton(
-                  style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(ColorConstants.pink),
-                  ),
-                  onPressed: () {
+              ? AsyncButtonBuilder(
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       authCode = int.tryParse(authController.text);
-                      mutate(getValidatedData());
+                      await mutate(getValidatedData());
                     }
                   },
-                  child: const Text('다음'))
+                  child: const Text('다음'),
+                  builder: (context, child, callback, buttonState) {
+                    return FilledButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(ColorConstants.pink),
+                      ),
+                      onPressed: callback,
+                      child: child,
+                    );
+                  })
               : const SizedBox.shrink(),
         ),
       ),

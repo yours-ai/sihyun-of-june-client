@@ -2,7 +2,6 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/services/unique_cachekey_service.dart';
 
 import '../../constants.dart';
 import '../../services.dart';
@@ -34,7 +33,7 @@ class MailInfoWidget extends ConsumerWidget {
           GestureDetector(
             onTap: () {
               if (!isMe) {
-                context.push(RoutePaths.mailListMyCharacter);
+                context.push(RoutePaths.homeMyCharacter);
               }
             },
             child: ClipRRect(
@@ -44,7 +43,7 @@ class MailInfoWidget extends ConsumerWidget {
                 height: 46,
                 child: ExtendedImage.network(
                   cacheMaxAge: CachingDuration.image,
-                  cacheKey: UniqueCacheKeyService.makeUniqueKey(byImage!),
+                  cacheKey: commonService.makeUniqueKey(byImage!),
                   byImage!,
                   fit: BoxFit.cover,
                 ),

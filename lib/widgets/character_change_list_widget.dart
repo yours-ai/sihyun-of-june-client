@@ -8,7 +8,6 @@ import 'package:project_june_client/services.dart';
 
 import '../actions/character/models/Character.dart';
 import '../providers/character_provider.dart';
-import '../services/unique_cachekey_service.dart';
 
 class CharacterChangeListWidget extends ConsumerWidget {
   final Character character;
@@ -22,7 +21,7 @@ class CharacterChangeListWidget extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         if (isSelected) return;
-        characterService.changeCharacterByTap(ref, character);
+        ref.read(selectedCharacterProvider.notifier).state = character;
         context.pop();
       },
       child: Row(
@@ -38,7 +37,7 @@ class CharacterChangeListWidget extends ConsumerWidget {
                     .getMainImage(character.character_info.images)
                     .src,
                 cacheMaxAge: CachingDuration.image,
-                cacheKey: UniqueCacheKeyService.makeUniqueKey(characterService
+                cacheKey: commonService.makeUniqueKey(characterService
                     .getMainImage(character.character_info.images)
                     .src),
                 width: 40,
@@ -53,9 +52,12 @@ class CharacterChangeListWidget extends ConsumerWidget {
               style: TextStyle(
                   fontSize: 17,
                   color: isSelected
-                      ? Color(
-                          ref.watch(characterThemeProvider).colors.primary,
-                        )
+                      ? Color(ref
+                              .watch(selectedCharacterProvider)
+                              ?.theme
+                              .colors
+                              .primary ??
+                          ProjectConstants.defaultTheme.colors.primary)
                       : ColorConstants.primary,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
             ),
@@ -69,8 +71,12 @@ class CharacterChangeListWidget extends ConsumerWidget {
                 },
                 icon: Icon(
                   PhosphorIcons.check_circle_fill,
-                  color:
-                      Color(ref.watch(characterThemeProvider).colors.primary),
+                  color: Color(ref
+                          .watch(selectedCharacterProvider)
+                          ?.theme
+                          .colors
+                          .primary ??
+                      ProjectConstants.defaultTheme.colors.primary),
                   size: 32,
                 ),
               ),

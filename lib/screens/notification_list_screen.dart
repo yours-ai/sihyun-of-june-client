@@ -2,7 +2,10 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
@@ -10,16 +13,16 @@ import 'package:project_june_client/widgets/notification/notification_widget.dar
 
 import '../actions/notification/queries.dart';
 
-class NotificationListScreen extends StatefulWidget {
-  final String? redirectLink;
+class NotificationListScreen extends ConsumerStatefulWidget {
+  final Map<String, dynamic>? fcmData;
 
-  const NotificationListScreen(this.redirectLink, {super.key});
+  const NotificationListScreen(this.fcmData, {super.key});
 
   @override
-  State<NotificationListScreen> createState() => _NotificationListScreenState();
+  NotificationListScreenState createState() => NotificationListScreenState();
 }
 
-class _NotificationListScreenState extends State<NotificationListScreen>
+class NotificationListScreenState extends ConsumerState<NotificationListScreen>
     with SingleTickerProviderStateMixin {
   bool isAllRead = true;
   AnimationController? reloadNotificationController;
@@ -35,8 +38,17 @@ class _NotificationListScreenState extends State<NotificationListScreen>
     reloadNotificationFadeAnimation = Tween<double>(begin: 1.0, end: 0.0)
         .animate(reloadNotificationController!);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.redirectLink != null) {
-        notificationService.routeRedirectLink(widget.redirectLink);
+      if (widget.fcmData != null && widget.fcmData?['link'] != null) {
+        final Map<String, String> payload =
+            notificationService.getPayloadInFcmData(widget.fcmData ?? {});
+        final redirectLink = widget.fcmData?['link'];
+        notificationService.routeRedirectLink(
+          redirectLink: redirectLink,
+          context: context,
+          characterColors: ref.read(selectedCharacterProvider)?.theme.colors ??
+              ProjectConstants.defaultTheme.colors,
+          payload: payload,
+        );
       }
     });
   }
@@ -44,25 +56,43 @@ class _NotificationListScreenState extends State<NotificationListScreen>
   @override
   Widget build(context) {
     final notificationQuery = fetchNotificationListQuery();
-    return QueryBuilder(
+    return Scaffold(
+      body: QueryBuilder(
         query: notificationQuery,
         builder: (context, state) {
           if (state.data == null) {
             return const SizedBox.shrink();
           }
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (state.data!.isNotEmpty) {
-              setState(() {
-                isAllRead =
-                    state.data!.every((notification) => notification.is_read!);
-              });
-            }
-          });
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) {
+              if (state.data!.isNotEmpty) {
+                setState(() {
+                  isAllRead = state.data!
+                      .every((notification) => notification.is_read!);
+                });
+              }
+            },
+          );
           return SafeArea(
             child: TitleLayout(
               title: Row(
                 children: [
-                  const Expanded(flex: 1, child: SizedBox()),
+                  Expanded(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconButton(
+                          onPressed: () => context.pop(),
+                          icon: Icon(
+                            PhosphorIcons.arrow_left,
+                            color: ColorConstants.primary,
+                            size: 32,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   const TitleUnderline(
                     titleText: '알림',
                   ),
@@ -82,19 +112,32 @@ class _NotificationListScreenState extends State<NotificationListScreen>
                               );
                             },
                           ),
-                          builder: (context, state, mutate) => IconButton(
+                          builder: (context, state, mutate) => TextButton(
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 6,
+                              ),
+                              minimumSize: Size.zero,
+                              backgroundColor: isAllRead
+                                  ? const Color(0xffF4F4F4)
+                                  : const Color(0xffEEEEEE),
+                            ),
                             onPressed: () {
                               if (isAllRead) {
                                 return;
                               }
                               mutate(null);
                             },
-                            icon: Icon(
-                              PhosphorIcons.list_checks,
-                              color: isAllRead
-                                  ? ColorConstants.neutral
-                                  : ColorConstants.primary,
-                              size: 32,
+                            child: Text(
+                              '모두 읽음',
+                              style: TextStyle(
+                                color: isAllRead
+                                    ? const Color(0xffBABABA)
+                                    : ColorConstants.primary,
+                                fontSize: 12,
+                                fontWeight: FontWeightConstants.semiBold,
+                              ),
                             ),
                           ),
                         ),
@@ -135,6 +178,11 @@ class _NotificationListScreenState extends State<NotificationListScreen>
                               .map<Widget>(
                                 (notification) => NotificationWidget(
                                   notification: notification,
+                                  characterColors: ref
+                                          .watch(selectedCharacterProvider)
+                                          ?.theme
+                                          .colors ??
+                                      ProjectConstants.defaultTheme.colors,
                                 ),
                               )
                               .toList(),
@@ -143,6 +191,8 @@ class _NotificationListScreenState extends State<NotificationListScreen>
                     ),
             ),
           );
-        });
+        },
+      ),
+    );
   }
 }

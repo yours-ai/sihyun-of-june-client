@@ -4,16 +4,18 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 
-class EmptyMailListWidget extends StatelessWidget {
-  const EmptyMailListWidget({super.key});
+class EmptyCharacterWidget extends StatelessWidget {
+  final String titleText;
+
+  const EmptyCharacterWidget(this.titleText, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: TitleLayout(
-        title: const Center(
+        title: Center(
           child: TitleUnderline(
-            titleText: '받은 편지함',
+            titleText: titleText,
           ),
         ),
         body: Center(

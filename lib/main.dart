@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:amplitude_flutter/amplitude.dart';
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:cached_storage/cached_storage.dart';
@@ -61,12 +60,6 @@ Future<void> _initialize() async {
     statusBarColor: Colors.transparent, // status bar color
   ));
   onelinkService.appsFlyerInit();
-  if (BuildTimeEnvironments.amplitudeApiKey.isNotEmpty) {
-    final Amplitude amplitude = Amplitude.getInstance();
-    amplitude.init(BuildTimeEnvironments.amplitudeApiKey);
-  } else {
-    print('amplitude api key가 제공되지 않아, amplitude를 init하지 않습니다.');
-  }
 }
 
 @pragma('vm:entry-point')
@@ -148,9 +141,11 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
 
   @override
   Widget build(context) {
-    ref.listen(characterThemeProvider, (previous, next) async {
+    ref.listen(selectedCharacterProvider, (previous, next) async {
       _onMessageSubscription?.cancel();
-      final characterColors = ref.watch(characterThemeProvider).colors;
+      final characterColors =
+          ref.watch(selectedCharacterProvider)?.theme.colors ??
+              ProjectConstants.defaultTheme.colors;
 
       _onMessageSubscription = FirebaseMessaging.onMessage.listen(
         (RemoteMessage message) {
@@ -159,14 +154,16 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
           String snackBarText =
               message.notification?.body ?? message.data['body'];
           String? redirectLink = message.data['link'];
-          int? notificationId = int.tryParse(message.data['id'] ?? '');
+          int? notificationId = int.tryParse(message.data['id']);
           scaffoldMessengerKey.currentState?.showSnackBar(
             createSnackBar(
               snackBarText: snackBarText,
               characterColors: characterColors,
               onPressed: () => notificationService.routeOnMessage(
-                notificationId,
-                redirectLink,
+                notificationId: notificationId,
+                redirectLink: redirectLink,
+                characterColors: characterColors,
+                fcmData: message.data,
               ),
             ),
           );
@@ -202,10 +199,10 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
           textTheme: TextTheme(
             titleLarge: TextStyle(
               fontFamily: 'NanumJungHagSaeng',
-              fontSize: 39,
+              fontSize: 34,
               height: 38 / 40,
               color: ColorConstants.primary,
-              wordSpacing: -5.5,
+              wordSpacing: -7.5,
               letterSpacing: 1.3,
             ),
             bodySmall: TextStyle(
@@ -219,8 +216,9 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
               textStyle: TextStyle(
                 fontWeight: FontWeightConstants.semiBold,
               ),
-              backgroundColor:
-                  Color(ref.watch(characterThemeProvider).colors.primary),
+              backgroundColor: Color(
+                  ref.watch(selectedCharacterProvider)?.theme.colors.primary ??
+                      ProjectConstants.defaultTheme.colors.primary),
               splashFactory: NoSplash.splashFactory,
               padding: const EdgeInsets.symmetric(
                 vertical: 17.0,
@@ -272,7 +270,8 @@ class ProjectJuneAppState extends ConsumerState<ProjectJuneApp> {
           ),
         ),
         scrollBehavior: SplashScrollBehavior(
-            ref.watch(characterThemeProvider).colors.primary),
+            ref.watch(selectedCharacterProvider)?.theme.colors.primary ??
+                ProjectConstants.defaultTheme.colors.primary),
       ),
     );
   }

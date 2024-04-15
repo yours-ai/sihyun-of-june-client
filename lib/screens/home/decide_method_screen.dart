@@ -1,14 +1,13 @@
+import 'package:async_button_builder/async_button_builder.dart';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/globals.dart';
-import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/create_snackbar.dart';
@@ -55,13 +54,13 @@ class DecideAssignmentMethodScreenState
           isDefaultButton: true,
           cancelText: '코인 구매하러 가기',
           submitText: '친구 초대하고 300P 받기',
-          onCancel: () {
-            context.pop();
+          onCancel: () async {
             context.push(RoutePaths.allMyCoinCharge);
-          },
-          onSubmit: () {
             context.pop();
+          },
+          onSubmit: () async {
             context.push(RoutePaths.allShare);
+            context.pop();
           },
         ),
       ),
@@ -98,11 +97,12 @@ class DecideAssignmentMethodScreenState
           actions: MutationBuilder(
             mutation: reallocateCharacterMutation(
               onSuccess: (res, arg) async {
+                await characterService.resetProviderOfCharacter(ref);
                 scaffoldMessengerKey.currentState?.showSnackBar(
                   createSnackBar(
                     snackBarText:
                         transactionService.getPurchaseStateText(arg.payment),
-                    characterColors: ColorTheme.defaultTheme.colors,
+                    characterColors: ProjectConstants.defaultTheme.colors,
                   ),
                 );
                 context.go(RoutePaths.assignment);
@@ -125,105 +125,57 @@ class DecideAssignmentMethodScreenState
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  FilledButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(isEnableToClick
-                          ? ColorConstants.pink
-                          : Color(ColorTheme.defaultTheme.colors.secondary)),
-                    ),
+                  AsyncButtonBuilder(
                     onPressed: () async {
                       if (isEnableToClick) {
                         setState(() {
                           isEnableToClick = false;
                         });
-                        final bool is30DaysFinished = await fetchMeQuery()
-                            .result
-                            .then((value) => value.data!.is_30days_finished);
-                        if (is30DaysFinished == false) {
-                          await characterService.deleteSelectedCharacterId();
-                          ref.read(selectedCharacterProvider.notifier).state =
-                              await null;
-                        }
                         await mutate(makeReallocateDto('point')); // 결제
                       }
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '누구든 괜찮아요',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeightConstants.semiBold,
-                            height: 1.0,
+                    builder: (context, child, callback, buttonState) {
+                      return FilledButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                            Color(ProjectConstants.defaultTheme.colors.primary),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 6.0),
-                          child: Text(
-                            '100P',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: ColorConstants.lightGray.withOpacity(0.5),
-                              fontWeight: FontWeight.bold,
-                              height: 1.0,
-                            ),
-                          ),
-                        )
-                      ],
+                        onPressed: callback,
+                        child: child,
+                      );
+                    },
+                    child: TextWithSuffix(
+                      buttonText: '누구든 괜찮아요',
+                      suffixText: '100P',
                     ),
                   ),
                   const SizedBox(
                     height: 13,
                   ),
-                  FilledButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(isEnableToClick
-                          ? ColorConstants.pink
-                          : Color(ColorTheme.defaultTheme.colors.secondary)),
-                    ),
+                  AsyncButtonBuilder(
                     onPressed: () async {
                       if (isEnableToClick) {
                         setState(() {
                           isEnableToClick = false;
                         });
-                        final bool is30DaysFinished = await fetchMeQuery()
-                            .result
-                            .then((value) => value.data!.is_30days_finished);
-                        if (is30DaysFinished == false) {
-                          await characterService.deleteSelectedCharacterId();
-                          ref.read(selectedCharacterProvider.notifier).state =
-                              await null;
-                        }
                         await mutate(makeReallocateDto('coin')); // 결제
                       }
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '원하는 상대로 해주세요',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeightConstants.semiBold,
-                            height: 1.0,
+                    builder: (context, child, callback, buttonState) {
+                      return FilledButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                            Color(ProjectConstants.defaultTheme.colors.primary),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 6.0),
-                          child: Text(
-                            '50코인',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: ColorConstants.lightGray.withOpacity(0.5),
-                              fontWeight: FontWeight.bold,
-                              height: 1.0,
-                            ),
-                          ),
-                        )
-                      ],
+                        onPressed: callback,
+                        child: child,
+                      );
+                    },
+                    child: TextWithSuffix(
+                      buttonText: '원하는 상대로 해주세요',
+                      suffixText: '50코인',
                     ),
                   ),
                 ],

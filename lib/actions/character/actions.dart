@@ -37,8 +37,8 @@ Future<List<Character>> fetchAllCharacters() async {
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }
 
-Future<List<Character>> fetchMyCharacter() async {
-  final response = await dio.get('/character/v3/me/characters/');
+Future<List<Character>> fetchMyCharacters() async {
+  final response = await dio.get('/character/v4/me/characters/');
   return (response.data as List).map((e) => Character.fromJson(e)).toList();
 }
 

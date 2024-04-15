@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
@@ -15,20 +16,18 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../actions/auth/actions.dart';
 import '../../actions/auth/queries.dart';
-import '../../actions/character/models/Character.dart';
 import '../../constants.dart';
 import '../../services.dart';
-import '../../widgets/character_change_modal.dart';
 import '../../widgets/common/title_layout.dart';
 
-class AllTabScreen extends StatefulWidget {
+class AllTabScreen extends ConsumerStatefulWidget {
   const AllTabScreen({super.key});
 
   @override
   AllTabScreenState createState() => AllTabScreenState();
 }
 
-class AllTabScreenState extends State<AllTabScreen>
+class AllTabScreenState extends ConsumerState<AllTabScreen>
     with SingleTickerProviderStateMixin {
   AnimationController? reloadAllController;
   Animation<double>? reloadAllFadeAnimation;
@@ -44,17 +43,6 @@ class AllTabScreenState extends State<AllTabScreen>
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadAllController!);
   }
 
-  void _showMultiCharacterModal(List<Character> characterList) {
-    showModalBottomSheet(
-      backgroundColor: ColorConstants.lightGray,
-      context: context,
-      showDragHandle: true,
-      builder: (context) {
-        return CharacterChangeModal(characterList: characterList);
-      },
-    );
-  } //3.0작업
-
   void _showLogoutModal() async {
     await showModalBottomSheet<void>(
       context: context,
@@ -64,12 +52,11 @@ class AllTabScreenState extends State<AllTabScreen>
           title: '정말 로그아웃하시겠어요?',
           choiceColumn: ModalChoiceWidget(
             submitText: '네',
-            onSubmit: () {
-              logout();
-              context.go(RoutePaths.login);
+            onSubmit: () async {
+              await logout().then((_) => context.go(RoutePaths.login));
             },
             cancelText: '아니요',
-            onCancel: () => context.pop(),
+            onCancel: () async => context.pop(),
           ),
         );
       },
@@ -112,12 +99,11 @@ class AllTabScreenState extends State<AllTabScreen>
           ),
           choiceColumn: ModalChoiceWidget(
             submitText: '네',
-            onSubmit: () {
+            onSubmit: () async {
               context.push(RoutePaths.allWithdraw);
-              context.pop();
             },
             cancelText: '아니요',
-            onCancel: () => context.pop(),
+            onCancel: () async => context.pop(),
           ),
         );
       },
@@ -126,20 +112,20 @@ class AllTabScreenState extends State<AllTabScreen>
 
   @override
   Widget build(context) {
-    final retrieveMyCharacterQuery = fetchMyCharacterQuery();
+    final myCharactersQuery = fetchMyCharactersQuery();
     final retrieveMeQuery = fetchMeQuery();
     return SafeArea(
       child: TitleLayout(
         title: const Center(
           child: TitleUnderline(
-            titleText: '전체',
+            titleText: '설정',
           ),
         ),
         body: RefreshIndicator.adaptive(
           onRefresh: () async {
             HapticFeedback.lightImpact();
             reloadAllController!.forward().then((_) async {
-              await retrieveMyCharacterQuery.refetch();
+              await myCharactersQuery.refetch();
               await retrieveMeQuery.refetch();
               reloadAllController!.reverse();
             });
@@ -148,7 +134,7 @@ class AllTabScreenState extends State<AllTabScreen>
             opacity: reloadAllFadeAnimation!,
             child: ListView(
               children: [
-                UserProfileWidget(retrieveMyCharacterQuery, retrieveMeQuery),
+                UserProfileWidget(myCharactersQuery, retrieveMeQuery),
                 QueryBuilder(
                   query: retrieveMeQuery,
                   builder: (context, state) {
@@ -209,14 +195,18 @@ class AllTabScreenState extends State<AllTabScreen>
                   },
                 ),
                 QueryBuilder(
-                  query: retrieveMyCharacterQuery,
+                  query: myCharactersQuery,
                   builder: (context, state) => MenuWidget(
                     title: '상대 변경하기',
                     onPressed: () {
                       if (state.status == QueryStatus.success) {
                         var characterList = state.data;
                         characterList ??= [];
-                        _showMultiCharacterModal(characterList);
+                        characterService.showCharacterChangeModal(
+                          characterList: characterList,
+                          context: context,
+                          ref: ref,
+                        );
                       }
                     },
                   ),
@@ -224,8 +214,7 @@ class AllTabScreenState extends State<AllTabScreen>
                 const MenuTitleWidget(title: '내 정보'),
                 MenuWidget(
                   title: '이름 변경하기',
-                  onPressed: () =>
-                      context.push(RoutePaths.allChangeName),
+                  onPressed: () => context.push(RoutePaths.allChangeName),
                 ),
                 MenuWidget(
                   title: '로그아웃',

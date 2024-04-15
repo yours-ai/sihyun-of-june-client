@@ -82,10 +82,10 @@ class AssignmentScreenState extends ConsumerState<AssignmentScreen> {
       if (is30DaysFinished) { // 30일 지난 유저 redirect 이슈로 인해 분기
         if (!mounted) return;
         context.go(RoutePaths.all);
-        context.push(RoutePaths.mailListDecideAssignmentMethod);
+        context.push(RoutePaths.homeDecideAssignmentMethod);
       } else {
         if (!mounted) return;
-        context.go(RoutePaths.mailListDecideAssignmentMethod);
+        context.go(RoutePaths.homeDecideAssignmentMethod);
       }
     }
   }

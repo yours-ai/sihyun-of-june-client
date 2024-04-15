@@ -49,7 +49,7 @@ class RequestNotificationPermissionWidgetState
                   submitText: '동의하기',
                   onSubmit: () => mutate(null),
                   cancelText: '취소',
-                  onCancel: () => context.pop(),
+                  onCancel: () async => context.pop(),
                 ),
               ),
             );

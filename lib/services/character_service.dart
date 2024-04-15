@@ -2,15 +2,17 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterImage.dart';
-import 'package:project_june_client/contrib/flutter_secure_storage.dart';
+import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
+import 'package:project_june_client/widgets/character_change_modal.dart';
 
 class CharacterService {
   const CharacterService();
-
-  static const _CHARACTER_ID_KEY = 'CHARACTER_ID';
 
   List<CharacterImage> selectStackedImageList(List<CharacterImage> imageList) {
     final revealedImageList =
@@ -52,41 +54,104 @@ class CharacterService {
     ];
   }
 
-  Future<int?> getSelectedCharacterId() async {
-    final storage = getSecureStorage();
-    final selectedCharacterId = await storage.read(key: _CHARACTER_ID_KEY);
-    if (selectedCharacterId == null) return null;
-    return int.parse(selectedCharacterId);
-  }
-
-  Future<void> saveSelectedCharacterId(int selectedCharacterId) async {
-    final storage = getSecureStorage();
-    await storage.write(
-        key: _CHARACTER_ID_KEY, value: selectedCharacterId.toString());
-  }
-
-  Future<void> deleteSelectedCharacterId() async {
-    final storage = getSecureStorage();
-    await storage.delete(key: _CHARACTER_ID_KEY);
-  }
-
-  void changeCharacterByTap(WidgetRef ref, Character character) async {
-    saveSelectedCharacterId(character.id);
-    ref.read(selectedCharacterProvider.notifier).state = character.id;
-    ref.read(characterThemeProvider.notifier).state = character.theme;
-  }
-
   List<int> getCharacterIds(List<Character> characterList) {
     return characterList.map((character) => character.id).toList();
   }
 
-  String getCurrentCharacterFirstName(List<Character> characterList) {
-    final currentCharacterList =
-        characterList.where((character) => character.is_current == true);
-    if (currentCharacterList.isEmpty) return '';
-    return characterList
-        .where((character) => character.is_current == true)
-        .first
-        .first_name;
+  Future<bool> checkCanRetest() async {
+    final myCharactersQuery = await fetchMyCharactersQuery().result;
+    final hasCharacter =
+        myCharactersQuery.data != null && myCharactersQuery.data!.isNotEmpty;
+    final myCharacters = myCharactersQuery.data;
+    if (hasCharacter == false || myCharacters == null || myCharacters.isEmpty) {
+      return true;
+    }
+    final allCharacters = await fetchAllCharactersQuery().result;
+    final canRetest = myCharacters.length != allCharacters.data!.length;
+    return canRetest;
+  }
+
+  Future<void> resetProviderOfCharacter(WidgetRef ref) async {
+    final characterList = await _getCharacterListAndActiveCharacter(ref);
+    if (characterList[0] == null || characterList[1] == null) {
+      return;
+    }
+    final activeCharacter = characterList[1];
+    ref.read(selectedCharacterProvider.notifier).state = activeCharacter;
+  }
+
+  Future<void> refreshProviderOfCharacter(WidgetRef ref) async {
+    final characterList = await _getCharacterListAndActiveCharacter(ref);
+    if (characterList[0] == null || characterList[1] == null) {
+      return;
+    }
+    final myCharacters = characterList[0];
+    if (ref.read(selectedCharacterProvider) != null) {
+      final selectedCharacter = myCharacters.firstWhere(
+        (character) => character.id == ref.read(selectedCharacterProvider)!.id,
+        orElse: () => throw Exception('Selected character maybe be deleted.'),
+      );
+      ref.read(selectedCharacterProvider.notifier).state = selectedCharacter;
+    }
+  }
+
+  Future<List<dynamic>> _getCharacterListAndActiveCharacter(
+      WidgetRef ref) async {
+    final myCharacters =
+        await fetchMyCharactersQuery().refetch().then((value) => value.data);
+    if (myCharacters == null || myCharacters.isEmpty) {
+      ref.read(activeCharacterProvider.notifier).state = null;
+      ref.read(selectedCharacterProvider.notifier).state = null;
+      return [null, null];
+    }
+    final activeCharacter = myCharacters.firstWhere(
+      (character) => character.assigned_characters!
+          .any((assignedCharacter) => assignedCharacter.is_active),
+      orElse: () => throw Exception('Active character not found.'),
+    );
+    ref.read(activeCharacterProvider.notifier).state = activeCharacter;
+    return [myCharacters, activeCharacter];
+  }
+
+  void redirectRetest(WidgetRef ref, BuildContext context) async {
+    final activeCharacter = ref.read(activeCharacterProvider);
+    if (activeCharacter == null) return;
+    final bool is30DaysFinished = await fetchMeQuery()
+        .result
+        .then((value) => value.data!.is_30days_finished);
+    if (activeCharacter.id == ref.read(selectedCharacterProvider)?.id &&
+        is30DaysFinished) {
+      context.push(
+        RoutePaths.retest,
+        extra: <String, dynamic>{
+          'firstName': activeCharacter.first_name,
+        },
+      );
+    }
+  }
+
+  void showCharacterChangeModal({
+    required List<Character> characterList,
+    required BuildContext context,
+    required WidgetRef ref,
+  }) {
+    final selectedCharacter = ref.read(selectedCharacterProvider);
+    final activeCharacterFirstName =
+        ref.read(activeCharacterProvider)?.first_name;
+    final unselectedCharacterList = characterList
+        .where((character) => character.id != selectedCharacter?.id)
+        .toList();
+    showModalBottomSheet(
+      backgroundColor: ColorConstants.veryLightGray,
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return CharacterChangeModal(
+          selectedCharacter: selectedCharacter,
+          unselectedCharacterList: unselectedCharacterList,
+          activeCharacterFirstName: activeCharacterFirstName,
+        );
+      },
+    );
   }
 }
