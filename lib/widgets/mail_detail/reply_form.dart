@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
@@ -67,15 +65,6 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
     );
   }
 
-  void requestRandomlyAppReview(bool isFirstReply) {
-    if (isFirstReply) {
-      return;
-    }
-    if (Random().nextInt(100) <= 50) {
-      notificationService.requestAppReview();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final mutation = replyMailMutation(
@@ -109,7 +98,7 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                         router.pop();
                         fetchMailListQuery(assignId: widget.mail.assign)
                             .refetch();
-                        // TODO:api 바꾸기 requestRandomlyAppReview(widget.mail.is_first_reply);
+                        mailService.requestRandomlyAppReview();
                         setState(() {
                           isLoading = false;
                         });

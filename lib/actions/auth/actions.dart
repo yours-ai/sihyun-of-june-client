@@ -222,3 +222,8 @@ Future<String> fetchReferralCode() async {
   var response = await dio.get('/auth/me/referral-code/');
   return response.data['referral_code'];
 }
+
+Future<int> fetchNumOfReplies() async {
+  var response = await dio.get('/auth/me/num-of-replies/');
+  return response.data['num_of_replies'];
+}

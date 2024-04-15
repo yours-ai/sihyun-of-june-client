@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/CharacterColors.dart';
 import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
 import 'package:project_june_client/actions/mails/models/MailInList.dart';
@@ -8,6 +11,7 @@ import 'package:project_june_client/actions/mails/models/MailTicketInfo.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:project_june_client/screens/mail/mail_detail_screen.dart';
+import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/mail_list/mail_widget.dart';
 
 extension TimeOfDayExtension on TimeOfDay {
@@ -273,5 +277,16 @@ class MailService {
     }
 
     return filteredList;
+  }
+
+  Future<void> requestRandomlyAppReview() async {
+    final numOfReplies =
+        await fetchNumOfRepliesQuery().result.then((value) => value.data);
+    if (numOfReplies == null || numOfReplies <= 1) {
+      return;
+    }
+    if (Random().nextInt(100) <= 50) {
+      notificationService.requestAppReview();
+    }
   }
 }
