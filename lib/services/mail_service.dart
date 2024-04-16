@@ -35,6 +35,16 @@ class MailService {
     return '오늘 저녁 9시';
   }
 
+  String getNextMailReceiveTimeStr(DateTime availableAt) {
+    final now = clock.now();
+    final diff = availableAt.difference(now).inHours;
+    if (diff < ProjectConstants.mailReceiveTime.hour) {
+      return '오늘 저녁 9시';
+    } else {
+      return '내일 저녁 9시';
+    }
+  }
+
   int getMailDateDiff(DateTime targetDate, DateTime firstMailDate) {
     DateTime normalizedDt =
         DateTime(targetDate.year, targetDate.month, targetDate.day);
