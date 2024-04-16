@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:project_june_client/actions/character/models/DateAndWeather.dart';
 import 'package:project_june_client/actions/mails/models/MailInList.dart';
 
 part 'CharacterToday.g.dart';

@@ -3,7 +3,6 @@ import 'package:project_june_client/actions/character/actions.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/models/CharacterToday.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/services.dart';
 
 import 'models/Character.dart';
 import 'models/Question.dart';
