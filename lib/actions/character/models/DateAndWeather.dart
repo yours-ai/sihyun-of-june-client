@@ -17,13 +17,3 @@ class DateAndWeather {
 
   Map<String, dynamic> toJson() => _$DateAndWeatherToJson(this);
 }
-
-enum WeatherEnum {
-  windy,
-  snowy,
-  sunny,
-  rainy,
-  littleCloudy,
-  thunderstorm,
-  cloudy,
-}
