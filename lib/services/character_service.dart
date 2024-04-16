@@ -113,18 +113,20 @@ class CharacterService {
     return [myCharacters, activeCharacter];
   }
 
-  void redirectRetest(WidgetRef ref, BuildContext context) async {
-    final activeCharacter = ref.read(activeCharacterProvider);
-    if (activeCharacter == null) return;
+  void redirectRetest(
+    String? activeCharacterFirstName,
+    bool isSelectedCharacter,
+    BuildContext context,
+  ) async {
+    if (activeCharacterFirstName == null) return;
     final bool is30DaysFinished = await fetchMeQuery()
         .result
         .then((value) => value.data!.is_30days_finished);
-    if (activeCharacter.id == ref.read(selectedCharacterProvider)?.id &&
-        is30DaysFinished) {
+    if (isSelectedCharacter && is30DaysFinished) {
       context.push(
         RoutePaths.retest,
         extra: <String, dynamic>{
-          'firstName': activeCharacter.first_name,
+          'firstName': activeCharacterFirstName,
         },
       );
     }

@@ -5,6 +5,7 @@ import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/widgets/common/change_character_widget.dart';
+import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/top_navbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
@@ -40,7 +41,16 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
     reloadMailFadeAnimation =
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      characterService.redirectRetest(ref, context);
+      if (mounted) {
+        final activeCharacter = ref.read(activeCharacterProvider);
+        final isSelectedCharacter =
+            activeCharacter?.id == widget.selectedCharacter.id;
+        characterService.redirectRetest(
+          activeCharacter?.first_name,
+          isSelectedCharacter,
+          context,
+        );
+      }
     });
   }
 
