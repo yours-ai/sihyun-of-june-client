@@ -228,7 +228,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                     ),
                                     const SizedBox(height: 14),
                                     Text(
-                                      '${mailService.getNextMailReceiveTimeStr()}에 첫 편지가 올 거에요. \n 조금만 기다려 주세요 :)',
+                                      '${mailService.getFirstMailReceiveTimeStr()}에 첫 편지가 올 거에요. \n 조금만 기다려 주세요 :)',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: ColorConstants.neutral,

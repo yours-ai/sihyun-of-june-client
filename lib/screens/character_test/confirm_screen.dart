@@ -28,7 +28,7 @@ class CharacterTestConfirmScreen extends ConsumerWidget {
       body: SafeArea(
         child: TitleLayout(
           body: Text(
-            '$selectedCharacterFirstName이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 '
+            '$selectedCharacterFirstName이가 마음에 드세요?\n${mailService.getFirstMailReceiveTimeStr()}에\n첫 '
             '편지가 올 거에요 :)',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge,

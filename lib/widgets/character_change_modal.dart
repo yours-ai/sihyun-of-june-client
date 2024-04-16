@@ -51,7 +51,8 @@ class CharacterChangeModal extends StatelessWidget {
             query: fetchMeQuery(),
             builder: (context, state) {
               if (state.data == null) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                    child: CircularProgressIndicator.adaptive());
               }
               return GestureDetector(
                 onTap: () async {

@@ -27,7 +27,7 @@ extension TimeOfDayExtension on TimeOfDay {
 class MailService {
   const MailService();
 
-  String getNextMailReceiveTimeStr() {
+  String getFirstMailReceiveTimeStr() {
     TimeOfDay now = TimeOfDay.fromDateTime(clock.now());
     if (now.compareTo(ProjectConstants.mailReceiveTime) >= 0) {
       return '내일 저녁 9시';
