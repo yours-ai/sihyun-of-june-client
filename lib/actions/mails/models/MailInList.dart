@@ -13,7 +13,8 @@ class MailInList {
   bool has_permission;
   bool is_read;
 
-  MailInList({required this.id,
+  MailInList({
+    required this.id,
     required this.assign,
     required this.available_at,
     required this.replies,
