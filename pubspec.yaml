@@ -71,7 +71,9 @@ flutter:
     - assets/images/
     - assets/images/landing/
     - assets/images/sns/
+    - assets/images/weather/
     - assets/images/navbar/
+    - assets/images/home/
     - assets/lotties/
   fonts:
     - family: GowunDodum

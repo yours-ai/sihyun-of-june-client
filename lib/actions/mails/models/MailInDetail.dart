@@ -27,6 +27,7 @@ class MailInDetail extends MailInList {
     required super.replies,
     required super.day,
     required super.has_permission,
+    required super.is_read,
   });
 
   factory MailInDetail.fromJson(Map<String, dynamic> json) =>
