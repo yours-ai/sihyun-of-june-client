@@ -17,7 +17,7 @@ void main() {
           .thenReturn(DateTime.utc(2024, 1, 1, 20, 0, 0));
       withClock(mockClock, () {
         final arrivedAt = mailService.getNextMailReceiveTimeStr(
-          DateTime(2024, 1, 2, 21, 0, 0),
+          DateTime.utc(2024, 1, 2, 21, 0, 0).add(const Duration(hours: 9)),
         );
         expect(arrivedAt, '오늘 저녁 9시');
       });
