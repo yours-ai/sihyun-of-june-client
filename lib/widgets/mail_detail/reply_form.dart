@@ -49,8 +49,8 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   }
 
   @override
-  void dispose() async {
-    await mailService.saveBeforeReply(
+  void dispose() {
+    mailService.saveBeforeReply(
       reply: controller.value.text,
       mailId: widget.mail.id,
     );
