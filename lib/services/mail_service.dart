@@ -43,7 +43,7 @@ class MailService {
         localizedAvailableAt.month, localizedAvailableAt.day);
     final timeDiff = availableAtZero.difference(nowZero).inDays;
     switch (timeDiff) {
-      case 0:
+      case <= 0:
         return '오늘 저녁 9시';
       case 1:
         return '내일 저녁 9시';
