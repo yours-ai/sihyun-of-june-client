@@ -29,7 +29,6 @@ class _ChangeCharacterWidgetState extends State<ChangeCharacterWidget>
     with SingleTickerProviderStateMixin {
   AnimationController? _changeCharacterController;
   OverlayEntry? _overlayEntry;
-  Future<void> Function()? _hideOverlay;
 
   @override
   void initState() {
@@ -38,16 +37,17 @@ class _ChangeCharacterWidgetState extends State<ChangeCharacterWidget>
       vsync: this,
       duration: const Duration(milliseconds: 100), // 애니메이션 지속 시간
     );
-    _hideOverlay = () async {
-      await _changeCharacterController?.reverse();
-      _overlayEntry?.remove();
-    };
   }
 
   @override
   void dispose() {
     _changeCharacterController?.dispose();
     super.dispose();
+  }
+
+  Future<void> _hideOverlay() async {
+    await _changeCharacterController?.reverse();
+    _overlayEntry?.remove();
   }
 
   void _changeProfileList(List<Character> characterList) {
