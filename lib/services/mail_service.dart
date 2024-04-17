@@ -36,10 +36,11 @@ class MailService {
   }
 
   String getNextMailReceiveTimeStr(DateTime availableAt) {
-    final now = clock.now();
+    final now = clock.now().toLocal();
     final nowZero = DateTime(now.year, now.month, now.day);
-    final availableAtZero =
-        DateTime(availableAt.year, availableAt.month, availableAt.day);
+    final localizedAvailableAt = availableAt.toLocal();
+    final availableAtZero = DateTime(localizedAvailableAt.year,
+        localizedAvailableAt.month, localizedAvailableAt.day);
     final timeDiff = availableAtZero.difference(nowZero).inDays;
     switch (timeDiff) {
       case 0:
