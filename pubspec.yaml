@@ -54,6 +54,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   http: ^1.2.0
   async_button_builder: ^3.0.0+1
+  mocktail: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +64,7 @@ dev_dependencies:
   build_runner: ^2.4.8
   json_serializable: ^6.7.1
   sentry_dart_plugin: ^1.6.0
+  test: ^1.24.9
 
 flutter:
   uses-material-design: true
