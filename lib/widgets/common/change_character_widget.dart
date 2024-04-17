@@ -15,10 +15,12 @@ const double catSize = 60;
 
 class ChangeCharacterWidget extends StatefulWidget {
   final GlobalKey targetKey;
+  final BuildContext parentContext;
 
   const ChangeCharacterWidget({
     super.key,
     required this.targetKey,
+    required this.parentContext,
   });
 
   @override
@@ -47,20 +49,23 @@ class _ChangeCharacterWidgetState extends State<ChangeCharacterWidget>
 
   Future<void> _hideOverlay() async {
     await _changeCharacterController?.reverse();
-    _overlayEntry?.remove();
+    if (_overlayEntry != null) {
+      _overlayEntry!.remove();
+    }
   }
 
-  void _changeProfileList(List<Character> characterList) {
+  void _showChangeList(List<Character> characterList) {
     final RenderObject? renderBox =
         widget.targetKey.currentContext?.findRenderObject();
     if (renderBox is RenderBox) {
       final Offset offset = renderBox.localToGlobal(Offset.zero);
       _overlayEntry = OverlayEntry(
         builder: (context) => _OverLayWidget(
-          hideOverlay: _hideOverlay!,
+          hideOverlay: _hideOverlay,
           offset: offset,
           characterList: characterList,
           changeCharacterController: _changeCharacterController!,
+          parentContext: widget.parentContext,
         ),
       );
       Overlay.of(context).insert(_overlayEntry!);
@@ -74,7 +79,7 @@ class _ChangeCharacterWidgetState extends State<ChangeCharacterWidget>
       onTap: () async {
         final characterList =
             await fetchMyCharactersQuery().result.then((value) => value.data!);
-        _changeProfileList(characterList);
+        _showChangeList(characterList);
       },
       child: Column(
         children: [
@@ -95,6 +100,7 @@ class _OverLayWidget extends ConsumerStatefulWidget {
   final Offset offset;
   final List<Character> characterList;
   final AnimationController changeCharacterController;
+  final BuildContext parentContext;
 
   const _OverLayWidget({
     super.key,
@@ -102,6 +108,7 @@ class _OverLayWidget extends ConsumerStatefulWidget {
     required this.offset,
     required this.characterList,
     required this.changeCharacterController,
+    required this.parentContext,
   });
 
   @override
@@ -182,6 +189,7 @@ class _OverLayWidgetState extends ConsumerState<_OverLayWidget> {
                       child: Column(
                         children: [
                           _OverlayComponentWidget(
+                            parentContext: widget.parentContext,
                             hideOverlay: widget.hideOverlay,
                             isSelected: false,
                           ),
@@ -191,6 +199,7 @@ class _OverLayWidgetState extends ConsumerState<_OverLayWidget> {
                                   ref.watch(selectedCharacterProvider)!.id)
                               .map(
                                 (character) => _OverlayComponentWidget(
+                                  parentContext: widget.parentContext,
                                   character: character,
                                   hideOverlay: widget.hideOverlay,
                                   isSelected: false,
@@ -199,6 +208,7 @@ class _OverLayWidgetState extends ConsumerState<_OverLayWidget> {
                               .toList(),
                           if (ref.watch(selectedCharacterProvider) != null)
                             _OverlayComponentWidget(
+                              parentContext: widget.parentContext,
                               character: ref.watch(selectedCharacterProvider)!,
                               hideOverlay: widget.hideOverlay,
                               isSelected: true,
@@ -221,11 +231,13 @@ class _OverlayComponentWidget extends ConsumerWidget {
   final Character? character;
   final Future<void> Function()? hideOverlay;
   final bool isSelected;
+  final BuildContext parentContext;
 
   const _OverlayComponentWidget({
     this.character,
     this.hideOverlay,
     required this.isSelected,
+    required this.parentContext,
     super.key,
   });
 
@@ -238,10 +250,11 @@ class _OverlayComponentWidget extends ConsumerWidget {
       onTap: () async {
         if (isSelected) return;
 
+        await hideOverlay!();
         if (character == null) {
           if (activeCharacterFirstName == null) {
-            context.go(RoutePaths.assignment);
-            hideOverlay!();
+            if (!parentContext.mounted) return;
+            parentContext.go(RoutePaths.assignment);
             return;
           }
           final bool is30DaysFinished = await fetchMeQuery()
@@ -249,24 +262,23 @@ class _OverlayComponentWidget extends ConsumerWidget {
               .then((value) => value.data!.is_30days_finished);
           if (is30DaysFinished == false) {
             final canRetest = await characterService.checkCanRetest();
+            if (!parentContext.mounted) return;
             showModalBottomSheet(
-              context: context,
-              builder: (context) => RetestModalWidget(
+              context: parentContext,
+              builder: (parentContext) => RetestModalWidget(
                 firstName: activeCharacterFirstName,
                 canRetest: canRetest,
               ),
             );
-            hideOverlay!();
             return;
           }
-          context.push(
+          if (!parentContext.mounted) return;
+          parentContext.push(
             RoutePaths.retest,
             extra: {'firstName': activeCharacterFirstName},
           );
-          hideOverlay!();
           return;
         } else {
-          await hideOverlay!();
           ref.read(selectedCharacterProvider.notifier).state = character;
         }
       },

@@ -286,6 +286,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                   ChangeCharacterWidget(
                                     key: _changeCharacterKey,
                                     targetKey: _changeCharacterKey,
+                                    parentContext: context,
                                   ),
                                   const SizedBox(width: 26),
                                 ],
