@@ -21,10 +21,15 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.19.5'  # 버전은 프로젝트 요구사항에 맞춰 조정하세요
+        flutter-version: '3.19.5'
 
     - name: Install dependencies
       run: flutter pub get
+
+    - name: Setup settings
+      run: |
+        env > .env
+        source setup.sh
 
     - name: Run tests
       run: flutter test
