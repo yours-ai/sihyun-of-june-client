@@ -162,7 +162,7 @@ class CharacterService {
     );
   }
 
-  HomeEnum _checkTodayStatus(
+  HomeEnum checkTodayStatus(
       bool is30daysFinished, CharacterToday characterToday) {
     if (is30daysFinished) {
       return HomeEnum.thirtyDaysFinished;
@@ -186,7 +186,7 @@ class CharacterService {
               is_just_replied: characterToday.is_just_replied,
               mail: null,
             );
-            return _checkTodayStatus(is30daysFinished, retryCharacterToday);
+            return checkTodayStatus(is30daysFinished, retryCharacterToday);
           }
         } else {
           if (characterToday.is_last_mail) {
@@ -216,7 +216,7 @@ class CharacterService {
     required BuildContext context,
     required CharacterColors characterColors,
   }) {
-    final todayStatus = _checkTodayStatus(is30daysFinished, characterToday);
+    final todayStatus = checkTodayStatus(is30daysFinished, characterToday);
     switch (todayStatus) {
       case HomeEnum.thirtyDaysFinished:
         return HomeTodayWidget(

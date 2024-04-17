@@ -37,11 +37,19 @@ class MailService {
 
   String getNextMailReceiveTimeStr(DateTime availableAt) {
     final now = clock.now();
-    final diff = availableAt.difference(now).inHours;
-    if (diff < ProjectConstants.mailReceiveTime.hour) {
-      return '오늘 저녁 9시';
-    } else {
-      return '내일 저녁 9시';
+    final nowZero = DateTime(now.year, now.month, now.day);
+    final availableAtZero =
+        DateTime(availableAt.year, availableAt.month, availableAt.day);
+    final timeDiff = availableAtZero.difference(nowZero).inDays;
+    switch (timeDiff) {
+      case 0:
+        return '오늘 저녁 9시';
+      case 1:
+        return '내일 저녁 9시';
+      case 2:
+        return '모레 저녁 9시';
+      default:
+        return '$timeDiff일 뒤 저녁 9시';
     }
   }
 
