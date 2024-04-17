@@ -26,7 +26,7 @@ class CharacterSelectionConfirmScreen extends StatelessWidget {
       body: SafeArea(
         child: TitleLayout(
           body: Text(
-            '$firstName이가 마음에 드세요?\n${mailService.getNextMailReceiveTimeStr()}에\n첫 편지가 올 거에요 :)',
+            '$firstName이가 마음에 드세요?\n${mailService.getFirstMailReceiveTimeStr()}에\n첫 편지가 올 거에요 :)',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleLarge,
           ),

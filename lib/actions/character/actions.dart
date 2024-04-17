@@ -1,6 +1,8 @@
 import 'package:project_june_client/actions/character/dtos.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
+import 'package:project_june_client/actions/character/models/DateAndWeather.dart';
 import 'package:project_june_client/actions/character/models/Question.dart';
+import 'package:project_june_client/actions/character/models/TodayConfig.dart';
 
 import '../client.dart';
 
@@ -90,4 +92,14 @@ Future<void> confirmSelection(int selectionId, int characterId) async {
 Future<Map<String, dynamic>> fetchSelectionStatus() async {
   final response = await dio.get('/character/selection/status/');
   return response.data;
+}
+
+Future<DateAndWeather> fetchDateAndWeather(int assignId) async {
+  final response = await dio.get('/character/today/$assignId');
+  return DateAndWeather.fromJson(response.data);
+}
+
+Future<TodayConfig> fetchTodayConfig(int assignId) async {
+  final response = await dio.get('/character/today/$assignId/mailing-status/');
+  return TodayConfig.fromJson(response.data);
 }

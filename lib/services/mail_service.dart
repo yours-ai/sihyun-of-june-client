@@ -27,12 +27,31 @@ extension TimeOfDayExtension on TimeOfDay {
 class MailService {
   const MailService();
 
-  String getNextMailReceiveTimeStr() {
+  String getFirstMailReceiveTimeStr() {
     TimeOfDay now = TimeOfDay.fromDateTime(clock.now());
     if (now.compareTo(ProjectConstants.mailReceiveTime) >= 0) {
       return '내일 저녁 9시';
     }
     return '오늘 저녁 9시';
+  }
+
+  String getNextMailReceiveTimeStr(DateTime availableAt) {
+    final now = clock.now().toLocal();
+    final nowZero = DateTime(now.year, now.month, now.day);
+    final localizedAvailableAt = availableAt.toLocal();
+    final availableAtZero = DateTime(localizedAvailableAt.year,
+        localizedAvailableAt.month, localizedAvailableAt.day);
+    final timeDiff = availableAtZero.difference(nowZero).inDays;
+    switch (timeDiff) {
+      case <= 0:
+        return '오늘 저녁 9시';
+      case 1:
+        return '내일 저녁 9시';
+      case 2:
+        return '모레 저녁 9시';
+      default:
+        return '$timeDiff일 뒤 저녁 9시';
+    }
   }
 
   int getMailDateDiff(DateTime targetDate, DateTime firstMailDate) {

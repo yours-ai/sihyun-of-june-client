@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/character/actions.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
+import 'package:project_june_client/actions/character/models/CharacterToday.dart';
 import 'package:project_june_client/constants.dart';
 
 import 'models/Character.dart';
@@ -197,6 +198,28 @@ Query<Map<String, dynamic>> fetchSelectionStatusQuery({
       cacheDuration: CachingDuration.assignment,
     ),
     queryFn: fetchSelectionStatus,
+    onError: onError,
+  );
+}
+
+Query<CharacterToday> fetchCharacterTodayQuery(int assignId,
+    {OnQueryErrorCallback? onError}) {
+  return Query(
+    key: 'character-today',
+    queryFn: () async {
+      final dateAndWeather = await fetchDateAndWeather(assignId);
+      final todayConfig = await fetchTodayConfig(assignId);
+      final characterToday = CharacterToday(
+        text: dateAndWeather.text,
+        weather: dateAndWeather.weather,
+        next_mail_available_at: todayConfig.next_mail_available_at,
+        is_next_mail_last: todayConfig.is_next_mail_last,
+        is_last_mail: todayConfig.is_last_mail,
+        is_just_replied: todayConfig.is_just_replied,
+        mail: todayConfig.mail,
+      );
+      return characterToday;
+    },
     onError: onError,
   );
 }

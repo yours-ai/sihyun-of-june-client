@@ -34,7 +34,7 @@ class _RetestInfoScreenState extends State<RetestInfoScreen> {
   @override
   Widget build(BuildContext context) {
     if (canRetest == null) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator.adaptive());
     }
     return RetestLayoutWidget(
       firstName: widget.firstName,

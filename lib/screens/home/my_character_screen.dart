@@ -42,7 +42,7 @@ class MyCharacterScreen extends ConsumerWidget {
       builder: (context, allCharacterState) {
         if (allCharacterState.status != QueryStatus.success ||
             allCharacterState.data == null) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator.adaptive());
         }
         return QueryBuilder(
           query: fetchMyCharactersQuery(),
@@ -51,7 +51,7 @@ class MyCharacterScreen extends ConsumerWidget {
             if (myCharacterState.status != QueryStatus.success ||
                 myCharacterState.data == null ||
                 selectedCharacterId == null) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator.adaptive());
             }
             final sortedCharacterList = _sortCharacterList(
               allCharacterList: allCharacterState.data!,

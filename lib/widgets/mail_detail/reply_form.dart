@@ -49,8 +49,8 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
   }
 
   @override
-  void dispose() async {
-    await mailService.saveBeforeReply(
+  void dispose() {
+    mailService.saveBeforeReply(
       reply: controller.value.text,
       mailId: widget.mail.id,
     );
@@ -183,7 +183,8 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
                   },
                   child: Builder(builder: (context) {
                     if (isLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                          child: CircularProgressIndicator.adaptive());
                     }
                     return const Text(
                       '답장 보내기',

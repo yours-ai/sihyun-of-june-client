@@ -19,27 +19,6 @@ class PointChangeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _showNotEnoughCoinModal() async {
-      await showModalBottomSheet<void>(
-        context: context,
-        useRootNavigator: true,
-        builder: (BuildContext context) {
-          return ModalWidget(
-            title: '앗, 코인이 부족해요 🥲\n조금 더 구매하시겠어요?',
-            choiceColumn: ModalChoiceWidget(
-              submitText: '코인 구매하러 가기',
-              onSubmit: () async {
-                context.push(RoutePaths.allMyCoinCharge);
-                context.pop();
-              },
-              cancelText: '아니요',
-              onCancel: () async => context.pop(),
-            ),
-          );
-        },
-      );
-    }
-
     void _showChangeCoinToPointModal(int coin, int point) async {
       await showModalBottomSheet<void>(
         context: context,
@@ -123,7 +102,7 @@ class PointChangeScreen extends StatelessWidget {
                     MenuWidget(
                       onPressed: () {
                         if (state.data!.coin < 10) {
-                          _showNotEnoughCoinModal();
+                          transactionService.showNotEnoughCoinModal(context);
                           return;
                         }
                         _showChangeCoinToPointModal(10, 50);

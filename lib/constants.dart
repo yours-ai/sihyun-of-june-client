@@ -108,7 +108,6 @@ abstract final class Urls {
 
 abstract final class ProjectConstants {
   static TimeOfDay mailReceiveTime = const TimeOfDay(hour: 21, minute: 0);
-  static TimeOfDay mailSendDueTime = const TimeOfDay(hour: 9, minute: 0);
   static CharacterTheme defaultTheme = CharacterTheme(
     colors: CharacterColors(
       primary: 4294923379,

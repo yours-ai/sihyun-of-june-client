@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_query_flutter/cached_query_flutter.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -206,14 +207,7 @@ class TransactionService {
                       );
                     },
                     onError: (res, arg, error) {
-                      context.pop();
-                      scaffoldMessengerKey.currentState?.showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
-                          ),
-                        ),
-                      );
+                      _throwBuyTicketError(arg, context);
                     },
                   ),
                   builder: (context, state, mutate) {
@@ -342,14 +336,7 @@ class TransactionService {
             );
           },
           onError: (res, arg, error) {
-            context.pop();
-            scaffoldMessengerKey.currentState?.showSnackBar(
-              const SnackBar(
-                content: Text(
-                  '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
-                ),
-              ),
-            );
+            _throwBuyTicketError(arg, context);
           },
         ),
         builder: (context, state, mutate) {
@@ -393,5 +380,45 @@ class TransactionService {
         context.push('${RoutePaths.mailListMailDetail}/$mailId');
       }
     }
+  }
+
+  void showNotEnoughCoinModal(BuildContext context) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      useRootNavigator: true,
+      builder: (BuildContext context) {
+        return ModalWidget(
+          title: '앗, 코인이 부족해요 🥲\n조금 더 구매하시겠어요?',
+          choiceColumn: ModalChoiceWidget(
+            submitText: '코인 구매하러 가기',
+            onSubmit: () async {
+              context.push(RoutePaths.allMyCoinCharge);
+              context.pop();
+            },
+            cancelText: '아니요',
+            onCancel: () async => context.pop(),
+          ),
+        );
+      },
+    );
+  }
+
+  void _throwBuyTicketError(Object arg, BuildContext context) {
+    if (arg is DioException) {
+      if (arg.response?.statusCode == 400 &&
+          arg.response?.data.first == '코인이 부족합니다.') {
+        context.pop();
+        showNotEnoughCoinModal(context);
+        return;
+      }
+    }
+    context.pop();
+    scaffoldMessengerKey.currentState?.showSnackBar(
+      const SnackBar(
+        content: Text(
+          '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+        ),
+      ),
+    );
   }
 }
