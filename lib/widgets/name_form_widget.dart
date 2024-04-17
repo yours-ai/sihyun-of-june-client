@@ -38,10 +38,10 @@ class _NameFormWidgetState extends State<NameFormWidget> {
 
   @override
   void initState() {
+    super.initState();
     if (widget.shouldHandleNameController == true) {
       setNameControllerText();
     }
-    super.initState();
   }
 
   void changeBorderColor() {

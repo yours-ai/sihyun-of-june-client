@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/widgets/common/change_character_widget.dart';
 import 'package:project_june_client/widgets/common/top_navbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
@@ -27,6 +28,7 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
   int? selectedPage;
   AnimationController? reloadMailController;
   Animation<double>? reloadMailFadeAnimation;
+  final GlobalKey _changeCharacterKey = GlobalKey();
 
   @override
   void initState() {
@@ -266,6 +268,19 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
                                 ),
                               ),
                             ],
+                            Padding(
+                              padding: const EdgeInsets.only(bottom:20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  ChangeCharacterWidget(
+                                    key: _changeCharacterKey,
+                                    targetKey: _changeCharacterKey,
+                                  ),
+                                  const SizedBox(width: 26),
+                                ],
+                              ),
+                            ),
                           ],
                         );
                       },
