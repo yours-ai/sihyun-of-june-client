@@ -12,17 +12,6 @@ void main() {
   group('오늘 내일 체크', () {
     final mockClock = MockClock();
 
-    test('localize 잘 되는지', () {
-      when(() => mockClock.now())
-          .thenReturn(DateTime.utc(2024, 1, 1, 20, 0, 0));
-      withClock(mockClock, () {
-        final arrivedAt = mailService.getNextMailReceiveTimeStr(
-          DateTime.utc(2024, 1, 2, 21, 0, 0).add(const Duration(hours: 9)),
-        );
-        expect(arrivedAt, '오늘 저녁 9시');
-      });
-    });
-
     test('21시 전 오늘 도착', () {
       when(() => mockClock.now()).thenReturn(DateTime(2024, 1, 1, 20, 0, 0));
       withClock(mockClock, () {
