@@ -36,6 +36,7 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
 
   @override
   void initState() {
+    super.initState();
     final Stream<List<PurchaseDetails>> purchaseUpdated =
         InAppPurchase.instance.purchaseStream;
     _subscription = purchaseUpdated.listen(
@@ -47,7 +48,6 @@ class _CoinChargeScreenState extends State<CoinChargeScreen> {
       },
     );
     if (Platform.isIOS) handlePastTransactions();
-    super.initState();
   }
 
   @override

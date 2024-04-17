@@ -89,8 +89,8 @@ class ProfileCardWidgetState extends ConsumerState<ProfileCardWidget> {
 
   @override
   void dispose() {
-    super.dispose();
     imageIndex.dispose();
+    super.dispose();
   }
 
   void startStoryAnimation(List<AnimationController> controllers) {
