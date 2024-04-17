@@ -49,9 +49,7 @@ class _ChangeCharacterWidgetState extends State<ChangeCharacterWidget>
 
   Future<void> _hideOverlay() async {
     await _changeCharacterController?.reverse();
-    if (_overlayEntry != null) {
-      _overlayEntry!.remove();
-    }
+    _overlayEntry?.remove();
   }
 
   void _showChangeList(List<Character> characterList) {
