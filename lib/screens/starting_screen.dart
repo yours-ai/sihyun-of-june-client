@@ -108,8 +108,12 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     if (isNewUser) {
       context.go(RoutePaths.newUserAssignmentStarting);
     } else {
-      await characterService.resetProviderOfCharacter(ref);
-      context.go(RoutePaths.home);
+      try {
+        await characterService.resetProviderOfCharacter(ref);
+        context.go(RoutePaths.home);
+      } catch (error, stackTrace) {
+        Sentry.captureException(error, stackTrace: stackTrace);
+      }
     }
   }
 

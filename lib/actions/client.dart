@@ -35,7 +35,7 @@ void initServerErrorSnackbar() {
             );
           } else if (error.response!.statusCode == 401) {
             await logout();
-            router.go(RoutePaths.starting);
+            router.go(RoutePaths.landing);
             scaffoldMessengerKey.currentState?.showSnackBar(
               const SnackBar(
                 content: Text(

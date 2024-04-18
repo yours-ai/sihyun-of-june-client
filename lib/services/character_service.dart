@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterColors.dart';
@@ -10,7 +11,9 @@ import 'package:project_june_client/actions/character/models/CharacterImage.dart
 import 'package:project_june_client/actions/character/models/CharacterToday.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/providers/character_provider.dart';
+import 'package:project_june_client/router.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/character_change_modal.dart';
 import 'package:project_june_client/widgets/home_today_widget.dart';
@@ -76,38 +79,71 @@ class CharacterService {
     return canRetest;
   }
 
+  Future<void> _throwServerError(
+    dynamic error, {
+    required String errorSource,
+    required dynamic stackTrace,
+  }) async {
+    Sentry.captureException(error, stackTrace: stackTrace);
+    await logout();
+    router.go(RoutePaths.landing);
+    scaffoldMessengerKey.currentState?.showSnackBar(
+      const SnackBar(
+        content: Text(
+          '서버에 문제가 발생했습니다. 해당 현상이 반복되면 카카오톡 채널로 문의주세요.',
+        ),
+      ),
+    );
+    throw Exception('해당 문제는 $errorSource 에서 발생했습니다.');
+  }
+
   Future<void> resetProviderOfCharacter(WidgetRef ref) async {
-    final characterList = await _getCharacterListAndActiveCharacter(ref);
-    if (characterList[0] == null || characterList[1] == null) {
-      return;
+    try {
+      final charactersAndActiveCharacter =
+          await _getCharacterListAndActiveCharacter(ref);
+      if (!charactersAndActiveCharacter.hasCharacter) {
+        return;
+      }
+      final activeCharacter = charactersAndActiveCharacter.activeCharacter!;
+      ref.read(selectedCharacterProvider.notifier).state = activeCharacter;
+    } catch (error, stackTrace) {
+      _throwServerError(
+        error,
+        errorSource: 'resetProviderOfCharacter',
+        stackTrace: stackTrace,
+      );
     }
-    final activeCharacter = characterList[1];
-    ref.read(selectedCharacterProvider.notifier).state = activeCharacter;
   }
 
   Future<void> refreshProviderOfCharacter(WidgetRef ref) async {
-    final characterList = await _getCharacterListAndActiveCharacter(ref);
-    if (characterList[0] == null || characterList[1] == null) {
-      return;
-    }
-    final myCharacters = characterList[0];
-    if (ref.read(selectedCharacterProvider) != null) {
-      final selectedCharacter = myCharacters.firstWhere(
-        (character) => character.id == ref.read(selectedCharacterProvider)!.id,
-        orElse: () => throw Exception('Selected character maybe be deleted.'),
+    try {
+      final charactersAndActiveCharacter =
+          await _getCharacterListAndActiveCharacter(ref);
+      if (!charactersAndActiveCharacter.hasCharacter) {
+        return;
+      }
+      if (ref.read(selectedCharacterProvider) != null) {
+        final selectedCharacter = charactersAndActiveCharacter
+            .getSelectedCharacter(ref.read(selectedCharacterProvider)!.id);
+        ref.read(selectedCharacterProvider.notifier).state = selectedCharacter;
+      }
+    } catch (error, stackTrace) {
+      _throwServerError(
+        error,
+        errorSource: 'refreshProviderOfCharacter',
+        stackTrace: stackTrace,
       );
-      ref.read(selectedCharacterProvider.notifier).state = selectedCharacter;
     }
   }
 
-  Future<List<dynamic>> _getCharacterListAndActiveCharacter(
+  Future<_CharactersAndActiveCharacter> _getCharacterListAndActiveCharacter(
       WidgetRef ref) async {
     final myCharacters =
         await fetchMyCharactersQuery().refetch().then((value) => value.data);
     if (myCharacters == null || myCharacters.isEmpty) {
       ref.read(activeCharacterProvider.notifier).state = null;
       ref.read(selectedCharacterProvider.notifier).state = null;
-      return [null, null];
+      return _CharactersAndActiveCharacter(null, null);
     }
     final activeCharacter = myCharacters.firstWhere(
       (character) => character.assigned_characters!
@@ -115,7 +151,7 @@ class CharacterService {
       orElse: () => throw Exception('Active character not found.'),
     );
     ref.read(activeCharacterProvider.notifier).state = activeCharacter;
-    return [myCharacters, activeCharacter];
+    return _CharactersAndActiveCharacter(myCharacters, activeCharacter);
   }
 
   void redirectRetest(
@@ -297,4 +333,20 @@ class CharacterService {
         );
     }
   }
+}
+
+class _CharactersAndActiveCharacter {
+  final List<Character>? myCharacters;
+  final Character? activeCharacter;
+
+  _CharactersAndActiveCharacter(this.myCharacters, this.activeCharacter);
+
+  Character getSelectedCharacter(int selectedCharacterId) {
+    return myCharacters!.firstWhere(
+      (character) => character.id == selectedCharacterId,
+      orElse: () => throw Exception('Selected character maybe be deleted.'),
+    );
+  }
+
+  bool get hasCharacter => activeCharacter != null && myCharacters != null;
 }

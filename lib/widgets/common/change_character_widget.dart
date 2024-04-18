@@ -31,6 +31,7 @@ class _ChangeCharacterWidgetState extends State<ChangeCharacterWidget>
     with SingleTickerProviderStateMixin {
   AnimationController? _changeCharacterController;
   OverlayEntry? _overlayEntry;
+  bool isOverlayInserted = false;
 
   @override
   void initState() {
@@ -48,6 +49,7 @@ class _ChangeCharacterWidgetState extends State<ChangeCharacterWidget>
   }
 
   Future<void> _hideOverlay() async {
+    isOverlayInserted = false;
     await _changeCharacterController?.reverse();
     _overlayEntry?.remove();
   }
@@ -66,7 +68,7 @@ class _ChangeCharacterWidgetState extends State<ChangeCharacterWidget>
           parentContext: widget.parentContext,
         ),
       );
-      Overlay.of(context).insert(_overlayEntry!);
+      Overlay.of(widget.parentContext).insert(_overlayEntry!);
       _changeCharacterController?.forward();
     }
   }
@@ -75,6 +77,8 @@ class _ChangeCharacterWidgetState extends State<ChangeCharacterWidget>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
+        if (isOverlayInserted) return;
+        isOverlayInserted = true;
         final characterList =
             await fetchMyCharactersQuery().result.then((value) => value.data!);
         _showChangeList(characterList);
