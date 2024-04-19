@@ -3,7 +3,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/character/models/character_theme.dart';
+import 'package:project_june_client/actions/character/models/character/character_theme.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import '../../constants.dart';

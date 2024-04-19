@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/character/models/character.dart';
+import 'package:project_june_client/actions/character/models/character/character.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/character/character_cinematic_widget.dart';

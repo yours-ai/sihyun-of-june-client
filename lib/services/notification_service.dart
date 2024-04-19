@@ -4,7 +4,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:in_app_review/in_app_review.dart';
-import 'package:project_june_client/actions/character/models/character_colors.dart';
+import 'package:project_june_client/actions/character/models/character/character_colors.dart';
 import 'package:project_june_client/actions/notification/actions.dart';
 import 'package:project_june_client/actions/notification/models/app_notification.dart';
 import 'package:project_june_client/actions/notification/queries.dart';

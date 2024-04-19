@@ -1,10 +1,9 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
-import 'package:project_june_client/actions/character/models/character.dart';
-import 'package:project_june_client/actions/character/models/character_today.dart';
+import 'package:project_june_client/actions/character/models/character/character.dart';
+import 'package:project_june_client/actions/character/models/today/character_today.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';

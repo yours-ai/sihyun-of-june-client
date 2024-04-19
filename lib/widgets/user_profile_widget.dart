@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/character/models/character.dart';
-import 'package:project_june_client/actions/character/models/character_image.dart';
+import 'package:project_june_client/actions/character/models/character/character.dart';
+import 'package:project_june_client/actions/character/models/character/character_image.dart';
 import 'package:project_june_client/widgets/common/unread_dot.dart';
 
 import '../constants.dart';

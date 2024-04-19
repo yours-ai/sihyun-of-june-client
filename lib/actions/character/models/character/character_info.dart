@@ -1,7 +1,7 @@
-import 'package:project_june_client/actions/character/models/character_cinematic.dart';
-import 'package:project_june_client/actions/character/models/character_image.dart';
-import 'package:project_june_client/actions/character/models/character_sns.dart';
+import 'package:project_june_client/actions/character/models/character/character_cinematic.dart';
+import 'package:project_june_client/actions/character/models/character/character_image.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:project_june_client/actions/character/models/character/character_sns.dart';
 
 part 'character_info.freezed.dart';
 

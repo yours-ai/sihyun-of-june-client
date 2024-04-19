@@ -1,8 +1,8 @@
 import 'package:project_june_client/actions/character/dtos.dart';
-import 'package:project_june_client/actions/character/models/character.dart';
-import 'package:project_june_client/actions/character/models/date_and_weather.dart';
+import 'package:project_june_client/actions/character/models/character/character.dart';
+import 'package:project_june_client/actions/character/models/today/date_and_weather.dart';
 import 'package:project_june_client/actions/character/models/question.dart';
-import 'package:project_june_client/actions/character/models/today_config.dart';
+import 'package:project_june_client/actions/character/models/today/today_config.dart';
 
 import '../client.dart';
 

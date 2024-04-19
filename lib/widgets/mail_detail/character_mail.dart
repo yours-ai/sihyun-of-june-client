@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_june_client/actions/character/models/character.dart';
+import 'package:project_june_client/actions/character/models/character/character.dart';
 import 'package:project_june_client/actions/mails/models/mail_in_detail.dart';
 import 'package:project_june_client/services.dart';
 

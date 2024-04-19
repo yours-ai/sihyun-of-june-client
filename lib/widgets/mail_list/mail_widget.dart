@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/character/models/character_colors.dart';
+import 'package:project_june_client/actions/character/models/character/character_colors.dart';
 import 'package:project_june_client/actions/mails/models/mail_ticket_info.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';

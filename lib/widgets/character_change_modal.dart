@@ -2,11 +2,11 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:project_june_client/actions/character/models/character/character.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
 
 import '../actions/auth/queries.dart';
-import '../actions/character/models/character.dart';
 import '../constants.dart';
 import 'character_change_list_widget.dart';
 

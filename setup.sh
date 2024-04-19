@@ -16,5 +16,9 @@ fi
 # init flutter splashs
 dart run flutter_native_splash:create
 
+# delete all .freezed.dart files
+echo "Deleting all .freezed.dart files..."
+find . -name "*.freezed.dart" -type f -delete
+
 # auto generate json code, using json_serializable and freezed
 dart run build_runner build --delete-conflicting-outputs

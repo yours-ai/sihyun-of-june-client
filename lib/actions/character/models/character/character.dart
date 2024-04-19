@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:project_june_client/actions/character/models/assigned_character.dart';
-import 'package:project_june_client/actions/character/models/character_info.dart';
-import 'package:project_june_client/actions/character/models/character_theme.dart';
+import 'package:project_june_client/actions/character/models/character/assigned_character.dart';
+import 'package:project_june_client/actions/character/models/character/character_info.dart';
+import 'package:project_june_client/actions/character/models/character/character_theme.dart';
 
 part 'character.freezed.dart';
 

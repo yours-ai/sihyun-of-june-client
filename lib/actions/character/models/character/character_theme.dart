@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'package:project_june_client/actions/character/models/character_colors.dart';
+import 'package:project_june_client/actions/character/models/character/character_colors.dart';
 
 part 'character_theme.freezed.dart';
 

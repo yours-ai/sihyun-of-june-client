@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_june_client/actions/character/models/character_colors.dart';
+import 'package:project_june_client/actions/character/models/character/character_colors.dart';
 import 'package:project_june_client/globals.dart';
 
 SnackBar createSnackBar({

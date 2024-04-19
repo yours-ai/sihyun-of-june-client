@@ -1,7 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_june_client/actions/character/models/character.dart';
+import 'package:project_june_client/actions/character/models/character/character.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/character/profile_list_widget.dart';

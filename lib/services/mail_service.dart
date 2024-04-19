@@ -4,7 +4,7 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
-import 'package:project_june_client/actions/character/models/character_colors.dart';
+import 'package:project_june_client/actions/character/models/character/character_colors.dart';
 import 'package:project_june_client/actions/mails/models/mail_in_detail.dart';
 import 'package:project_june_client/actions/mails/models/mail_in_list.dart';
 import 'package:project_june_client/actions/mails/models/mail_ticket_info.dart';
