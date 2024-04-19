@@ -1,7 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 
 import 'actions.dart';
-import 'models/AppNotification.dart';
+import 'models/app_notification.dart';
 
 Query<bool> fetchIsNotificationAcceptedQuery({OnQueryErrorCallback? onError}) {
   return Query<bool>(

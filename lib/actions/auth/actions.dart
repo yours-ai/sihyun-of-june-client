@@ -3,14 +3,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
-import 'package:project_june_client/actions/auth/models/SihyunOfJuneUser.dart';
+import 'package:project_june_client/actions/auth/models/sihyun_of_june_user.dart';
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/contrib/flutter_secure_storage.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import 'models/Token.dart';
+import 'models/token.dart';
 
 Future<AuthorizationCredentialAppleID> fetchAppleLoginCredential() async {
   try {

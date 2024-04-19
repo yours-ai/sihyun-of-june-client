@@ -1,11 +1,11 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/character/actions.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
-import 'package:project_june_client/actions/character/models/CharacterToday.dart';
+import 'package:project_june_client/actions/character/models/character_today.dart';
 import 'package:project_june_client/constants.dart';
 
-import 'models/Character.dart';
-import 'models/Question.dart';
+import 'models/character.dart';
+import 'models/question.dart';
 
 Mutation<List<Question>, void> startTestMutation({
   OnSuccessCallback? onSuccess,

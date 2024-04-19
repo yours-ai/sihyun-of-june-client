@@ -6,7 +6,7 @@ import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
 
 import '../actions/auth/queries.dart';
-import '../actions/character/models/Character.dart';
+import '../actions/character/models/character.dart';
 import '../constants.dart';
 import 'character_change_list_widget.dart';
 

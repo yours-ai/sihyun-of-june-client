@@ -16,5 +16,5 @@ fi
 # init flutter splashs
 dart run flutter_native_splash:create
 
-# auto generate json code, using json_serializable
+# auto generate json code, using json_serializable and freezed
 dart run build_runner build --delete-conflicting-outputs

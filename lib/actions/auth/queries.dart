@@ -4,7 +4,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 
 import 'actions.dart';
-import 'models/SihyunOfJuneUser.dart';
+import 'models/sihyun_of_june_user.dart';
 
 Mutation<void, void> loginAsKakaoMutation({
   OnSuccessCallback? onSuccess,

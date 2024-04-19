@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:project_june_client/actions/mails/models/Reply.dart';
+import 'package:project_june_client/actions/mails/models/reply.dart';
 import 'package:project_june_client/widgets/mail_detail/character_mail.dart';
 
 import 'mail_info.dart';

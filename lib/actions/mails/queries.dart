@@ -1,10 +1,10 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:project_june_client/actions/mails/actions.dart';
 import 'package:project_june_client/actions/mails/dtos.dart';
-import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
-import 'package:project_june_client/actions/mails/models/MailTicketInfo.dart';
+import 'package:project_june_client/actions/mails/models/mail_in_detail.dart';
+import 'package:project_june_client/actions/mails/models/mail_ticket_info.dart';
 
-import 'models/MailInList.dart';
+import 'models/mail_in_list.dart';
 
 Query<List<MailInList>> fetchMailListQuery({
   OnQueryErrorCallback? onError,

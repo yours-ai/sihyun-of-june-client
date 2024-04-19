@@ -1,10 +1,10 @@
 import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/actions/mails/dtos.dart';
-import 'package:project_june_client/actions/mails/models/MailInDetail.dart';
-import 'package:project_june_client/actions/mails/models/MailInList.dart';
+import 'package:project_june_client/actions/mails/models/mail_in_detail.dart';
+import 'package:project_june_client/actions/mails/models/mail_in_list.dart';
 import 'package:project_june_client/services.dart';
 
-import 'models/MailTicketInfo.dart';
+import 'models/mail_ticket_info.dart';
 
 Future<List<MailInList>> fetchMailList(int assignId) async {
   final response = await dio.get(

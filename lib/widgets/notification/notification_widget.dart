@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:moment_dart/moment_dart.dart';
-import 'package:project_june_client/actions/character/models/CharacterColors.dart';
-import 'package:project_june_client/actions/notification/models/AppNotification.dart';
+import 'package:project_june_client/actions/character/models/character_colors.dart';
+import 'package:project_june_client/actions/notification/models/app_notification.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';

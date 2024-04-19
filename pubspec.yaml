@@ -19,7 +19,7 @@ dependencies:
   json_annotation: ^4.8.1
   kakao_flutter_sdk_user: ^1.9.1+2
   kakao_flutter_sdk_share: ^1.9.1+2
-  flutter_riverpod: ^2.3.10
+  flutter_riverpod: ^2.5.1
   flutter_secure_storage: ^9.0.0
   lottie: ^2.6.0
   sign_in_with_apple: ^5.0.0
@@ -55,16 +55,22 @@ dependencies:
   http: ^1.2.0
   async_button_builder: ^3.0.0+1
   mocktail: ^1.0.3
+  riverpod_annotation: ^2.3.5
+  freezed_annotation: ^2.4.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
-  build_runner: ^2.4.8
+  build_runner: ^2.4.9
   json_serializable: ^6.7.1
   sentry_dart_plugin: ^1.6.0
   test: ^1.24.9
+  riverpod_generator: ^2.4.0
+  custom_lint: ^0.6.4
+  riverpod_lint: ^2.3.10
+  freezed: ^2.5.2
 
 flutter:
   uses-material-design: true

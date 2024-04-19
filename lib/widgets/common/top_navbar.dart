@@ -3,7 +3,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/character/models/Character.dart';
+import 'package:project_june_client/actions/character/models/character.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';

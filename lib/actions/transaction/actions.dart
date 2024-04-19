@@ -2,7 +2,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:project_june_client/actions/transaction/dtos.dart';
 
 import '../client.dart';
-import 'models/TransactionLog.dart';
+import 'models/transaction_log.dart';
 
 Future<void> verifyAppleTransaction(String purchaseID) async {
   await dio.post('/transaction/apple/transaction/', data: {

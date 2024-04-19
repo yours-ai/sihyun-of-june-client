@@ -1,8 +1,8 @@
 import 'package:clock/clock.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:project_june_client/actions/character/models/CharacterToday.dart';
-import 'package:project_june_client/actions/mails/models/MailInList.dart';
-import 'package:project_june_client/actions/mails/models/Reply.dart';
+import 'package:project_june_client/actions/character/models/character_today.dart';
+import 'package:project_june_client/actions/mails/models/mail_in_list.dart';
+import 'package:project_june_client/actions/mails/models/reply.dart';
 import 'package:project_june_client/services.dart';
 import 'package:test/test.dart';
 

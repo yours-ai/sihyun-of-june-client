@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/actions.dart';
 import 'package:project_june_client/actions/character/dtos.dart';
-import 'package:project_june_client/actions/character/models/Question.dart';
+import 'package:project_june_client/actions/character/models/question.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';

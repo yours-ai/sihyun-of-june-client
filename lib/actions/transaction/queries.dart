@@ -6,7 +6,7 @@ import 'package:project_june_client/actions/transaction/dtos.dart';
 
 import '../../services.dart';
 import 'actions.dart';
-import 'models/TransactionLog.dart';
+import 'models/transaction_log.dart';
 
 Mutation<void, PurchaseDetails> verifyPurchaseMutation({
   OnSuccessCallback? onSuccess,

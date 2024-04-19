@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
 
-import '../actions/character/models/Character.dart';
+import '../actions/character/models/character.dart';
 import '../providers/character_provider.dart';
 
 class CharacterChangeListWidget extends ConsumerWidget {

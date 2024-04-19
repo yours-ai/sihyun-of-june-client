@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../client.dart';
-import 'models/AppNotification.dart';
-import 'models/UserDevice.dart';
+import 'models/app_notification.dart';
+import 'models/user_device.dart';
 
 bool _checkIsAccepted(NotificationSettings settings) {
   return (settings.authorizationStatus == AuthorizationStatus.authorized ||

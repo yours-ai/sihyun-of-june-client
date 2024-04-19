@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'actions/character/models/CharacterColors.dart';
-import 'actions/character/models/CharacterTheme.dart';
+import 'actions/character/models/character_colors.dart';
+import 'actions/character/models/character_theme.dart';
 
 abstract final class ColorConstants {
   static Color primary = const Color(0xff615B56);

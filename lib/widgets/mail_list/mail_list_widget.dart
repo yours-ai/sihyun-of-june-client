@@ -9,7 +9,7 @@ import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/widgets/common/top_navbar.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 
-import '../../actions/character/models/Character.dart';
+import '../../actions/character/models/character.dart';
 import '../../actions/mails/queries.dart';
 import '../../constants.dart';
 import '../../services.dart';
