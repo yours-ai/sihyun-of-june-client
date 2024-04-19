@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:moment_dart/moment_dart.dart';
 import 'package:project_june_client/actions/character/models/character/character_colors.dart';
 import 'package:project_june_client/actions/notification/models/app_notification.dart';
@@ -7,7 +8,7 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/common/dotted_underline.dart';
 
-class NotificationWidget extends StatefulWidget {
+class NotificationWidget extends ConsumerStatefulWidget {
   final AppNotification notification;
   final CharacterColors characterColors;
 
@@ -18,10 +19,10 @@ class NotificationWidget extends StatefulWidget {
   });
 
   @override
-  State<NotificationWidget> createState() => _NotificationWidgetState();
+  NotificationWidgetState createState() => NotificationWidgetState();
 }
 
-class _NotificationWidgetState extends State<NotificationWidget> {
+class NotificationWidgetState extends ConsumerState<NotificationWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -32,6 +33,7 @@ class _NotificationWidgetState extends State<NotificationWidget> {
           context: context,
           characterColors: widget.characterColors,
           payload: widget.notification.payload,
+          ref: ref,
         );
       },
       child: Container(

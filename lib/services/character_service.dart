@@ -251,6 +251,7 @@ class CharacterService {
     required String firstName,
     required BuildContext context,
     required CharacterColors characterColors,
+    required WidgetRef ref,
   }) {
     final todayStatus = checkTodayStatus(is30daysFinished, characterToday);
     switch (todayStatus) {
@@ -274,6 +275,7 @@ class CharacterService {
               assignId: characterToday.mail!.assign,
               characterColors: characterColors,
               mailId: characterToday.mail!.id,
+              ref: ref,
             );
           },
         );
@@ -289,6 +291,7 @@ class CharacterService {
               assignId: characterToday.mail!.assign,
               characterColors: characterColors,
               mailId: characterToday.mail!.id,
+              ref: ref,
             );
           },
         );
@@ -304,6 +307,7 @@ class CharacterService {
               assignId: characterToday.mail!.assign,
               characterColors: characterColors,
               mailId: characterToday.mail!.id,
+              ref: ref,
             );
           },
         );

@@ -1,9 +1,9 @@
-import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/mails/models/mail_in_detail.dart';
+import 'package:project_june_client/actions/mails/actions.dart';
 import 'package:project_june_client/router.dart';
 import 'package:project_june_client/services.dart';
 import 'package:project_june_client/widgets/mail_detail/mail_info.dart';
@@ -12,8 +12,6 @@ import 'package:project_june_client/widgets/common/modal/modal_description_widge
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/mail_detail/replied.dart';
 
-import '../../actions/mails/dtos.dart';
-import '../../actions/mails/queries.dart';
 import '../../constants.dart';
 
 class ReplyFormWidget extends ConsumerStatefulWidget {
@@ -58,60 +56,48 @@ class ReplyFormWidgetState extends ConsumerState<ReplyFormWidget> {
     super.dispose();
   }
 
-  ReplyMailDTO getReplyDTO() {
-    return ReplyMailDTO(
-      id: widget.mail.id,
-      description: controller.value.text,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final mutation = replyMailMutation(
-      refetchQueries: [
-        'character-sent-mail/${widget.mail.id}',
-      ],
-      onSuccess: (res, arg) {
-        mailService.deleteBeforeReply(widget.mail.id);
-      },
-    );
     showConfirmModal() {
       showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
-          return MutationBuilder(
-            mutation: mutation,
-            builder: (context, state, mutate) => PopScope(
-              canPop: !isLoading,
-              child: ModalWidget(
-                title: '정말 이대로 보내시겠어요?',
-                description: const ModalDescriptionWidget(
-                    description: '답장을 보내면 수정이 불가능해요.🥲'),
-                choiceColumn: ModalChoiceWidget(
-                  submitText: '네',
-                  onSubmit: () async {
-                    if (!isLoading) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      mutate(getReplyDTO()).then((_) {
-                        fetchMailListQuery(assignId: widget.mail.assign)
-                            .refetch();
+          return PopScope(
+            canPop: !isLoading,
+            child: ModalWidget(
+              title: '정말 이대로 보내시겠어요?',
+              description: const ModalDescriptionWidget(
+                  description: '답장을 보내면 수정이 불가능해요.🥲'),
+              choiceColumn: ModalChoiceWidget(
+                submitText: '네',
+                onSubmit: () async {
+                  if (!isLoading) {
+                    if (!mounted) return;
+                    setState(() {
+                      isLoading = true;
+                    });
+                    ref.read(mailProvider(widget.mail.id).notifier).reply(
+                      controller.value.text,
+                      () async {
+                        await ref.refresh(
+                            mailListProvider(widget.mail.assign).future);
+                        mailService.deleteBeforeReply(widget.mail.id);
                         mailService.requestRandomlyAppReview();
+                        if (!mounted) return;
                         setState(() {
                           isLoading = false;
                         });
-                      });
-                      router.pop();
-                    }
-                  },
-                  cancelText: '아니요',
-                  onCancel: () async {
-                    if (!isLoading) {
-                      context.pop();
-                    }
-                  },
-                ),
+                      },
+                    );
+                    router.pop();
+                  }
+                },
+                cancelText: '아니요',
+                onCancel: () async {
+                  if (!isLoading) {
+                    context.pop();
+                  }
+                },
               ),
             ),
           );

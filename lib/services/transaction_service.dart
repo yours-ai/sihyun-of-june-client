@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:intl/intl.dart';
 import 'package:project_june_client/actions/character/models/character/character_colors.dart';
 import 'package:project_june_client/actions/mails/models/mail_ticket_info.dart';
-import 'package:project_june_client/actions/mails/queries.dart';
+import 'package:project_june_client/actions/mails/actions.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/widgets/common/create_snackbar.dart';
@@ -175,6 +176,7 @@ class TransactionService {
     required CharacterColors characterColors,
     required int mailId,
     required int assignId,
+    required WidgetRef ref,
   }) async {
     await showModalBottomSheet<void>(
       context: context,
@@ -192,40 +194,36 @@ class TransactionService {
           choiceColumn: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              MutationBuilder(
-                  mutation: buySingleMailTicketMutation(
-                    onSuccess: (res, arg) {
-                      fetchMailListQuery(assignId: assignId).refetch();
-                      context.pop();
-                      context.push('${RoutePaths.mailListMailDetail}/$mailId');
-                      scaffoldMessengerKey.currentState?.showSnackBar(
-                        createSnackBar(
-                          snackBarText:
-                              '${mailTicketInfo.mail_ticket_prices.single_mail_ticket_coin}코인을 사용했어요!',
-                          characterColors: characterColors,
-                        ),
-                      );
-                    },
-                    onError: (res, arg, error) {
-                      _throwBuyTicketError(arg, context);
-                    },
+              AsyncButtonBuilder(
+                  child: TextWithSuffix(
+                    buttonText: '편지 읽기',
+                    suffixText:
+                        '${mailTicketInfo.mail_ticket_prices.single_mail_ticket_coin}코인',
                   ),
-                  builder: (context, state, mutate) {
-                    return AsyncButtonBuilder(
-                        child: TextWithSuffix(
-                          buttonText: '편지 읽기',
-                          suffixText:
-                              '${mailTicketInfo.mail_ticket_prices.single_mail_ticket_coin}코인',
-                        ),
-                        onPressed: () async {
-                          await mutate(mailId);
-                        },
-                        builder: (context, child, callback, buttonState) {
-                          return FilledButton(
-                            onPressed: callback,
-                            child: child,
-                          );
-                        });
+                  onPressed: () async {
+                    ref.read(buySingleMailTicketProvider(
+                      mailId,
+                      onSuccess: () async {
+                        await ref.refresh(mailListProvider(assignId).future);
+                        context.pop();
+                        context
+                            .push('${RoutePaths.mailListMailDetail}/$mailId');
+                        scaffoldMessengerKey.currentState?.showSnackBar(
+                          createSnackBar(
+                            snackBarText:
+                                '${mailTicketInfo.mail_ticket_prices.single_mail_ticket_coin}코인을 사용했어요!',
+                            characterColors: characterColors,
+                          ),
+                        );
+                      },
+                      context: context,
+                    ));
+                  },
+                  builder: (context, child, callback, buttonState) {
+                    return FilledButton(
+                      onPressed: callback,
+                      child: child,
+                    );
                   }),
               const SizedBox(
                 height: 13,
@@ -236,6 +234,7 @@ class TransactionService {
                 requiredCoin:
                     mailTicketInfo.mail_ticket_prices.monthly_mail_ticket_coin,
                 characterColors: characterColors,
+                ref: ref,
               ),
             ],
           ),
@@ -249,11 +248,12 @@ class TransactionService {
     required MailTicketInfo mailTicketInfo,
     required CharacterColors characterColors,
     required int assignId,
+    required WidgetRef ref,
   }) async {
     await showModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
-      builder: (BuildContext context) {
+      builder: (BuildContext modalContext) {
         return ModalWidget(
           title:
               '이달의 편지를 모두 읽기 위해서는\n${mailTicketInfo.mail_ticket_prices.monthly_mail_ticket_coin}코인이 필요해요.',
@@ -267,11 +267,12 @@ class TransactionService {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildBuyMonthlyTicketMutation(
-                context: context,
+                context: modalContext,
                 assignId: assignId,
                 requiredCoin:
                     mailTicketInfo.mail_ticket_prices.monthly_mail_ticket_coin,
                 characterColors: characterColors,
+                ref: ref,
               ),
             ],
           ),
@@ -317,43 +318,37 @@ class TransactionService {
     );
   }
 
-  MutationBuilder _buildBuyMonthlyTicketMutation({
+  AsyncButtonBuilder _buildBuyMonthlyTicketMutation({
     required BuildContext context,
     required int assignId,
     required int requiredCoin,
     required CharacterColors characterColors,
+    required WidgetRef ref,
   }) {
-    return MutationBuilder(
-        mutation: buyMonthlyMailTicketMutation(
-          onSuccess: (res, arg) {
-            checkMonthlyMailTicketQuery(assignId: assignId).refetch();
-            context.pop();
-            scaffoldMessengerKey.currentState?.showSnackBar(
-              createSnackBar(
-                snackBarText: '$requiredCoin코인을 사용했어요!',
-                characterColors: characterColors,
-              ),
-            );
-          },
-          onError: (res, arg, error) {
-            _throwBuyTicketError(arg, context);
-          },
+    return AsyncButtonBuilder(
+        child: TextWithSuffix(
+          buttonText: '이달의 편지 모두 읽기',
+          suffixText: '$requiredCoin코인',
         ),
-        builder: (context, state, mutate) {
-          return AsyncButtonBuilder(
-              child: TextWithSuffix(
-                buttonText: '이달의 편지 모두 읽기',
-                suffixText: '$requiredCoin코인',
-              ),
-              onPressed: () async {
-                await mutate(assignId);
-              },
-              builder: (context, child, callback, buttonState) {
-                return FilledButton(
-                  onPressed: callback,
-                  child: child,
-                );
-              });
+        onPressed: () async {
+          ref.read(monthlyMailTicketProvider(assignId).notifier).buy(
+            context,
+            onSuccess: () {
+              context.pop();
+              scaffoldMessengerKey.currentState?.showSnackBar(
+                createSnackBar(
+                  snackBarText: '$requiredCoin코인을 사용했어요!',
+                  characterColors: characterColors,
+                ),
+              );
+            },
+          );
+        },
+        builder: (context, child, callback, buttonState) {
+          return FilledButton(
+            onPressed: callback,
+            child: child,
+          );
         });
   }
 
@@ -362,22 +357,31 @@ class TransactionService {
     required int mailId,
     required CharacterColors characterColors,
     required int assignId,
+    required WidgetRef ref,
   }) async {
-    final mailRaw = await fetchMailByIdQuery(id: mailId).result;
-    final hasPermission = mailRaw.error?.response?.statusCode != 403;
-    final mailTicketInfo =
-        await fetchMailTicketInfoQuery().result.then((value) => value.data);
-    if (mailTicketInfo != null) {
-      if (!hasPermission) {
+    try {
+      final mail = await ref.read(mailProvider(mailId).future);
+      context.push('${RoutePaths.mailListMailDetail}/${mail.id}');
+    } catch (error, stackTrace) {
+      if (error is DioException && error.response?.statusCode == 403) {
+        final mailTicketInfo = await ref.read(mailTicketInfoProvider.future);
         showBuyBothTicketModal(
           context: context,
           mailTicketInfo: mailTicketInfo,
           characterColors: characterColors,
           mailId: mailId,
           assignId: assignId,
+          ref: ref,
         );
       } else {
-        context.push('${RoutePaths.mailListMailDetail}/$mailId');
+        Sentry.captureException(error, stackTrace: stackTrace);
+        scaffoldMessengerKey.currentState?.showSnackBar(
+          const SnackBar(
+            content: Text(
+              '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.',
+            ),
+          ),
+        );
       }
     }
   }
@@ -403,10 +407,10 @@ class TransactionService {
     );
   }
 
-  void _throwBuyTicketError(Object arg, BuildContext context) {
-    if (arg is DioException) {
-      if (arg.response?.statusCode == 400 &&
-          arg.response?.data.first == '코인이 부족합니다.') {
+  void throwBuyTicketError(Object error, BuildContext context) {
+    if (error is DioException) {
+      if (error.response?.statusCode == 400 &&
+          error.response?.data.first == '코인이 부족합니다.') {
         context.pop();
         showNotEnoughCoinModal(context);
         return;

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:project_june_client/actions/character/models/character/character_colors.dart';
 import 'package:project_june_client/actions/notification/actions.dart';
@@ -24,6 +25,7 @@ class NotificationService {
     required BuildContext context,
     required CharacterColors characterColors,
     Map<String, dynamic>? payload,
+    required WidgetRef ref,
   }) {
     if (redirectLink != null && redirectLink.isNotEmpty) {
       if (redirectLink.startsWith('${RoutePaths.mailListMailDetail}/')) {
@@ -40,6 +42,7 @@ class NotificationService {
               redirectLink.split('${RoutePaths.mailListMailDetail}/').last),
           characterColors: characterColors,
           assignId: assignId,
+          ref: ref,
         );
       } else {
         if (redirectLink.length > 4 && redirectLink.substring(0, 4) == 'http') {
@@ -57,6 +60,7 @@ class NotificationService {
     required BuildContext context,
     required CharacterColors characterColors,
     Map<String, dynamic>? payload,
+    required WidgetRef ref,
   }) {
     final mutation = readNotificationMutation(
       onSuccess: (res, arg) => routeRedirectLink(
@@ -64,6 +68,7 @@ class NotificationService {
         context: context,
         characterColors: characterColors,
         payload: payload,
+        ref: ref,
       ),
       refetchQueries: ['list-app-notifications'],
     );

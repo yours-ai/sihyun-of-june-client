@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/character/character_colors.dart';
@@ -13,7 +14,7 @@ import '../../actions/mails/models/mail_in_list.dart';
 
 enum MailState { notArrived, notReplied, replied }
 
-class MailWidget extends StatelessWidget {
+class MailWidget extends ConsumerWidget {
   MailInList? mail;
   bool hasPermission;
   final int mailIndex;
@@ -73,7 +74,7 @@ class MailWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final mailState = checkMailState(mail);
 
     return GestureDetector(
@@ -91,15 +92,18 @@ class MailWidget extends StatelessWidget {
                 characterColors: characterColors,
                 mailId: mail!.id,
                 assignId: assignId,
+                ref: ref,
               );
             }
           }
         } else if (!hasPermission) {
           transactionService.showBuyMonthlyTicketModal(
-              context: context,
-              mailTicketInfo: mailTicketInfo,
-              characterColors: characterColors,
-              assignId: assignId);
+            context: context,
+            mailTicketInfo: mailTicketInfo,
+            characterColors: characterColors,
+            assignId: assignId,
+            ref: ref,
+          );
         }
       },
       child: Column(

@@ -2,6 +2,7 @@ import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/character/queries.dart';
+import 'package:project_june_client/actions/mails/actions.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/services.dart';
@@ -11,7 +12,6 @@ import 'package:project_june_client/widgets/mail_detail/character_mail.dart';
 import 'package:project_june_client/widgets/mail_detail/replied.dart';
 import 'package:project_june_client/widgets/mail_detail/reply_form.dart';
 
-import '../../actions/mails/queries.dart';
 
 enum UserStateInMail {
   canReply,
@@ -30,7 +30,6 @@ class MailDetailScreen extends ConsumerStatefulWidget {
 }
 
 class MailDetailScreenState extends ConsumerState<MailDetailScreen> {
-  Mutation<void, int>? mutation;
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
@@ -40,18 +39,7 @@ class MailDetailScreenState extends ConsumerState<MailDetailScreen> {
     super.initState();
     _focusNode.addListener(_scrollToFocusedField);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        mutation = readMailMutation(
-          onError: (arr, err, fallback) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('메일을 읽지 못했습니다. 에러가 계속되면 고객센터에 문의해주세요.'),
-              ),
-            );
-          },
-        );
-        mutation!.mutate(widget.id);
-      });
+      ref.read(mailProvider(widget.id).notifier).readMail();
     });
   }
 
@@ -88,123 +76,113 @@ class MailDetailScreenState extends ConsumerState<MailDetailScreen> {
 
   @override
   Widget build(context) {
-    final query = fetchMailByIdQuery(
-      id: widget.id,
-    );
-    if (mutation == null) {
-      return const SizedBox.shrink();
+    final mail = ref.watch(mailProvider(widget.id));
+    if (mail.value == null) {
+      return const Center(child: CircularProgressIndicator.adaptive());
     }
     return QueryBuilder(
-      query: query,
-      builder: (context, mailState) {
-        if (mailState.data == null) {
-          return const Scaffold();
+      query: fetchCharacterByIdQuery(id: mail.value!.by),
+      builder: (context, characterState) {
+        if (characterState.data == null) {
+          return const SizedBox.shrink();
         }
-        return QueryBuilder(
-          query: fetchCharacterByIdQuery(id: mailState.data!.by),
-          builder: (context, characterState) {
-            if (characterState.data == null) {
-              return const SizedBox.shrink();
-            }
-            final isActiveCharacter = mailState.data!.assign ==
-                ref
-                    .watch(activeCharacterProvider)
-                    ?.assigned_characters
-                    ?.last
-                    .assigned_character_id;
-            final UserStateInMail userStateInMail =
-                mailService.checkUserStateInMail(
-              mailState.data!,
-              isActiveCharacter,
-            );
-            final characterInMail = characterState.data!;
-            return Scaffold(
-              resizeToAvoidBottomInset: true,
-              appBar: const BackAppbar(),
-              body: SafeArea(
-                child: SingleChildScrollView(
-                  controller: _scrollController,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 36.0,
-                      vertical: 10.0,
+        final isActiveCharacter = mail.value!.assign ==
+            ref
+                .watch(activeCharacterProvider)
+                ?.assigned_characters
+                ?.last
+                .assigned_character_id;
+        final UserStateInMail userStateInMail =
+            mailService.checkUserStateInMail(
+          mail.value!,
+          isActiveCharacter,
+        );
+        final characterInMail = characterState.data!;
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: const BackAppbar(),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 36.0,
+                  vertical: 10.0,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: _focusNode.unfocus,
+                      child: CharacterMailWidget(
+                        mail: mail.value!,
+                        characterInMail: characterInMail,
+                      ),
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        GestureDetector(
-                          onTap: _focusNode.unfocus,
-                          child: CharacterMailWidget(
-                            mail: mailState.data!,
-                            characterInMail: characterInMail,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 30),
-                          height: 1,
-                          child: const DottedUnderline(0),
-                        ),
-                        if (userStateInMail == UserStateInMail.replied) ...[
-                          RepliedWidget(
-                            reply: mailState.data!.replies!.first,
-                            userName: mailState.data!.to_first_name,
-                            characterName: characterInMail.first_name,
-                            toImage: mailState.data!.to_image,
-                            primaryColorInMail:
-                                characterInMail.theme.colors.primary,
-                          )
-                        ],
-                        if (userStateInMail == UserStateInMail.canReply) ...[
-                          ReplyFormWidget(
-                            mail: mailState.data!,
-                            primaryColorInMail:
-                                characterInMail.theme.colors.primary,
-                            characterName: characterInMail.first_name,
-                            characterId: characterInMail.id,
-                            focusNode: _focusNode,
-                            formKey: _formKey,
-                          )
-                        ],
-                        if (userStateInMail ==
-                            UserStateInMail.cannotReplyCurrentMonth) ...[
-                          Center(
-                            child: Text(
-                              '답장 가능한 시간이 지났어요.🥲\n최근 편지에만 답장이 가능해요.',
-                              style: TextStyle(
-                                height: 1.5,
-                                fontSize: 16,
-                                color: ColorConstants.neutral,
-                                fontWeight: FontWeightConstants.semiBold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          const SizedBox(height: 40),
-                        ],
-                        if (userStateInMail ==
-                            UserStateInMail.cannotReplyPastMonth) ...[
-                          Center(
-                            child: Text(
-                              '지난 달 편지에는 답장이 불가능해요 🥲\n이번 달 편지에만 답장이 가능해요.',
-                              style: TextStyle(
-                                height: 1.5,
-                                fontSize: 16,
-                                color: ColorConstants.neutral,
-                                fontWeight: FontWeightConstants.semiBold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          const SizedBox(height: 40),
-                        ],
-                      ],
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 30),
+                      height: 1,
+                      child: const DottedUnderline(0),
                     ),
-                  ),
+                    if (userStateInMail == UserStateInMail.replied) ...[
+                      RepliedWidget(
+                        reply: mail.value!.replies!.first,
+                        userName: mail.value!.to_first_name,
+                        characterName: characterInMail.first_name,
+                        toImage: mail.value!.to_image,
+                        primaryColorInMail:
+                            characterInMail.theme.colors.primary,
+                      )
+                    ],
+                    if (userStateInMail == UserStateInMail.canReply) ...[
+                      ReplyFormWidget(
+                        mail: mail.value!,
+                        primaryColorInMail:
+                            characterInMail.theme.colors.primary,
+                        characterName: characterInMail.first_name,
+                        characterId: characterInMail.id,
+                        focusNode: _focusNode,
+                        formKey: _formKey,
+                      )
+                    ],
+                    if (userStateInMail ==
+                        UserStateInMail.cannotReplyCurrentMonth) ...[
+                      Center(
+                        child: Text(
+                          '답장 가능한 시간이 지났어요.🥲\n최근 편지에만 답장이 가능해요.',
+                          style: TextStyle(
+                            height: 1.5,
+                            fontSize: 16,
+                            color: ColorConstants.neutral,
+                            fontWeight: FontWeightConstants.semiBold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                    ],
+                    if (userStateInMail ==
+                        UserStateInMail.cannotReplyPastMonth) ...[
+                      Center(
+                        child: Text(
+                          '지난 달 편지에는 답장이 불가능해요 🥲\n이번 달 편지에만 답장이 가능해요.',
+                          style: TextStyle(
+                            height: 1.5,
+                            fontSize: 16,
+                            color: ColorConstants.neutral,
+                            fontWeight: FontWeightConstants.semiBold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 40),
+                    ],
+                  ],
                 ),
               ),
-            );
-          },
+            ),
+          ),
         );
       },
     );

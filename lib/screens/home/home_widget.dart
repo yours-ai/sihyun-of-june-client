@@ -1,6 +1,7 @@
 import 'package:cached_query_flutter/cached_query_flutter.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/models/character/character.dart';
 import 'package:project_june_client/actions/character/models/today/character_today.dart';
@@ -11,16 +12,16 @@ import 'package:project_june_client/widgets/common/change_character_widget.dart'
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/top_navbar.dart';
 
-class HomeWidget extends StatefulWidget {
+class HomeWidget extends ConsumerStatefulWidget {
   final Character selectedCharacter;
 
   const HomeWidget(this.selectedCharacter, {super.key});
 
   @override
-  State<HomeWidget> createState() => _HomeWidgetState();
+  HomeWidgetState createState() => HomeWidgetState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> {
+class HomeWidgetState extends ConsumerState<HomeWidget> {
   final GlobalKey _changeCharacterKey = GlobalKey();
 
   @override
@@ -87,6 +88,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                     characterColors:
                                         widget.selectedCharacter.theme.colors,
                                     context: context,
+                                    ref: ref,
                                   ),
                                 ],
                               ),

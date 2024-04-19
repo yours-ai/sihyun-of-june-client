@@ -48,6 +48,7 @@ class NotificationListScreenState extends ConsumerState<NotificationListScreen>
           characterColors: ref.read(selectedCharacterProvider)?.theme.colors ??
               ProjectConstants.defaultTheme.colors,
           payload: payload,
+          ref: ref,
         );
       }
     });
