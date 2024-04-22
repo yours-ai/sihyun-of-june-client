@@ -6,10 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/character/models/Character.dart';
 import 'package:project_june_client/actions/character/models/CharacterCinematic.dart';
 import 'package:project_june_client/constants.dart';
-import 'package:project_june_client/globals.dart';
 import 'package:project_june_client/services/unique_cachekey_service.dart';
 import 'package:project_june_client/widgets/character/profile_list_widget.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 class CharacterCinematicWidget extends StatefulWidget {
   final Character character;
@@ -59,42 +57,7 @@ class _CharacterCinematicWidgetState extends State<CharacterCinematicWidget> {
         const Duration(milliseconds: 3000),
         () {
           if (!mounted) return;
-          if (widget.profileWidgetType == ProfileWidgetType.selection) {
-            context.push(
-              RoutePaths.selectionConfirm,
-              extra: {
-                'id': widget.character.id,
-                'firstName': widget.character.first_name,
-                'primaryColor': widget.character.theme.colors.primary,
-                'secondaryColor': widget.character.theme.colors.secondary,
-              },
-            );
-          } else if (widget.profileWidgetType == ProfileWidgetType.test) {
-            final int testId = widget.testId ?? -1;
-            if (testId == -1) {
-              Sentry.captureException('testId is null');
-              scaffoldMessengerKey.currentState?.showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    '배정에 문제가 발생했습니다. 어플을 재시작해주세요.',
-                  ),
-                ),
-              );
-              return;
-            }
-            context.push(
-              RoutePaths.testConfirm,
-              extra: {
-                'selectedCharacterId': widget.character.id,
-                'testId': widget.testId,
-                'selectedCharacterFirstName': widget.character.first_name,
-                'selectedCharacterTheme': widget.character.theme,
-              },
-            );
-          } else if (widget.profileWidgetType
-              case ProfileWidgetType.myCharacterProfile) {
-            context.pop();
-          }
+          context.pop();
         },
       );
     }

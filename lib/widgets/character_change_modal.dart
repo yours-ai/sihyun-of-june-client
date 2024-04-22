@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/services.dart';
-import 'package:project_june_client/widgets/retest/retest_modal_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 
 import '../actions/auth/queries.dart';
 import '../actions/character/models/Character.dart';
@@ -53,31 +53,16 @@ class CharacterChangeModal extends ConsumerWidget {
               }
               return GestureDetector(
                 onTap: () async {
-                  if (characterList.isEmpty) {
-                    context.go(RoutePaths.assignment);
-                    return;
-                  }
-                  final firstName = characterService
-                      .getCurrentCharacterFirstName(characterList);
-                  if (firstName == '') {
-                    context.go(RoutePaths.assignment);
-                    return;
-                  }
-                  if (state.data!.is_30days_finished == false) {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (context) => RetestModalWidget(
-                          firstName: characterService
-                              .getCurrentCharacterFirstName(characterList)),
-                    );
-                    return;
-                  }
-                  context.push(
-                    RoutePaths.retest,
-                    extra: {
-                      'characterIds':
-                          characterService.getCharacterIds(characterList),
-                      'firstName': firstName,
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return ModalWidget(
+                        title: '서비스 종료 예정으로\n더 이상 새로운 친구를 만나볼 수 없어요.',
+                        choiceColumn: FilledButton(
+                          onPressed: () => context.pop(),
+                          child: const Text('알겠어요'),
+                        ),
+                      );
                     },
                   );
                 },

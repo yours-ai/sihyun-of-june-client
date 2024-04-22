@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/common/title_layout.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
 
@@ -36,7 +38,18 @@ class EmptyMailListWidget extends StatelessWidget {
                 const SizedBox(height: 23),
                 FilledButton(
                   onPressed: () {
-                    context.go(RoutePaths.assignment);
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return ModalWidget(
+                          title: '서비스 종료 예정으로\n더 이상 새로운 친구를 만나볼 수 없어요.',
+                          choiceColumn: FilledButton(
+                            onPressed: () => context.pop(),
+                            child: const Text('알겠어요'),
+                          ),
+                        );
+                      },
+                    );
                   },
                   child: const Text('새로운 상대 만나기'),
                 ),

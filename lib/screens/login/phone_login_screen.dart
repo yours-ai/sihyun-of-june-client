@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:project_june_client/actions/auth/dtos.dart';
 import 'package:project_june_client/constants.dart';
+import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 import 'package:project_june_client/widgets/phone_login/name_tab.dart';
 import 'package:project_june_client/widgets/phone_login/phone_tab.dart';
 
@@ -17,10 +20,18 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
   ValidatedAuthCodeDTO? validatedAuthDTO;
 
   void handleVerify(ValidatedAuthCodeDTO dto) {
-    setState(() {
-      validatedAuthDTO = dto;
-      _tab = 2;
-    });
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ModalWidget(
+          title: '서비스 종료 예정으로\n더 이상 가입할 수 없어요.',
+          choiceColumn: FilledButton(
+            onPressed: () => context.pop(),
+            child: const Text('알겠어요'),
+          ),
+        );
+      },
+    );
   }
 
   @override

@@ -54,10 +54,7 @@ class ProfileListWidgetState extends ConsumerState<ProfileListWidget> {
               pageBuilder:
                   (BuildContext pageContext, animation, secondaryAnimation) =>
                       CharacterCinematicWidget(
-                character: widget.profileWidgetType == ProfileWidgetType.test
-                    ? widget.characterList
-                        .first // test일때 배정된 캐릭터로만 가게끔. test screen에서 list를 배정된 캐릭터를 첫번째로 보내줌.
-                    : widget.characterList[selectedIndex],
+                character: widget.characterList[selectedIndex],
                 profileWidgetType: widget.profileWidgetType,
                 testId: widget.testId,
               ),

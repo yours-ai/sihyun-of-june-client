@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/one_link_provider.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
+import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
 
 import '../../actions/analytics/dtos.dart';
 import '../../actions/analytics/queries.dart';
@@ -41,13 +42,17 @@ class KakaoLoginButton extends ConsumerWidget {
             );
             return;
           }
-          Sentry.captureException(error);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                '카카오 로그인 중 에러가 발생했어요.',
-              ),
-            ),
+          showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return ModalWidget(
+                title: '서비스 종료 예정으로\n더 이상 가입할 수 없어요.',
+                choiceColumn: FilledButton(
+                  onPressed: () => context.pop(),
+                  child: const Text('알겠어요'),
+                ),
+              );
+            },
           );
         },
       ),

@@ -14,7 +14,6 @@ import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -107,23 +106,12 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
     final myCharacters = await fetchMyCharacterQuery().result;
     final hasCharacter =
         myCharacters.data != null && myCharacters.data!.isNotEmpty;
-    await _checkEnableToRetest(hasCharacter, myCharacters.data);
     if (hasCharacter) {
       await _saveSelectedCharacterId(myCharacters.data!);
       await _setSelectedCharacterTheme(myCharacters.data!);
       if (!mounted) return;
-      context.go(RoutePaths.mailList);
-    } else {
-      final isNewUserRawData = await fetchIsNewUserQuery().result;
-      final isNewUser = isNewUserRawData.data!['is_available'];
-      if (isNewUser) {
-        if (!mounted) return;
-        context.go(RoutePaths.newUserAssignmentStarting);
-      } else {
-        if (!mounted) return;
-        context.go(RoutePaths.mailList);
-      }
     }
+    context.go(RoutePaths.mailList);
   }
 
   Future<void> _saveSelectedCharacterId(List<Character> myCharacters) async {
@@ -148,17 +136,6 @@ class StartingScreenState extends ConsumerState<StartingScreen> {
       final selectedCharacterTheme = selectedCharacterList.first.theme;
       ref.read(characterThemeProvider.notifier).state = selectedCharacterTheme;
     }
-  }
-
-  Future<void> _checkEnableToRetest(
-      bool hasCharacter, List<Character>? myCharacters) async {
-    if (hasCharacter == false || myCharacters == null || myCharacters.isEmpty) {
-      ref.read(isEnableToRetestProvider.notifier).state = true;
-      return;
-    }
-    final allCharacters = await fetchAllCharactersQuery().result;
-    final isEnableToRetest = myCharacters.length != allCharacters.data!.length;
-    ref.read(isEnableToRetestProvider.notifier).state = isEnableToRetest;
   }
 
   Future<void> _checkNotificationPermission() async {

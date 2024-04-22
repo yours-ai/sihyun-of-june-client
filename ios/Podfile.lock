@@ -313,7 +313,7 @@ SPEC CHECKSUMS:
   FirebaseMessaging: 1367b28c0c83a63072af4a711328fcc2e6899902
   FirebaseRemoteConfig: 94ab72cd7aa865b6226ee527b1fa5c4f961a4e7b
   FirebaseSharedSwift: f34eeb7d3ea87a34497629b6ca41657beadef76a
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_app_badger: b87fc231847b03b92ce1412aa351842e7e97932f
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
@@ -339,6 +339,6 @@ SPEC CHECKSUMS:
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   url_launcher_ios: 68d46cc9766d0c41dbdc884310529557e3cd7a86
 
-PODFILE CHECKSUM: b891e545920255a4edaa54d217b073659e455ee9
+PODFILE CHECKSUM: 4d03976fd047c1e8ee1d04e88c72a0faac7d8ce7
 
 COCOAPODS: 1.14.3
