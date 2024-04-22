@@ -49,10 +49,14 @@ Future<String> fetchServerTokenByAppleCredential(
     };
   }
 
-  final response = await dio
-      .post('/auth/apple/join-or-login/by-id/', data: data)
-      .then<Token>((response) => Token.fromJson(response.data));
-  return response.token;
+  final response =
+      await dio.post('/auth/apple/join-or-login/by-id/', data: data);
+  final token = Token.fromJson(response.data).token;
+  final statusCode = response.statusCode;
+  if (statusCode != 200) {
+    throw 'Failed to login with Apple';
+  }
+  return token;
 }
 
 Future<void> sendSmsVerification(String phoneNumber) async {
@@ -134,12 +138,16 @@ Future<OAuthToken> fetchKakaoOAuthToken() async {
   return await UserApi.instance.loginWithKakaoAccount();
 }
 
-Future<String> fetchServerTokenByKakaoToken(OAuthToken token) async {
-  final tokenInstance =
-      await dio.post('/auth/kakao/join-or-login/by-token/', data: {
-    'token': token.accessToken,
-  }).then<Token>((response) => Token.fromJson(response.data));
-  return tokenInstance.token;
+Future<String> fetchServerTokenByKakaoToken(OAuthToken authToken) async {
+  final response = await dio.post('/auth/kakao/join-or-login/by-token/', data: {
+    'token': authToken.accessToken,
+  });
+  final token = Token.fromJson(response.data).token;
+  final statusCode = response.statusCode;
+  if (statusCode != 200) {
+    throw 'Failed to login with Kakao';
+  }
+  return token;
 }
 
 Future<SihyunOfJuneUser> fetchMe() async {

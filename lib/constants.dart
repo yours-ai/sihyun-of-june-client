@@ -49,8 +49,6 @@ abstract final class RoutePaths {
   static String mailList = '/mails';
   static String mailListMyCharacter = '$mailList/${SubRoutePaths.myCharacter}';
   static String mailListMailDetail = '$mailList/${SubRoutePaths.mailDetail}';
-  static String mailListDecideAssignmentMethod =
-      '$mailList/${SubRoutePaths.decideAssignmentMethod}';
   static String notificationList = '/notifications';
   static String all = '/all';
   static String allMyPoint = '$all/${SubRoutePaths.myPoint}';
@@ -67,16 +65,6 @@ abstract final class RoutePaths {
   static String allChangeName = '$all/${SubRoutePaths.changeName}';
   static String allWithdraw = '$all/${SubRoutePaths.withdraw}';
   static String allPolicy = '$all/${SubRoutePaths.policy}';
-  static String characterTest = '/character-test';
-  static String testDeciding = '/character-test-deciding';
-  static String testConfirm = '/character-test-confirm';
-  static String selectionDeciding = '/character-selection-deciding';
-  static String selectionConfirm = '/character-selection-confirm';
-  static String assignment = '/assignment';
-  static String newUserAssignmentStarting = '/new-user-assignment-starting';
-  static String retest = '/retest';
-  static String retestExtend = '$retest/${SubRoutePaths.extend}';
-  static String retestConfirm = '$retest/${SubRoutePaths.confirm}';
 }
 
 abstract final class SubRoutePaths {
@@ -93,9 +81,6 @@ abstract final class SubRoutePaths {
   static String withdraw = 'withdraw';
   static String policy = 'policy';
   static String byPhone = 'by-phone';
-  static String decideAssignmentMethod = 'decide-assignment-method';
-  static String extend = 'extend';
-  static String confirm = 'confirm';
 }
 
 abstract final class Urls {

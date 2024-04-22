@@ -7,12 +7,6 @@ import 'package:project_june_client/screens/all_tab/my_point_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_change_screen.dart';
 import 'package:project_june_client/screens/all_tab/point_log_screen.dart';
 import 'package:project_june_client/screens/all_tab/share_screen.dart';
-import 'package:project_june_client/screens/assignment/assignment_screen.dart';
-import 'package:project_june_client/screens/mail/decide_method_screen.dart';
-import 'package:project_june_client/screens/assignment/new_user_assignment_starting_screen.dart';
-import 'package:project_june_client/screens/character_selection/deciding_screen.dart';
-import 'package:project_june_client/screens/character_selection/confirm_screen.dart';
-import 'package:project_june_client/screens/character_test/confirm_screen.dart';
 import 'package:project_june_client/screens/mail/mail_list_screen.dart';
 import 'package:project_june_client/screens/mail/mail_detail_screen.dart';
 import 'package:project_june_client/screens/all_tab/change_name_screen.dart';
@@ -21,14 +15,8 @@ import 'package:project_june_client/screens/notification_list_screen.dart';
 import 'package:project_june_client/screens/login/phone_login_screen.dart';
 import 'package:project_june_client/screens/mail/my_character_screen.dart';
 import 'package:project_june_client/screens/all_tab/policy_screen.dart';
-import 'package:project_june_client/screens/retest/retest_confirm_screen.dart';
-import 'package:project_june_client/screens/retest/retest_extend_screen.dart';
-import 'package:project_june_client/screens/retest/retest_info_screen.dart';
 import 'package:project_june_client/screens/starting_screen.dart';
-import 'package:project_june_client/screens/character_test/deciding_screen.dart';
-import 'package:project_june_client/screens/character_test/test_screen.dart';
 import 'package:project_june_client/screens/all_tab/withdraw_screen.dart';
-import 'actions/character/models/CharacterTheme.dart';
 import 'constants.dart';
 import 'screens/login/landing_screen.dart';
 import 'screens/login/login_screen.dart';
@@ -88,10 +76,6 @@ final router = GoRouter(
           path: '${SubRoutePaths.mailDetail}/:id',
           builder: (context, state) =>
               MailDetailScreen(id: int.tryParse(state.pathParameters['id']!)!),
-        ),
-        GoRoute(
-          path: SubRoutePaths.decideAssignmentMethod,
-          builder: (context, state) => const DecideAssignmentMethodScreen(),
         ),
       ],
     ),
@@ -159,115 +143,6 @@ final router = GoRouter(
         GoRoute(
           path: SubRoutePaths.policy,
           builder: (context, state) => const PolicyScreen(),
-        ),
-      ],
-    ),
-    GoRoute(
-      path: RoutePaths.characterTest,
-      builder: (context, state) => const CharacterTestScreen(),
-    ),
-    GoRoute(
-      path: RoutePaths.testDeciding,
-      pageBuilder: (context, state) => CustomTransitionPage(
-        child: const CharacterTestDecidingScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-        transitionDuration: const Duration(milliseconds: 300), // 전환 지속 시간 설정
-      ),
-    ),
-    GoRoute(
-      path: RoutePaths.testConfirm,
-      pageBuilder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>;
-        return CustomTransitionPage(
-          child: CharacterTestConfirmScreen(
-            selectedCharacterId: extra['selectedCharacterId'] as int,
-            testId: extra['testId'] as int,
-            selectedCharacterFirstName: extra['selectedCharacterFirstName'],
-            selectedCharacterTheme:
-                extra['selectedCharacterTheme'] as CharacterTheme,
-          ),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(milliseconds: 300), // 전환 지속 시간 설정
-        );
-      },
-    ),
-    GoRoute(
-      path: RoutePaths.selectionDeciding,
-      pageBuilder: (context, state) => CustomTransitionPage(
-        child: const CharacterSelectionDecidingScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        },
-        transitionDuration: const Duration(milliseconds: 300), // 전환 지속 시간 설정
-      ),
-    ),
-    GoRoute(
-      path: RoutePaths.selectionConfirm,
-      pageBuilder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>;
-        return CustomTransitionPage(
-          child: CharacterSelectionConfirmScreen(
-            characterId: extra['id'] as int,
-            firstName: extra['firstName'],
-            primaryColor: extra['primaryColor'] as int,
-            secondaryColor: extra['secondaryColor'] as int,
-          ),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
-          transitionDuration: const Duration(milliseconds: 300), // 전환 지속 시간 설정
-        );
-      },
-    ),
-    GoRoute(
-      path: RoutePaths.assignment,
-      builder: (context, state) => const AssignmentScreen(),
-    ),
-    GoRoute(
-      path: RoutePaths.newUserAssignmentStarting,
-      builder: (context, state) => const NewUserAssignmentStartingScreen(),
-    ),
-    GoRoute(
-      path: RoutePaths.retest,
-      builder: (context, state) {
-        final extra = state.extra as Map<String, dynamic>;
-        return RetestInfoScreen(
-          characterIds: extra['characterIds'] as List<int>,
-          firstName: extra['firstName'] as String,
-        );
-      },
-      routes: [
-        GoRoute(
-          path: SubRoutePaths.extend,
-          builder: (context, state) {
-            return RetestExtendScreen(
-              firstName: state.extra as String,
-            );
-          },
-        ),
-        GoRoute(
-          path: SubRoutePaths.confirm,
-          builder: (context, state) {
-            return RetestConfirmScreen(
-              firstName: state.extra as String,
-            );
-          },
         ),
       ],
     ),
