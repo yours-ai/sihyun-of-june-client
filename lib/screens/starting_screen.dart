@@ -14,7 +14,6 @@ import 'package:project_june_client/actions/client.dart';
 import 'package:project_june_client/actions/notification/queries.dart';
 import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/character_provider.dart';
-import 'package:project_june_client/providers/user_provider.dart';
 import 'package:project_june_client/services.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 

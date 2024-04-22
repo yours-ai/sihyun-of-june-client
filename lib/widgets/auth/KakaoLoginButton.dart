@@ -7,7 +7,6 @@ import 'package:project_june_client/constants.dart';
 import 'package:project_june_client/providers/one_link_provider.dart';
 import 'package:project_june_client/widgets/common/modal/modal_description_widget.dart';
 import 'package:project_june_client/widgets/common/modal/modal_widget.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../actions/analytics/dtos.dart';
 import '../../actions/analytics/queries.dart';

@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:project_june_client/actions/auth/queries.dart';
 import 'package:project_june_client/actions/character/queries.dart';
 import 'package:project_june_client/providers/character_provider.dart';
 import 'package:project_june_client/providers/mail_list_provider.dart';
@@ -48,33 +47,8 @@ class MailListWidgetState extends ConsumerState<MailListWidget>
     );
     reloadMailFadeAnimation =
         Tween<double>(begin: 1.0, end: 0.0).animate(reloadMailController!);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      redirectRetest();
-    });
   }
 
-  void redirectRetest() async {
-    final myCharacterList =
-        await fetchMyCharacterQuery().result.then((value) => value.data);
-    final currentCharacterList =
-        myCharacterList!.where((character) => character.is_current == true);
-    if (currentCharacterList.isEmpty) return; // current character가 없는 경우
-    final currentCharacter = currentCharacterList.first;
-    final bool is30DaysFinished = await fetchMeQuery()
-        .result
-        .then((value) => value.data!.is_30days_finished);
-    if (!mounted) return;
-    if (currentCharacter.id == ref.read(selectedCharacterProvider) &&
-        is30DaysFinished) {
-      context.push(
-        RoutePaths.retest,
-        extra: <String, dynamic>{
-          'firstName': currentCharacter.first_name,
-          'characterIds': characterService.getCharacterIds(myCharacterList),
-        },
-      );
-    }
-  }
 
   void changeProfileList(List<Character> characterList) {
     final RenderObject? renderBox =
