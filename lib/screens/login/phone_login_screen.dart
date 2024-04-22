@@ -24,10 +24,7 @@ class _PhoneLoginScreen extends State<PhoneLoginScreen> {
       context: context,
       builder: (context) {
         return ModalWidget(
-          title: '유월의 시현이 서비스가 종료되었습니다.',
-          description: const ModalDescriptionWidget(
-            description: '더 이상 서비스 가입이 불가능 합니다.',
-          ),
+          title: '서비스 종료 예정으로\n더 이상 가입할 수 없어요.',
           choiceColumn: FilledButton(
             onPressed: () => context.pop(),
             child: const Text('알겠어요'),
