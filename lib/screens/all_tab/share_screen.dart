@@ -3,6 +3,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phosphor_icons/flutter_phosphor_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_june_client/actions/analytics/actions_new.dart';
 import 'package:project_june_client/actions/analytics/queries.dart';
 import 'package:project_june_client/widgets/common/back_appbar.dart';
 import 'package:project_june_client/widgets/common/title_underline.dart';
@@ -106,47 +107,37 @@ class ShareScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(width: 50),
-                    MutationBuilder(
-                      mutation:
-                          convertShorterUrlMutation(onSuccess: (res, arg) {
-                        Share.share(
-                            '${FirebaseRemoteConfig.instance.getString('referral_text').replaceAll("\\n", "\n")}\n$res',
-                            subject: '유월의 시현이 공유하기');
-                      }),
-                      builder: (context, urlState, mutate) {
-                        return GestureDetector(
-                          onTap: () {
-                            mutate(
-                                'https://sihyunofjuneapp.onelink.me/i6rb/1m6u5hyx?af_sub1=${state.data}');
-                          },
-                          child: Column(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                    color: ColorConstants.primary,
-                                  ),
-                                ),
-                                child: const Icon(
-                                  PhosphorIcons.share_network_fill,
-                                  size: 32,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                '링크로\n공유하기',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: ColorConstants.gray,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
+                    GestureDetector(
+                      onTap: () {
+                        ref.read(getShareUrlProvider(
+                            'https://sihyunofjuneapp.onelink.me/i6rb/1m6u5hyx?af_sub1=${state.data}'));
                       },
+                      child: Column(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: ColorConstants.primary,
+                              ),
+                            ),
+                            child: const Icon(
+                              PhosphorIcons.share_network_fill,
+                              size: 32,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            '링크로\n공유하기',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: ColorConstants.gray,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

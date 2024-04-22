@@ -6,7 +6,7 @@ import 'package:project_june_client/actions/auth/dtos.dart';
 import 'actions.dart';
 import 'models/sihyun_of_june_user.dart';
 
-Mutation<void, void> loginAsKakaoMutation({
+Mutation<void, void> loginAsKakaoMutation({ // 2
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -21,7 +21,7 @@ Mutation<void, void> loginAsKakaoMutation({
   );
 }
 
-Mutation<void, void> loginAsAppleMutation({
+Mutation<void, void> loginAsAppleMutation({ // #1
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
@@ -59,7 +59,7 @@ Mutation<bool, ValidatedAuthCodeDTO> verifySmsCodeMutation({
   );
 }
 
-Mutation<void, ValidatedVerifyDTO> fetchSmsTokenMutation({
+Mutation<void, ValidatedVerifyDTO> fetchSmsTokenMutation({ // 3
   OnSuccessCallback? onSuccess,
   OnErrorCallback? onError,
 }) {
