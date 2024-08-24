@@ -2,7 +2,7 @@
 
 Flutter client repository for the AI letter service "Sihyun of june" which was available in Korea from September 2023 to May 2024.
 
-<p align="center">  <img src="https://github.com/user-attachments/assets/e3a0513e-c21d-4c04-9be7-ebad50649c03" align="center" width="32%">  <img src="https://github.com/user-attachments/assets/9f1cc80a-81be-404f-8bf9-a9c5d8c3397a" align="center" width="32%">  <img src="이미지경로" align="center" width="32%"></p>
+<p align="center">  <img src="https://github.com/user-attachments/assets/e3a0513e-c21d-4c04-9be7-ebad50649c03" align="center" width="32%">  <img src="https://github.com/user-attachments/assets/9f1cc80a-81be-404f-8bf9-a9c5d8c3397a" align="center" width="32%"></p>
 
 ---
 
